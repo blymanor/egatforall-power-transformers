@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -59,9 +60,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           label="รายงาน" 
           collapsed={collapsed}
           subMenuItems={[
-            { icon: "file-text", label: "รายงานมาตรฐาน", path: "/reports/standard" },
-            { icon: "file-text", label: "รายงานข้อมูลหม้อแปลงไฟฟ้า", path: "/reports/transformers" },
-            { icon: "file-text", label: "รายงานข้อมูลความเสียหาย", path: "/reports/damages" }
+            { icon: "standard-report", label: "รายงานมาตรฐาน", path: "/reports/standard" },
+            { icon: "transformer-report", label: "รายงานข้อมูลหม้อแปลงไฟฟ้า", path: "/reports/transformers" },
+            { icon: "damages-report", label: "รายงานข้อมูลความเสียหาย", path: "/reports/damages" }
           ]}
         />
         
@@ -71,8 +72,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           label="ข้อมูลพื้นฐานของหม้อแปลง" 
           collapsed={collapsed}
           subMenuItems={[
-            { icon: "info", label: "หม้อแปลงไฟฟ้า", path: "/transformer-info/details" },
-            { icon: "info", label: "การย้ายหม้อแปลง", path: "/transformer-info/relocation" }
+            { icon: "transformer-details", label: "หม้อแปลงไฟฟ้า", path: "/transformer-info/details" },
+            { icon: "transformer-relocation", label: "การย้ายหม้อแปลง", path: "/transformer-info/relocation" }
           ]}
         />
         

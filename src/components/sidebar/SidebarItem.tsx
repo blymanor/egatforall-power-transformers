@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
@@ -36,7 +35,22 @@ import {
   FileSearch,
   ShieldCheck,
   TestTubes,
-  Cog
+  Cog,
+  List,
+  FileCog,
+  Clipboard,
+  MoveRight,
+  Beaker,
+  ScrollText,
+  BarChart2,
+  LineChart,
+  FileBarChart,
+  RotateCcw,
+  Layers,
+  PieChart,
+  Filter,
+  ArrowRightCircle,
+  CircleDollarSign
 } from "lucide-react";
 
 interface SubMenuItem {
@@ -151,15 +165,15 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "add-item":
         return <Plus {...iconProps} />;
       case "factor-setting":
-        return <BarChart {...iconProps} />;
+        return <LineChart {...iconProps} />; // Changed icon
       case "transformer-oil":
-        return <Droplet {...iconProps} />;
+        return <Beaker {...iconProps} />; // Changed icon
       case "oil-inventory":
         return <Box {...iconProps} />;
       case "withdrawal-records":
         return <ShoppingCart {...iconProps} />;
       case "purchase-records":
-        return <ShoppingCart {...iconProps} />;
+        return <CircleDollarSign {...iconProps} />; // Changed icon
       case "expense-records":
         return <DollarSign {...iconProps} />;
       case "calculation-results":
@@ -167,7 +181,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "oil-receipt-time":
         return <Clock {...iconProps} />;
       case "bushing-arrester":
-        return <Wrench {...iconProps} />;
+        return <Filter {...iconProps} />; // Changed icon
       case "change-password":
         return <Lock {...iconProps} />;
       case "user-management":
@@ -175,23 +189,23 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "basic-transformer-data":
         return <Database {...iconProps} />;
       case "transformer-importance-data":
-        return <Database {...iconProps} />;
+        return <PieChart {...iconProps} />; // Changed icon
       case "test-data":
-        return <Settings {...iconProps} />;
+        return <Clipboard {...iconProps} />; // Changed icon
       case "vi-topics":
-        return <Eye {...iconProps} />;
+        return <List {...iconProps} />; // Changed icon
       case "vi-criteria":
-        return <Settings {...iconProps} />;
+        return <FileCog {...iconProps} />; // Changed icon
       case "hi-score":
         return <Percent {...iconProps} />;
       case "factor-score":
-        return <Percent {...iconProps} />;
+        return <BarChart2 {...iconProps} />; // Changed icon
       case "sub-component-weight":
         return <SlidersHorizontal {...iconProps} />;
       case "test-score-weight":
-        return <SlidersHorizontal {...iconProps} />;
+        return <Layers {...iconProps} />; // Changed icon
       case "main-component-weight":
-        return <SlidersHorizontal {...iconProps} />;
+        return <BarChart {...iconProps} />; // Changed from SlidersHorizontal
       case "oltc":
         return <Cog {...iconProps} />;
       case "all-test-results":
@@ -199,9 +213,19 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "condition-check":
         return <ShieldCheck {...iconProps} />;
       case "activate":
-        return <Zap {...iconProps} />;
+        return <ArrowRightCircle {...iconProps} />; // Changed from Zap
       case "consideration-data":
         return <FileSearch {...iconProps} />;
+      case "standard-report": // New icon for standard report
+        return <ScrollText {...iconProps} />;
+      case "transformer-report": // New icon for transformer report
+        return <FileBarChart {...iconProps} />;
+      case "damages-report": // New icon for damages report
+        return <RotateCcw {...iconProps} />;
+      case "transformer-details": // New icon for transformer details
+        return <FileCog {...iconProps} />;
+      case "transformer-relocation": // New icon for transformer relocation
+        return <MoveRight {...iconProps} />;
       default:
         return <Home {...iconProps} />;
     }
