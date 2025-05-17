@@ -12,6 +12,9 @@ import UploadData from "./pages/UploadData";
 import ActivateTestResults from "./pages/ActivateTestResults";
 import OilTestUpload from "./pages/OilTestUpload";
 import ElectricalTestUpload from "./pages/ElectricalTestUpload";
+import TransformerReport from "./pages/TransformerReport";
+import DamageReport from "./pages/DamageReport";
+import TransformerBasicInfo from "./pages/TransformerBasicInfo";
 
 const queryClient = new QueryClient();
 
@@ -32,14 +35,14 @@ const App = () => (
           
           {/* Reports Routes */}
           <Route path="/reports" element={<NotFound />} />
-          <Route path="/reports/standard" element={<NotFound />} />
-          <Route path="/reports/transformers" element={<NotFound />} />
-          <Route path="/reports/damages" element={<NotFound />} />
+          <Route path="/reports/standard" element={<TransformerReport />} />
+          <Route path="/reports/transformers" element={<TransformerReport />} />
+          <Route path="/reports/damages" element={<DamageReport />} />
           
           {/* Transformer Info Routes */}
-          <Route path="/transformer-info" element={<NotFound />} />
-          <Route path="/transformer-info/details" element={<NotFound />} />
-          <Route path="/transformer-info/relocation" element={<NotFound />} />
+          <Route path="/transformer-info" element={<TransformerBasicInfo />} />
+          <Route path="/transformer-info/details" element={<TransformerBasicInfo />} />
+          <Route path="/transformer-info/relocation" element={<TransformerBasicInfo />} />
           
           {/* Transformer Maintenance Routes */}
           <Route path="/transformer-maintenance" element={<NotFound />} />

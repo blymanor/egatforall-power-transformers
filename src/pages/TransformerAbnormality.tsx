@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { Trash2 } from "lucide-react";
 
 const TransformerAbnormality = () => {
   const { toast } = useToast();
@@ -110,6 +111,37 @@ const TransformerAbnormality = () => {
         resultsElement.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
+  };
+
+  const handleDeleteReport = () => {
+    toast({
+      title: "รายงานถูกลบเรียบร้อยแล้ว",
+      description: "รายงานความผิดปกติของหม้อแปลงไฟฟ้าถูกลบออกจากระบบเรียบร้อยแล้ว",
+    });
+    
+    setReportData(null);
+    setShowResults(false);
+    setShowForm(false);
+    setRegion("");
+    setTransformer("");
+    setEquipmentNo("");
+    setIncidentDate("");
+    setOltcCheckCount("");
+    setEnvironmentCondition("");
+    setOperatingCondition("");
+    setAbnormalityDetails("");
+    setShutdownDate("");
+    setShutdownTime("");
+    setSystemEntryDate("");
+    setSystemEntryTime("");
+    setWorkOrderNumber("");
+    setAbnormalComponentGroup("");
+    setAbnormalComponent("");
+    setDamageLevel("");
+    setRootCause("");
+    setManagement("");
+    setRemarks("");
+    setOperator("");
   };
 
   return (
@@ -593,35 +625,12 @@ const TransformerAbnormality = () => {
                     </Button>
                     
                     <Button 
-                      onClick={() => {
-                        setShowForm(false);
-                        setShowResults(false);
-                        // Reset form fields
-                        setEquipmentNo("");
-                        setIncidentDate("");
-                        setOltcCheckCount("");
-                        setEnvironmentCondition("");
-                        setOperatingCondition("");
-                        setAbnormalityDetails("");
-                        setShutdownDate("");
-                        setShutdownTime("");
-                        setSystemEntryDate("");
-                        setSystemEntryTime("");
-                        setWorkOrderNumber("");
-                        setAbnormalComponentGroup("");
-                        setAbnormalComponent("");
-                        setDamageLevel("");
-                        setRootCause("");
-                        setManagement("");
-                        setRemarks("");
-                        setOperator("");
-                        // Reset selection form
-                        setRegion("");
-                        setTransformer("");
-                      }} 
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={handleDeleteReport} 
+                      variant="destructive"
+                      className="flex items-center gap-2"
                     >
-                      สร้างรายงานใหม่
+                      <Trash2 className="w-4 h-4" />
+                      ลบรายงาน
                     </Button>
                   </div>
                 </div>
