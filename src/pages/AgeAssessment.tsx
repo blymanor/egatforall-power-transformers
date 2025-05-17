@@ -28,21 +28,21 @@ const AgeAssessment = () => {
       </header>
 
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Section title */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">ค่าประเมินอายุ</h2>
-          <p className="text-gray-600">การจัดการค่าประเมินอายุการใช้งานหม้อแปลงไฟฟ้า</p>
+        {/* Section title - increased font size */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800">ค่าประเมินอายุ</h2>
+          <p className="text-lg text-gray-600">การจัดการค่าประเมินอายุการใช้งานหม้อแปลงไฟฟ้า</p>
         </div>
         
-        <Card className="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-0">
-          <CardContent className="p-6 space-y-4">
-            <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
-              <h2 className="text-lg font-semibold text-center text-gray-800">ค่าการประเมินอายุ</h2>
+        <Card className="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-0">
+          <CardContent className="p-8 space-y-6">
+            <div className="bg-blue-50 rounded-md p-4 mb-6 border-l-4 border-blue-500">
+              <h2 className="text-xl font-semibold text-center text-gray-800">ค่าการประเมินอายุ</h2>
             </div>
 
-            <div className="space-y-6 p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
-                <label htmlFor="dp-limit" className="font-medium text-gray-700">
+            <div className="space-y-8 p-6 border border-gray-200 rounded-lg bg-white shadow-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
+                <label htmlFor="dp-limit" className="font-medium text-gray-700 text-lg">
                   ค่า DP Limit :
                 </label>
                 <Input
@@ -50,16 +50,16 @@ const AgeAssessment = () => {
                   value={dpLimit}
                   onChange={(e) => setDpLimit(e.target.value)}
                   placeholder="กรุณาระบุค่า DP Limit"
-                  className="w-full bg-white border border-gray-300 focus:border-blue-500"
+                  className="w-full bg-white border border-gray-300 focus:border-blue-500 text-lg p-6 h-auto"
                 />
               </div>
 
-              <div className="w-full border-t border-gray-200 my-3"></div>
+              <div className="w-full border-t border-gray-200 my-4"></div>
 
               <div className="flex justify-center pt-4">
                 <Button 
                   onClick={handleSave} 
-                  className="w-full md:w-1/3 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                  className="w-full md:w-1/3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg py-6"
                 >
                   บันทึก
                 </Button>

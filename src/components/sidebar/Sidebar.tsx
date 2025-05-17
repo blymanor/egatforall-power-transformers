@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
             { icon: "visual-inspection", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/visual-inspection" },
             { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/oil-test" },
             { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/transformer-maintenance/electrical-test" },
-            { icon: "oltc", label: "บำรุงรักษา OLTC", path: "/transformer-maintenance/oltc" },
+            { icon: "oltc", label: "บำรุงรักษา OLTC", path: "/transformer-maintenance/oltc" }, // Changed label from OLTC to บำรุงรักษา OLTC
             { icon: "all-test-results", label: "ผลการทดสอบทั้งหมด", path: "/transformer-maintenance/all-test-results" },
             { icon: "condition-check", label: "ตรวจสอบสภาพ", path: "/transformer-maintenance/condition-check" },
           ]}

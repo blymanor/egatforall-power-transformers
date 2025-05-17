@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { 
   Home, 
   FileText, 
-  AlertCircle, 
+  AlertTriangle, // Changed from AlertCircle
   Wrench, 
   Calendar, 
   Upload, 
@@ -133,7 +134,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "transformer-info":
         return <Info {...iconProps} />;
       case "transformer-faults":
-        return <AlertCircle {...iconProps} />;
+        return <AlertTriangle {...iconProps} />; // Changed from AlertCircle to AlertTriangle
       case "transformer-maintenance":
         return <Wrench {...iconProps} />; 
       case "age-assessment":
@@ -165,15 +166,15 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "add-item":
         return <Plus {...iconProps} />;
       case "factor-setting":
-        return <LineChart {...iconProps} />; // Changed icon
+        return <LineChart {...iconProps} />; 
       case "transformer-oil":
-        return <Beaker {...iconProps} />; // Changed icon
+        return <Beaker {...iconProps} />; 
       case "oil-inventory":
         return <Box {...iconProps} />;
       case "withdrawal-records":
         return <ShoppingCart {...iconProps} />;
       case "purchase-records":
-        return <CircleDollarSign {...iconProps} />; // Changed icon
+        return <CircleDollarSign {...iconProps} />; 
       case "expense-records":
         return <DollarSign {...iconProps} />;
       case "calculation-results":
@@ -181,7 +182,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "oil-receipt-time":
         return <Clock {...iconProps} />;
       case "bushing-arrester":
-        return <Filter {...iconProps} />; // Changed icon
+        return <Filter {...iconProps} />; 
       case "change-password":
         return <Lock {...iconProps} />;
       case "user-management":
@@ -189,23 +190,23 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "basic-transformer-data":
         return <Database {...iconProps} />;
       case "transformer-importance-data":
-        return <PieChart {...iconProps} />; // Changed icon
+        return <PieChart {...iconProps} />; 
       case "test-data":
-        return <Clipboard {...iconProps} />; // Changed icon
+        return <Clipboard {...iconProps} />; 
       case "vi-topics":
-        return <List {...iconProps} />; // Changed icon
+        return <List {...iconProps} />; 
       case "vi-criteria":
-        return <FileCog {...iconProps} />; // Changed icon
+        return <FileCog {...iconProps} />; 
       case "hi-score":
         return <Percent {...iconProps} />;
       case "factor-score":
-        return <BarChart2 {...iconProps} />; // Changed icon
+        return <BarChart2 {...iconProps} />; 
       case "sub-component-weight":
         return <SlidersHorizontal {...iconProps} />;
       case "test-score-weight":
-        return <Layers {...iconProps} />; // Changed icon
+        return <Layers {...iconProps} />; 
       case "main-component-weight":
-        return <BarChart {...iconProps} />; // Changed from SlidersHorizontal
+        return <BarChart {...iconProps} />; 
       case "oltc":
         return <Cog {...iconProps} />;
       case "all-test-results":
@@ -213,18 +214,18 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "condition-check":
         return <ShieldCheck {...iconProps} />;
       case "activate":
-        return <ArrowRightCircle {...iconProps} />; // Changed from Zap
+        return <ArrowRightCircle {...iconProps} />; 
       case "consideration-data":
         return <FileSearch {...iconProps} />;
-      case "standard-report": // New icon for standard report
+      case "standard-report": 
         return <ScrollText {...iconProps} />;
-      case "transformer-report": // New icon for transformer report
+      case "transformer-report": 
         return <FileBarChart {...iconProps} />;
-      case "damages-report": // New icon for damages report
+      case "damages-report": 
         return <RotateCcw {...iconProps} />;
-      case "transformer-details": // New icon for transformer details
+      case "transformer-details": 
         return <FileCog {...iconProps} />;
-      case "transformer-relocation": // New icon for transformer relocation
+      case "transformer-relocation": 
         return <MoveRight {...iconProps} />;
       default:
         return <Home {...iconProps} />;
@@ -295,7 +296,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                   to={subItem.path}
                   className={cn(
                     "flex items-center px-3 py-2 transition-colors hover:bg-gray-100",
-                    isSubItemActive ? "bg-blue-50 text-blue-600" : "text-gray-700"
+                    isSubItemActive ? "bg-blue-50 text-[#1E5CFF]" : "text-[#1E5CFF]" // Changed submenu text color to #1E5CFF
                   )}
                   onClick={onClick}
                 >
@@ -306,7 +307,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                 <div
                   className={cn(
                     "flex items-center justify-between px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100",
-                    hasActiveChild(subItem.subMenuItems) ? "bg-blue-50 text-blue-600" : "text-gray-700"
+                    hasActiveChild(subItem.subMenuItems) ? "bg-blue-50 text-[#1E5CFF]" : "text-[#1E5CFF]" // Changed submenu text color to #1E5CFF
                   )}
                 >
                   <div className="flex items-center">
