@@ -205,7 +205,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     const itemClasses = cn(
       "flex items-center cursor-pointer transition-colors hover:bg-gray-100",
       isActive ? "bg-blue-50 text-blue-700" : "text-gray-700",
-      collapsed ? "justify-center py-3" : "px-4 py-2",
+      collapsed ? "justify-center py-3 px-0 w-full" : "px-4 py-2",
       hasSubMenu && !collapsed ? "justify-between" : ""
     );
 

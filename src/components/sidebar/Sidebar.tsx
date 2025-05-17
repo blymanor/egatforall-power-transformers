@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SidebarItem from "./SidebarItem";
+import { Separator } from "@/components/ui/separator";
 
 interface SidebarProps {
   onCollapsedChange?: (collapsed: boolean) => void;
@@ -51,12 +52,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
       </div>
 
       <div className="overflow-y-auto flex-1 py-4">
-        <SidebarItem icon="home" path="/" label="Home" />
+        <SidebarItem icon="home" path="/" label="Home" collapsed={collapsed} />
         
         <SidebarItem 
           icon="report" 
           path="/reports" 
           label="รายงาน" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "file-text", label: "รายงานมาตรฐาน", path: "/reports/standard" },
             { icon: "file-text", label: "รายงานข้อมูลหม้อแปลงไฟฟ้า", path: "/reports/transformers" },
@@ -68,18 +70,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           icon="transformer-info" 
           path="/transformer-info" 
           label="ข้อมูลพื้นฐานของหม้อแปลง" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "database", label: "หม้อแปลงไฟฟ้า", path: "/transformer-info/details" },
             { icon: "database", label: "การย้ายหม้อแปลง", path: "/transformer-info/relocation" }
           ]}
         />
         
-        <SidebarItem icon="transformer-faults" path="/transformer-abnormality" label="ความผิดปกติของหม้อแปลง" />
+        <SidebarItem 
+          icon="transformer-faults" 
+          path="/transformer-abnormality" 
+          label="ความผิดปกติของหม้อแปลง" 
+          collapsed={collapsed}
+        />
         
         <SidebarItem 
           icon="transformer-maintenance" 
           path="/transformer-maintenance" 
           label="ข้อมูลบำรุงรักษาหม้อแปลง" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "search", label: "ค้นหาและแก้ไข", path: "/transformer-maintenance/search" },
             { icon: "visual-inspection", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/visual-inspection" },
@@ -91,12 +100,18 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           ]}
         />
         
-        <SidebarItem icon="age-assessment" path="/age-assessment" label="ค่าประเมินอายุ" />
+        <SidebarItem 
+          icon="age-assessment" 
+          path="/age-assessment" 
+          label="ค่าประเมินอายุ" 
+          collapsed={collapsed}
+        />
         
         <SidebarItem 
           icon="upload" 
           path="/upload-data" 
           label="Upload ข้อมูล" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/upload-data/oil-test" },
             { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/upload-data/electrical-test" },
@@ -108,6 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           icon="transformer-importance" 
           path="/transformer-importance" 
           label="ความสำคัญหม้อแปลง" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "add-item", label: "เพิ่มรายการ", path: "/transformer-importance/add" },
             { icon: "search", label: "ค้นหาและแก้ไข", path: "/transformer-importance/search" }
@@ -118,6 +134,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           icon="economic-analysis" 
           path="/economic-analysis" 
           label="การวิเคราะห์ทางเศรษฐศาสตร์" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "factor-setting", label: "Factor Setting", path: "/economic-analysis/factor-setting" },
             { icon: "factor-setting", label: "ราคาและ Loss ของหม้อแปลง", path: "/economic-analysis/price-loss" },
@@ -129,6 +146,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           icon="inventory" 
           path="/inventory" 
           label="Inventory Control" 
+          collapsed={collapsed}
           subMenuItems={[
             { 
               icon: "transformer-oil", 
@@ -151,6 +169,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           icon="management" 
           path="/management" 
           label="การจัดการ" 
+          collapsed={collapsed}
           subMenuItems={[
             { icon: "change-password", label: "เปลี่ยนรหัสผ่าน", path: "/management/change-password" },
             { icon: "user-management", label: "การจัดการผู้ใช้", path: "/management/users" },
@@ -175,10 +194,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
       </div>
 
       <div className="mt-auto w-full">
+        <Separator className="bg-gray-200 h-[1px] my-2" />
         <div className="p-2">
-          <SidebarItem icon="manual" path="/manual" label="คู่มือการใช้งาน" />
-          <SidebarItem icon="history" path="/test-history" label="ประวัติการลงข้อมูลทดสอบฯ" />
-          <SidebarItem icon="logout" path="/logout" label="ออกจากระบบ" />
+          <SidebarItem icon="manual" path="/manual" label="คู่มือการใช้งาน" collapsed={collapsed} />
+          <SidebarItem icon="history" path="/test-history" label="ประวัติการลงข้อมูลทดสอบฯ" collapsed={collapsed} />
+          <SidebarItem icon="logout" path="/logout" label="ออกจากระบบ" collapsed={collapsed} />
         </div>
       </div>
     </div>
