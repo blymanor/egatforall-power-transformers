@@ -14,13 +14,13 @@ interface TransformerData {
   importance: number;
   risk: string;
   status: "Good" | "Repair" | "Faulty";
-  action: "Investigation" | "Schedule Maintenance" | "Relocate" | "Repair" | "Refurbish";
+  action: "Investigation" | "Relocate" | "Refurbish";
 }
 
 const dummyData: TransformerData[] = [
   { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation" },
-  { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Schedule Maintenance" },
-  { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Repair" },
+  { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Investigation" },
+  { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Refurbish" },
   { deviceNo: "АN-474A", equipmentNo: "TGPOS68023", condition: 90.10, importance: 25.45, risk: "Low", status: "Good", action: "Relocate" },
   { deviceNo: "АN-475A", equipmentNo: "TGPOS68024", condition: 45.33, importance: 67.21, risk: "High", status: "Faulty", action: "Refurbish" },
 ];
@@ -28,9 +28,7 @@ const dummyData: TransformerData[] = [
 const getActionBadgeColor = (action: string) => {
   switch(action) {
     case "Investigation": return "bg-blue-100 text-blue-800 border-blue-300";
-    case "Schedule Maintenance": return "bg-green-100 text-green-800 border-green-300";
     case "Relocate": return "bg-yellow-100 text-yellow-800 border-yellow-300";
-    case "Repair": return "bg-orange-100 text-orange-800 border-orange-300";
     case "Refurbish": return "bg-purple-100 text-purple-800 border-purple-300";
     default: return "bg-gray-100 text-gray-800 border-gray-300";
   }
@@ -66,7 +64,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setSt
   return (
     <Card className="bg-white shadow-md border border-gray-100">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle className="text-xl font-bold text-[#1E5CFF]">Transformer Importance</CardTitle>
+        <CardTitle className="text-xl font-bold text-black">Transformer Importance</CardTitle>
         <FilterDropdown 
           value={statusFilter} 
           onValueChange={setStatusFilter} 

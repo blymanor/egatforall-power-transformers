@@ -30,7 +30,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger 
           className={cn(
-            "w-[180px] border-2 transition-all duration-200",
+            "w-[180px] border-2 transition-all duration-200 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none",
             variant === "default" 
               ? "border-gray-200 hover:border-gray-300" 
               : "border-[#1E5CFF] bg-gradient-to-r from-blue-50 to-white text-[#1E5CFF] font-medium hover:shadow-md"
@@ -42,10 +42,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           </div>
         </SelectTrigger>
         <SelectContent className="bg-white border border-[#1E5CFF]/20 shadow-lg">
-          <SelectItem value="all" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">All</SelectItem>
-          <SelectItem value="good" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">Good</SelectItem>
-          <SelectItem value="repair" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">Repair</SelectItem>
-          <SelectItem value="damaged" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">Faulty</SelectItem>
+          <SelectItem value="all" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">All</SelectItem>
+          <SelectItem value="good" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">Good</SelectItem>
+          <SelectItem value="repair" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">Repair</SelectItem>
+          <SelectItem value="damaged" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">Faulty</SelectItem>
         </SelectContent>
       </Select>
     </div>

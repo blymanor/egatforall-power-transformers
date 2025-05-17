@@ -14,26 +14,42 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
   const getColorClasses = () => {
     switch (color) {
       case "green":
-        return "bg-white border-l-4 border-l-blue-600 text-gray-800";
+        return "bg-gradient-to-br from-white to-blue-50 border border-blue-200 shadow-sm shadow-blue-100/50";
       case "yellow":
-        return "bg-white border-l-4 border-l-yellow-500 text-gray-800";
+        return "bg-gradient-to-br from-white to-yellow-50 border border-yellow-200 shadow-sm shadow-yellow-100/50";
       case "red":
-        return "bg-white border-l-4 border-l-red-500 text-gray-800";
+        return "bg-gradient-to-br from-white to-red-50 border border-red-200 shadow-sm shadow-red-100/50";
       default:
-        return "bg-white border-l-4 border-l-gray-500 text-gray-800";
+        return "bg-white border border-gray-200";
+    }
+  };
+
+  const getIconColor = () => {
+    switch (color) {
+      case "green":
+        return "text-blue-600 bg-blue-100/50";
+      case "yellow":
+        return "text-yellow-600 bg-yellow-100/50";
+      case "red":
+        return "text-red-600 bg-red-100/50";
+      default:
+        return "text-gray-600 bg-gray-100/50";
     }
   };
 
   return (
     <div 
       className={cn(
-        "rounded-lg border shadow-sm p-5 flex items-start gap-3 transition-all hover:shadow-md",
+        "rounded-xl p-5 flex items-start gap-4 transition-all hover:shadow-md group",
         getColorClasses(),
         className
       )}
     >
-      <div className="flex items-center justify-center p-2 rounded-full bg-gray-50">
-        {icon}
+      <div className={cn(
+        "flex items-center justify-center p-3 rounded-lg transition-all group-hover:scale-110", 
+        getIconColor()
+      )}>
+        {React.cloneElement(icon as React.ReactElement, { className: "size-7" })}
       </div>
       <div className="flex flex-col">
         <span className="text-sm font-medium text-gray-600">{title}</span>
