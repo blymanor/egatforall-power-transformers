@@ -15,6 +15,7 @@ interface FilterDropdownProps {
   onValueChange: (value: string) => void;
   className?: string;
   variant?: "default" | "colorful";
+  placeholder?: string;
 }
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
@@ -22,6 +23,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   onValueChange,
   className,
   variant = "default",
+  placeholder = "สถานะหม้อแปลง",
 }) => {
   return (
     <div className={className}>
@@ -36,7 +38,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
         >
           <div className="flex items-center">
             <FilterX className="mr-2 h-4 w-4" />
-            <SelectValue placeholder="สถานะหม้อแปลง" />
+            <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>
         <SelectContent className="bg-white border border-[#1E5CFF]/20 shadow-lg">
