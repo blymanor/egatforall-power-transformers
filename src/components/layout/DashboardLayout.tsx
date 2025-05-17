@@ -34,7 +34,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </div>
       <main className={cn(
         "flex-1 overflow-auto p-0 transition-all duration-300", 
-        sidebarCollapsed ? "ml-[80px]" : "ml-[280px]",
+        sidebarCollapsed ? "ml-[80px]" : "ml-[320px]", // Updated from 280px to 320px
         className
       )}>
         {children}

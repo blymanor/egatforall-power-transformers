@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
     <div
       className={cn(
         "bg-white border-r border-gray-200 h-full transition-all duration-300 flex flex-col",
-        collapsed ? "w-[80px]" : "w-[280px]"
+        collapsed ? "w-[80px]" : "w-[320px]" // Increased from 280px to 320px
       )}
     >
       <div className="flex items-center justify-between p-4 pt-6 pb-3 border-b border-gray-200">

@@ -189,7 +189,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           {subMenuItems.map((subItem, index) => (
             <div key={index}>
               <div
-                className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-gray-700"
+                className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-[#1E5CFF]"
                 onClick={onClick}
               >
                 <span className="shrink-0">{getIcon(subItem.icon)}</span>
@@ -201,7 +201,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                   {subItem.subMenuItems.map((thirdLevelItem, thirdIndex) => (
                     <div
                       key={thirdIndex}
-                      className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-gray-700"
+                      className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-[#1E5CFF]"
                       onClick={onClick}
                     >
                       <span className="shrink-0">{getIcon(thirdLevelItem.icon)}</span>
