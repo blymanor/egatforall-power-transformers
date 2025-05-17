@@ -16,7 +16,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
       case "green":
         return "bg-gradient-to-br from-white to-blue-50 border border-blue-200 shadow-sm shadow-blue-100/50";
       case "yellow":
-        return "bg-gradient-to-br from-white to-yellow-50 border border-yellow-200 shadow-sm shadow-yellow-100/50";
+        return "bg-gradient-to-br from-white to-orange-50 border border-orange-200 shadow-sm shadow-orange-100/50";
       case "red":
         return "bg-gradient-to-br from-white to-red-50 border border-red-200 shadow-sm shadow-red-100/50";
       default:
@@ -29,7 +29,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
       case "green":
         return "text-blue-600 bg-blue-100/50";
       case "yellow":
-        return "text-yellow-700 bg-yellow-100/50"; // Darker yellow for "Needs Repair"
+        return "text-orange-600 bg-orange-100/50"; // Changed to orange
       case "red":
         return "text-red-600 bg-red-100/50";
       default:
@@ -42,7 +42,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
       case "green":
         return "text-gray-600";
       case "yellow":
-        return "text-yellow-800"; // Darker title for "Needs Repair"
+        return "text-orange-700"; // Changed to orange
       case "red":
         return "text-gray-600";
       default:
