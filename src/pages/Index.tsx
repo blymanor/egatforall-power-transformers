@@ -21,7 +21,6 @@ const Index = () => {
           <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
           <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
-        <RegionDropdown value={selectedRegion} onValueChange={setSelectedRegion} />
       </header>
 
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
@@ -46,7 +45,10 @@ const Index = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-6 relative">
+          <div className="absolute right-4 top-4 z-10">
+            <RegionDropdown value={selectedRegion} onValueChange={setSelectedRegion} />
+          </div>
           <RiskGraph />
         </div>
 

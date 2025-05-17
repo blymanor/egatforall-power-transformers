@@ -76,6 +76,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           ]}
         />
         
+        {/* NEW: Transformer Abnormality */}
+        <SidebarItem
+          icon="transformer-faults"
+          label="ความผิดปกติของหม้อแปลง"
+          collapsed={collapsed}
+        />
+        
         {/* Transformer maintenance with submenus */}
         <SidebarItem
           icon="transformer-maintenance"
@@ -153,10 +160,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
         
         {/* Management with complex nested submenus */}
         <SidebarItem
-          icon="management"
-          label="การจัดการ"
-          collapsed={collapsed}
-          subMenuItems={[
+          icon: "management"
+          label: "การจัดการ"
+          collapsed: {collapsed}
+          subMenuItems: [
             { icon: "change-password", label: "เปลี่ยนรหัสผ่าน" },
             { icon: "user-management", label: "การจัดการผู้ใช้" },
             { icon: "basic-transformer-data", label: "กำหนดข้อมูลพื้นฐานหม้อแปลง" },
@@ -174,7 +181,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
                 { icon: "main-component-weight", label: "Weight อุปกรณ์หลัก" }
               ]
             }
-          ]}
+          ]
         />
       </div>
 
