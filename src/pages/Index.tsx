@@ -21,14 +21,8 @@ const Index = () => {
     <DashboardLayout>
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">EGATforALL Dashboard</h1>
+          <h1 className="text-2xl font-bold text-[#1E5CFF]">EGATforALL Dashboard</h1>
           <p className="text-gray-500">ระบบติดตามสถานะหม้อแปลงไฟฟ้า</p>
-        </div>
-        <div className="flex gap-2">
-          <FilterDropdown
-            value={statusFilter}
-            onValueChange={setStatusFilter}
-          />
         </div>
       </header>
 
@@ -90,31 +84,37 @@ const Index = () => {
             </Card>
             
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg flex items-center">
                   <PieChart className="mr-2 h-5 w-5" />
                   สัดส่วนความสำคัญ
                 </CardTitle>
+                <FilterDropdown
+                  value={statusFilter}
+                  onValueChange={setStatusFilter}
+                  variant="colorful"
+                  className="self-end"
+                />
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] flex items-center justify-center bg-gray-50 rounded-md border">
-                  <div className="relative h-48 w-48 rounded-full overflow-hidden">
+                <div className="h-[300px] flex items-center justify-center bg-gradient-to-br from-blue-50 to-white rounded-md border border-[#1E5CFF]/10">
+                  <div className="relative h-48 w-48 rounded-full overflow-hidden shadow-lg">
                     <div className="absolute inset-0" style={{ 
                       background: 'conic-gradient(#22c55e 0% 40%, #eab308 40% 70%, #ef4444 70% 100%)' 
                     }}></div>
-                    <div className="absolute inset-[15%] bg-gray-50 rounded-full flex items-center justify-center text-lg font-medium">100%</div>
+                    <div className="absolute inset-[15%] bg-white rounded-full flex items-center justify-center text-lg font-medium text-[#1E5CFF]">100%</div>
                   </div>
                   <div className="ml-8">
                     <div className="flex items-center mb-2">
-                      <div className="w-4 h-4 bg-green-500 mr-2"></div>
+                      <div className="w-4 h-4 bg-green-500 mr-2 rounded-sm shadow-sm"></div>
                       <span className="text-sm">ความสำคัญต่ำ (40%)</span>
                     </div>
                     <div className="flex items-center mb-2">
-                      <div className="w-4 h-4 bg-yellow-500 mr-2"></div>
+                      <div className="w-4 h-4 bg-yellow-500 mr-2 rounded-sm shadow-sm"></div>
                       <span className="text-sm">ความสำคัญปานกลาง (30%)</span>
                     </div>
                     <div className="flex items-center">
-                      <div className="w-4 h-4 bg-red-500 mr-2"></div>
+                      <div className="w-4 h-4 bg-red-500 mr-2 rounded-sm shadow-sm"></div>
                       <span className="text-sm">ความสำคัญสูง (30%)</span>
                     </div>
                   </div>
