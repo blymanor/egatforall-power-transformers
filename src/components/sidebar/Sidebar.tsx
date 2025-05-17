@@ -52,51 +52,129 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
 
       <div className="overflow-y-auto flex-1 py-2">
         <SidebarItem icon="home" label="Home" active collapsed={collapsed} />
-        <SidebarItem icon="report" label="รายงาน" collapsed={collapsed} />
+        
+        {/* Report section with submenus */}
+        <SidebarItem 
+          icon="report" 
+          label="รายงาน" 
+          collapsed={collapsed}
+          subMenuItems={[
+            { icon: "report", label: "รายงานมาตราฐาน" },
+            { icon: "report", label: "รายงานข้อมูลหม้อแปลงไฟฟ้า" },
+            { icon: "report", label: "รายงานข้อมูลความเสียหาย" }
+          ]}
+        />
+        
+        {/* Basic transformer info with submenus */}
         <SidebarItem
           icon="transformer-info"
           label="ข้อมูลพื้นฐานของหม้อแปลง"
           collapsed={collapsed}
+          subMenuItems={[
+            { icon: "transformer-info", label: "หม้อแปลงไฟฟ้า" },
+            { icon: "transformer-info", label: "การย้ายหม้อแปลง" }
+          ]}
         />
-        <SidebarItem
-          icon="transformer-faults"
-          label="ความผิดปกติของหม้อแปลง" 
-          collapsed={collapsed}
-        />
+        
+        {/* Transformer maintenance with submenus */}
         <SidebarItem
           icon="transformer-maintenance"
-          label="ข้อมูลบำรุงรักษาหม้อแปลง"
+          label="ข้อมูลบำรุงรักษาหม้อแปลง" 
           collapsed={collapsed}
+          subMenuItems={[
+            { icon: "search", label: "ค้นหาข้อมูลบำรุงรักษาหม้อแปลง" },
+            { icon: "visual-inspection", label: "Visual Inspection" },
+            { icon: "oil-test", label: "ผลทดสอบทางน้ำมัน" },
+            { icon: "electrical-test", label: "ผลทดสอบทางไฟฟ้า" },
+            { icon: "transformer-maintenance", label: "บำรุงรักษา OLTC" },
+            { icon: "report", label: "ดูข้อมูลผลการทดสอบทั้งหมด" },
+            { icon: "search", label: "ตรวจสอบสภาพหม้อแปลงไฟฟ้า" }
+          ]}
         />
+        
+        {/* Age assessment */}
         <SidebarItem
           icon="age-assessment"
           label="ค่าประเมินอายุ"
           collapsed={collapsed}
         />
+        
+        {/* Upload */}
         <SidebarItem
           icon="upload"
           label="Upload ข้อมูล"
           collapsed={collapsed}
         />
+        
+        {/* Transformer importance with submenus */}
         <SidebarItem
           icon="transformer-importance"
           label="ความสำคัญหม้อแปลง"
           collapsed={collapsed}
+          subMenuItems={[
+            { icon: "add-item", label: "เพิ่มรายการ" },
+            { icon: "search", label: "ค้นหาและแก้ไข" }
+          ]}
         />
+        
+        {/* Economic analysis with submenus */}
         <SidebarItem
           icon="economic-analysis"
           label="การวิเคราะห์ทางเศรษฐศาสตร์"
           collapsed={collapsed}
+          subMenuItems={[
+            { icon: "factor-setting", label: "Factor Setting" },
+            { icon: "factor-setting", label: "ราคาและ Loss ของหม้อแปลง" },
+            { icon: "factor-setting", label: "ข้อมูลที่จำเป็นในการพิจารณา" }
+          ]}
         />
+        
+        {/* Inventory control with complex nested submenus */}
         <SidebarItem
           icon="inventory"
           label="Inventory Control"
           collapsed={collapsed}
+          subMenuItems={[
+            { 
+              icon: "transformer-oil", 
+              label: "น้ำมันหม้อแปลง",
+              subMenuItems: [
+                { icon: "oil-inventory", label: "คลังรายการน้ำมัน" },
+                { icon: "withdrawal-records", label: "รายการเบิกจ่าย" },
+                { icon: "purchase-records", label: "รายการสั่งซื้อ/รับน้ำมัน" },
+                { icon: "expense-records", label: "รายการค่าใช้จ่าย" },
+                { icon: "calculation-results", label: "ผลการคำนวณ" },
+                { icon: "oil-receipt-time", label: "ระยะเวลาที่ได้รับน้ำมัน" }
+              ]
+            },
+            { icon: "bushing-arrester", label: "Bushing, Arrester, OLTC" }
+          ]}
         />
+        
+        {/* Management with complex nested submenus */}
         <SidebarItem
           icon="management"
           label="การจัดการ"
           collapsed={collapsed}
+          subMenuItems={[
+            { icon: "change-password", label: "เปลี่ยนรหัสผ่าน" },
+            { icon: "user-management", label: "การจัดการผู้ใช้" },
+            { icon: "basic-transformer-data", label: "กำหนดข้อมูลพื้นฐานหม้อแปลง" },
+            { icon: "transformer-importance-data", label: "กำหนดข้อมูลความสำคัญหม้อแปลง" },
+            { 
+              icon: "test-data", 
+              label: "กำหนดข้อมูลการทดสอบ",
+              subMenuItems: [
+                { icon: "vi-topics", label: "หัวข้อ Visual Inspection" },
+                { icon: "vi-criteria", label: "เกณฑ์ Visual Inspection" },
+                { icon: "hi-score", label: "คะแนน %HI" },
+                { icon: "factor-score", label: "คะแนน %Factor" },
+                { icon: "sub-component-weight", label: "Weight อุปกรณ์ย่อย" },
+                { icon: "test-score-weight", label: "Score และ Weight การทดสอบ" },
+                { icon: "main-component-weight", label: "Weight อุปกรณ์หลัก" }
+              ]
+            }
+          ]}
         />
       </div>
 
