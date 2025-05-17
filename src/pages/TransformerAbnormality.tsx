@@ -26,8 +26,8 @@ const TransformerAbnormality = () => {
     equipmentNumber: "7000016200",
     inspectionDate: "",
     oltcOperations: "",
-    environment: "ไม่มีข้อบ่งชี้",
-    operationStatus: "ปกติ",
+    environment: "ไม่เกี่ยวข้อง",
+    operationStatus: "ขณะติดตั้ง",
     abnormalityDetails: "ปกติ",
     reportDate: "",
     reportTime: "00",
@@ -37,7 +37,7 @@ const TransformerAbnormality = () => {
     relatedParts: "Active Part",
     affectedParts: "แกนเหล็ก",
     severityLevel: "Minor",
-    currentStatus: "ออกแบบ/เตรียมโปรเจค",
+    currentStatus: "ออกแบบผิด",
     action: "Repair",
     remarks: "",
     reporter: ""
@@ -143,28 +143,39 @@ const TransformerAbnormality = () => {
             <Card className="bg-white rounded-xl shadow-lg border-0 mb-8 overflow-hidden animate-fade-in">
               <CardContent className="p-0">
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-5">
-                  <h3 className="text-lg font-medium text-white">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</h3>
+                  <h3 className="text-lg font-medium text-white">กรอกรายละเอียดความผิดปกติของหม้อแปลงไฟฟ้า</h3>
                 </div>
                 
                 <div className="p-6 grid grid-cols-2 gap-x-8 gap-y-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">เขต</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
-                      {formData.region || "-"}
+                      {region === "north" ? "เขตภาคเหนือ" : 
+                       region === "northeast" ? "เขตภาคตะวันออกเฉียงเหนือ" :
+                       region === "central" ? "เขตภาคกลาง" :
+                       region === "south" ? "เขตภาคใต้" : "ทั้งหมด"}
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">อฟ.</label>
+                    <label className="text-sm font-medium text-gray-700">หม้อแปลงไฟฟ้า</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
-                      {formData.transformerCode}
+                      {transformerType === "type1" ? "หม้อแปลงประเภท 1" :
+                       transformerType === "type2" ? "หม้อแปลงประเภท 2" :
+                       transformerType === "type3" ? "หม้อแปลงประเภท 3" : 
+                       transformerType || formData.transformerCode}
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Equipment No.</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
-                      {formData.equipmentNumber}
+                      <input 
+                        type="text" 
+                        className="bg-white border border-gray-200 rounded-md px-3 py-1.5 w-full"
+                        value={formData.equipmentNumber}
+                        onChange={(e) => handleFormChange('equipmentNumber', e.target.value)}
+                      />
                     </div>
                   </div>
                   
@@ -203,15 +214,15 @@ const TransformerAbnormality = () => {
                           <SelectValue placeholder="เลือกสภาพแวดล้อม" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ไม่มีข้อบ่งชี้">ไม่มีข้อบ่งชี้</SelectItem>
-                          <SelectItem value="มีข้อบ่งชี้">มีข้อบ่งชี้</SelectItem>
+                          <SelectItem value="ไม่เกี่ยวข้อง">ไม่เกี่ยวข้อง</SelectItem>
+                          <SelectItem value="เกี่ยวข้อง">เกี่ยวข้อง</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">สภาวะการใช้งานและพบความผิดปกติ</label>
+                    <label className="text-sm font-medium text-gray-700">สภาวะการใช้งานขณะพบความผิดปกติ</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
                       <Select 
                         value={formData.operationStatus} 
@@ -221,8 +232,8 @@ const TransformerAbnormality = () => {
                           <SelectValue placeholder="เลือกสถานะ" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ปกติ">ปกติ</SelectItem>
-                          <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
+                          <SelectItem value="ขณะติดตั้ง">ขณะติดตั้ง</SelectItem>
+                          <SelectItem value="ขณะตรวจสอบ">ขณะตรวจสอบ</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -363,7 +374,7 @@ const TransformerAbnormality = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">กลุ่มชิ้นส่วนที่เสี่ยงหรือผิดปกติ</label>
+                    <label className="text-sm font-medium text-gray-700">กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
                       <Select 
                         value={formData.relatedParts} 
@@ -381,7 +392,7 @@ const TransformerAbnormality = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">ชิ้นส่วนที่เสี่ยงหรือผิดปกติ</label>
+                    <label className="text-sm font-medium text-gray-700">ชิ้นส่วนที่เสียหายหรือผิดปกติ</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
                       <Select 
                         value={formData.affectedParts} 
@@ -419,19 +430,18 @@ const TransformerAbnormality = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">สภาพที่แท้จริง</label>
+                    <label className="text-sm font-medium text-gray-700">สาเหตุที่แท้จริง</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
                       <Select 
                         value={formData.currentStatus} 
                         onValueChange={(value) => handleFormChange('currentStatus', value)}
                       >
                         <SelectTrigger className="w-full border-gray-200">
-                          <SelectValue placeholder="เลือกสภาพ" />
+                          <SelectValue placeholder="เลือกสาเหตุ" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ออกแบบ/เตรียมโปรเจค">ออกแบบ/เตรียมโปรเจค</SelectItem>
-                          <SelectItem value="อยู่ระหว่างดำเนินการ">อยู่ระหว่างดำเนินการ</SelectItem>
-                          <SelectItem value="เสร็จสิ้น">เสร็จสิ้น</SelectItem>
+                          <SelectItem value="ออกแบบผิด">ออกแบบผิด</SelectItem>
+                          <SelectItem value="ติดตั้งไม่ถูกวิธี">ติดตั้งไม่ถูกวิธี</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -498,29 +508,118 @@ const TransformerAbnormality = () => {
             <h3 className="text-lg font-medium text-gray-800 mb-4">ผลลัพธ์</h3>
             
             {showResults ? (
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-x-auto animate-fade-in">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">เขต</th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">หม้อแปลง</th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่</th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">รายละเอียด</th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ระดับความเสียหาย</th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">การจัดการ</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{region}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formData.transformerCode}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formData.reportDate || "-"}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formData.abnormalityDetails}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formData.severityLevel}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formData.action}</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 animate-fade-in">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">เขต</p>
+                      <p className="font-medium">
+                        {region === "north" ? "เขตภาคเหนือ" : 
+                         region === "northeast" ? "เขตภาคตะวันออกเฉียงเหนือ" :
+                         region === "central" ? "เขตภาคกลาง" :
+                         region === "south" ? "เขตภาคใต้" : "ทั้งหมด"}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">หม้อแปลงไฟฟ้า</p>
+                      <p className="font-medium">
+                        {transformerType === "type1" ? "หม้อแปลงประเภท 1" :
+                         transformerType === "type2" ? "หม้อแปลงประเภท 2" :
+                         transformerType === "type3" ? "หม้อแปลงประเภท 3" : 
+                         transformerType || formData.transformerCode}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="w-full h-[1px] bg-gray-200"></div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">Equipment No.</p>
+                      <p className="font-medium">{formData.equipmentNumber || "-"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">วันที่ตรวจสอบครั้งสุดท้าย</p>
+                      <p className="font-medium">{formData.inspectionDate || "-"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">จำนวนครั้งในการทำงานของ OLTC</p>
+                      <p className="font-medium">{formData.oltcOperations || "-"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">สภาพแวดล้อม</p>
+                      <p className="font-medium">{formData.environment}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">สภาวะการใช้งานขณะพบความผิดปกติ</p>
+                      <p className="font-medium">{formData.operationStatus}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">รายละเอียดความผิดปกติ</p>
+                      <p className="font-medium">{formData.abnormalityDetails}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">วันที่ออกรายงาน</p>
+                      <p className="font-medium">{formData.reportDate || "-"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">เวลาที่ออกรายงาน</p>
+                      <p className="font-medium">{formData.reportTime}:00</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">วันที่เข้าระบบ</p>
+                      <p className="font-medium">{formData.receiptDate || "-"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">เวลาที่เข้าระบบ</p>
+                      <p className="font-medium">{formData.receiptTime}:00</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">เลขที่อ้างอิงปัญหา</p>
+                      <p className="font-medium">{formData.reference || "-"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ</p>
+                      <p className="font-medium">{formData.relatedParts}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">ชิ้นส่วนที่เสียหายหรือผิดปกติ</p>
+                      <p className="font-medium">{formData.affectedParts}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">ระดับความเสียหาย</p>
+                      <p className="font-medium">{formData.severityLevel}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">สาเหตุที่แท้จริง</p>
+                      <p className="font-medium">{formData.currentStatus}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-500">การจัดการ</p>
+                      <p className="font-medium">{formData.action}</p>
+                    </div>
+                  </div>
+
+                  {formData.remarks && (
+                    <>
+                      <div className="w-full h-[1px] bg-gray-200"></div>
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium text-gray-500">รายละเอียดเพิ่มเติม (Remark)</p>
+                        <p className="font-medium">{formData.remarks}</p>
+                      </div>
+                    </>
+                  )}
+                  
+                  {formData.reporter && (
+                    <>
+                      <div className="w-full h-[1px] bg-gray-200"></div>
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium text-gray-500">ผู้รายงาน</p>
+                        <p className="font-medium">{formData.reporter}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             ) : (
               <p className="text-gray-500 text-center py-10">กรุณาเลือกข้อมูลและกดปุ่ม Generate เพื่อแสดงผลลัพธ์</p>
@@ -533,3 +632,4 @@ const TransformerAbnormality = () => {
 };
 
 export default TransformerAbnormality;
+
