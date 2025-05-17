@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
   return (
     <div
       className={cn(
-        "bg-white border-r border-gray-200 h-full transition-all duration-300 flex flex-col",
+        "bg-white h-full transition-all duration-300 flex flex-col",
         collapsed ? "w-[80px]" : "w-[320px]"
       )}
     >
@@ -51,24 +51,24 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
       </div>
 
       <div className="overflow-y-auto flex-1 py-4">
-        <SidebarItem icon="home" path="/" label="Dashboard" />
-        <SidebarItem icon="transformer-faults" path="/transformer-abnormality" label="Transformer Abnormality" />
-        <SidebarItem icon="age-assessment" path="/age-assessment" label="Age Assessment" />
-        <SidebarItem icon="upload" path="/upload-data" label="Upload Data" />
-        <SidebarItem icon="report" path="/reports" label="Reports" />
-        <SidebarItem icon="transformer-info" path="/transformer-info" label="Transformer Info" />
-        <SidebarItem icon="transformer-maintenance" path="/transformer-maintenance" label="Transformer Maintenance" />
-        <SidebarItem icon="transformer-importance" path="/transformer-importance" label="Transformer Importance" />
-        <SidebarItem icon="economic-analysis" path="/economic-analysis" label="Economic Analysis" />
-        <SidebarItem icon="inventory" path="/inventory" label="Inventory" />
-        <SidebarItem icon="management" path="/management" label="Management" />
+        <SidebarItem icon="home" path="/" label="Home" />
+        <SidebarItem icon="report" path="/reports" label="รายงาน" />
+        <SidebarItem icon="transformer-info" path="/transformer-info" label="ข้อมูลพื้นฐานของหม้อแปลง" />
+        <SidebarItem icon="transformer-faults" path="/transformer-abnormality" label="ความผิดปกติของหม้อแปลง" />
+        <SidebarItem icon="transformer-maintenance" path="/transformer-maintenance" label="ข้อมูลบำรุงรักษาหม้อแปลง" />
+        <SidebarItem icon="age-assessment" path="/age-assessment" label="ค่าประเมินอายุ" />
+        <SidebarItem icon="upload" path="/upload-data" label="Upload ข้อมูล" />
+        <SidebarItem icon="transformer-importance" path="/transformer-importance" label="ความสำคัญหม้อแปลง" />
+        <SidebarItem icon="economic-analysis" path="/economic-analysis" label="การวิเคราะห์ทางเศรษฐศาสตร์" />
+        <SidebarItem icon="inventory" path="/inventory" label="Inventory Control" />
+        <SidebarItem icon="management" path="/management" label="การจัดการ" />
       </div>
 
       <div className="mt-auto w-full">
         <div className="p-2">
-          <SidebarItem icon="manual" path="/manual" label="Manual" />
-          <SidebarItem icon="history" path="/test-history" label="Test History" />
-          <SidebarItem icon="logout" path="/logout" label="Logout" />
+          <SidebarItem icon="manual" path="/manual" label="คู่มือการใช้งาน" />
+          <SidebarItem icon="history" path="/test-history" label="ประวัติการลงข้อมูลทดสอบฯ" />
+          <SidebarItem icon="logout" path="/logout" label="ออกจากระบบ" />
         </div>
       </div>
     </div>
