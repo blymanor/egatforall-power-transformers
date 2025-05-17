@@ -51,24 +51,24 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
       </div>
 
       <div className="overflow-y-auto flex-1 py-4">
-        <SidebarItem path="/" label="Dashboard" />
-        <SidebarItem path="/transformer-abnormality" label="Transformer Abnormality" />
-        <SidebarItem path="/age-assessment" label="Age Assessment" />
-        <SidebarItem path="/upload-data" label="Upload Data" />
-        <SidebarItem path="/reports" label="Reports" />
-        <SidebarItem path="/transformer-info" label="Transformer Info" />
-        <SidebarItem path="/transformer-maintenance" label="Transformer Maintenance" />
-        <SidebarItem path="/transformer-importance" label="Transformer Importance" />
-        <SidebarItem path="/economic-analysis" label="Economic Analysis" />
-        <SidebarItem path="/inventory" label="Inventory" />
-        <SidebarItem path="/management" label="Management" />
+        <SidebarItem icon="home" path="/" label="Dashboard" />
+        <SidebarItem icon="transformer-faults" path="/transformer-abnormality" label="Transformer Abnormality" />
+        <SidebarItem icon="age-assessment" path="/age-assessment" label="Age Assessment" />
+        <SidebarItem icon="upload" path="/upload-data" label="Upload Data" />
+        <SidebarItem icon="report" path="/reports" label="Reports" />
+        <SidebarItem icon="transformer-info" path="/transformer-info" label="Transformer Info" />
+        <SidebarItem icon="transformer-maintenance" path="/transformer-maintenance" label="Transformer Maintenance" />
+        <SidebarItem icon="transformer-importance" path="/transformer-importance" label="Transformer Importance" />
+        <SidebarItem icon="economic-analysis" path="/economic-analysis" label="Economic Analysis" />
+        <SidebarItem icon="inventory" path="/inventory" label="Inventory" />
+        <SidebarItem icon="management" path="/management" label="Management" />
       </div>
 
       <div className="mt-auto w-full">
         <div className="p-2">
-          <SidebarItem path="/manual" label="Manual" />
-          <SidebarItem path="/test-history" label="Test History" />
-          <SidebarItem path="/logout" label="Logout" />
+          <SidebarItem icon="manual" path="/manual" label="Manual" />
+          <SidebarItem icon="history" path="/test-history" label="Test History" />
+          <SidebarItem icon="logout" path="/logout" label="Logout" />
         </div>
       </div>
     </div>
