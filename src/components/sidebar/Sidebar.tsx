@@ -141,14 +141,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
         {/* Economic analysis with submenus */}
         <SidebarItem
           icon="economic-analysis"
-          label: "การวิเคราะห์ทางเศรษฐศาสตร์",
-          path: "/economic-analysis",
-          collapsed: collapsed,
-          subMenuItems: [
+          label="การวิเคราะห์ทางเศรษฐศาสตร์"
+          path="/economic-analysis"
+          collapsed={collapsed}
+          subMenuItems={[
             { icon: "factor-setting", label: "Factor Setting", path: "/economic-analysis/factor-setting" },
             { icon: "factor-setting", label: "ราคาและ Loss ของหม้อแปลง", path: "/economic-analysis/price-loss" },
             { icon: "factor-setting", label: "ข้อมูลที่จำเป็นในการพิจารณา", path: "/economic-analysis/required-data" }
-          ]
+          ]}
         />
         
         {/* Inventory control with complex nested submenus */}
