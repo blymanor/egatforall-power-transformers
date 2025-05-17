@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
         collapsed ? "w-[80px]" : "w-[280px]"
       )}
     >
-      <div className="flex items-center justify-between p-4 pt-6 pb-4 border-b border-gray-200">
+      <div className="flex items-center justify-between p-4 pt-10 pb-6 border-b border-gray-200">
         {!collapsed && (
           <div className="text-blue-700 font-bold text-2xl">EGATforALL</div>
         )}

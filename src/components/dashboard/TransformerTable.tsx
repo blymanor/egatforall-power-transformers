@@ -18,7 +18,9 @@ interface TransformerData {
   region: string;
 }
 
+// Extended dataset with more transformers to ensure at least 6 per region
 const allTransformers: TransformerData[] = [
+  // Original data
   { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
   { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
   { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
@@ -27,6 +29,26 @@ const allTransformers: TransformerData[] = [
   { deviceNo: "АN-476A", equipmentNo: "TGPOS68025", condition: 78.42, importance: 31.89, risk: "Low", status: "Good", action: "Investigation", region: "south" },
   { deviceNo: "АN-477A", equipmentNo: "TGPOS68026", condition: 55.67, importance: 58.75, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
   { deviceNo: "АN-478A", equipmentNo: "TGPOS68027", condition: 82.29, importance: 42.13, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
+  // Additional data for north region
+  { deviceNo: "АN-479A", equipmentNo: "TGPOS68028", condition: 81.15, importance: 38.45, risk: "Low", status: "Good", action: "Investigation", region: "north" },
+  { deviceNo: "АN-480A", equipmentNo: "TGPOS68029", condition: 65.78, importance: 52.33, risk: "Moderate", status: "Repair", action: "Refurbish", region: "north" },
+  { deviceNo: "АN-481A", equipmentNo: "TGPOS68030", condition: 42.56, importance: 71.22, risk: "High", status: "Faulty", action: "Refurbish", region: "north" },
+  { deviceNo: "АN-482A", equipmentNo: "TGPOS68031", condition: 77.89, importance: 41.67, risk: "Low", status: "Good", action: "Investigation", region: "north" },
+  // Additional data for northeast region
+  { deviceNo: "АN-483A", equipmentNo: "TGPOS68032", condition: 71.34, importance: 49.78, risk: "Moderate", status: "Good", action: "Investigation", region: "northeast" },
+  { deviceNo: "АN-484A", equipmentNo: "TGPOS68033", condition: 58.21, importance: 63.42, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-485A", equipmentNo: "TGPOS68034", condition: 41.67, importance: 76.91, risk: "High", status: "Faulty", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-486A", equipmentNo: "TGPOS68035", condition: 81.45, importance: 32.56, risk: "Low", status: "Good", action: "Relocate", region: "northeast" },
+  // Additional data for central region
+  { deviceNo: "АN-487A", equipmentNo: "TGPOS68036", condition: 76.23, importance: 47.89, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
+  { deviceNo: "АN-488A", equipmentNo: "TGPOS68037", condition: 59.78, importance: 62.33, risk: "High", status: "Repair", action: "Refurbish", region: "central" },
+  { deviceNo: "АN-489A", equipmentNo: "TGPOS68038", condition: 44.56, importance: 73.21, risk: "High", status: "Faulty", action: "Refurbish", region: "central" },
+  { deviceNo: "АN-490A", equipmentNo: "TGPOS68039", condition: 84.67, importance: 29.45, risk: "Low", status: "Good", action: "Investigation", region: "central" },
+  // Additional data for south region
+  { deviceNo: "АN-491A", equipmentNo: "TGPOS68040", condition: 72.89, importance: 48.76, risk: "Moderate", status: "Good", action: "Investigation", region: "south" },
+  { deviceNo: "АN-492A", equipmentNo: "TGPOS68041", condition: 56.45, importance: 64.33, risk: "High", status: "Repair", action: "Refurbish", region: "south" },
+  { deviceNo: "АN-493A", equipmentNo: "TGPOS68042", condition: 40.21, importance: 78.67, risk: "High", status: "Faulty", action: "Refurbish", region: "south" },
+  { deviceNo: "АN-494A", equipmentNo: "TGPOS68043", condition: 85.56, importance: 28.91, risk: "Low", status: "Good", action: "Relocate", region: "south" },
 ];
 
 const getActionBadgeColor = (action: string) => {
@@ -59,6 +81,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
   selectedRegion 
 }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 6;
 
   const filteredData = useMemo(() => {
     let data = [...allTransformers];
@@ -80,6 +103,16 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
 
     return data;
   }, [statusFilter, selectedRegion]);
+
+  // Calculate pagination
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+
+  // Ensure we have at least 6 items to display
+  const displayData = currentData.length < 6 && filteredData.length >= 6 
+    ? filteredData.slice(0, 6) 
+    : currentData;
 
   return (
     <Card className="bg-white shadow-md border border-gray-100">
@@ -107,8 +140,8 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredData.length > 0 ? (
-                filteredData.map((row, index) => (
+              {displayData.length > 0 ? (
+                displayData.map((row, index) => (
                   <TableRow key={index} className="hover:bg-blue-50/30">
                     <TableCell className="text-center">{row.deviceNo}</TableCell>
                     <TableCell className="text-center">{row.equipmentNo}</TableCell>
@@ -149,31 +182,39 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
         </div>
       </CardContent>
       <CardFooter className="flex justify-between p-4 pt-2 border-t">
-        <Button variant="outline" size="sm" disabled={currentPage === 1}>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Previous
         </Button>
         <div className="flex items-center gap-1">
-          {[1, 2, 3, 4].map((page) => (
-            <Button 
-              key={page} 
-              variant={page === currentPage ? "default" : "outline"} 
-              size="sm" 
-              className={cn(
-                "w-8 h-8 p-0",
-                page === currentPage && "bg-[#1E5CFF] hover:bg-[#1E5CFF]/90"
-              )}
-              onClick={() => setCurrentPage(page)}
-            >
-              {page}
-            </Button>
-          ))}
+          {Array.from({ length: Math.min(4, totalPages) }).map((_, idx) => {
+            const page = idx + 1;
+            return (
+              <Button 
+                key={page} 
+                variant={page === currentPage ? "default" : "outline"} 
+                size="sm" 
+                className={cn(
+                  "w-8 h-8 p-0",
+                  page === currentPage && "bg-[#1E5CFF] hover:bg-[#1E5CFF]/90"
+                )}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </Button>
+            );
+          })}
         </div>
         <Button 
           variant="outline" 
           size="sm" 
-          disabled={currentPage === 4 || filteredData.length === 0}
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, 4))}
+          disabled={currentPage === totalPages || displayData.length === 0}
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
         >
           Next
           <ArrowRight className="ml-2 h-4 w-4" />

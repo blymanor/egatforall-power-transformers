@@ -29,11 +29,24 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
       case "green":
         return "text-blue-600 bg-blue-100/50";
       case "yellow":
-        return "text-yellow-600 bg-yellow-100/50";
+        return "text-yellow-700 bg-yellow-100/50"; // Darker yellow for "Needs Repair"
       case "red":
         return "text-red-600 bg-red-100/50";
       default:
         return "text-gray-600 bg-gray-100/50";
+    }
+  };
+
+  const getTitleColor = () => {
+    switch (color) {
+      case "green":
+        return "text-gray-600";
+      case "yellow":
+        return "text-yellow-800"; // Darker title for "Needs Repair"
+      case "red":
+        return "text-gray-600";
+      default:
+        return "text-gray-600";
     }
   };
 
@@ -52,7 +65,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
         {React.cloneElement(icon as React.ReactElement, { className: "size-7" })}
       </div>
       <div className="flex flex-col">
-        <span className="text-sm font-medium text-gray-600">{title}</span>
+        <span className={cn("text-sm font-medium", getTitleColor())}>{title}</span>
         <span className="text-3xl font-bold">{count}</span>
       </div>
     </div>
