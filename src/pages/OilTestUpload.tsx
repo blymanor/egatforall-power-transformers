@@ -68,24 +68,26 @@ const OilTestUpload = () => {
             <div className="space-y-8 p-6 border border-gray-200 rounded-lg bg-white shadow-sm">
               <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
                 <label htmlFor="test-type" className="text-lg font-medium text-gray-700">
-                  ประเภทการทดสอบ:
+                  ชนิดการทดสอบ:
                 </label>
                 <Select>
                   <SelectTrigger id="test-type" className="w-full h-14 text-lg">
-                    <SelectValue placeholder="เลือกประเภทการทดสอบ" />
+                    <SelectValue placeholder="เลือกชนิดการทดสอบ" />
                   </SelectTrigger>
                   <SelectContent className="text-lg">
-                    <SelectItem value="oil-quality">คุณภาพน้ำมัน</SelectItem>
-                    <SelectItem value="dissolved-gas">Dissolved Gas Analysis (DGA)</SelectItem>
-                    <SelectItem value="furan">Furan Analysis</SelectItem>
-                    <SelectItem value="pcb">PCB Test</SelectItem>
+                    <SelectItem value="oil-aging">Oil Aging</SelectItem>
+                    <SelectItem value="oil-dga">Oil DGA</SelectItem>
+                    <SelectItem value="oil-furan">Oil Furan</SelectItem>
+                    <SelectItem value="oil-contamination">Oil Contamination</SelectItem>
+                    <SelectItem value="oltc-dga">OLTC DGA</SelectItem>
+                    <SelectItem value="oltc-oil-contamination">OLTC Oil Contamination</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="grid grid-cols-1 items-center gap-6">
                 <label className="block text-lg font-medium text-gray-700">
-                  อัปโหลดไฟล์ Excel:
+                  อัปโหลดไฟล์ :
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-4">
                   {!isUploaded ? (

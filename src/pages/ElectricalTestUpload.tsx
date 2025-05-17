@@ -68,25 +68,31 @@ const ElectricalTestUpload = () => {
             <div className="space-y-8 p-6 border border-gray-200 rounded-lg bg-white shadow-sm">
               <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
                 <label htmlFor="test-type" className="text-lg font-medium text-gray-700">
-                  ประเภทการทดสอบ:
+                  ชนิดการทดสอบ:
                 </label>
                 <Select>
                   <SelectTrigger id="test-type" className="w-full h-14 text-lg">
-                    <SelectValue placeholder="เลือกประเภทการทดสอบ" />
+                    <SelectValue placeholder="เลือกชนิดการทดสอบ" />
                   </SelectTrigger>
                   <SelectContent className="text-lg">
-                    <SelectItem value="winding-resistance">Winding Resistance</SelectItem>
-                    <SelectItem value="turn-ratio">Turn Ratio Test</SelectItem>
-                    <SelectItem value="insulation">Insulation Resistance</SelectItem>
-                    <SelectItem value="power-factor">Power Factor</SelectItem>
-                    <SelectItem value="sweep">Sweep Frequency Response Analysis</SelectItem>
+                    <SelectItem value="dc-resistance">DC Resistance Measurement</SelectItem>
+                    <SelectItem value="exciting-current">Exciting Current Measurement</SelectItem>
+                    <SelectItem value="single-phase-impedance">Single Phase Impedance Measurement</SelectItem>
+                    <SelectItem value="three-phase-impedance">Three Phase Impedance Measurement</SelectItem>
+                    <SelectItem value="auto-transformer-insulation">Auto Transformer Insulation</SelectItem>
+                    <SelectItem value="two-winding-insulation">Two Winding Insulation</SelectItem>
+                    <SelectItem value="three-winding-insulation">Three Winding Insulation</SelectItem>
+                    <SelectItem value="ratio-measurement">Ratio Measurement</SelectItem>
+                    <SelectItem value="insulating-oil">Insulating Oil</SelectItem>
+                    <SelectItem value="arrester-testing">Arrester Testing</SelectItem>
+                    <SelectItem value="bushing-testing">Bushing Testing</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="grid grid-cols-1 items-center gap-6">
                 <label className="block text-lg font-medium text-gray-700">
-                  อัปโหลดไฟล์ Excel:
+                  อัปโหลดไฟล์ :
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-4">
                   {!isUploaded ? (
