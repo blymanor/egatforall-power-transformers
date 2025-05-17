@@ -100,90 +100,95 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     }
   };
 
-  const getIcon = (iconName: string) => {
+  const getIcon = (iconName: string, isItemActive: boolean = false) => {
+    const iconProps = {
+      size: 20,
+      className: isItemActive ? "text-blue-600" : "text-gray-600"
+    };
+
     switch (iconName) {
       case "home":
-        return <Home size={20} className="text-blue-600" />;
+        return <Home {...iconProps} />;
       case "report":
-        return <FileText size={20} className="text-blue-600" />;
+        return <FileText {...iconProps} />;
       case "transformer-info":
-        return <Database size={20} className="text-blue-600" />;
+        return <Database {...iconProps} />;
       case "transformer-faults":
-        return <AlertCircle size={20} className="text-blue-600" />;
+        return <AlertCircle {...iconProps} />;
       case "transformer-maintenance":
-        return <Wrench size={20} className="text-blue-600" />; 
+        return <Wrench {...iconProps} />; 
       case "age-assessment":
-        return <Calendar size={20} className="text-blue-600" />;
+        return <Calendar {...iconProps} />;
       case "upload":
-        return <Upload size={20} className="text-blue-600" />;
+        return <Upload {...iconProps} />;
       case "transformer-importance":
-        return <Activity size={20} className="text-blue-600" />;
+        return <Activity {...iconProps} />;
       case "economic-analysis":
-        return <BarChart size={20} className="text-blue-600" />;
+        return <BarChart {...iconProps} />;
       case "inventory":
-        return <Package size={20} className="text-blue-600" />;
+        return <Package {...iconProps} />;
       case "management":
-        return <Settings size={20} className="text-blue-600" />;
+        return <Settings {...iconProps} />;
       case "manual":
-        return <BookOpen size={20} className="text-blue-600" />;
+        return <BookOpen {...iconProps} />;
       case "history":
-        return <Clock size={20} className="text-blue-600" />;
+        return <Clock {...iconProps} />;
       case "logout":
-        return <LogOut size={20} className="text-blue-600" />;
+        return <LogOut {...iconProps} />;
       case "search":
-        return <Search size={20} className="text-blue-600" />;
+        return <Search {...iconProps} />;
       case "visual-inspection":
-        return <Eye size={20} className="text-blue-600" />;
+        return <Eye {...iconProps} />;
       case "oil-test":
-        return <Droplet size={20} className="text-blue-600" />;
+        return <Droplet {...iconProps} />;
       case "electrical-test":
-        return <Zap size={20} className="text-blue-600" />;
+        return <Zap {...iconProps} />;
       case "add-item":
-        return <Plus size={20} className="text-blue-600" />;
+        return <Plus {...iconProps} />;
       case "factor-setting":
-        return <BarChart size={20} className="text-blue-600" />;
+        return <BarChart {...iconProps} />;
       case "transformer-oil":
-        return <Droplet size={20} className="text-blue-600" />;
+        return <Droplet {...iconProps} />;
       case "oil-inventory":
-        return <Box size={20} className="text-blue-600" />;
+        return <Box {...iconProps} />;
       case "withdrawal-records":
-        return <ShoppingCart size={20} className="text-blue-600" />;
+        return <ShoppingCart {...iconProps} />;
       case "purchase-records":
-        return <ShoppingCart size={20} className="text-blue-600" />;
+        return <ShoppingCart {...iconProps} />;
       case "expense-records":
-        return <DollarSign size={20} className="text-blue-600" />;
+        return <DollarSign {...iconProps} />;
       case "calculation-results":
-        return <Calculator size={20} className="text-blue-600" />;
+        return <Calculator {...iconProps} />;
       case "oil-receipt-time":
-        return <Clock size={20} className="text-blue-600" />;
+        return <Clock {...iconProps} />;
       case "bushing-arrester":
-        return <Wrench size={20} className="text-blue-600" />;
+        return <Wrench {...iconProps} />;
       case "change-password":
-        return <Lock size={20} className="text-blue-600" />;
+        return <Lock {...iconProps} />;
       case "user-management":
-        return <Users size={20} className="text-blue-600" />;
+        return <Users {...iconProps} />;
       case "basic-transformer-data":
-        return <Database size={20} className="text-blue-600" />;
+        return <Database {...iconProps} />;
       case "transformer-importance-data":
-        return <Database size={20} className="text-blue-600" />;
+        return <Database {...iconProps} />;
       case "test-data":
-        return <Settings size={20} className="text-blue-600" />;
+        return <Settings {...iconProps} />;
       case "vi-topics":
-        return <Eye size={20} className="text-blue-600" />;
+        return <Eye {...iconProps} />;
       case "vi-criteria":
-        return <Settings size={20} className="text-blue-600" />;
+        return <Settings {...iconProps} />;
       case "hi-score":
-        return <Percent size={20} className="text-blue-600" />;
+        return <Percent {...iconProps} />;
       case "factor-score":
-        return <Percent size={20} className="text-blue-600" />;
+        return <Percent {...iconProps} />;
       case "sub-component-weight":
-        return <SlidersHorizontal size={20} className="text-blue-600" />;
+        return <SlidersHorizontal {...iconProps} />;
       case "test-score-weight":
-        return <SlidersHorizontal size={20} className="text-blue-600" />;
+        return <SlidersHorizontal {...iconProps} />;
       case "main-component-weight":
-        return <SlidersHorizontal size={20} className="text-blue-600" />;
+        return <SlidersHorizontal {...iconProps} />;
       default:
-        return <Home size={20} className="text-blue-600" />;
+        return <Home {...iconProps} />;
     }
   };
 
@@ -191,7 +196,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     const itemContent = (
       <>
         <div className={cn("flex items-center", collapsed ? "justify-center mx-auto" : "")}>
-          <span className="shrink-0">{getIcon(icon)}</span>
+          <span className="shrink-0">{getIcon(icon, isActive)}</span>
           {!collapsed && <span className="ml-3 truncate">{label}</span>}
         </div>
         {hasSubMenu && !collapsed && (
@@ -241,45 +246,49 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
     return (
       <div className={cn("ml-6 border-l border-gray-200 pl-2", level > 1 && "mt-1")}>
-        {items.map((subItem, index) => (
-          <div key={index}>
-            {subItem.path ? (
-              <Link 
-                to={subItem.path}
-                className={cn(
-                  "flex items-center px-3 py-2 transition-colors hover:bg-gray-100 text-blue-600",
-                  isPathActive(location.pathname, subItem.path) ? "bg-blue-50" : ""
-                )}
-                onClick={onClick}
-              >
-                <span className="shrink-0">{getIcon(subItem.icon)}</span>
-                <span className="ml-3 truncate text-sm">{subItem.label}</span>
-              </Link>
-            ) : (
-              <div
-                className={cn(
-                  "flex items-center justify-between px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-blue-600",
-                  hasActiveChild(subItem.subMenuItems) ? "bg-blue-50" : ""
-                )}
-              >
-                <div className="flex items-center">
-                  <span className="shrink-0">{getIcon(subItem.icon)}</span>
+        {items.map((subItem, index) => {
+          const isSubItemActive = isPathActive(location.pathname, subItem.path);
+          
+          return (
+            <div key={index}>
+              {subItem.path ? (
+                <Link 
+                  to={subItem.path}
+                  className={cn(
+                    "flex items-center px-3 py-2 transition-colors hover:bg-gray-100",
+                    isSubItemActive ? "bg-blue-50 text-blue-600" : "text-gray-700"
+                  )}
+                  onClick={onClick}
+                >
+                  <span className="shrink-0">{getIcon(subItem.icon, isSubItemActive)}</span>
                   <span className="ml-3 truncate text-sm">{subItem.label}</span>
+                </Link>
+              ) : (
+                <div
+                  className={cn(
+                    "flex items-center justify-between px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100",
+                    hasActiveChild(subItem.subMenuItems) ? "bg-blue-50 text-blue-600" : "text-gray-700"
+                  )}
+                >
+                  <div className="flex items-center">
+                    <span className="shrink-0">{getIcon(subItem.icon, hasActiveChild(subItem.subMenuItems))}</span>
+                    <span className="ml-3 truncate text-sm">{subItem.label}</span>
+                  </div>
+                  {subItem.subMenuItems && subItem.subMenuItems.length > 0 && (
+                    <span className="text-gray-400">
+                      <ChevronRight size={16} />
+                    </span>
+                  )}
                 </div>
-                {subItem.subMenuItems && subItem.subMenuItems.length > 0 && (
-                  <span className="text-gray-400">
-                    <ChevronRight size={16} />
-                  </span>
-                )}
-              </div>
-            )}
-            
-            {/* Render nested submenus recursively */}
-            {subItem.subMenuItems && subItem.subMenuItems.length > 0 && 
-              renderSubMenu(subItem.subMenuItems, level + 1)
-            }
-          </div>
-        ))}
+              )}
+              
+              {/* Render nested submenus recursively */}
+              {subItem.subMenuItems && subItem.subMenuItems.length > 0 && 
+                renderSubMenu(subItem.subMenuItems, level + 1)
+              }
+            </div>
+          );
+        })}
       </div>
     );
   };
