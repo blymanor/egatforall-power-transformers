@@ -4,89 +4,38 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Search } from "lucide-react";
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const DamageReport = () => {
   const { toast } = useToast();
   const [region, setRegion] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [station, setStation] = useState("");
+  const [manufacturer, setManufacturer] = useState("");
+  const [transformer, setTransformer] = useState("");
+  const [environment, setEnvironment] = useState("");
+  const [operationCondition, setOperationCondition] = useState("");
+  const [abnormalityDetail, setAbnormalityDetail] = useState("");
+  const [equipmentGroup, setEquipmentGroup] = useState("");
+  const [damagedComponent, setDamagedComponent] = useState("");
+  const [riskLevel, setRiskLevel] = useState("");
+  const [rootCause, setRootCause] = useState("");
+  const [management, setManagement] = useState("");
+  const [ageMin, setAgeMin] = useState("");
+  const [ageMax, setAgeMax] = useState("");
+  const [groupBy, setGroupBy] = useState("");
 
-  // Mock data for damage reports
-  const damageData = [
-    { 
-      id: 1, 
-      equipmentNo: "Hitachi-Siemens", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 2, 
-      equipmentNo: "ONAN", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 3, 
-      equipmentNo: "Meiden", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 4, 
-      equipmentNo: "Mitsubishi", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 5, 
-      equipmentNo: "Hitachi-Siemens", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 6, 
-      equipmentNo: "ONAN", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 7, 
-      equipmentNo: "Meiden", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-    { 
-      id: 8, 
-      equipmentNo: "Mitsubishi", 
-      status: "ต้นเก่า Spare", 
-      manufacturer: "สถานีไฟฟ้า", 
-    },
-  ];
-
-  const filteredData = damageData.filter(item => {
-    const matchesSearch = searchQuery === "" || 
-      item.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.status.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesRegion = region === "" || true; // In a real app, you would filter by region here
-    
-    return matchesSearch && matchesRegion;
-  });
-
-  const handleSearch = () => {
+  const handleDone = () => {
     toast({
-      title: "กำลังค้นหา",
-      description: `ค้นหาข้อมูลด้วยคำค้น: ${searchQuery}`,
+      title: "สร้างรายงานสำเร็จ",
+      description: "กำลังสร้างรายงานตามเงื่อนไขที่เลือก",
     });
   };
 
@@ -100,111 +49,257 @@ const DamageReport = () => {
       </header>
 
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">รายงานข้อมูลความเสียหาย</h2>
-          <p className="text-gray-600">แสดงข้อมูลความเสียหายของหม้อแปลงไฟฟ้า</p>
-        </div>
+        <Card className="mx-auto max-w-3xl shadow-md rounded-xl overflow-hidden border-0">
+          <CardContent className="p-6 md:p-8">
+            <h2 className="text-xl font-bold text-center mb-8 bg-white rounded-full py-3 shadow-sm">
+              รายงานตามผู้ใช้งานสำหรับข้อมูลความเสียหาย
+            </h2>
 
-        <Card className="bg-white shadow-md rounded-lg overflow-hidden border-0">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 mb-6 items-end">
-              <div className="w-full sm:w-1/3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  เขต
-                </label>
-                <Select value={region} onValueChange={setRegion}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="ทั้งหมด" />
+            <div className="space-y-6 mb-8">
+              <h3 className="text-blue-600 font-medium text-lg">
+                เลือกเงื่อนไขในการสร้างกราฟ (เพื่อหนึ่งเงื่อนไขเท่านั้น)
+              </h3>
+
+              <div className="grid grid-cols-1 gap-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">อายุ :</Label>
+                  <div className="grid grid-cols-2 gap-4 w-full sm:w-64">
+                    <div>
+                      <Label className="text-sm text-gray-500 mb-1">เริ่มต้น</Label>
+                      <Input 
+                        type="number" 
+                        value={ageMin} 
+                        onChange={(e) => setAgeMin(e.target.value)}
+                        placeholder="0"
+                        className="w-full" 
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm text-gray-500 mb-1">สิ้นสุด</Label>
+                      <Input 
+                        type="number" 
+                        value={ageMax} 
+                        onChange={(e) => setAgeMax(e.target.value)}
+                        placeholder="50"
+                        className="w-full" 
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">เขต :</Label>
+                  <Select value={region} onValueChange={setRegion}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="north">ภาคเหนือ</SelectItem>
+                      <SelectItem value="northeast">ภาคตะวันออกเฉียงเหนือ</SelectItem>
+                      <SelectItem value="central">ภาคกลาง</SelectItem>
+                      <SelectItem value="south">ภาคใต้</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">สถานีไฟฟ้า :</Label>
+                  <Select value={station} onValueChange={setStation}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="station1">สถานีไฟฟ้า 1</SelectItem>
+                      <SelectItem value="station2">สถานีไฟฟ้า 2</SelectItem>
+                      <SelectItem value="station3">สถานีไฟฟ้า 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">ชื่อบริษัทผู้ผลิต :</Label>
+                  <Select value={manufacturer} onValueChange={setManufacturer}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="abb">ABB</SelectItem>
+                      <SelectItem value="siemens">Siemens</SelectItem>
+                      <SelectItem value="hitachi">Hitachi</SelectItem>
+                      <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">หม้อแปลงไฟฟ้า :</Label>
+                  <Select value={transformer} onValueChange={setTransformer}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="t1">AN-472A</SelectItem>
+                      <SelectItem value="t2">AN-473A</SelectItem>
+                      <SelectItem value="t3">AN-472B</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">สภาพแวดล้อม :</Label>
+                  <Select value={environment} onValueChange={setEnvironment}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="env1">ในร่ม</SelectItem>
+                      <SelectItem value="env2">กลางแจ้ง</SelectItem>
+                      <SelectItem value="env3">ทะเล</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">สภาวะการใช้งานขณะพบความผิดปกติ :</Label>
+                  <Select value={operationCondition} onValueChange={setOperationCondition}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="op1">ขณะใช้งาน</SelectItem>
+                      <SelectItem value="op2">ขณะซ่อมบำรุง</SelectItem>
+                      <SelectItem value="op3">ขณะหยุดการใช้งาน</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">รายละเอียดความผิดปกติหรือเสียหาย :</Label>
+                  <Select value={abnormalityDetail} onValueChange={setAbnormalityDetail}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="abn1">Oil Leak</SelectItem>
+                      <SelectItem value="abn2">Overheating</SelectItem>
+                      <SelectItem value="abn3">Bushing Failure</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">กลุ่มอุปกรณ์ :</Label>
+                  <Select value={equipmentGroup} onValueChange={setEquipmentGroup}>
+                    <SelectTrigger className="w-full sm:w-64 border-dashed border-blue-500">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="eq1">Main Body</SelectItem>
+                      <SelectItem value="eq2">Cooling System</SelectItem>
+                      <SelectItem value="eq3">Control System</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">ชิ้นส่วนที่เสียหายหรือผิดปกติ :</Label>
+                  <Select value={damagedComponent} onValueChange={setDamagedComponent}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="comp1">Bushing</SelectItem>
+                      <SelectItem value="comp2">Radiator</SelectItem>
+                      <SelectItem value="comp3">Gasket</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">ระดับความเสียหาย :</Label>
+                  <Select value={riskLevel} onValueChange={setRiskLevel}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="low">ต่ำ</SelectItem>
+                      <SelectItem value="medium">ปานกลาง</SelectItem>
+                      <SelectItem value="high">สูง</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">สาเหตุที่แท้จริง :</Label>
+                  <Select value={rootCause} onValueChange={setRootCause}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="cause1">การเสื่อมสภาพตามอายุ</SelectItem>
+                      <SelectItem value="cause2">ความผิดพลาดจากผู้ปฏิบัติงาน</SelectItem>
+                      <SelectItem value="cause3">สภาพแวดล้อมไม่เหมาะสม</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">การจัดการ :</Label>
+                  <Select value={management} onValueChange={setManagement}>
+                    <SelectTrigger className="w-full sm:w-64">
+                      <SelectValue placeholder="Please Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="mgmt1">ซ่อมแซม</SelectItem>
+                      <SelectItem value="mgmt2">เปลี่ยนอะไหล่</SelectItem>
+                      <SelectItem value="mgmt3">เปลี่ยนทั้งหมด</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6 mb-8">
+              <h3 className="text-blue-600 font-medium text-lg">
+                เลือกการแบ่งกลุ่ม (แบ่งตาม)
+              </h3>
+
+              <div>
+                <Select value={groupBy} onValueChange={setGroupBy}>
+                  <SelectTrigger className="w-full sm:w-64">
+                    <SelectValue placeholder="เขต" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="ภาคกลาง">ภาคกลาง</SelectItem>
-                    <SelectItem value="ภาคเหนือ">ภาคเหนือ</SelectItem>
-                    <SelectItem value="ภาคตะวันออกเฉียงเหนือ">ภาคตะวันออกเฉียงเหนือ</SelectItem>
-                    <SelectItem value="ภาคใต้">ภาคใต้</SelectItem>
+                    <SelectItem value="region">เขต</SelectItem>
+                    <SelectItem value="station">สถานีไฟฟ้า</SelectItem>
+                    <SelectItem value="manufacturer">บริษัทผู้ผลิต</SelectItem>
+                    <SelectItem value="transformer">หม้อแปลงไฟฟ้า</SelectItem>
+                    <SelectItem value="environment">สภาพแวดล้อม</SelectItem>
+                    <SelectItem value="abnormality">ความผิดปกติ</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              
-              <div className="w-full sm:w-2/3 flex gap-2">
-                <div className="flex-1">
-                  <Input
-                    type="text"
-                    placeholder="ค้นหา..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-                <Button 
-                  onClick={handleSearch}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <Search className="w-4 h-4 mr-2" />
-                  ค้นหา
-                </Button>
-              </div>
             </div>
 
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Equipment No.</TableHead>
-                    <TableHead>ผู้ผลิต</TableHead>
-                    <TableHead>สถานะ</TableHead>
-                    <TableHead className="text-center">จัดการ</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredData.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.equipmentNo}</TableCell>
-                      <TableCell>{item.manufacturer}</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 bg-gray-600 text-white text-xs rounded-full">
-                          {item.status}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="mx-1"
-                          onClick={() => {
-                            toast({
-                              title: "กำลังเปิดข้อมูล",
-                              description: `กำลังเปิดข้อมูลความเสียหาย ${item.equipmentNo}`,
-                            });
-                          }}
-                        >
-                          รายละเอียด
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-
-            <div className="flex justify-between items-center mt-4">
-              <div className="text-sm text-gray-500">
-                แสดง {filteredData.length} จาก {damageData.length} รายการ
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" disabled>
-                  ก่อนหน้า
-                </Button>
-                <Button variant="outline" size="sm" className="bg-blue-50">
-                  1
-                </Button>
-                <Button variant="outline" size="sm">
-                  2
-                </Button>
-                <Button variant="outline" size="sm">
-                  ถัดไป
-                </Button>
-              </div>
+            <div className="flex justify-center mt-10">
+              <Button 
+                onClick={handleDone} 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12"
+              >
+                Done
+              </Button>
             </div>
           </CardContent>
         </Card>
