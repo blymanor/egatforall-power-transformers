@@ -19,10 +19,10 @@ const AgeAssessment = () => {
 
   return (
     <DashboardLayout>
-      {/* Common page header with consistent styling */}
+      {/* Common page header with consistent styling and blue color */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-md sticky top-0 z-10 border-b border-gray-200">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Power Transformers</h1>
+          <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
           <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
       </header>

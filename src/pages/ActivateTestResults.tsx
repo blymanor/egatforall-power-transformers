@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Zap } from "lucide-react";
 
 const ActivateTestResults = () => {
   const [selectedTransformer, setSelectedTransformer] = useState("");
@@ -45,10 +44,10 @@ const ActivateTestResults = () => {
 
   return (
     <DashboardLayout>
-      {/* Common page header with consistent styling */}
+      {/* Common page header with consistent styling and blue color */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-md sticky top-0 z-10 border-b border-gray-200">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Power Transformers</h1>
+          <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
           <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
       </header>
@@ -90,10 +89,9 @@ const ActivateTestResults = () => {
               <div className="flex justify-center pt-4">
                 <Button 
                   onClick={handleGenerate} 
-                  className="w-full md:w-1/3 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 font-medium"
+                  className="w-full md:w-1/3 bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 >
-                  <Zap size={20} className="mr-1" />
-                  <span>Activate</span>
+                  Generate
                 </Button>
               </div>
             </div>

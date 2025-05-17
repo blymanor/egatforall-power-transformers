@@ -51,10 +51,10 @@ const ElectricalTestUpload = () => {
 
   return (
     <DashboardLayout>
-      {/* Common page header with consistent styling */}
+      {/* Common page header with consistent styling and blue color */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-md sticky top-0 z-10 border-b border-gray-200">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Power Transformers</h1>
+          <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
           <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
       </header>
@@ -94,37 +94,18 @@ const ElectricalTestUpload = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                <label htmlFor="transformer-id" className="font-medium text-gray-700">
-                  รหัสหม้อแปลงไฟฟ้า:
-                </label>
-                <Input
-                  id="transformer-id"
-                  placeholder="ระบุรหัสหม้อแปลง"
-                  className="col-span-2 bg-white border border-gray-300 focus:border-blue-600"
-                />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                <label htmlFor="test-date" className="font-medium text-gray-700">
-                  วันที่ทดสอบ:
-                </label>
-                <Input
-                  id="test-date"
-                  type="date"
-                  className="col-span-2 bg-white border border-gray-300 focus:border-blue-600"
-                />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                 <label htmlFor="electrical-test-file" className="font-medium text-gray-700">
                   ไฟล์ข้อมูล:
                 </label>
-                <Input
-                  id="electrical-test-file"
-                  type="file"
-                  accept=".csv,.xlsx,.xls"
-                  className="col-span-2 bg-white border border-gray-300"
-                />
+                <div className="col-span-2">
+                  <Input
+                    id="electrical-test-file"
+                    type="file"
+                    accept=".xlsx,.xls"
+                    className="bg-white border border-gray-300"
+                  />
+                  <p className="text-gray-500 text-sm mt-1">รองรับไฟล์ Excel เท่านั้น</p>
+                </div>
               </div>
               
               <div className="w-full border-t border-gray-200 my-3"></div>
