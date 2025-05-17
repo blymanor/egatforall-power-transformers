@@ -60,8 +60,8 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          {/* Risk Graph in its own card */}
-          <RiskGraph selectedRegion={selectedRegion} />
+          {/* Risk Graph in its own card - not linked with status filter */}
+          <RiskGraph />
         </div>
 
         <TransformerTable 

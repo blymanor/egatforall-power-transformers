@@ -2,14 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
-interface RiskGraphProps {
-  selectedRegion?: string;
-  onRegionChange?: (value: string) => void;
-}
-
-const RiskGraph: React.FC<RiskGraphProps> = ({ 
-  selectedRegion = "all"
-}) => {
+const RiskGraph: React.FC = () => {
   return (
     <Card className="bg-white shadow-sm border border-gray-100">
       <CardContent className="p-4">

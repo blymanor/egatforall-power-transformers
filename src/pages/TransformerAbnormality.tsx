@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MapPin, Power, AlertTriangle, Check, CalendarIcon } from "lucide-react";
+import { MapPin, Power, AlertTriangle, CalendarIcon } from "lucide-react";
 
 const TransformerAbnormality = () => {
   const [region, setRegion] = useState("all");
@@ -78,7 +78,7 @@ const TransformerAbnormality = () => {
           <Card className="bg-white shadow-lg border-0 rounded-xl overflow-hidden mb-8">
             <CardContent className="p-0">
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-5">
-                <h2 className="text-xl font-semibold text-white">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</h2>
+                <h2 className="text-xl font-semibold text-white">กรอกรายละเอียดความผิดปกติของหม้อแปลงไฟฟ้า</h2>
               </div>
               
               <div className="p-6 space-y-8">
@@ -179,7 +179,7 @@ const TransformerAbnormality = () => {
                         className="bg-white border border-gray-200 rounded-md px-3 py-1.5 w-full"
                         value={formData.equipmentNumber}
                         onChange={(e) => handleFormChange('equipmentNumber', e.target.value)}
-                        placeholder="กรุณากรอก Equipment Number"
+                        placeholder=""
                       />
                     </div>
                   </div>
@@ -499,9 +499,8 @@ const TransformerAbnormality = () => {
                 <div className="flex justify-center p-6">
                   <Button 
                     onClick={handleSave}
-                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg flex items-center gap-2"
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg"
                   >
-                    <Check size={18} />
                     Save
                   </Button>
                 </div>
