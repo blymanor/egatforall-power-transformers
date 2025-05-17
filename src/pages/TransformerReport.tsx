@@ -12,6 +12,8 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
 const TransformerReport = () => {
   const { toast } = useToast();
@@ -20,12 +22,22 @@ const TransformerReport = () => {
   const [manufacturer, setManufacturer] = useState("");
   const [transformer, setTransformer] = useState("");
   const [groupBy, setGroupBy] = useState("");
+  const [showChart, setShowChart] = useState(false);
+
+  // Mock data for the pie chart
+  const reportData = [
+    { name: 'ภาคเหนือ', value: 25, color: '#0088FE' },
+    { name: 'ภาคตะวันออกเฉียงเหนือ', value: 35, color: '#00C49F' },
+    { name: 'ภาคกลาง', value: 30, color: '#FFBB28' },
+    { name: 'ภาคใต้', value: 10, color: '#FF8042' },
+  ];
 
   const handleDone = () => {
     toast({
       title: "สร้างรายงานสำเร็จ",
       description: "กำลังสร้างรายงานตามเงื่อนไขที่เลือก",
     });
+    setShowChart(true);
   };
 
   return (
@@ -133,6 +145,42 @@ const TransformerReport = () => {
                 </Select>
               </div>
             </div>
+
+            {showChart && (
+              <div className="bg-white rounded-lg p-4 shadow-inner mb-8 animate-fade-in">
+                <h3 className="text-center text-lg font-medium mb-4">ผลลัพธ์การรายงาน</h3>
+                <div className="h-80">
+                  <ChartContainer 
+                    config={{
+                      region1: { label: "ภาคเหนือ", color: "#0088FE" },
+                      region2: { label: "ภาคตะวันออกเฉียงเหนือ", color: "#00C49F" },
+                      region3: { label: "ภาคกลาง", color: "#FFBB28" },
+                      region4: { label: "ภาคใต้", color: "#FF8042" },
+                    }}
+                  >
+                    <PieChart>
+                      <Pie
+                        data={reportData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={true}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                        nameKey="name"
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {reportData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                      <ChartTooltip />
+                    </PieChart>
+                  </ChartContainer>
+                </div>
+              </div>
+            )}
 
             <div className="flex justify-center mt-10">
               <Button 

@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
 const DamageReport = () => {
   const { toast } = useToast();
@@ -31,13 +33,25 @@ const DamageReport = () => {
   const [ageMin, setAgeMin] = useState("");
   const [ageMax, setAgeMax] = useState("");
   const [groupBy, setGroupBy] = useState("");
+  const [showChart, setShowChart] = useState(false);
+
+  // Mock data for the pie chart
+  const damageData = [
+    { name: 'การเสื่อมสภาพตามอายุ', value: 45, color: '#0088FE' },
+    { name: 'ความผิดพลาดจากผู้ปฏิบัติงาน', value: 25, color: '#00C49F' },
+    { name: 'สภาพแวดล้อมไม่เหมาะสม', value: 30, color: '#FF8042' },
+  ];
 
   const handleDone = () => {
     toast({
       title: "สร้างรายงานสำเร็จ",
       description: "กำลังสร้างรายงานตามเงื่อนไขที่เลือก",
     });
+    setShowChart(true);
   };
+
+  // Common styles for select triggers
+  const selectTriggerClass = "w-full sm:w-64 border border-gray-300";
 
   return (
     <DashboardLayout>
@@ -57,7 +71,7 @@ const DamageReport = () => {
 
             <div className="space-y-6 mb-8">
               <h3 className="text-blue-600 font-medium text-lg">
-                เลือกเงื่อนไขในการสร้างกราฟ (เพื่อหนึ่งเงื่อนไขเท่านั้น)
+                เลือกเงื่อนไขในการสร้างกราฟ (เลือกได้เพียงหนึ่งเงื่อนไขเท่านั้น)
               </h3>
 
               <div className="grid grid-cols-1 gap-y-4">
@@ -90,7 +104,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">เขต :</Label>
                   <Select value={region} onValueChange={setRegion}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -106,7 +120,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">สถานีไฟฟ้า :</Label>
                   <Select value={station} onValueChange={setStation}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -121,7 +135,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">ชื่อบริษัทผู้ผลิต :</Label>
                   <Select value={manufacturer} onValueChange={setManufacturer}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -137,7 +151,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">หม้อแปลงไฟฟ้า :</Label>
                   <Select value={transformer} onValueChange={setTransformer}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -152,7 +166,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">สภาพแวดล้อม :</Label>
                   <Select value={environment} onValueChange={setEnvironment}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -165,9 +179,9 @@ const DamageReport = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">สภาวะการใช้งานขณะพบความผิดปกติ :</Label>
+                  <Label className="w-32 text-gray-700 font-medium whitespace-normal sm:whitespace-nowrap">สภาวะการใช้งาน <br className="sm:hidden" />ขณะพบความผิดปกติ :</Label>
                   <Select value={operationCondition} onValueChange={setOperationCondition}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -180,9 +194,9 @@ const DamageReport = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">รายละเอียดความผิดปกติหรือเสียหาย :</Label>
+                  <Label className="w-32 text-gray-700 font-medium whitespace-normal sm:whitespace-nowrap">รายละเอียดความ<br className="sm:hidden" />ผิดปกติหรือเสียหาย :</Label>
                   <Select value={abnormalityDetail} onValueChange={setAbnormalityDetail}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -197,7 +211,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">กลุ่มอุปกรณ์ :</Label>
                   <Select value={equipmentGroup} onValueChange={setEquipmentGroup}>
-                    <SelectTrigger className="w-full sm:w-64 border-dashed border-blue-500">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -210,9 +224,9 @@ const DamageReport = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">ชิ้นส่วนที่เสียหายหรือผิดปกติ :</Label>
+                  <Label className="w-32 text-gray-700 font-medium whitespace-normal sm:whitespace-nowrap">ชิ้นส่วนที่เสียหาย<br className="sm:hidden" />หรือผิดปกติ :</Label>
                   <Select value={damagedComponent} onValueChange={setDamagedComponent}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -227,7 +241,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">ระดับความเสียหาย :</Label>
                   <Select value={riskLevel} onValueChange={setRiskLevel}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -242,7 +256,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">สาเหตุที่แท้จริง :</Label>
                   <Select value={rootCause} onValueChange={setRootCause}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -257,7 +271,7 @@ const DamageReport = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <Label className="w-32 text-gray-700 font-medium">การจัดการ :</Label>
                   <Select value={management} onValueChange={setManagement}>
-                    <SelectTrigger className="w-full sm:w-64">
+                    <SelectTrigger className={selectTriggerClass}>
                       <SelectValue placeholder="Please Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -278,7 +292,7 @@ const DamageReport = () => {
 
               <div>
                 <Select value={groupBy} onValueChange={setGroupBy}>
-                  <SelectTrigger className="w-full sm:w-64">
+                  <SelectTrigger className={selectTriggerClass}>
                     <SelectValue placeholder="เขต" />
                   </SelectTrigger>
                   <SelectContent>
@@ -292,6 +306,41 @@ const DamageReport = () => {
                 </Select>
               </div>
             </div>
+
+            {showChart && (
+              <div className="bg-white rounded-lg p-4 shadow-inner mb-8 animate-fade-in">
+                <h3 className="text-center text-lg font-medium mb-4">ผลลัพธ์การรายงานข้อมูลความเสียหาย</h3>
+                <div className="h-80">
+                  <ChartContainer 
+                    config={{
+                      cause1: { label: "การเสื่อมสภาพตามอายุ", color: "#0088FE" },
+                      cause2: { label: "ความผิดพลาดจากผู้ปฏิบัติงาน", color: "#00C49F" },
+                      cause3: { label: "สภาพแวดล้อมไม่เหมาะสม", color: "#FF8042" },
+                    }}
+                  >
+                    <PieChart>
+                      <Pie
+                        data={damageData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={true}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                        nameKey="name"
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {damageData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                      <ChartTooltip />
+                    </PieChart>
+                  </ChartContainer>
+                </div>
+              </div>
+            )}
 
             <div className="flex justify-center mt-10">
               <Button 
