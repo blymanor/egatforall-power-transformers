@@ -44,7 +44,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "transformer-faults":
         return <AlertCircle size={20} />;
       case "transformer-maintenance":
-        return <Wrench size={20} />; // Changed from Tool to Wrench
+        return <Wrench size={20} />; 
       case "age-assessment":
         return <Calendar size={20} />;
       case "upload":

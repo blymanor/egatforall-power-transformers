@@ -87,7 +87,12 @@ const Sidebar = () => {
         <div className="p-2">
           <SidebarItem
             icon="manual"
-            label="คู่มือการใช้งาน/ประวัติการลงข้อมูล"
+            label="คู่มือการใช้งาน"
+            collapsed={collapsed}
+          />
+          <SidebarItem
+            icon="history" 
+            label="ประวัติการลงข้อมูลผลทดสอบฯ" 
             collapsed={collapsed}
           />
           <SidebarItem icon="logout" label="ออกจากระบบ" collapsed={collapsed} />

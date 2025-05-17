@@ -3,7 +3,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Wrench, X } from "lucide-react";
 import FilterDropdown from "./FilterDropdown";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +45,15 @@ const getStatusBadgeColor = (status: string) => {
   }
 };
 
+const getStatusIcon = (status: string) => {
+  switch(status) {
+    case "Good": return <Check className="size-4" />;
+    case "Repair": return <Wrench className="size-4" />;
+    case "Faulty": return <X className="size-4" />;
+    default: return null;
+  }
+};
+
 interface TransformerTableProps {
   statusFilter: string;
   setStatusFilter: (value: string) => void;
@@ -52,6 +61,16 @@ interface TransformerTableProps {
 
 const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setStatusFilter }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
+
+  const filteredData = React.useMemo(() => {
+    if (statusFilter === "all") return dummyData;
+    return dummyData.filter(item => {
+      if (statusFilter === "good") return item.status === "Good";
+      if (statusFilter === "repair") return item.status === "Repair";
+      if (statusFilter === "damaged") return item.status === "Faulty";
+      return true;
+    });
+  }, [statusFilter]);
 
   return (
     <Card className="bg-white shadow-md border border-gray-100">
@@ -78,7 +97,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setSt
             </TableRow>
           </TableHeader>
           <TableBody>
-            {dummyData.map((row, index) => (
+            {filteredData.map((row, index) => (
               <TableRow key={index} className="hover:bg-blue-50/30">
                 <TableCell className="text-center">{row.deviceNo}</TableCell>
                 <TableCell className="text-center">{row.equipmentNo}</TableCell>
@@ -88,9 +107,10 @@ const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setSt
                 <TableCell className="text-center">
                   <div className="flex justify-center">
                     <span className={cn(
-                      "px-3 py-1 rounded-full text-xs font-medium border",
+                      "px-3 py-1 rounded-full text-xs font-medium border flex items-center gap-1",
                       getStatusBadgeColor(row.status)
                     )}>
+                      {getStatusIcon(row.status)}
                       {row.status}
                     </span>
                   </div>

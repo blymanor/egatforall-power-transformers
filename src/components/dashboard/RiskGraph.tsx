@@ -6,7 +6,7 @@ const RiskGraph: React.FC = () => {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium">Risk Analysis Graph</CardTitle>
+        <CardTitle className="text-xl font-bold text-[#1E5CFF]">Risk Analysis Graph</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="relative h-[300px] w-full bg-[#f9f9f9] border border-gray-200 rounded-md p-2">

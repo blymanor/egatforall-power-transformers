@@ -16,7 +16,7 @@ const Index = () => {
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 bg-white p-4 rounded-lg shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-[#1E5CFF]">Power Transformers</h1>
-          <p className="text-gray-500">ระบบติดตามสถานะหม้อแปลงไฟฟ้า</p>
+          <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
         <RegionDropdown value={selectedRegion} onValueChange={setSelectedRegion} />
       </header>
