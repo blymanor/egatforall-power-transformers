@@ -78,7 +78,7 @@ const TransformerReport = () => {
                     <SelectValue placeholder="ทั้งหมด" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">ทั้งหมด</SelectItem>
+                    <SelectItem value="all">ทั้งหมด</SelectItem>
                     <SelectItem value="ภาคกลาง">ภาคกลาง</SelectItem>
                     <SelectItem value="ภาคเหนือ">ภาคเหนือ</SelectItem>
                     <SelectItem value="ภาคตะวันออกเฉียงเหนือ">ภาคตะวันออกเฉียงเหนือ</SelectItem>
