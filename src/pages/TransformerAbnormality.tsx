@@ -4,7 +4,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
@@ -15,40 +15,40 @@ import {
   DialogFooter,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 const TransformerAbnormality = () => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [deviceNo, setDeviceNo] = useState("");
-  const [equipmentNo, setEquipmentNo] = useState("");
-  const [abnormalType, setAbnormalType] = useState("");
-  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [region, setRegion] = useState("");
+  const [transformer, setTransformer] = useState("");
   const [reportData, setReportData] = useState<any>(null);
   const [showResults, setShowResults] = useState(false);
   
   // Form fields for the modal dialog
   const [workOrderNumber, setWorkOrderNumber] = useState("");
   const [abnormalityDetails, setAbnormalityDetails] = useState("");
-  const [previousActions, setPreviousActions] = useState("");
+  const [oltcCheckCount, setOltcCheckCount] = useState("");
   const [environmentCondition, setEnvironmentCondition] = useState("");
-  const [abnormalityStatus, setAbnormalityStatus] = useState("");
-  const [abnormalityLevel, setAbnormalityLevel] = useState("");
-  const [activePart, setActivePart] = useState("");
-  const [affectedComponent, setAffectedComponent] = useState("");
-  const [severityLevel, setSeverityLevel] = useState("");
+  const [operatingCondition, setOperatingCondition] = useState("");
+  const [abnormalityDuration, setAbnormalityDuration] = useState("");
+  const [lastInspectionDate, setLastInspectionDate] = useState("");
+  const [lastInspectionTime, setLastInspectionTime] = useState("");
+  const [systemEntryDate, setSystemEntryDate] = useState("");
+  const [systemEntryTime, setSystemEntryTime] = useState("");
+  const [abnormalComponentGroup, setAbnormalComponentGroup] = useState("");
+  const [abnormalComponent, setAbnormalComponent] = useState("");
+  const [damageLevel, setDamageLevel] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [action, setAction] = useState("");
+  const [remarks, setRemarks] = useState("");
+  const [operator, setOperator] = useState("");
 
   const handleGenerate = () => {
-    if (!deviceNo || !equipmentNo || !abnormalType || !date) {
+    if (!region || !transformer) {
       toast({
-        title: "กรุณากรอกข้อมูลให้ครบถ้วน",
-        description: "ต้องกรอกข้อมูลทุกช่องก่อนทำการสร้างรายงาน",
+        title: "กรุณาเลือกข้อมูลให้ครบถ้วน",
+        description: "ต้องเลือกเขตและหม้อแปลงไฟฟ้าก่อนทำการสร้างรายงาน",
         variant: "destructive",
       });
       return;
@@ -68,21 +68,25 @@ const TransformerAbnormality = () => {
     
     // Create report data from form inputs
     const newReportData = {
-      deviceNo,
-      equipmentNo,
-      abnormalType,
-      date: date ? format(date, "dd/MM/yyyy") : "",
+      region,
+      transformer,
       workOrderNumber,
       abnormalityDetails,
-      previousActions,
+      oltcCheckCount,
       environmentCondition,
-      abnormalityStatus,
-      abnormalityLevel,
-      activePart,
-      affectedComponent,
-      severityLevel,
+      operatingCondition,
+      abnormalityDuration,
+      lastInspectionDate,
+      lastInspectionTime,
+      systemEntryDate,
+      systemEntryTime,
+      abnormalComponentGroup,
+      abnormalComponent,
+      damageLevel,
       currentStatus,
-      action
+      action,
+      remarks,
+      operator
     };
     
     setReportData(newReportData);
@@ -121,72 +125,37 @@ const TransformerAbnormality = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Device No.
+                    เขต
                   </label>
-                  <Input 
-                    placeholder="Enter device number" 
-                    className="w-full"
-                    value={deviceNo}
-                    onChange={(e) => setDeviceNo(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Equipment No.
-                  </label>
-                  <Input 
-                    placeholder="Enter equipment number" 
-                    className="w-full"
-                    value={equipmentNo}
-                    onChange={(e) => setEquipmentNo(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    ประเภทความผิดปกติ
-                  </label>
-                  <Select value={abnormalType} onValueChange={setAbnormalType}>
+                  <Select value={region} onValueChange={setRegion}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="เลือกประเภทความผิดปกติ" />
+                      <SelectValue placeholder="เลือกเขต" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="electrical">ทางไฟฟ้า</SelectItem>
-                      <SelectItem value="mechanical">ทางกล</SelectItem>
-                      <SelectItem value="thermal">ทางความร้อน</SelectItem>
-                      <SelectItem value="other">อื่นๆ</SelectItem>
+                      <SelectItem value="ภาคกลาง">ภาคกลาง</SelectItem>
+                      <SelectItem value="ภาคเหนือ">ภาคเหนือ</SelectItem>
+                      <SelectItem value="ภาคตะวันออกเฉียงเหนือ">ภาคตะวันออกเฉียงเหนือ</SelectItem>
+                      <SelectItem value="ภาคใต้">ภาคใต้</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    วันที่พบความผิดปกติ
+                    หม้อแปลงไฟฟ้า
                   </label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? format(date, "dd/MM/yyyy") : "เลือกวันที่"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                        className="pointer-events-auto"
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <Select value={transformer} onValueChange={setTransformer}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="AN-472A">AN-472A</SelectItem>
+                      <SelectItem value="AN-472B">AN-472B</SelectItem>
+                      <SelectItem value="AN-472C">AN-472C</SelectItem>
+                      <SelectItem value="AN-472D">AN-472D</SelectItem>
+                      <SelectItem value="AN-472E">AN-472E</SelectItem>
+                      <SelectItem value="AN-472F">AN-472F</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
@@ -212,51 +181,63 @@ const TransformerAbnormality = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     <div>
                       <p className="text-sm text-gray-500">เขต</p>
-                      <p className="font-medium">{reportData.deviceNo}</p>
+                      <p className="font-medium">{reportData.region}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">หม้อแปลงไฟฟ้า</p>
-                      <p className="font-medium">{reportData.equipmentNo}</p>
+                      <p className="font-medium">{reportData.transformer}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">เลขคำสั่งปฏิบัติงาน</p>
                       <p className="font-medium">{reportData.workOrderNumber}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">วันที่พบความผิดปกติ</p>
-                      <p className="font-medium">{reportData.date}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">ประเภทความผิดปกติ</p>
-                      <p className="font-medium">
-                        {reportData.abnormalType === "electrical" ? "ทางไฟฟ้า" : 
-                         reportData.abnormalType === "mechanical" ? "ทางกล" : 
-                         reportData.abnormalType === "thermal" ? "ทางความร้อน" : "อื่นๆ"}
-                      </p>
+                      <p className="text-sm text-gray-500">จำนวนครั้งในการทำงานของ OLTC</p>
+                      <p className="font-medium">{reportData.oltcCheckCount || "-"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">สภาพแวดล้อม</p>
                       <p className="font-medium">{reportData.environmentCondition || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">สภาวะการใช้งาน</p>
-                      <p className="font-medium">{reportData.abnormalityStatus || "-"}</p>
+                      <p className="text-sm text-gray-500">สภาวะการใช้งานขณะพบความผิดปกติ</p>
+                      <p className="font-medium">{reportData.operatingCondition || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">ระยะเวลา</p>
-                      <p className="font-medium">{reportData.abnormalityLevel || "-"}</p>
+                      <p className="text-sm text-gray-500">ระยะเวลาความผิดปกติ</p>
+                      <p className="font-medium">{reportData.abnormalityDuration || "-"}</p>
                     </div>
-                    <div className="col-span-2">
-                      <p className="text-sm text-gray-500">ส่วนที่พบความผิดปกติ</p>
-                      <p className="font-medium">{reportData.activePart || "-"}</p>
+                    <div>
+                      <p className="text-sm text-gray-500">วันที่ลงตรวจระบบ</p>
+                      <p className="font-medium">{reportData.lastInspectionDate || "-"}</p>
                     </div>
-                    <div className="col-span-2">
-                      <p className="text-sm text-gray-500">ชิ้นส่วนที่เสียหาย</p>
-                      <p className="font-medium">{reportData.affectedComponent || "-"}</p>
+                    <div>
+                      <p className="text-sm text-gray-500">เวลาที่ลงตรวจระบบ</p>
+                      <p className="font-medium">{reportData.lastInspectionTime || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">วันที่เข้าระบบ</p>
+                      <p className="font-medium">{reportData.systemEntryDate || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">เวลาที่เข้าระบบ</p>
+                      <p className="font-medium">{reportData.systemEntryTime || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ</p>
+                      <p className="font-medium">{reportData.abnormalComponentGroup || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">ชิ้นส่วนที่เสียหายหรือผิดปกติ</p>
+                      <p className="font-medium">{reportData.abnormalComponent || "-"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">ระดับความเสียหาย</p>
-                      <p className="font-medium">{reportData.severityLevel || "-"}</p>
+                      <p className="font-medium">{reportData.damageLevel || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">สถานะที่เกิดขึ้น</p>
+                      <p className="font-medium">{reportData.currentStatus || "-"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">การดำเนินการ</p>
@@ -267,8 +248,12 @@ const TransformerAbnormality = () => {
                       <p className="font-medium whitespace-pre-wrap">{reportData.abnormalityDetails || "-"}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-sm text-gray-500">การดำเนินการที่ผ่านมา</p>
-                      <p className="font-medium whitespace-pre-wrap">{reportData.previousActions || "-"}</p>
+                      <p className="text-sm text-gray-500">รายละเอียดเพิ่มเติม (Remark)</p>
+                      <p className="font-medium whitespace-pre-wrap">{reportData.remarks || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">ผู้รายงาน</p>
+                      <p className="font-medium">{reportData.operator || "-"}</p>
                     </div>
                   </div>
                 </div>
@@ -290,6 +275,21 @@ const TransformerAbnormality = () => {
           
           <div className="grid gap-4 py-2">
             <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    เขต
+                  </label>
+                  <Input value={region} className="w-full bg-gray-100" readOnly />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    หม้อแปลงไฟฟ้า
+                  </label>
+                  <Input value={transformer} className="w-full bg-gray-100" readOnly />
+                </div>
+              </div>
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   เลขคำสั่งปฏิบัติงาน
@@ -300,6 +300,196 @@ const TransformerAbnormality = () => {
                   value={workOrderNumber}
                   onChange={(e) => setWorkOrderNumber(e.target.value)}
                 />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  จำนวนครั้งในการทำงานของ OLTC
+                </label>
+                <Input 
+                  placeholder="กรุณาระบุจำนวนครั้ง" 
+                  className="w-full"
+                  value={oltcCheckCount}
+                  onChange={(e) => setOltcCheckCount(e.target.value)}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  สภาพแวดล้อม
+                </label>
+                <Select value={environmentCondition} onValueChange={setEnvironmentCondition}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกสภาพแวดล้อม" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ในร่ม">ในร่ม</SelectItem>
+                    <SelectItem value="กลางแจ้ง">กลางแจ้ง</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  สภาวะการใช้งานขณะพบความผิดปกติ
+                </label>
+                <Select value={operatingCondition} onValueChange={setOperatingCondition}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกสภาวะการใช้งาน" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ปกติ">ปกติ</SelectItem>
+                    <SelectItem value="โอเวอร์โหลด">โอเวอร์โหลด</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  ระยะเวลาความผิดปกติ
+                </label>
+                <Select value={abnormalityDuration} onValueChange={setAbnormalityDuration}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกระยะเวลา" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="สั้น">สั้น</SelectItem>
+                    <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
+                    <SelectItem value="ยาว">ยาว</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    วันที่ลงตรวจระบบ
+                  </label>
+                  <Input 
+                    type="date"
+                    className="w-full"
+                    value={lastInspectionDate}
+                    onChange={(e) => setLastInspectionDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    เวลาที่ลงตรวจระบบ
+                  </label>
+                  <Input 
+                    type="time"
+                    className="w-full"
+                    value={lastInspectionTime}
+                    onChange={(e) => setLastInspectionTime(e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    วันที่เข้าระบบ
+                  </label>
+                  <Input 
+                    type="date"
+                    className="w-full"
+                    value={systemEntryDate}
+                    onChange={(e) => setSystemEntryDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    เวลาที่เข้าระบบ
+                  </label>
+                  <Input 
+                    type="time"
+                    className="w-full"
+                    value={systemEntryTime}
+                    onChange={(e) => setSystemEntryTime(e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ
+                </label>
+                <Select value={abnormalComponentGroup} onValueChange={setAbnormalComponentGroup}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกส่วนที่เสียหาย" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Active Part">Active Part</SelectItem>
+                    <SelectItem value="ระบบระบายความร้อน">ระบบระบายความร้อน</SelectItem>
+                    <SelectItem value="OLTC">OLTC</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  ชิ้นส่วนที่เสียหายหรือผิดปกติ
+                </label>
+                <Select value={abnormalComponent} onValueChange={setAbnormalComponent}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกชิ้นส่วนที่เสียหาย" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="แกนเหล็ก">แกนเหล็ก</SelectItem>
+                    <SelectItem value="ขดลวด">ขดลวด</SelectItem>
+                    <SelectItem value="บุชชิ่ง">บุชชิ่ง</SelectItem>
+                    <SelectItem value="อื่นๆ">อื่นๆ</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  ระดับความเสียหาย
+                </label>
+                <Select value={damageLevel} onValueChange={setDamageLevel}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกระดับความเสียหาย" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Minor">Minor</SelectItem>
+                    <SelectItem value="Moderate">Moderate</SelectItem>
+                    <SelectItem value="Major">Major</SelectItem>
+                    <SelectItem value="Critical">Critical</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  สถานะที่เกิดขึ้น
+                </label>
+                <Select value={currentStatus} onValueChange={setCurrentStatus}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกสถานะ" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ตรวจสอบ/เฝ้าระวัง">ตรวจสอบ/เฝ้าระวัง</SelectItem>
+                    <SelectItem value="กำลังสอบสวน">กำลังสอบสวน</SelectItem>
+                    <SelectItem value="กำลังซ่อมแซม">กำลังซ่อมแซม</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  การดำเนินการ
+                </label>
+                <Select value={action} onValueChange={setAction}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="เลือกการดำเนินการ" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Repair">Repair</SelectItem>
+                    <SelectItem value="Replace">Replace</SelectItem>
+                    <SelectItem value="Monitor">Monitor</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               <div>
@@ -316,141 +506,26 @@ const TransformerAbnormality = () => {
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  การดำเนินการที่ผ่านมา
+                  รายละเอียดเพิ่มเติม (Remark)
                 </label>
                 <Textarea
-                  placeholder="กรุณากรอกรายละเอียดการดำเนินการที่ผ่านมา"
+                  placeholder="กรุณากรอกรายละเอียดเพิ่มเติมถ้ามี"
                   className="w-full min-h-[80px]"
-                  value={previousActions}
-                  onChange={(e) => setPreviousActions(e.target.value)}
+                  value={remarks}
+                  onChange={(e) => setRemarks(e.target.value)}
                 />
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    สภาพแวดล้อม
-                  </label>
-                  <Select value={environmentCondition} onValueChange={setEnvironmentCondition}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="เลือกสภาพแวดล้อม" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="indoor">ในร่ม</SelectItem>
-                      <SelectItem value="outdoor">กลางแจ้ง</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    สภาวะการใช้งานขณะพบความผิดปกติ
-                  </label>
-                  <Select value={abnormalityStatus} onValueChange={setAbnormalityStatus}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="เลือกสภาวะ" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="normal">ปกติ</SelectItem>
-                      <SelectItem value="overload">โอเวอร์โหลด</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ระยะเวลาความผิดปกติ
-                </label>
-                <Select value={abnormalityLevel} onValueChange={setAbnormalityLevel}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกระยะเวลา" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="short">สั้น</SelectItem>
-                    <SelectItem value="medium">ปานกลาง</SelectItem>
-                    <SelectItem value="long">ยาว</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ
-                </label>
-                <Select value={activePart} onValueChange={setActivePart}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกส่วนที่เสียหาย" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active-part">Active Part</SelectItem>
-                    <SelectItem value="cooling">ระบบระบายความร้อน</SelectItem>
-                    <SelectItem value="oltc">OLTC</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ชิ้นส่วนที่เสียหายหรือผิดปกติ
+                  ผู้รายงาน
                 </label>
                 <Input 
-                  placeholder="ระบุชิ้นส่วนที่เสียหาย" 
+                  placeholder="กรุณากรอกชื่อผู้รายงาน" 
                   className="w-full"
-                  value={affectedComponent}
-                  onChange={(e) => setAffectedComponent(e.target.value)}
+                  value={operator}
+                  onChange={(e) => setOperator(e.target.value)}
                 />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    ระดับความเสียหาย
-                  </label>
-                  <Select value={severityLevel} onValueChange={setSeverityLevel}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="เลือกระดับความเสียหาย" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="minor">Minor</SelectItem>
-                      <SelectItem value="moderate">Moderate</SelectItem>
-                      <SelectItem value="major">Major</SelectItem>
-                      <SelectItem value="critical">Critical</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    สถานะปัจจุบัน
-                  </label>
-                  <Select value={currentStatus} onValueChange={setCurrentStatus}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="เลือกสถานะ" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="monitoring">Monitoring</SelectItem>
-                      <SelectItem value="investigating">Investigating</SelectItem>
-                      <SelectItem value="repairing">Repairing</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  การดำเนินการ
-                </label>
-                <Select value={action} onValueChange={setAction}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกการดำเนินการ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="repair">Repair</SelectItem>
-                    <SelectItem value="replace">Replace</SelectItem>
-                    <SelectItem value="monitor">Monitor</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
             </div>
           </div>
