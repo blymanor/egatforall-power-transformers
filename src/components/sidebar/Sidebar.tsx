@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
         collapsed ? "w-[80px]" : "w-[320px]"
       )}
     >
-      <div className="flex items-center justify-between p-4 pt-8 pb-5">
+      <div className="flex items-center justify-between p-4 pt-10 pb-7">
         {!collapsed && (
           <div className="text-blue-700 font-bold text-2xl">EGATforALL</div>
         )}
@@ -49,6 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
         </Button>
       </div>
+      
+      <div className="border-t border-gray-200 mb-4 w-full"></div>
 
       <div className="overflow-y-auto flex-1 py-4">
         <SidebarItem icon="home" label="Home" path="/" collapsed={collapsed} />
@@ -78,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           ]}
         />
         
-        {/* Transformer Abnormality - Now with path to the page */}
+        {/* Transformer Abnormality */}
         <SidebarItem
           icon="transformer-faults"
           label="ความผิดปกติของหม้อแปลง"
@@ -111,12 +113,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           collapsed={collapsed}
         />
         
-        {/* Upload */}
+        {/* Upload with new submenus */}
         <SidebarItem
           icon="upload"
           label="Upload ข้อมูล"
           path="/upload-data"
           collapsed={collapsed}
+          subMenuItems={[
+            { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/upload-data/oil-test" },
+            { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/upload-data/electrical-test" },
+            { icon: "factor-setting", label: "Activate ผลการทดสอบ", path: "/upload-data/activate" }
+          ]}
         />
         
         {/* Transformer importance with submenus */}
@@ -134,14 +141,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
         {/* Economic analysis with submenus */}
         <SidebarItem
           icon="economic-analysis"
-          label="การวิเคราะห์ทางเศรษฐศาสตร์"
-          path="/economic-analysis"
-          collapsed={collapsed}
-          subMenuItems={[
+          label: "การวิเคราะห์ทางเศรษฐศาสตร์",
+          path: "/economic-analysis",
+          collapsed: collapsed,
+          subMenuItems: [
             { icon: "factor-setting", label: "Factor Setting", path: "/economic-analysis/factor-setting" },
             { icon: "factor-setting", label: "ราคาและ Loss ของหม้อแปลง", path: "/economic-analysis/price-loss" },
             { icon: "factor-setting", label: "ข้อมูลที่จำเป็นในการพิจารณา", path: "/economic-analysis/required-data" }
-          ]}
+          ]
         />
         
         {/* Inventory control with complex nested submenus */}

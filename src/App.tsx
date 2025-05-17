@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TransformerAbnormality from "./pages/TransformerAbnormality";
+import AgeAssessment from "./pages/AgeAssessment";
+import UploadData from "./pages/UploadData";
+import ActivateTestResults from "./pages/ActivateTestResults";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +21,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/transformer-abnormality" element={<TransformerAbnormality />} />
+          <Route path="/age-assessment" element={<AgeAssessment />} />
+          <Route path="/upload-data" element={<UploadData />} />
+          <Route path="/upload-data/oil-test" element={<NotFound />} />
+          <Route path="/upload-data/electrical-test" element={<NotFound />} />
+          <Route path="/upload-data/activate" element={<ActivateTestResults />} />
           
           {/* Reports Routes */}
           <Route path="/reports" element={<NotFound />} />
@@ -41,8 +49,6 @@ const App = () => (
           <Route path="/transformer-maintenance/condition-check" element={<NotFound />} />
           
           {/* Other Main Routes */}
-          <Route path="/age-assessment" element={<NotFound />} />
-          <Route path="/upload-data" element={<NotFound />} />
           <Route path="/transformer-importance" element={<NotFound />} />
           <Route path="/economic-analysis" element={<NotFound />} />
           <Route path="/inventory" element={<NotFound />} />
