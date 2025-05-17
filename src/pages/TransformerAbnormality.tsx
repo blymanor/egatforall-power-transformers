@@ -23,7 +23,7 @@ const TransformerAbnormality = () => {
   const [formData, setFormData] = useState({
     region: "",
     transformerCode: "AN-KT1A",
-    equipmentNumber: "7000016200",
+    equipmentNumber: "",
     inspectionDate: "",
     oltcOperations: "",
     environment: "ไม่เกี่ยวข้อง",
@@ -64,12 +64,13 @@ const TransformerAbnormality = () => {
           <h1 className="text-2xl font-bold text-[#0442AF]">
             Power Transformers
           </h1>
+          <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
       </header>
 
       <div className="p-4 md:p-6 bg-[#f0f4fa] min-h-screen">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#0442AF] mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-black mb-6 flex items-center gap-2">
             <AlertTriangle className="h-6 w-6 text-[#0442AF]" />
             ความผิดปกติของหม้อแปลง
           </h2>
@@ -115,10 +116,16 @@ const TransformerAbnormality = () => {
                         <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-200 shadow-lg">
-                        <SelectItem value="all">ทั้งหมด</SelectItem>
-                        <SelectItem value="type1">หม้อแปลงประเภท 1</SelectItem>
-                        <SelectItem value="type2">หม้อแปลงประเภท 2</SelectItem>
-                        <SelectItem value="type3">หม้อแปลงประเภท 3</SelectItem>
+                        <SelectItem value="AN-KT1A">AN-KT1A</SelectItem>
+                        <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
+                        <SelectItem value="AN-KT3A">AN-KT3A</SelectItem>
+                        <SelectItem value="AN-KT4A">AN-KT4A</SelectItem>
+                        <SelectItem value="AN-KT5A">AN-KT5A</SelectItem>
+                        <SelectItem value="AN-KT6A">AN-KT6A</SelectItem>
+                        <SelectItem value="AN-KT7A">AN-KT7A</SelectItem>
+                        <SelectItem value="AN-KT8A">AN-KT8A</SelectItem>
+                        <SelectItem value="AN-KT9A">AN-KT9A</SelectItem>
+                        <SelectItem value="AN-KT10A">AN-KT10A</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -160,10 +167,7 @@ const TransformerAbnormality = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">หม้อแปลงไฟฟ้า</label>
                     <div className="flex items-center border-b border-gray-200 pb-2">
-                      {transformerType === "type1" ? "หม้อแปลงประเภท 1" :
-                       transformerType === "type2" ? "หม้อแปลงประเภท 2" :
-                       transformerType === "type3" ? "หม้อแปลงประเภท 3" : 
-                       transformerType || formData.transformerCode}
+                      {transformerType || formData.transformerCode}
                     </div>
                   </div>
                   
@@ -175,6 +179,7 @@ const TransformerAbnormality = () => {
                         className="bg-white border border-gray-200 rounded-md px-3 py-1.5 w-full"
                         value={formData.equipmentNumber}
                         onChange={(e) => handleFormChange('equipmentNumber', e.target.value)}
+                        placeholder="กรุณากรอก Equipment Number"
                       />
                     </div>
                   </div>
@@ -523,10 +528,7 @@ const TransformerAbnormality = () => {
                     <div className="space-y-1">
                       <p className="text-sm font-medium text-gray-500">หม้อแปลงไฟฟ้า</p>
                       <p className="font-medium">
-                        {transformerType === "type1" ? "หม้อแปลงประเภท 1" :
-                         transformerType === "type2" ? "หม้อแปลงประเภท 2" :
-                         transformerType === "type3" ? "หม้อแปลงประเภท 3" : 
-                         transformerType || formData.transformerCode}
+                        {transformerType || formData.transformerCode}
                       </p>
                     </div>
                   </div>
@@ -622,7 +624,7 @@ const TransformerAbnormality = () => {
                 </div>
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-10">กรุณาเลือกข้อมูลและกดปุ่ม Generate เพื่อแสดงผลลัพธ์</p>
+              <p className="text-gray-500 text-center py-10">กรุณากดปุ่ม Generate และกรอกรายละเอียดเพื่อแสดงผลลัพธ์</p>
             )}
           </div>
         </div>
@@ -632,4 +634,3 @@ const TransformerAbnormality = () => {
 };
 
 export default TransformerAbnormality;
-
