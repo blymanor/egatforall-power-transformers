@@ -7,25 +7,17 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 const TransformerAbnormality = () => {
   const { toast } = useToast();
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [region, setRegion] = useState("");
   const [transformer, setTransformer] = useState("");
   const [reportData, setReportData] = useState<any>(null);
   const [showResults, setShowResults] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   
-  // Form fields for the modal dialog
+  // Form fields
   const [workOrderNumber, setWorkOrderNumber] = useState("");
   const [abnormalityDetails, setAbnormalityDetails] = useState("");
   const [oltcCheckCount, setOltcCheckCount] = useState("");
@@ -53,7 +45,18 @@ const TransformerAbnormality = () => {
       });
       return;
     }
-    setDialogOpen(true);
+    
+    // Show the form section instead of opening a modal
+    setShowForm(true);
+    setShowResults(false);
+    
+    // Scroll to the form section
+    setTimeout(() => {
+      const formElement = document.getElementById('abnormality-form');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleSaveReport = () => {
@@ -91,12 +94,20 @@ const TransformerAbnormality = () => {
     
     setReportData(newReportData);
     setShowResults(true);
-    setDialogOpen(false);
+    setShowForm(false);
     
     toast({
       title: "รายงานถูกบันทึกเรียบร้อยแล้ว",
       description: "รายงานความผิดปกติของหม้อแปลงไฟฟ้าถูกสร้างและบันทึกเรียบร้อยแล้ว",
     });
+    
+    // Scroll to the results section
+    setTimeout(() => {
+      const resultsElement = document.getElementById('results-section');
+      if (resultsElement) {
+        resultsElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   return (
@@ -168,9 +179,284 @@ const TransformerAbnormality = () => {
               </div>
             </div>
             
+            {/* Form Section that appears after clicking Generate */}
+            {showForm && (
+              <div id="abnormality-form" className="mt-8 animate-in fade-in duration-500">
+                <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
+                  <h2 className="text-lg font-semibold text-center text-gray-800">กรอกรายละเอียดความผิดปกติ</h2>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          เขต
+                        </label>
+                        <Input value={region} className="w-full bg-gray-100" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          หม้อแปลงไฟฟ้า
+                        </label>
+                        <Input value={transformer} className="w-full bg-gray-100" readOnly />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        เลขคำสั่งปฏิบัติงาน
+                      </label>
+                      <Input 
+                        placeholder="กรุณากรอกเลขคำสั่งปฏิบัติงาน" 
+                        className="w-full"
+                        value={workOrderNumber}
+                        onChange={(e) => setWorkOrderNumber(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        จำนวนครั้งในการทำงานของ OLTC
+                      </label>
+                      <Input 
+                        placeholder="กรุณาระบุจำนวนครั้ง" 
+                        className="w-full"
+                        value={oltcCheckCount}
+                        onChange={(e) => setOltcCheckCount(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        สภาพแวดล้อม
+                      </label>
+                      <Select value={environmentCondition} onValueChange={setEnvironmentCondition}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกสภาพแวดล้อม" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ในร่ม">ในร่ม</SelectItem>
+                          <SelectItem value="กลางแจ้ง">กลางแจ้ง</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        สภาวะการใช้งานขณะพบความผิดปกติ
+                      </label>
+                      <Select value={operatingCondition} onValueChange={setOperatingCondition}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกสภาวะการใช้งาน" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ปกติ">ปกติ</SelectItem>
+                          <SelectItem value="โอเวอร์โหลด">โอเวอร์โหลด</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ระยะเวลาความผิดปกติ
+                      </label>
+                      <Select value={abnormalityDuration} onValueChange={setAbnormalityDuration}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกระยะเวลา" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="สั้น">สั้น</SelectItem>
+                          <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
+                          <SelectItem value="ยาว">ยาว</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          วันที่ลงตรวจระบบ
+                        </label>
+                        <Input 
+                          type="date"
+                          className="w-full"
+                          value={lastInspectionDate}
+                          onChange={(e) => setLastInspectionDate(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          เวลาที่ลงตรวจระบบ
+                        </label>
+                        <Input 
+                          type="time"
+                          className="w-full"
+                          value={lastInspectionTime}
+                          onChange={(e) => setLastInspectionTime(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          วันที่เข้าระบบ
+                        </label>
+                        <Input 
+                          type="date"
+                          className="w-full"
+                          value={systemEntryDate}
+                          onChange={(e) => setSystemEntryDate(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          เวลาที่เข้าระบบ
+                        </label>
+                        <Input 
+                          type="time"
+                          className="w-full"
+                          value={systemEntryTime}
+                          onChange={(e) => setSystemEntryTime(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ
+                      </label>
+                      <Select value={abnormalComponentGroup} onValueChange={setAbnormalComponentGroup}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกส่วนที่เสียหาย" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Active Part">Active Part</SelectItem>
+                          <SelectItem value="ระบบระบายความร้อน">ระบบระบายความร้อน</SelectItem>
+                          <SelectItem value="OLTC">OLTC</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ชิ้นส่วนที่เสียหายหรือผิดปกติ
+                      </label>
+                      <Select value={abnormalComponent} onValueChange={setAbnormalComponent}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกชิ้นส่วนที่เสียหาย" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="แกนเหล็ก">แกนเหล็ก</SelectItem>
+                          <SelectItem value="ขดลวด">ขดลวด</SelectItem>
+                          <SelectItem value="บุชชิ่ง">บุชชิ่ง</SelectItem>
+                          <SelectItem value="อื่นๆ">อื่นๆ</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ระดับความเสียหาย
+                      </label>
+                      <Select value={damageLevel} onValueChange={setDamageLevel}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกระดับความเสียหาย" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Minor">Minor</SelectItem>
+                          <SelectItem value="Moderate">Moderate</SelectItem>
+                          <SelectItem value="Major">Major</SelectItem>
+                          <SelectItem value="Critical">Critical</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        สถานะที่เกิดขึ้น
+                      </label>
+                      <Select value={currentStatus} onValueChange={setCurrentStatus}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกสถานะ" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ตรวจสอบ/เฝ้าระวัง">ตรวจสอบ/เฝ้าระวัง</SelectItem>
+                          <SelectItem value="กำลังสอบสวน">กำลังสอบสวน</SelectItem>
+                          <SelectItem value="กำลังซ่อมแซม">กำลังซ่อมแซม</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        การดำเนินการ
+                      </label>
+                      <Select value={action} onValueChange={setAction}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="เลือกการดำเนินการ" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Repair">Repair</SelectItem>
+                          <SelectItem value="Replace">Replace</SelectItem>
+                          <SelectItem value="Monitor">Monitor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        รายละเอียดความผิดปกติ
+                      </label>
+                      <Textarea
+                        placeholder="กรุณากรอกรายละเอียดความผิดปกติของหม้อแปลงไฟฟ้า"
+                        className="w-full min-h-[100px]"
+                        value={abnormalityDetails}
+                        onChange={(e) => setAbnormalityDetails(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        รายละเอียดเพิ่มเติม (Remark)
+                      </label>
+                      <Textarea
+                        placeholder="กรุณากรอกรายละเอียดเพิ่มเติมถ้ามี"
+                        className="w-full min-h-[80px]"
+                        value={remarks}
+                        onChange={(e) => setRemarks(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ผู้รายงาน
+                      </label>
+                      <Input 
+                        placeholder="กรุณากรอกชื่อผู้รายงาน" 
+                        className="w-full"
+                        value={operator}
+                        onChange={(e) => setOperator(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 flex justify-center">
+                    <Button 
+                      onClick={handleSaveReport} 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      บันทึกรายงาน
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             {/* Results Section */}
             {showResults && reportData && (
-              <div className="mt-8">
+              <div id="results-section" className="mt-8 animate-in fade-in duration-500">
                 <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
                   <h2 className="text-lg font-semibold text-center text-gray-800">ผลลัพธ์</h2>
                 </div>
@@ -256,290 +542,61 @@ const TransformerAbnormality = () => {
                       <p className="font-medium">{reportData.operator || "-"}</p>
                     </div>
                   </div>
+                  
+                  <div className="mt-6 flex justify-center">
+                    <Button 
+                      onClick={() => {
+                        setShowForm(true);
+                        setShowResults(false);
+                        setTimeout(() => {
+                          const formElement = document.getElementById('abnormality-form');
+                          if (formElement) {
+                            formElement.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }, 100);
+                      }}
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 mr-3"
+                    >
+                      แก้ไขข้อมูล
+                    </Button>
+                    
+                    <Button 
+                      onClick={() => {
+                        setShowForm(false);
+                        setShowResults(false);
+                        // Reset form fields
+                        setWorkOrderNumber("");
+                        setAbnormalityDetails("");
+                        setOltcCheckCount("");
+                        setEnvironmentCondition("");
+                        setOperatingCondition("");
+                        setAbnormalityDuration("");
+                        setLastInspectionDate("");
+                        setLastInspectionTime("");
+                        setSystemEntryDate("");
+                        setSystemEntryTime("");
+                        setAbnormalComponentGroup("");
+                        setAbnormalComponent("");
+                        setDamageLevel("");
+                        setCurrentStatus("");
+                        setAction("");
+                        setRemarks("");
+                        setOperator("");
+                        // Reset selection form
+                        setRegion("");
+                        setTransformer("");
+                      }} 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      สร้างรายงานใหม่
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
           </CardContent>
         </Card>
       </div>
-
-      {/* Modal Dialog for Report Generation */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="text-center">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</DialogTitle>
-            <DialogDescription className="text-center text-gray-500">
-              กรอกรายละเอียดเพิ่มเติมเกี่ยวกับความผิดปกติของหม้อแปลงไฟฟ้า
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid gap-4 py-2">
-            <div className="grid grid-cols-1 gap-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    เขต
-                  </label>
-                  <Input value={region} className="w-full bg-gray-100" readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    หม้อแปลงไฟฟ้า
-                  </label>
-                  <Input value={transformer} className="w-full bg-gray-100" readOnly />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  เลขคำสั่งปฏิบัติงาน
-                </label>
-                <Input 
-                  placeholder="กรุณากรอกเลขคำสั่งปฏิบัติงาน" 
-                  className="w-full"
-                  value={workOrderNumber}
-                  onChange={(e) => setWorkOrderNumber(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  จำนวนครั้งในการทำงานของ OLTC
-                </label>
-                <Input 
-                  placeholder="กรุณาระบุจำนวนครั้ง" 
-                  className="w-full"
-                  value={oltcCheckCount}
-                  onChange={(e) => setOltcCheckCount(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  สภาพแวดล้อม
-                </label>
-                <Select value={environmentCondition} onValueChange={setEnvironmentCondition}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกสภาพแวดล้อม" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ในร่ม">ในร่ม</SelectItem>
-                    <SelectItem value="กลางแจ้ง">กลางแจ้ง</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  สภาวะการใช้งานขณะพบความผิดปกติ
-                </label>
-                <Select value={operatingCondition} onValueChange={setOperatingCondition}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกสภาวะการใช้งาน" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ปกติ">ปกติ</SelectItem>
-                    <SelectItem value="โอเวอร์โหลด">โอเวอร์โหลด</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ระยะเวลาความผิดปกติ
-                </label>
-                <Select value={abnormalityDuration} onValueChange={setAbnormalityDuration}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกระยะเวลา" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="สั้น">สั้น</SelectItem>
-                    <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
-                    <SelectItem value="ยาว">ยาว</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    วันที่ลงตรวจระบบ
-                  </label>
-                  <Input 
-                    type="date"
-                    className="w-full"
-                    value={lastInspectionDate}
-                    onChange={(e) => setLastInspectionDate(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    เวลาที่ลงตรวจระบบ
-                  </label>
-                  <Input 
-                    type="time"
-                    className="w-full"
-                    value={lastInspectionTime}
-                    onChange={(e) => setLastInspectionTime(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    วันที่เข้าระบบ
-                  </label>
-                  <Input 
-                    type="date"
-                    className="w-full"
-                    value={systemEntryDate}
-                    onChange={(e) => setSystemEntryDate(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    เวลาที่เข้าระบบ
-                  </label>
-                  <Input 
-                    type="time"
-                    className="w-full"
-                    value={systemEntryTime}
-                    onChange={(e) => setSystemEntryTime(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ
-                </label>
-                <Select value={abnormalComponentGroup} onValueChange={setAbnormalComponentGroup}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกส่วนที่เสียหาย" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Active Part">Active Part</SelectItem>
-                    <SelectItem value="ระบบระบายความร้อน">ระบบระบายความร้อน</SelectItem>
-                    <SelectItem value="OLTC">OLTC</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ชิ้นส่วนที่เสียหายหรือผิดปกติ
-                </label>
-                <Select value={abnormalComponent} onValueChange={setAbnormalComponent}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกชิ้นส่วนที่เสียหาย" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="แกนเหล็ก">แกนเหล็ก</SelectItem>
-                    <SelectItem value="ขดลวด">ขดลวด</SelectItem>
-                    <SelectItem value="บุชชิ่ง">บุชชิ่ง</SelectItem>
-                    <SelectItem value="อื่นๆ">อื่นๆ</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ระดับความเสียหาย
-                </label>
-                <Select value={damageLevel} onValueChange={setDamageLevel}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกระดับความเสียหาย" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Minor">Minor</SelectItem>
-                    <SelectItem value="Moderate">Moderate</SelectItem>
-                    <SelectItem value="Major">Major</SelectItem>
-                    <SelectItem value="Critical">Critical</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  สถานะที่เกิดขึ้น
-                </label>
-                <Select value={currentStatus} onValueChange={setCurrentStatus}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกสถานะ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ตรวจสอบ/เฝ้าระวัง">ตรวจสอบ/เฝ้าระวัง</SelectItem>
-                    <SelectItem value="กำลังสอบสวน">กำลังสอบสวน</SelectItem>
-                    <SelectItem value="กำลังซ่อมแซม">กำลังซ่อมแซม</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  การดำเนินการ
-                </label>
-                <Select value={action} onValueChange={setAction}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เลือกการดำเนินการ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Repair">Repair</SelectItem>
-                    <SelectItem value="Replace">Replace</SelectItem>
-                    <SelectItem value="Monitor">Monitor</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  รายละเอียดความผิดปกติ
-                </label>
-                <Textarea
-                  placeholder="กรุณากรอกรายละเอียดความผิดปกติของหม้อแปลงไฟฟ้า"
-                  className="w-full min-h-[100px]"
-                  value={abnormalityDetails}
-                  onChange={(e) => setAbnormalityDetails(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  รายละเอียดเพิ่มเติม (Remark)
-                </label>
-                <Textarea
-                  placeholder="กรุณากรอกรายละเอียดเพิ่มเติมถ้ามี"
-                  className="w-full min-h-[80px]"
-                  value={remarks}
-                  onChange={(e) => setRemarks(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ผู้รายงาน
-                </label>
-                <Input 
-                  placeholder="กรุณากรอกชื่อผู้รายงาน" 
-                  className="w-full"
-                  value={operator}
-                  onChange={(e) => setOperator(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter className="sm:justify-center">
-            <Button 
-              onClick={handleSaveReport} 
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              บันทึกรายงาน
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </DashboardLayout>
   );
 };
