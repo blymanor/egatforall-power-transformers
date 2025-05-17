@@ -4,7 +4,9 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import StatusCard from "@/components/dashboard/StatusCard";
 import TransformerTable from "@/components/dashboard/TransformerTable";
 import RiskGraph from "@/components/dashboard/RiskGraph";
+import RegionDropdown from "@/components/dashboard/RegionDropdown";
 import { Database, Wrench, AlertCircle } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Index = () => {
   const [statusFilter, setStatusFilter] = useState("all");
@@ -45,10 +47,21 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          <RiskGraph 
-            selectedRegion={selectedRegion} 
-            onRegionChange={setSelectedRegion} 
-          />
+          {/* Region dropdown in its own card */}
+          <Card className="bg-white shadow-sm border border-gray-100">
+            <CardContent className="p-4">
+              <h2 className="text-xl font-bold text-black mb-3">Region Filter</h2>
+              <div className="w-full">
+                <RegionDropdown 
+                  value={selectedRegion} 
+                  onValueChange={setSelectedRegion} 
+                />
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Risk Graph in its own card */}
+          <RiskGraph selectedRegion={selectedRegion} />
         </div>
 
         <TransformerTable 

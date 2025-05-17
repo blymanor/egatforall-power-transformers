@@ -1,7 +1,6 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import RegionDropdown from "./RegionDropdown";
 
 interface RiskGraphProps {
   selectedRegion?: string;
@@ -9,18 +8,11 @@ interface RiskGraphProps {
 }
 
 const RiskGraph: React.FC<RiskGraphProps> = ({ 
-  selectedRegion = "all", 
-  onRegionChange 
+  selectedRegion = "all"
 }) => {
   return (
-    <Card className="bg-white shadow-sm border border-gray-100 relative">
-      <div className="absolute right-4 top-4 z-10">
-        <RegionDropdown 
-          value={selectedRegion} 
-          onValueChange={onRegionChange || (() => {})} 
-        />
-      </div>
-      <CardContent className="p-4 pt-16"> {/* Added pt-16 to create more space below the dropdown */}
+    <Card className="bg-white shadow-sm border border-gray-100">
+      <CardContent className="p-4">
         <h2 className="text-xl font-bold text-black mb-3">Risk Analysis Graph</h2>
         <div className="relative h-[300px] w-full bg-[#f9f9f9] border border-gray-200 rounded-md p-2">
           <div className="absolute bottom-0 left-0 w-full h-full p-4">
