@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
       </div>
 
       <div className="overflow-y-auto flex-1 py-2">
-        <SidebarItem icon="home" label="Home" active collapsed={collapsed} />
+        <SidebarItem icon="home" label="Home" path="/" active collapsed={collapsed} />
         
         {/* Report section with submenus */}
         <SidebarItem 
@@ -76,10 +76,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           ]}
         />
         
-        {/* NEW: Transformer Abnormality */}
+        {/* Transformer Abnormality - Now with path to the page */}
         <SidebarItem
           icon="transformer-faults"
           label="ความผิดปกติของหม้อแปลง"
+          path="/transformer-abnormality"
           collapsed={collapsed}
         />
         

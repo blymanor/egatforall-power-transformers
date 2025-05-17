@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
+import { Link, useLocation } from "react-router-dom";
 import { 
   Home, 
   FileText, 
@@ -37,12 +37,14 @@ import {
 interface SubMenuItem {
   icon: string;
   label: string;
+  path?: string;
   subMenuItems?: SubMenuItem[];
 }
 
 interface SidebarItemProps {
   icon: string;
   label: string;
+  path?: string;
   active?: boolean;
   collapsed?: boolean;
   onClick?: () => void;
@@ -52,17 +54,22 @@ interface SidebarItemProps {
 const SidebarItem: React.FC<SidebarItemProps> = ({
   icon,
   label,
+  path,
   active = false,
   collapsed = false,
   onClick,
   subMenuItems = [],
 }) => {
+  const location = useLocation();
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
 
   const hasSubMenu = subMenuItems && subMenuItems.length > 0;
+  // Check if this item or any of its children match the current path
+  const isActive = active || (path && location.pathname === path);
 
   const toggleSubMenu = (e: React.MouseEvent) => {
     if (hasSubMenu && !collapsed) {
+      e.preventDefault();
       e.stopPropagation();
       setIsSubMenuOpen(!isSubMenuOpen);
     }
@@ -155,24 +162,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     }
   };
 
-  return (
-    <>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer transition-colors hover:bg-gray-100",
-          active ? "bg-blue-50 text-blue-700" : "text-gray-700",
-          collapsed ? "justify-center py-3" : "px-4 py-2",
-          hasSubMenu && !collapsed ? "justify-between" : ""
-        )}
-        onClick={(e) => {
-          if (hasSubMenu && !collapsed) {
-            toggleSubMenu(e);
-          } else if (onClick) {
-            onClick();
-          }
-        }}
-      >
-        <div className={cn("flex items-center", collapsed ? "justify-center" : "")}>
+  const renderItem = () => {
+    const itemContent = (
+      <>
+        <div className={cn("flex items-center", collapsed ? "justify-center mx-auto" : "")}>
           <span className="shrink-0">{getIcon(icon)}</span>
           {!collapsed && <span className="ml-3 truncate">{label}</span>}
         </div>
@@ -181,31 +174,94 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
             {isSubMenuOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
           </span>
         )}
+      </>
+    );
+
+    const itemClasses = cn(
+      "flex items-center cursor-pointer transition-colors hover:bg-gray-100",
+      isActive ? "bg-blue-50 text-blue-700" : "text-gray-700",
+      collapsed ? "justify-center py-3" : "px-4 py-2",
+      hasSubMenu && !collapsed ? "justify-between" : ""
+    );
+
+    if (path && !hasSubMenu) {
+      return (
+        <Link to={path} className={itemClasses} onClick={onClick}>
+          {itemContent}
+        </Link>
+      );
+    }
+
+    return (
+      <div
+        className={itemClasses}
+        onClick={(e) => {
+          if (hasSubMenu && !collapsed) {
+            toggleSubMenu(e);
+          } else if (path) {
+            // Navigate programmatically if there's a path but also has submenus
+            window.location.href = path;
+          } else if (onClick) {
+            onClick();
+          }
+        }}
+      >
+        {itemContent}
       </div>
+    );
+  };
+
+  return (
+    <>
+      {renderItem()}
 
       {/* Submenu items */}
       {hasSubMenu && isSubMenuOpen && !collapsed && (
         <div className="ml-6 border-l border-gray-200 pl-2">
           {subMenuItems.map((subItem, index) => (
             <div key={index}>
-              <div
-                className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-[#1E5CFF]"
-                onClick={onClick}
-              >
-                <span className="shrink-0">{getIcon(subItem.icon)}</span>
-                <span className="ml-3 truncate text-sm">{subItem.label}</span>
-              </div>
+              {subItem.path ? (
+                <Link 
+                  to={subItem.path}
+                  className="flex items-center px-3 py-2 transition-colors hover:bg-gray-100 text-[#1E5CFF]"
+                  onClick={onClick}
+                >
+                  <span className="shrink-0">{getIcon(subItem.icon)}</span>
+                  <span className="ml-3 truncate text-sm">{subItem.label}</span>
+                </Link>
+              ) : (
+                <div
+                  className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-[#1E5CFF]"
+                  onClick={onClick}
+                >
+                  <span className="shrink-0">{getIcon(subItem.icon)}</span>
+                  <span className="ml-3 truncate text-sm">{subItem.label}</span>
+                </div>
+              )}
+              
               {/* Handle third level submenus if they exist */}
               {subItem.subMenuItems && subItem.subMenuItems.length > 0 && (
                 <div className="ml-6 border-l border-gray-200 pl-2">
                   {subItem.subMenuItems.map((thirdLevelItem, thirdIndex) => (
-                    <div
-                      key={thirdIndex}
-                      className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-[#1E5CFF]"
-                      onClick={onClick}
-                    >
-                      <span className="shrink-0">{getIcon(thirdLevelItem.icon)}</span>
-                      <span className="ml-3 truncate text-sm">{thirdLevelItem.label}</span>
+                    <div key={thirdIndex}>
+                      {thirdLevelItem.path ? (
+                        <Link
+                          to={thirdLevelItem.path}
+                          className="flex items-center px-3 py-2 transition-colors hover:bg-gray-100 text-[#1E5CFF]"
+                          onClick={onClick}
+                        >
+                          <span className="shrink-0">{getIcon(thirdLevelItem.icon)}</span>
+                          <span className="ml-3 truncate text-sm">{thirdLevelItem.label}</span>
+                        </Link>
+                      ) : (
+                        <div
+                          className="flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100 text-[#1E5CFF]"
+                          onClick={onClick}
+                        >
+                          <span className="shrink-0">{getIcon(thirdLevelItem.icon)}</span>
+                          <span className="ml-3 truncate text-sm">{thirdLevelItem.label}</span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
