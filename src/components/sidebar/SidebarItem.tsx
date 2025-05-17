@@ -159,10 +159,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     <>
       <div
         className={cn(
-          "flex items-center px-3 py-2 cursor-pointer transition-colors hover:bg-gray-100",
+          "flex items-center cursor-pointer transition-colors hover:bg-gray-100",
           active ? "bg-blue-50 text-blue-700" : "text-gray-700",
-          collapsed ? "justify-center" : "px-4",
-          hasSubMenu ? "justify-between" : ""
+          collapsed ? "justify-center py-3" : "px-4 py-2",
+          hasSubMenu && !collapsed ? "justify-between" : ""
         )}
         onClick={(e) => {
           if (hasSubMenu && !collapsed) {

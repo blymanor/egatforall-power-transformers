@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -44,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className={cn("ml-auto")}
+          className={cn(collapsed ? "mx-auto" : "ml-auto")}
         >
           {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
         </Button>
