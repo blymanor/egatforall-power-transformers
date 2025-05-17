@@ -52,16 +52,126 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
 
       <div className="overflow-y-auto flex-1 py-4">
         <SidebarItem icon="home" path="/" label="Home" />
-        <SidebarItem icon="report" path="/reports" label="รายงาน" />
-        <SidebarItem icon="transformer-info" path="/transformer-info" label="ข้อมูลพื้นฐานของหม้อแปลง" />
+        
+        <SidebarItem 
+          icon="report" 
+          path="/reports" 
+          label="รายงาน" 
+          subMenuItems={[
+            { icon: "file-text", label: "รายงานมาตรฐาน", path: "/reports/standard" },
+            { icon: "file-text", label: "รายงานข้อมูลหม้อแปลงไฟฟ้า", path: "/reports/transformers" },
+            { icon: "file-text", label: "รายงานข้อมูลความเสียหาย", path: "/reports/damages" }
+          ]}
+        />
+        
+        <SidebarItem 
+          icon="transformer-info" 
+          path="/transformer-info" 
+          label="ข้อมูลพื้นฐานของหม้อแปลง" 
+          subMenuItems={[
+            { icon: "database", label: "หม้อแปลงไฟฟ้า", path: "/transformer-info/details" },
+            { icon: "database", label: "การย้ายหม้อแปลง", path: "/transformer-info/relocation" }
+          ]}
+        />
+        
         <SidebarItem icon="transformer-faults" path="/transformer-abnormality" label="ความผิดปกติของหม้อแปลง" />
-        <SidebarItem icon="transformer-maintenance" path="/transformer-maintenance" label="ข้อมูลบำรุงรักษาหม้อแปลง" />
+        
+        <SidebarItem 
+          icon="transformer-maintenance" 
+          path="/transformer-maintenance" 
+          label="ข้อมูลบำรุงรักษาหม้อแปลง" 
+          subMenuItems={[
+            { icon: "search", label: "ค้นหาและแก้ไข", path: "/transformer-maintenance/search" },
+            { icon: "visual-inspection", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/visual-inspection" },
+            { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/oil-test" },
+            { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/transformer-maintenance/electrical-test" },
+            { icon: "wrench", label: "OLTC", path: "/transformer-maintenance/oltc" },
+            { icon: "eye", label: "ผลการทดสอบทั้งหมด", path: "/transformer-maintenance/all-test-results" },
+            { icon: "activity", label: "ตรวจสอบสภาพ", path: "/transformer-maintenance/condition-check" },
+          ]}
+        />
+        
         <SidebarItem icon="age-assessment" path="/age-assessment" label="ค่าประเมินอายุ" />
-        <SidebarItem icon="upload" path="/upload-data" label="Upload ข้อมูล" />
-        <SidebarItem icon="transformer-importance" path="/transformer-importance" label="ความสำคัญหม้อแปลง" />
-        <SidebarItem icon="economic-analysis" path="/economic-analysis" label="การวิเคราะห์ทางเศรษฐศาสตร์" />
-        <SidebarItem icon="inventory" path="/inventory" label="Inventory Control" />
-        <SidebarItem icon="management" path="/management" label="การจัดการ" />
+        
+        <SidebarItem 
+          icon="upload" 
+          path="/upload-data" 
+          label="Upload ข้อมูล" 
+          subMenuItems={[
+            { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/upload-data/oil-test" },
+            { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/upload-data/electrical-test" },
+            { icon: "activity", label: "Activate ผลการทดสอบ", path: "/upload-data/activate" }
+          ]}
+        />
+        
+        <SidebarItem 
+          icon="transformer-importance" 
+          path="/transformer-importance" 
+          label="ความสำคัญหม้อแปลง" 
+          subMenuItems={[
+            { icon: "add-item", label: "เพิ่มรายการ", path: "/transformer-importance/add" },
+            { icon: "search", label: "ค้นหาและแก้ไข", path: "/transformer-importance/search" }
+          ]}
+        />
+        
+        <SidebarItem 
+          icon="economic-analysis" 
+          path="/economic-analysis" 
+          label="การวิเคราะห์ทางเศรษฐศาสตร์" 
+          subMenuItems={[
+            { icon: "factor-setting", label: "Factor Setting", path: "/economic-analysis/factor-setting" },
+            { icon: "factor-setting", label: "ราคาและ Loss ของหม้อแปลง", path: "/economic-analysis/price-loss" },
+            { icon: "database", label: "ข้อมูลที่จำเป็นในการพิจารณา", path: "/economic-analysis/consideration-data" }
+          ]}
+        />
+        
+        <SidebarItem 
+          icon="inventory" 
+          path="/inventory" 
+          label="Inventory Control" 
+          subMenuItems={[
+            { 
+              icon: "transformer-oil", 
+              label: "น้ำมันหม้อแปลง", 
+              path: "/inventory/oil",
+              subMenuItems: [
+                { icon: "oil-inventory", label: "คลังรายการน้ำมัน", path: "/inventory/oil/stock" },
+                { icon: "withdrawal-records", label: "รายการเบิกจ่าย", path: "/inventory/oil/withdrawal" },
+                { icon: "purchase-records", label: "รายการสั่งซื้อ/รับน้ำมัน", path: "/inventory/oil/purchase" },
+                { icon: "expense-records", label: "รายการค่าใช้จ่าย", path: "/inventory/oil/expense" },
+                { icon: "calculation-results", label: "ผลการคำนวณ", path: "/inventory/oil/calculation" },
+                { icon: "oil-receipt-time", label: "ระยะเวลาที่ได้รับน้ำมัน", path: "/inventory/oil/receipt-time" }
+              ]
+            },
+            { icon: "bushing-arrester", label: "Bushing, Arrester, OLTC", path: "/inventory/components" }
+          ]}
+        />
+        
+        <SidebarItem 
+          icon="management" 
+          path="/management" 
+          label="การจัดการ" 
+          subMenuItems={[
+            { icon: "change-password", label: "เปลี่ยนรหัสผ่าน", path: "/management/change-password" },
+            { icon: "user-management", label: "การจัดการผู้ใช้", path: "/management/users" },
+            { icon: "basic-transformer-data", label: "กำหนดข้อมูลพื้นฐานหม้อแปลง", path: "/management/basic-transformer-data" },
+            { icon: "transformer-importance-data", label: "กำหนดข้อมูลความสำคัญหม้อแปลง", path: "/management/transformer-importance-data" },
+            { 
+              icon: "test-data", 
+              label: "กำหนดข้อมูลการทดสอบ", 
+              path: "/management/test-data",
+              subMenuItems: [
+                { icon: "vi-topics", label: "หัวข้อ Visual Inspection", path: "/management/test-data/vi-topics" },
+                { icon: "vi-criteria", label: "เกณฑ์ Visual Inspection", path: "/management/test-data/vi-criteria" },
+                { icon: "hi-score", label: "คะแนน %HI", path: "/management/test-data/hi-score" },
+                { icon: "factor-score", label: "คะแนน %Factor", path: "/management/test-data/factor-score" },
+                { icon: "sub-component-weight", label: "Weight อุปกรณ์ย่อย", path: "/management/test-data/sub-component-weight" },
+                { icon: "test-score-weight", label: "Score และ Weight การทดสอบ", path: "/management/test-data/test-score-weight" },
+                { icon: "main-component-weight", label: "Weight อุปกรณ์หลัก", path: "/management/test-data/main-component-weight" }
+              ]
+            }
+          ]}
+        />
       </div>
 
       <div className="mt-auto w-full">
