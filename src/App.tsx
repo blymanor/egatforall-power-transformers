@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,8 @@ import TransformerAbnormality from "./pages/TransformerAbnormality";
 import AgeAssessment from "./pages/AgeAssessment";
 import UploadData from "./pages/UploadData";
 import ActivateTestResults from "./pages/ActivateTestResults";
+import OilTestUpload from "./pages/OilTestUpload";
+import ElectricalTestUpload from "./pages/ElectricalTestUpload";
 
 const queryClient = new QueryClient();
 
@@ -23,8 +26,8 @@ const App = () => (
           <Route path="/transformer-abnormality" element={<TransformerAbnormality />} />
           <Route path="/age-assessment" element={<AgeAssessment />} />
           <Route path="/upload-data" element={<UploadData />} />
-          <Route path="/upload-data/oil-test" element={<NotFound />} />
-          <Route path="/upload-data/electrical-test" element={<NotFound />} />
+          <Route path="/upload-data/oil-test" element={<OilTestUpload />} />
+          <Route path="/upload-data/electrical-test" element={<ElectricalTestUpload />} />
           <Route path="/upload-data/activate" element={<ActivateTestResults />} />
           
           {/* Reports Routes */}

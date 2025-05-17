@@ -33,43 +33,51 @@ const ActivateTestResults = () => {
     });
   };
 
-  // Sample transformer data - in a real app, this would come from an API
+  // Transformer data as requested
   const transformers = [
-    { id: "TR001", name: "Transformer 001" },
-    { id: "TR002", name: "Transformer 002" },
-    { id: "TR003", name: "Transformer 003" },
-    { id: "TR004", name: "Transformer 004" },
-    { id: "TR005", name: "Transformer 005" },
+    { id: "AT1", name: "AT1-KT1A" },
+    { id: "AT2", name: "AT2-KT1A" },
+    { id: "AT3", name: "AT3-KT1A" },
+    { id: "AT4", name: "AT4-KT1A" },
+    { id: "AT5", name: "AT5-KT1A" },
+    { id: "AT6", name: "AT6-KT1A" },
   ];
 
   return (
     <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
+      {/* Common page header with consistent styling */}
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-md sticky top-0 z-10 border-b border-gray-200">
         <div>
-          <h1 className="text-2xl font-bold text-black">Activate ผลการทดสอบ</h1>
-          <p className="text-gray-500">เลือกหม้อแปลงไฟฟ้าและ Activate ผลการทดสอบ</p>
+          <h1 className="text-2xl font-bold text-gray-800">Power Transformers</h1>
+          <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
         </div>
       </header>
 
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        <Card className="max-w-2xl mx-auto bg-white shadow-sm rounded-lg overflow-hidden">
+        {/* Section title */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-800">Activate ผลการทดสอบ</h2>
+          <p className="text-gray-600">เลือกหม้อแปลงไฟฟ้าและ Activate ผลการทดสอบ</p>
+        </div>
+        
+        <Card className="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-0">
           <CardContent className="p-6 space-y-4">
-            <div className="bg-[#f0f4fa] rounded-md p-3 mb-4">
+            <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
               <h2 className="text-lg font-semibold text-center text-gray-800">เลือกหม้อแปลงไฟฟ้าเพื่อ Activate ผลทดสอบ</h2>
             </div>
 
-            <div className="space-y-6 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+            <div className="space-y-6 p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
               <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
                 <label htmlFor="transformer-select" className="font-medium text-gray-700">
                   เลือกหม้อแปลงไฟฟ้า:
                 </label>
                 <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
-                  <SelectTrigger className="w-full bg-white border border-gray-200 focus:border-blue-500">
+                  <SelectTrigger className="w-full bg-white border border-gray-300 focus:border-blue-500">
                     <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     {transformers.map((transformer) => (
-                      <SelectItem key={transformer.id} value={transformer.id}>
+                      <SelectItem key={transformer.id} value={transformer.id} className="hover:bg-blue-50">
                         {transformer.name}
                       </SelectItem>
                     ))}
@@ -82,10 +90,10 @@ const ActivateTestResults = () => {
               <div className="flex justify-center pt-4">
                 <Button 
                   onClick={handleGenerate} 
-                  className="w-full md:w-1/3 bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center gap-2"
+                  className="w-full md:w-1/3 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 font-medium"
                 >
                   <Zap size={20} className="mr-1" />
-                  <span>Generate</span>
+                  <span>Activate</span>
                 </Button>
               </div>
             </div>
