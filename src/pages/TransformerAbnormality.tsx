@@ -18,21 +18,22 @@ const TransformerAbnormality = () => {
   const [showForm, setShowForm] = useState(false);
   
   // Form fields
-  const [workOrderNumber, setWorkOrderNumber] = useState("");
-  const [abnormalityDetails, setAbnormalityDetails] = useState("");
+  const [equipmentNo, setEquipmentNo] = useState("");
+  const [incidentDate, setIncidentDate] = useState("");
   const [oltcCheckCount, setOltcCheckCount] = useState("");
   const [environmentCondition, setEnvironmentCondition] = useState("");
   const [operatingCondition, setOperatingCondition] = useState("");
-  const [abnormalityDuration, setAbnormalityDuration] = useState("");
-  const [lastInspectionDate, setLastInspectionDate] = useState("");
-  const [lastInspectionTime, setLastInspectionTime] = useState("");
+  const [abnormalityDetails, setAbnormalityDetails] = useState("");
+  const [shutdownDate, setShutdownDate] = useState("");
+  const [shutdownTime, setShutdownTime] = useState("");
   const [systemEntryDate, setSystemEntryDate] = useState("");
   const [systemEntryTime, setSystemEntryTime] = useState("");
+  const [workOrderNumber, setWorkOrderNumber] = useState("");
   const [abnormalComponentGroup, setAbnormalComponentGroup] = useState("");
   const [abnormalComponent, setAbnormalComponent] = useState("");
   const [damageLevel, setDamageLevel] = useState("");
-  const [currentStatus, setCurrentStatus] = useState("");
-  const [action, setAction] = useState("");
+  const [rootCause, setRootCause] = useState("");
+  const [management, setManagement] = useState("");
   const [remarks, setRemarks] = useState("");
   const [operator, setOperator] = useState("");
 
@@ -73,21 +74,22 @@ const TransformerAbnormality = () => {
     const newReportData = {
       region,
       transformer,
-      workOrderNumber,
-      abnormalityDetails,
+      equipmentNo,
+      incidentDate,
       oltcCheckCount,
       environmentCondition,
       operatingCondition,
-      abnormalityDuration,
-      lastInspectionDate,
-      lastInspectionTime,
+      abnormalityDetails,
+      shutdownDate,
+      shutdownTime,
       systemEntryDate,
       systemEntryTime,
+      workOrderNumber,
       abnormalComponentGroup,
       abnormalComponent,
       damageLevel,
-      currentStatus,
-      action,
+      rootCause,
+      management,
       remarks,
       operator
     };
@@ -188,6 +190,7 @@ const TransformerAbnormality = () => {
                 
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                   <div className="grid grid-cols-1 gap-4">
+                    {/* เขต และ หม้อแปลงไฟฟ้า */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -203,18 +206,33 @@ const TransformerAbnormality = () => {
                       </div>
                     </div>
                     
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        เลขคำสั่งปฏิบัติงาน
-                      </label>
-                      <Input 
-                        placeholder="กรุณากรอกเลขคำสั่งปฏิบัติงาน" 
-                        className="w-full"
-                        value={workOrderNumber}
-                        onChange={(e) => setWorkOrderNumber(e.target.value)}
-                      />
+                    {/* Equipment No. และ วันที่เกิดเหตุการณ์ */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Equipment No.
+                        </label>
+                        <Input 
+                          placeholder="กรุณากรอก Equipment No." 
+                          className="w-full"
+                          value={equipmentNo}
+                          onChange={(e) => setEquipmentNo(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          วันที่เกิดเหตุการณ์
+                        </label>
+                        <Input 
+                          type="date"
+                          className="w-full"
+                          value={incidentDate}
+                          onChange={(e) => setIncidentDate(e.target.value)}
+                        />
+                      </div>
                     </div>
                     
+                    {/* จำนวนครั้งในการทำงานของ OLTC */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         จำนวนครั้งในการทำงานของ OLTC
@@ -227,6 +245,7 @@ const TransformerAbnormality = () => {
                       />
                     </div>
                     
+                    {/* สภาพแวดล้อม */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         สภาพแวดล้อม
@@ -242,6 +261,7 @@ const TransformerAbnormality = () => {
                       </Select>
                     </div>
                     
+                    {/* สภาวะการใช้งานขณะพบความผิดปกติ */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         สภาวะการใช้งานขณะพบความผิดปกติ
@@ -257,51 +277,50 @@ const TransformerAbnormality = () => {
                       </Select>
                     </div>
                     
+                    {/* รายละเอียดความผิดปกติ */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        ระยะเวลาความผิดปกติ
+                        รายละเอียดความผิดปกติ
                       </label>
-                      <Select value={abnormalityDuration} onValueChange={setAbnormalityDuration}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="เลือกระยะเวลา" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="สั้น">สั้น</SelectItem>
-                          <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
-                          <SelectItem value="ยาว">ยาว</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Textarea
+                        placeholder="กรุณากรอกรายละเอียดความผิดปกติของหม้อแปลงไฟฟ้า"
+                        className="w-full min-h-[100px]"
+                        value={abnormalityDetails}
+                        onChange={(e) => setAbnormalityDetails(e.target.value)}
+                      />
                     </div>
                     
+                    {/* วันที่ปลดออกจากระบบ และ เวลาที่ปลดออกจากระบบ */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          วันที่ลงตรวจระบบ
+                          วันที่ปลดออกจากระบบ
                         </label>
                         <Input 
                           type="date"
                           className="w-full"
-                          value={lastInspectionDate}
-                          onChange={(e) => setLastInspectionDate(e.target.value)}
+                          value={shutdownDate}
+                          onChange={(e) => setShutdownDate(e.target.value)}
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          เวลาที่ลงตรวจระบบ
+                          เวลาที่ปลดออกจากระบบ
                         </label>
                         <Input 
                           type="time"
                           className="w-full"
-                          value={lastInspectionTime}
-                          onChange={(e) => setLastInspectionTime(e.target.value)}
+                          value={shutdownTime}
+                          onChange={(e) => setShutdownTime(e.target.value)}
                         />
                       </div>
                     </div>
                     
+                    {/* วันที่นำเข้าระบบ และ เวลาที่นำเข้าระบบ */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          วันที่เข้าระบบ
+                          วันที่นำเข้าระบบ
                         </label>
                         <Input 
                           type="date"
@@ -312,7 +331,7 @@ const TransformerAbnormality = () => {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          เวลาที่เข้าระบบ
+                          เวลาที่นำเข้าระบบ
                         </label>
                         <Input 
                           type="time"
@@ -323,13 +342,27 @@ const TransformerAbnormality = () => {
                       </div>
                     </div>
                     
+                    {/* เลขคำสั่งปฏิบัติงาน */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        เลขคำสั่งปฏิบัติงาน
+                      </label>
+                      <Input 
+                        placeholder="กรุณากรอกเลขคำสั่งปฏิบัติงาน" 
+                        className="w-full"
+                        value={workOrderNumber}
+                        onChange={(e) => setWorkOrderNumber(e.target.value)}
+                      />
+                    </div>
+                    
+                    {/* กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ
                       </label>
                       <Select value={abnormalComponentGroup} onValueChange={setAbnormalComponentGroup}>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="เลือกส่วนที่เสียหาย" />
+                          <SelectValue placeholder="เลือกกลุ่มชิ้นส่วนที่เสียหาย" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Active Part">Active Part</SelectItem>
@@ -339,6 +372,7 @@ const TransformerAbnormality = () => {
                       </Select>
                     </div>
                     
+                    {/* ชิ้นส่วนที่เสียหายหรือผิดปกติ */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         ชิ้นส่วนที่เสียหายหรือผิดปกติ
@@ -356,6 +390,7 @@ const TransformerAbnormality = () => {
                       </Select>
                     </div>
                     
+                    {/* ระดับความเสียหาย */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         ระดับความเสียหาย
@@ -373,29 +408,32 @@ const TransformerAbnormality = () => {
                       </Select>
                     </div>
                     
+                    {/* สาเหตุที่แท้จริง */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        สถานะที่เกิดขึ้น
+                        สาเหตุที่แท้จริง
                       </label>
-                      <Select value={currentStatus} onValueChange={setCurrentStatus}>
+                      <Select value={rootCause} onValueChange={setRootCause}>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="เลือกสถานะ" />
+                          <SelectValue placeholder="เลือกสาเหตุที่แท้จริง" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ตรวจสอบ/เฝ้าระวัง">ตรวจสอบ/เฝ้าระวัง</SelectItem>
-                          <SelectItem value="กำลังสอบสวน">กำลังสอบสวน</SelectItem>
-                          <SelectItem value="กำลังซ่อมแซม">กำลังซ่อมแซม</SelectItem>
+                          <SelectItem value="การเสื่อมสภาพตามอายุ">การเสื่อมสภาพตามอายุ</SelectItem>
+                          <SelectItem value="ความผิดพลาดในการติดตั้ง">ความผิดพลาดในการติดตั้ง</SelectItem>
+                          <SelectItem value="การใช้งานผิดประเภท">การใช้งานผิดประเภท</SelectItem>
+                          <SelectItem value="อื่นๆ">อื่นๆ</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     
+                    {/* การจัดการ */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        การดำเนินการ
+                        การจัดการ
                       </label>
-                      <Select value={action} onValueChange={setAction}>
+                      <Select value={management} onValueChange={setManagement}>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="เลือกการดำเนินการ" />
+                          <SelectValue placeholder="เลือกการจัดการ" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Repair">Repair</SelectItem>
@@ -405,18 +443,7 @@ const TransformerAbnormality = () => {
                       </Select>
                     </div>
                     
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        รายละเอียดความผิดปกติ
-                      </label>
-                      <Textarea
-                        placeholder="กรุณากรอกรายละเอียดความผิดปกติของหม้อแปลงไฟฟ้า"
-                        className="w-full min-h-[100px]"
-                        value={abnormalityDetails}
-                        onChange={(e) => setAbnormalityDetails(e.target.value)}
-                      />
-                    </div>
-                    
+                    {/* รายละเอียดเพิ่มเติม */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         รายละเอียดเพิ่มเติม (Remark)
@@ -429,6 +456,7 @@ const TransformerAbnormality = () => {
                       />
                     </div>
                     
+                    {/* ผู้รายงาน */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         ผู้รายงาน
@@ -474,8 +502,12 @@ const TransformerAbnormality = () => {
                       <p className="font-medium">{reportData.transformer}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">เลขคำสั่งปฏิบัติงาน</p>
-                      <p className="font-medium">{reportData.workOrderNumber}</p>
+                      <p className="text-sm text-gray-500">Equipment No.</p>
+                      <p className="font-medium">{reportData.equipmentNo || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">วันที่เกิดเหตุการณ์</p>
+                      <p className="font-medium">{reportData.incidentDate || "-"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">จำนวนครั้งในการทำงานของ OLTC</p>
@@ -489,25 +521,29 @@ const TransformerAbnormality = () => {
                       <p className="text-sm text-gray-500">สภาวะการใช้งานขณะพบความผิดปกติ</p>
                       <p className="font-medium">{reportData.operatingCondition || "-"}</p>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">ระยะเวลาความผิดปกติ</p>
-                      <p className="font-medium">{reportData.abnormalityDuration || "-"}</p>
+                    <div className="col-span-2">
+                      <p className="text-sm text-gray-500">รายละเอียดความผิดปกติ</p>
+                      <p className="font-medium whitespace-pre-wrap">{reportData.abnormalityDetails || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">วันที่ลงตรวจระบบ</p>
-                      <p className="font-medium">{reportData.lastInspectionDate || "-"}</p>
+                      <p className="text-sm text-gray-500">วันที่ปลดออกจากระบบ</p>
+                      <p className="font-medium">{reportData.shutdownDate || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">เวลาที่ลงตรวจระบบ</p>
-                      <p className="font-medium">{reportData.lastInspectionTime || "-"}</p>
+                      <p className="text-sm text-gray-500">เวลาที่ปลดออกจากระบบ</p>
+                      <p className="font-medium">{reportData.shutdownTime || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">วันที่เข้าระบบ</p>
+                      <p className="text-sm text-gray-500">วันที่นำเข้าระบบ</p>
                       <p className="font-medium">{reportData.systemEntryDate || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">เวลาที่เข้าระบบ</p>
+                      <p className="text-sm text-gray-500">เวลาที่นำเข้าระบบ</p>
                       <p className="font-medium">{reportData.systemEntryTime || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">เลขคำสั่งปฏิบัติงาน</p>
+                      <p className="font-medium">{reportData.workOrderNumber || "-"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ</p>
@@ -522,16 +558,12 @@ const TransformerAbnormality = () => {
                       <p className="font-medium">{reportData.damageLevel || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">สถานะที่เกิดขึ้น</p>
-                      <p className="font-medium">{reportData.currentStatus || "-"}</p>
+                      <p className="text-sm text-gray-500">สาเหตุที่แท้จริง</p>
+                      <p className="font-medium">{reportData.rootCause || "-"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">การดำเนินการ</p>
-                      <p className="font-medium">{reportData.action || "-"}</p>
-                    </div>
-                    <div className="col-span-2">
-                      <p className="text-sm text-gray-500">รายละเอียดความผิดปกติ</p>
-                      <p className="font-medium whitespace-pre-wrap">{reportData.abnormalityDetails || "-"}</p>
+                      <p className="text-sm text-gray-500">การจัดการ</p>
+                      <p className="font-medium">{reportData.management || "-"}</p>
                     </div>
                     <div className="col-span-2">
                       <p className="text-sm text-gray-500">รายละเอียดเพิ่มเติม (Remark)</p>
@@ -565,21 +597,22 @@ const TransformerAbnormality = () => {
                         setShowForm(false);
                         setShowResults(false);
                         // Reset form fields
-                        setWorkOrderNumber("");
-                        setAbnormalityDetails("");
+                        setEquipmentNo("");
+                        setIncidentDate("");
                         setOltcCheckCount("");
                         setEnvironmentCondition("");
                         setOperatingCondition("");
-                        setAbnormalityDuration("");
-                        setLastInspectionDate("");
-                        setLastInspectionTime("");
+                        setAbnormalityDetails("");
+                        setShutdownDate("");
+                        setShutdownTime("");
                         setSystemEntryDate("");
                         setSystemEntryTime("");
+                        setWorkOrderNumber("");
                         setAbnormalComponentGroup("");
                         setAbnormalComponent("");
                         setDamageLevel("");
-                        setCurrentStatus("");
-                        setAction("");
+                        setRootCause("");
+                        setManagement("");
                         setRemarks("");
                         setOperator("");
                         // Reset selection form
