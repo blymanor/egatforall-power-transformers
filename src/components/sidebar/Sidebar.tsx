@@ -21,7 +21,7 @@ const Sidebar = () => {
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         {!collapsed && (
-          <div className="text-blue-700 font-bold text-xl">EGATforALL</div>
+          <div className="text-blue-700 font-bold text-2xl">EGATforALL</div>
         )}
         <Button
           variant="ghost"

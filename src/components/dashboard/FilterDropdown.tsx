@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FilterX } from "lucide-react";
+import { Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FilterDropdownProps {
@@ -37,15 +37,15 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           )}
         >
           <div className="flex items-center">
-            <FilterX className="mr-2 h-4 w-4" />
+            <Filter className="mr-2 h-4 w-4" />
             <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>
         <SelectContent className="bg-white border border-[#1E5CFF]/20 shadow-lg">
-          <SelectItem value="all" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">ทั้งหมด</SelectItem>
-          <SelectItem value="good" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">สภาพดี</SelectItem>
-          <SelectItem value="repair" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">ต้องซ่อม</SelectItem>
-          <SelectItem value="damaged" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">ชำรุด</SelectItem>
+          <SelectItem value="all" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">All</SelectItem>
+          <SelectItem value="good" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">Good</SelectItem>
+          <SelectItem value="repair" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">Repair</SelectItem>
+          <SelectItem value="damaged" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF]">Faulty</SelectItem>
         </SelectContent>
       </Select>
     </div>

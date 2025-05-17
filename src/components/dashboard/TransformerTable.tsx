@@ -3,7 +3,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Check, Wrench, X } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import FilterDropdown from "./FilterDropdown";
 import { cn } from "@/lib/utils";
 
@@ -45,15 +45,6 @@ const getStatusBadgeColor = (status: string) => {
   }
 };
 
-const getStatusIcon = (status: string) => {
-  switch(status) {
-    case "Good": return <Check className="size-4" />;
-    case "Repair": return <Wrench className="size-4" />;
-    case "Faulty": return <X className="size-4" />;
-    default: return null;
-  }
-};
-
 interface TransformerTableProps {
   statusFilter: string;
   setStatusFilter: (value: string) => void;
@@ -80,55 +71,56 @@ const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setSt
           value={statusFilter} 
           onValueChange={setStatusFilter} 
           variant="colorful" 
-          placeholder="กรองตามสถานะ"
+          placeholder="Filter by Status"
         />
       </CardHeader>
       <CardContent className="p-0">
-        <Table>
-          <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
-            <TableRow>
-              <TableHead className="w-[100px] text-center">Device No.</TableHead>
-              <TableHead className="w-[120px] text-center">Equipment No.</TableHead>
-              <TableHead className="w-[120px] text-center">Overall Condition(%)</TableHead>
-              <TableHead className="w-[120px] text-center">Importance Index(%)</TableHead>
-              <TableHead className="text-center">Risk</TableHead>
-              <TableHead className="text-center">Status</TableHead>
-              <TableHead className="text-center">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredData.map((row, index) => (
-              <TableRow key={index} className="hover:bg-blue-50/30">
-                <TableCell className="text-center">{row.deviceNo}</TableCell>
-                <TableCell className="text-center">{row.equipmentNo}</TableCell>
-                <TableCell className="text-center">{row.condition}</TableCell>
-                <TableCell className="text-center">{row.importance}</TableCell>
-                <TableCell className="text-center">{row.risk}</TableCell>
-                <TableCell className="text-center">
-                  <div className="flex justify-center">
-                    <span className={cn(
-                      "px-3 py-1 rounded-full text-xs font-medium border flex items-center gap-1",
-                      getStatusBadgeColor(row.status)
-                    )}>
-                      {getStatusIcon(row.status)}
-                      {row.status}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center">
-                  <div className="flex justify-center">
-                    <span className={cn(
-                      "px-3 py-1 rounded-full text-xs font-medium border",
-                      getActionBadgeColor(row.action)
-                    )}>
-                      {row.action}
-                    </span>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
+              <TableRow>
+                <TableHead className="w-[150px] text-center whitespace-nowrap px-6">Device No.</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Equipment No.</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Overall Condition(%)</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Importance Index(%)</TableHead>
+                <TableHead className="text-center">Risk</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-center">Action</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredData.map((row, index) => (
+                <TableRow key={index} className="hover:bg-blue-50/30">
+                  <TableCell className="text-center">{row.deviceNo}</TableCell>
+                  <TableCell className="text-center">{row.equipmentNo}</TableCell>
+                  <TableCell className="text-center">{row.condition}</TableCell>
+                  <TableCell className="text-center">{row.importance}</TableCell>
+                  <TableCell className="text-center">{row.risk}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <span className={cn(
+                        "px-3 py-1 rounded-full text-xs font-medium border",
+                        getStatusBadgeColor(row.status)
+                      )}>
+                        {row.status}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <span className={cn(
+                        "px-3 py-1 rounded-full text-xs font-medium border",
+                        getActionBadgeColor(row.action)
+                      )}>
+                        {row.action}
+                      </span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
       <CardFooter className="flex justify-between p-4 pt-2 border-t">
         <Button variant="outline" size="sm" disabled>

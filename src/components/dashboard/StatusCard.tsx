@@ -6,10 +6,11 @@ interface StatusCardProps {
   title: string;
   count: number;
   color: "green" | "yellow" | "red";
+  icon?: React.ReactNode;
   className?: string;
 }
 
-const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, className }) => {
+const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, className }) => {
   const getColorClasses = () => {
     switch (color) {
       case "green":
@@ -31,7 +32,10 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, className 
         className
       )}
     >
-      <span className="text-lg font-medium mb-1">{title}</span>
+      <div className="flex items-center gap-2 mb-1">
+        {icon}
+        <span className="text-lg font-medium">{title}</span>
+      </div>
       <span className="text-3xl font-bold">{count}</span>
     </div>
   );
