@@ -50,7 +50,11 @@ const Index = () => {
           <RiskGraph />
         </div>
 
-        <TransformerTable statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
+        <TransformerTable 
+          statusFilter={statusFilter} 
+          setStatusFilter={setStatusFilter} 
+          selectedRegion={selectedRegion}
+        />
       </div>
     </DashboardLayout>
   );

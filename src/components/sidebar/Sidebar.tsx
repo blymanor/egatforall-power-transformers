@@ -1,15 +1,32 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
-const Sidebar = () => {
+interface SidebarProps {
+  onCollapsedChange?: (collapsed: boolean) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleSidebar = () => {
-    setCollapsed(!collapsed);
+    const newCollapsedState = !collapsed;
+    setCollapsed(newCollapsedState);
+    
+    // Call the callback if provided
+    if (onCollapsedChange) {
+      onCollapsedChange(newCollapsedState);
+    }
+    
+    // Dispatch custom event for broader application awareness
+    window.dispatchEvent(
+      new CustomEvent('sidebarStateChange', { 
+        detail: { collapsed: newCollapsedState } 
+      })
+    );
   };
 
   return (

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,14 +15,18 @@ interface TransformerData {
   risk: string;
   status: "Good" | "Repair" | "Faulty";
   action: "Investigation" | "Relocate" | "Refurbish";
+  region: string;
 }
 
-const dummyData: TransformerData[] = [
-  { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation" },
-  { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Investigation" },
-  { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Refurbish" },
-  { deviceNo: "АN-474A", equipmentNo: "TGPOS68023", condition: 90.10, importance: 25.45, risk: "Low", status: "Good", action: "Relocate" },
-  { deviceNo: "АN-475A", equipmentNo: "TGPOS68024", condition: 45.33, importance: 67.21, risk: "High", status: "Faulty", action: "Refurbish" },
+const allTransformers: TransformerData[] = [
+  { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
+  { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
+  { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-474A", equipmentNo: "TGPOS68023", condition: 90.10, importance: 25.45, risk: "Low", status: "Good", action: "Relocate", region: "central" },
+  { deviceNo: "АN-475A", equipmentNo: "TGPOS68024", condition: 45.33, importance: 67.21, risk: "High", status: "Faulty", action: "Refurbish", region: "south" },
+  { deviceNo: "АN-476A", equipmentNo: "TGPOS68025", condition: 78.42, importance: 31.89, risk: "Low", status: "Good", action: "Investigation", region: "south" },
+  { deviceNo: "АN-477A", equipmentNo: "TGPOS68026", condition: 55.67, importance: 58.75, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-478A", equipmentNo: "TGPOS68027", condition: 82.29, importance: 42.13, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
 ];
 
 const getActionBadgeColor = (action: string) => {
@@ -46,20 +50,36 @@ const getStatusBadgeColor = (status: string) => {
 interface TransformerTableProps {
   statusFilter: string;
   setStatusFilter: (value: string) => void;
+  selectedRegion: string;
 }
 
-const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setStatusFilter }) => {
+const TransformerTable: React.FC<TransformerTableProps> = ({ 
+  statusFilter, 
+  setStatusFilter,
+  selectedRegion 
+}) => {
   const [currentPage, setCurrentPage] = React.useState(1);
 
-  const filteredData = React.useMemo(() => {
-    if (statusFilter === "all") return dummyData;
-    return dummyData.filter(item => {
-      if (statusFilter === "good") return item.status === "Good";
-      if (statusFilter === "repair") return item.status === "Repair";
-      if (statusFilter === "damaged") return item.status === "Faulty";
-      return true;
-    });
-  }, [statusFilter]);
+  const filteredData = useMemo(() => {
+    let data = [...allTransformers];
+    
+    // Filter by region
+    if (selectedRegion !== "all") {
+      data = data.filter(item => item.region === selectedRegion);
+    }
+    
+    // Filter by status
+    if (statusFilter !== "all") {
+      data = data.filter(item => {
+        if (statusFilter === "good") return item.status === "Good";
+        if (statusFilter === "repair") return item.status === "Repair";
+        if (statusFilter === "damaged") return item.status === "Faulty";
+        return true;
+      });
+    }
+
+    return data;
+  }, [statusFilter, selectedRegion]);
 
   return (
     <Card className="bg-white shadow-md border border-gray-100">
@@ -87,41 +107,49 @@ const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setSt
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredData.map((row, index) => (
-                <TableRow key={index} className="hover:bg-blue-50/30">
-                  <TableCell className="text-center">{row.deviceNo}</TableCell>
-                  <TableCell className="text-center">{row.equipmentNo}</TableCell>
-                  <TableCell className="text-center">{row.condition}</TableCell>
-                  <TableCell className="text-center">{row.importance}</TableCell>
-                  <TableCell className="text-center">{row.risk}</TableCell>
-                  <TableCell className="text-center">
-                    <div className="flex justify-center">
-                      <span className={cn(
-                        "px-3 py-1 rounded-full text-xs font-medium border",
-                        getStatusBadgeColor(row.status)
-                      )}>
-                        {row.status}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <div className="flex justify-center">
-                      <span className={cn(
-                        "px-3 py-1 rounded-full text-xs font-medium border",
-                        getActionBadgeColor(row.action)
-                      )}>
-                        {row.action}
-                      </span>
-                    </div>
+              {filteredData.length > 0 ? (
+                filteredData.map((row, index) => (
+                  <TableRow key={index} className="hover:bg-blue-50/30">
+                    <TableCell className="text-center">{row.deviceNo}</TableCell>
+                    <TableCell className="text-center">{row.equipmentNo}</TableCell>
+                    <TableCell className="text-center">{row.condition}</TableCell>
+                    <TableCell className="text-center">{row.importance}</TableCell>
+                    <TableCell className="text-center">{row.risk}</TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <span className={cn(
+                          "px-3 py-1 rounded-full text-xs font-medium border",
+                          getStatusBadgeColor(row.status)
+                        )}>
+                          {row.status}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <span className={cn(
+                          "px-3 py-1 rounded-full text-xs font-medium border",
+                          getActionBadgeColor(row.action)
+                        )}>
+                          {row.action}
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No transformers found for the selected filters
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>
       </CardContent>
       <CardFooter className="flex justify-between p-4 pt-2 border-t">
-        <Button variant="outline" size="sm" disabled>
+        <Button variant="outline" size="sm" disabled={currentPage === 1}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Previous
         </Button>
@@ -141,7 +169,12 @@ const TransformerTable: React.FC<TransformerTableProps> = ({ statusFilter, setSt
             </Button>
           ))}
         </div>
-        <Button variant="outline" size="sm">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={currentPage === 4 || filteredData.length === 0}
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, 4))}
+        >
           Next
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
