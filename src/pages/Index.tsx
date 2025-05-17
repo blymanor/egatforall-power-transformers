@@ -5,7 +5,7 @@ import StatusCard from "@/components/dashboard/StatusCard";
 import TransformerTable from "@/components/dashboard/TransformerTable";
 import RiskGraph from "@/components/dashboard/RiskGraph";
 import RegionDropdown from "@/components/dashboard/RegionDropdown";
-import { Database, Wrench, Bug } from "lucide-react";
+import { Database, Wrench, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
@@ -17,7 +17,7 @@ const Index = () => {
 
   return (
     <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10">
         <div>
           <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
           <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
@@ -25,30 +25,38 @@ const Index = () => {
         <RegionDropdown value={selectedRegion} onValueChange={setSelectedRegion} />
       </header>
 
-      <div className="p-4 md:p-6 space-y-6">
+      <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatusCard 
             title="Total Transformers" 
             count={totalTransformers} 
             color="green" 
-            icon={<Database className="size-5" />} 
+            icon={<Database className="size-5 text-blue-600" />} 
           />
           <StatusCard 
             title="Needs Repair" 
             count={23} 
             color="yellow" 
-            icon={<Wrench className="size-5" />} 
+            icon={<Wrench className="size-5 text-yellow-500" />} 
           />
           <StatusCard 
             title="Faulty" 
             count={8} 
             color="red" 
-            icon={<Bug className="size-5" />} 
+            icon={<AlertCircle className="size-5 text-red-500" />} 
           />
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          <RiskGraph />
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-bold text-black">Risk Analysis Graph</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {/* Risk Graph component is imported but not modified as per requirements */}
+              <RiskGraph />
+            </CardContent>
+          </Card>
         </div>
 
         <TransformerTable statusFilter={statusFilter} setStatusFilter={setStatusFilter} />

@@ -14,29 +14,31 @@ const StatusCard: React.FC<StatusCardProps> = ({ title, count, color, icon, clas
   const getColorClasses = () => {
     switch (color) {
       case "green":
-        return "bg-gradient-to-r from-green-100 to-green-50 text-green-800 border-green-200 shadow-sm";
+        return "bg-white border-l-4 border-l-blue-600 text-gray-800";
       case "yellow":
-        return "bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 border-yellow-200 shadow-sm";
+        return "bg-white border-l-4 border-l-yellow-500 text-gray-800";
       case "red":
-        return "bg-gradient-to-r from-red-100 to-red-50 text-red-800 border-red-200 shadow-sm";
+        return "bg-white border-l-4 border-l-red-500 text-gray-800";
       default:
-        return "bg-gradient-to-r from-gray-100 to-gray-50 text-gray-800 border-gray-200 shadow-sm";
+        return "bg-white border-l-4 border-l-gray-500 text-gray-800";
     }
   };
 
   return (
     <div 
       className={cn(
-        "rounded-lg border p-5 flex flex-col items-center justify-center transition-all hover:shadow-md",
+        "rounded-lg border shadow-sm p-5 flex items-start gap-3 transition-all hover:shadow-md",
         getColorClasses(),
         className
       )}
     >
-      <div className="flex items-center gap-2 mb-1">
+      <div className="flex items-center justify-center p-2 rounded-full bg-gray-50">
         {icon}
-        <span className="text-lg font-medium">{title}</span>
       </div>
-      <span className="text-3xl font-bold">{count}</span>
+      <div className="flex flex-col">
+        <span className="text-sm font-medium text-gray-600">{title}</span>
+        <span className="text-3xl font-bold">{count}</span>
+      </div>
     </div>
   );
 };

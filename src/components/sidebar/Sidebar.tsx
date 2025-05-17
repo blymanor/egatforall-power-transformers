@@ -83,7 +83,7 @@ const Sidebar = () => {
         />
       </div>
 
-      <div className="mt-auto border-t border-gray-200">
+      <div className="mt-auto border-t border-gray-200 w-full">
         <div className="p-2">
           <SidebarItem
             icon="manual"
