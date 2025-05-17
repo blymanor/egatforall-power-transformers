@@ -60,7 +60,7 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          {/* Risk Graph in its own card - not linked with status filter */}
+          {/* Risk Graph in its own card - completely independent of filters */}
           <RiskGraph />
         </div>
 

@@ -7,7 +7,7 @@ const RiskGraph: React.FC = () => {
     <Card className="bg-white shadow-sm border border-gray-100">
       <CardContent className="p-4">
         <h2 className="text-xl font-bold text-black mb-3">Risk Analysis Graph</h2>
-        <div className="relative h-[300px] w-full bg-[#f9f9f9] border border-gray-200 rounded-md p-2">
+        <div className="relative h-[400px] w-full bg-[#f9f9f9] border border-gray-200 rounded-md p-2">
           <div className="absolute bottom-0 left-0 w-full h-full p-4">
             {/* X and Y Axis Labels */}
             <div className="absolute bottom-0 left-0 w-full flex justify-between px-4">

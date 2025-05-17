@@ -25,9 +25,15 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   variant = "default",
   placeholder = "สถานะหม้อแปลง",
 }) => {
+  // This component now only handles the UI for the dropdown
+  // and passes the selected value to the parent component through onValueChange
+  const handleChange = (newValue: string) => {
+    onValueChange(newValue);
+  };
+
   return (
     <div className={className}>
-      <Select value={value} onValueChange={onValueChange}>
+      <Select value={value} onValueChange={handleChange}>
         <SelectTrigger 
           className={cn(
             "w-[180px] border-2 transition-all duration-200 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none",
