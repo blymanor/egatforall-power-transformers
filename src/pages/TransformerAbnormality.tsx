@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MapPin, Power, AlertTriangle, CalendarIcon } from "lucide-react";
+import { MapPin, Zap, AlertTriangle, CalendarIcon } from "lucide-react";
 
 const TransformerAbnormality = () => {
   const [region, setRegion] = useState("all");
@@ -106,7 +106,7 @@ const TransformerAbnormality = () => {
 
                   <div className="space-y-2">
                     <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                      <Power className="h-4 w-4 text-blue-500" />
+                      <Zap className="h-4 w-4 text-blue-500" />
                       หม้อแปลงไฟฟ้า:
                     </label>
                     <Select value={transformerType} onValueChange={setTransformerType}>
