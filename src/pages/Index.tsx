@@ -13,7 +13,7 @@ const Index = () => {
 
   return (
     <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 bg-white p-4 rounded-lg shadow-sm">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-[#1E5CFF]">Power Transformers</h1>
           <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
@@ -21,7 +21,7 @@ const Index = () => {
         <RegionDropdown value={selectedRegion} onValueChange={setSelectedRegion} />
       </header>
 
-      <div className="space-y-6">
+      <div className="p-4 md:p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatusCard title="Good Condition" count={54} color="green" />
           <StatusCard title="Needs Repair" count={23} color="yellow" />
