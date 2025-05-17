@@ -5,7 +5,7 @@ import {
   Home, 
   FileText, 
   AlertCircle, 
-  Tool, 
+  Wrench, 
   Calendar, 
   Upload, 
   Activity, 
@@ -44,7 +44,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "transformer-faults":
         return <AlertCircle size={20} />;
       case "transformer-maintenance":
-        return <Tool size={20} />;
+        return <Wrench size={20} />; // Changed from Tool to Wrench
       case "age-assessment":
         return <Calendar size={20} />;
       case "upload":
