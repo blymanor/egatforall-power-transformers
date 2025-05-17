@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, BarChart, PieChart, Filter } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
 const Sidebar = () => {
@@ -16,7 +16,7 @@ const Sidebar = () => {
     <div
       className={cn(
         "bg-white border-r border-gray-200 h-full transition-all duration-300 flex flex-col",
-        collapsed ? "w-[70px]" : "w-[240px]"
+        collapsed ? "w-[80px]" : "w-[280px]"
       )}
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -81,20 +81,17 @@ const Sidebar = () => {
           label="การจัดการ"
           collapsed={collapsed}
         />
-        <SidebarItem
-          icon="manual"
-          label="คู่มือการใช้งาน"
-          collapsed={collapsed}
-        />
-        <SidebarItem
-          icon="history"
-          label="ประวัติการลงข้อมูลผลทดสอบฯ"
-          collapsed={collapsed}
-        />
       </div>
 
-      <div className="mt-auto border-t border-gray-200 p-4">
-        <SidebarItem icon="logout" label="ออกจากระบบ" collapsed={collapsed} />
+      <div className="mt-auto border-t border-gray-200">
+        <div className="p-2">
+          <SidebarItem
+            icon="manual"
+            label="คู่มือการใช้งาน/ประวัติการลงข้อมูล"
+            collapsed={collapsed}
+          />
+          <SidebarItem icon="logout" label="ออกจากระบบ" collapsed={collapsed} />
+        </div>
       </div>
     </div>
   );
