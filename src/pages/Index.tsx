@@ -4,7 +4,6 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import StatusCard from "@/components/dashboard/StatusCard";
 import TransformerTable from "@/components/dashboard/TransformerTable";
 import RiskGraph from "@/components/dashboard/RiskGraph";
-import RegionDropdown from "@/components/dashboard/RegionDropdown";
 import { Database, Wrench, AlertCircle } from "lucide-react";
 
 const Index = () => {
@@ -45,11 +44,11 @@ const Index = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-6 relative">
-          <div className="absolute right-4 top-4 z-10">
-            <RegionDropdown value={selectedRegion} onValueChange={setSelectedRegion} />
-          </div>
-          <RiskGraph />
+        <div className="grid grid-cols-1 gap-6">
+          <RiskGraph 
+            selectedRegion={selectedRegion} 
+            onRegionChange={setSelectedRegion} 
+          />
         </div>
 
         <TransformerTable 
