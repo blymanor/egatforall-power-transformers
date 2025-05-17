@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -72,8 +71,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           label="ข้อมูลพื้นฐานของหม้อแปลง" 
           collapsed={collapsed}
           subMenuItems={[
-            { icon: "database", label: "หม้อแปลงไฟฟ้า", path: "/transformer-info/details" },
-            { icon: "database", label: "การย้ายหม้อแปลง", path: "/transformer-info/relocation" }
+            { icon: "info", label: "หม้อแปลงไฟฟ้า", path: "/transformer-info/details" },
+            { icon: "info", label: "การย้ายหม้อแปลง", path: "/transformer-info/relocation" }
           ]}
         />
         
@@ -94,9 +93,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
             { icon: "visual-inspection", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/visual-inspection" },
             { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/transformer-maintenance/oil-test" },
             { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/transformer-maintenance/electrical-test" },
-            { icon: "wrench", label: "OLTC", path: "/transformer-maintenance/oltc" },
-            { icon: "eye", label: "ผลการทดสอบทั้งหมด", path: "/transformer-maintenance/all-test-results" },
-            { icon: "activity", label: "ตรวจสอบสภาพ", path: "/transformer-maintenance/condition-check" },
+            { icon: "oltc", label: "บำรุงรักษา OLTC", path: "/transformer-maintenance/oltc" },
+            { icon: "all-test-results", label: "ผลการทดสอบทั้งหมด", path: "/transformer-maintenance/all-test-results" },
+            { icon: "condition-check", label: "ตรวจสอบสภาพ", path: "/transformer-maintenance/condition-check" },
           ]}
         />
         
@@ -115,7 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           subMenuItems={[
             { icon: "oil-test", label: "การทดสอบทางน้ำมัน", path: "/upload-data/oil-test" },
             { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/upload-data/electrical-test" },
-            { icon: "activity", label: "Activate ผลการทดสอบ", path: "/upload-data/activate" }
+            { icon: "activate", label: "Activate ผลการทดสอบ", path: "/upload-data/activate" }
           ]}
         />
         
@@ -138,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           subMenuItems={[
             { icon: "factor-setting", label: "Factor Setting", path: "/economic-analysis/factor-setting" },
             { icon: "factor-setting", label: "ราคาและ Loss ของหม้อแปลง", path: "/economic-analysis/price-loss" },
-            { icon: "database", label: "ข้อมูลที่จำเป็นในการพิจารณา", path: "/economic-analysis/consideration-data" }
+            { icon: "consideration-data", label: "ข้อมูลที่จำเป็นในการพิจารณา", path: "/economic-analysis/consideration-data" }
           ]}
         />
         

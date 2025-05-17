@@ -31,7 +31,12 @@ import {
   Users,
   Lock,
   Percent,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Info,
+  FileSearch,
+  ShieldCheck,
+  TestTubes,
+  Cog
 } from "lucide-react";
 
 interface SubMenuItem {
@@ -112,7 +117,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       case "report":
         return <FileText {...iconProps} />;
       case "transformer-info":
-        return <Database {...iconProps} />;
+        return <Info {...iconProps} />;
       case "transformer-faults":
         return <AlertCircle {...iconProps} />;
       case "transformer-maintenance":
@@ -187,6 +192,16 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         return <SlidersHorizontal {...iconProps} />;
       case "main-component-weight":
         return <SlidersHorizontal {...iconProps} />;
+      case "oltc":
+        return <Cog {...iconProps} />;
+      case "all-test-results":
+        return <TestTubes {...iconProps} />;
+      case "condition-check":
+        return <ShieldCheck {...iconProps} />;
+      case "activate":
+        return <Zap {...iconProps} />;
+      case "consideration-data":
+        return <FileSearch {...iconProps} />;
       default:
         return <Home {...iconProps} />;
     }
