@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -145,21 +144,11 @@ const TransformerAbnormality = () => {
   };
 
   return (
-    <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
-          <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
-        </div>
-      </header>
-
+    <DashboardLayout
+      pageTitle="ความผิดปกติของหม้อแปลง"
+      pageDescription="การบันทึกและจัดการข้อมูลความผิดปกติของหม้อแปลงไฟฟ้า"
+    >
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Section title without icon */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">ความผิดปกติของหม้อแปลง</h2>
-          <p className="text-gray-600">การบันทึกและจัดการข้อมูลความผิดปกติของหม้อแปลงไฟฟ้า</p>
-        </div>
-
         <Card className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-0">
           <CardContent className="p-6 space-y-6">
             <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
@@ -173,7 +162,7 @@ const TransformerAbnormality = () => {
                     เขต
                   </label>
                   <Select value={region} onValueChange={setRegion}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full focus-visible:ring-0">
                       <SelectValue placeholder="เลือกเขต" />
                     </SelectTrigger>
                     <SelectContent>
@@ -189,7 +178,7 @@ const TransformerAbnormality = () => {
                     หม้อแปลงไฟฟ้า
                   </label>
                   <Select value={transformer} onValueChange={setTransformer}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full focus-visible:ring-0">
                       <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                     </SelectTrigger>
                     <SelectContent>
