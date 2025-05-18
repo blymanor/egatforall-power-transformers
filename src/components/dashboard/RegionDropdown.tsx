@@ -8,18 +8,18 @@ interface RegionDropdownProps {
 }
 
 const regions = [
-  { value: "all", label: "All Regions" },
-  { value: "north", label: "North" },
-  { value: "northeast", label: "Northeast" },
-  { value: "central", label: "Central" },
-  { value: "south", label: "South" },
+  { value: "all", label: "ทั้งหมด" },
+  { value: "north", label: "ภาคเหนือ" },
+  { value: "northeast", label: "ภาคตะวันออกเฉียงเหนือ" },
+  { value: "central", label: "ภาคกลาง" },
+  { value: "south", label: "ภาคใต้" },
 ];
 
 const RegionDropdown: React.FC<RegionDropdownProps> = ({ value, onValueChange }) => {
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className="w-full h-10 border border-gray-300 rounded-md">
-        <SelectValue placeholder="Select Region" />
+        <SelectValue placeholder="เลือกภาค" />
       </SelectTrigger>
       <SelectContent className="bg-white">
         {regions.map((region) => (

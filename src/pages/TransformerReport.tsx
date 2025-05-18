@@ -39,8 +39,8 @@ const TransformerReport = () => {
     <DashboardLayout>
       <div className="bg-[#f0f4fa] p-4 md:p-6">
         <div className="mb-2">
-          <h2 className="text-xl font-semibold text-gray-800">รายงานข้อมูลหม้อแปลงไฟฟ้า</h2>
-          <p className="text-gray-600">Transformer Data Report</p>
+          <h2 className="text-xl font-semibold text-gray-800">รายงานตามผู้ใช้งานสำหรับหม้อแปลงไฟฟ้า</h2>
+          <p className="text-gray-600">Transformer User Report</p>
         </div>
       </div>
 

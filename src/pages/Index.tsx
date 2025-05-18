@@ -40,10 +40,10 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          {/* Region dropdown in its own card */}
+          {/* Region dropdown in its own card - Changed title to "เขต" */}
           <Card className="bg-white shadow-sm border border-gray-100">
             <CardContent className="p-4">
-              <h2 className="text-xl font-bold text-black mb-3">Region Filter</h2>
+              <h2 className="text-xl font-bold text-black mb-3">เขต</h2>
               <div className="w-full">
                 <RegionDropdown 
                   value={selectedRegion} 

@@ -16,7 +16,6 @@ import { PieChart, BarChart, Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Legend
 
 const DamageReport = () => {
   const { toast } = useToast();
-  const [selectedDateRange, setSelectedDateRange] = useState<"start" | "end" | null>(null);
   const [showReport, setShowReport] = useState(false);
   const [groupBy, setGroupBy] = useState("region");
   
@@ -73,49 +72,61 @@ const DamageReport = () => {
 
   return (
     <DashboardLayout
-      pageTitle="รายงานข้อมูลความเสียหาย"
+      pageTitle="รายงานตามผู้ใช้งานสำหรับข้อมูลความเสียหาย"
       pageDescription="Damage Report Information"
     >
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <Card className="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-0">
           <CardContent className="p-6 space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-800 text-center">รายงานข้อมูลความเสียหาย</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 text-center">รายงานตามผู้ใช้งานสำหรับข้อมูลความเสียหาย</h2>
             <p className="text-gray-600 text-center">กรุณาเลือกหนึ่งเงื่อนไขในการสร้างรายงาน</p>
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* Date Range Selection Buttons */}
+                {/* Date Range Selection Section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="col-span-1 md:col-span-3">
                     <div className="flex text-blue-600 font-medium">เลือกเงื่อนไขในการสร้างกราฟ (เพียงหนึ่งเงื่อนไขเท่านั้น)</div>
                   </div>
                   <div>
-                    <Button
-                      type="button"
-                      className={cn(
-                        "w-full border border-gray-300 bg-white text-gray-800 hover:bg-gray-50",
-                        selectedDateRange === "start" && "border-blue-500"
-                      )}
-                      variant="outline"
-                      onClick={() => setSelectedDateRange("start")}
-                    >
-                      อายุเริ่มต้น
-                    </Button>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label>อายุเริ่มต้น:</Label>
+                    </div>
+                    <Select>
+                      <SelectTrigger className="w-full border border-gray-300">
+                        <SelectValue placeholder="เลือกอายุเริ่มต้น" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1 ปี</SelectItem>
+                        <SelectItem value="5">5 ปี</SelectItem>
+                        <SelectItem value="10">10 ปี</SelectItem>
+                        <SelectItem value="15">15 ปี</SelectItem>
+                        <SelectItem value="20">20 ปี</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div>
-                    <Button
-                      type="button"
-                      className={cn(
-                        "w-full border border-gray-300 bg-white text-gray-800 hover:bg-gray-50",
-                        selectedDateRange === "end" && "border-blue-500"
-                      )}
-                      variant="outline"
-                      onClick={() => setSelectedDateRange("end")}
-                    >
-                      อายุสิ้นสุด
-                    </Button>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label>อายุสิ้นสุด:</Label>
+                    </div>
+                    <Select>
+                      <SelectTrigger className="w-full border border-gray-300">
+                        <SelectValue placeholder="เลือกอายุสิ้นสุด" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="5">5 ปี</SelectItem>
+                        <SelectItem value="10">10 ปี</SelectItem>
+                        <SelectItem value="15">15 ปี</SelectItem>
+                        <SelectItem value="20">20 ปี</SelectItem>
+                        <SelectItem value="25">25 ปี</SelectItem>
+                        <SelectItem value="30">30 ปี</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label>ระยะเวลา:</Label>
+                    </div>
                     <Select>
                       <SelectTrigger className="w-full border border-gray-300">
                         <SelectValue placeholder="เลือกระยะเวลา" />
@@ -465,7 +476,7 @@ const DamageReport = () => {
                   </div>
                 </div>
 
-                {/* Group By Section */}
+                {/* Group By Section - Updated from "สรุปเงื่อนไข" to "เลือกการแบ่งกลุ่ม (แบ่งตาม)" */}
                 <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
                   <h3 className="text-lg font-medium mb-2">เลือกการแบ่งกลุ่ม (แบ่งตาม)</h3>
                   <Select value={groupBy} onValueChange={setGroupBy}>
