@@ -89,6 +89,24 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phasePosition">Phase Position *</Label>
+              <Select>
+                <SelectTrigger id="phasePosition" className="w-full border border-gray-300">
+                  <SelectValue placeholder="เลือกตำแหน่งเฟส" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="single">Single Phase</SelectItem>
+                  <SelectItem value="three">Three Phase</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
+              <Input id="imageFileName" placeholder="ชื่อไฟล์รูปภาพ" />
+            </div>
           </div>
 
           {/* Second column */}
@@ -109,21 +127,33 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phasePosition">Phase Position *</Label>
-              <Select>
-                <SelectTrigger id="phasePosition" className="w-full border border-gray-300">
-                  <SelectValue placeholder="เลือกตำแหน่งเฟส" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="single">Single Phase</SelectItem>
-                  <SelectItem value="three">Three Phase</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="primaryVoltage">พิกัดแรงดันไฟฟ้า Primary, HV (kV)</Label>
+              <Input 
+                id="primary-voltage" 
+                type="number"
+                placeholder="กรอกพิกัดแรงดันไฟฟ้า Primary"
+                className="focus-visible:ring-0"
+              />
             </div>
-
+                  
             <div className="space-y-2">
-              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-              <Input id="imageFileName" placeholder="ชื่อไฟล์รูปภาพ" />
+              <Label htmlFor="secondaryVoltage">พิกัดแรงดันไฟฟ้า Secondary, LV (kV)</Label>
+              <Input 
+                id="secondary-voltage" 
+                type="number"
+                placeholder="กรอกพิกัดแรงดันไฟฟ้า Secondary"
+                className="focus-visible:ring-0"
+              />
+            </div>
+                  
+            <div className="space-y-2">
+              <Label htmlFor="tertiaryVoltage">พิกัดแรงดันไฟฟ้า Tertiary, TV (kV)</Label>
+              <Input 
+                id="tertiary-voltage" 
+                type="number"
+                placeholder="กรอกพิกัดแรงดันไฟฟ้า Tertiary"
+                className="focus-visible:ring-0"
+              />
             </div>
 
             <div className="space-y-2">

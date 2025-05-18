@@ -30,16 +30,16 @@ const TransformerBasicInfo = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("basic");
 
-  // Mock data for transformers
+  // Mock data for transformers - added transformerType as a visible column
   const transformerData = [
-    { id: 1, name: "AN-472A", station: "สถานี 1", equipmentNo: "70000016001", manufacturer: "ABB", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2015-06-15", serialNo: "T-123456", location: "Indoor" },
-    { id: 2, name: "AN-K12A", station: "สถานี 2", equipmentNo: "70000016003", manufacturer: "OSAKA", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-03-22", serialNo: "T-234567", location: "Outdoor" },
-    { id: 3, name: "AN-472B", station: "สถานี 1", equipmentNo: "70000016201", manufacturer: "Siemens", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2018-09-10", serialNo: "T-345678", location: "Indoor" },
-    { id: 4, name: "AN-473A", station: "สถานี 3", equipmentNo: "70000016202", manufacturer: "Hitachi", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "33", installDate: "2019-11-05", serialNo: "T-456789", location: "Outdoor" },
-    { id: 5, name: "AN-474A", station: "สถานี 3", equipmentNo: "70000016203", manufacturer: "Mitsubishi", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2020-07-18", serialNo: "T-567890", location: "Indoor" },
-    { id: 6, name: "AN-475A", station: "สถานี 2", equipmentNo: "70000016204", manufacturer: "OSAKA", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2021-02-28", serialNo: "T-678901", location: "Outdoor" },
-    { id: 7, name: "AN-476A", station: "สถานี 4", equipmentNo: "70000016205", manufacturer: "ABB", capacity: "150.0", primaryVoltage: "115", secondaryVoltage: "33", installDate: "2017-05-14", serialNo: "T-789012", location: "Indoor" },
-    { id: 8, name: "AN-477A", station: "สถานี 1", equipmentNo: "70000016206", manufacturer: "Siemens", capacity: "150.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-08-20", serialNo: "T-890123", location: "Outdoor" },
+    { id: 1, name: "AN-472A", transformerType: "Power", station: "สถานี 1", equipmentNo: "70000016001", manufacturer: "ABB", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2015-06-15", serialNo: "T-123456", location: "Indoor" },
+    { id: 2, name: "AN-K12A", transformerType: "Distribution", station: "สถานี 2", equipmentNo: "70000016003", manufacturer: "OSAKA", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-03-22", serialNo: "T-234567", location: "Outdoor" },
+    { id: 3, name: "AN-472B", transformerType: "Power", station: "สถานี 1", equipmentNo: "70000016201", manufacturer: "Siemens", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2018-09-10", serialNo: "T-345678", location: "Indoor" },
+    { id: 4, name: "AN-473A", transformerType: "Distribution", station: "สถานี 3", equipmentNo: "70000016202", manufacturer: "Hitachi", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "33", installDate: "2019-11-05", serialNo: "T-456789", location: "Outdoor" },
+    { id: 5, name: "AN-474A", transformerType: "Power", station: "สถานี 3", equipmentNo: "70000016203", manufacturer: "Mitsubishi", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2020-07-18", serialNo: "T-567890", location: "Indoor" },
+    { id: 6, name: "AN-475A", transformerType: "Distribution", station: "สถานี 2", equipmentNo: "70000016204", manufacturer: "OSAKA", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2021-02-28", serialNo: "T-678901", location: "Outdoor" },
+    { id: 7, name: "AN-476A", transformerType: "Power", station: "สถานี 4", equipmentNo: "70000016205", manufacturer: "ABB", capacity: "150.0", primaryVoltage: "115", secondaryVoltage: "33", installDate: "2017-05-14", serialNo: "T-789012", location: "Indoor" },
+    { id: 8, name: "AN-477A", transformerType: "Distribution", station: "สถานี 1", equipmentNo: "70000016206", manufacturer: "Siemens", capacity: "150.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-08-20", serialNo: "T-890123", location: "Outdoor" },
   ];
 
   // Filter by region and search query
@@ -95,7 +95,7 @@ const TransformerBasicInfo = () => {
       pageDescription="Transformer Basic Information"
     >
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Filters Section - Separate from table */}
+        {/* Filters Section - with improved styling for dropdown */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -103,7 +103,7 @@ const TransformerBasicInfo = () => {
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   <Label className="text-gray-700 whitespace-nowrap">เขต:</Label>
                   <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                    <SelectTrigger className="w-full sm:w-40 focus:ring-0 border-none">
+                    <SelectTrigger className="w-full sm:w-40 focus:ring-0 border border-gray-300">
                       <SelectValue placeholder="ทั้งหมด" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border shadow-md">
@@ -134,7 +134,7 @@ const TransformerBasicInfo = () => {
           </CardContent>
         </Card>
 
-        {/* Table Section */}
+        {/* Table Section - Added "หม้อแปลงไฟฟ้า" column */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-4 md:p-6">
             <div className="overflow-x-auto">
@@ -142,6 +142,7 @@ const TransformerBasicInfo = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="text-center">Equipment No.</TableHead>
+                    <TableHead className="text-center">หม้อแปลงไฟฟ้า</TableHead>
                     <TableHead className="text-center">บริษัทผู้ผลิต</TableHead>
                     <TableHead className="text-center">พิกัดกำลังไฟฟ้า (MVA)</TableHead>
                     <TableHead className="text-center">แก้ไข</TableHead>
@@ -153,6 +154,7 @@ const TransformerBasicInfo = () => {
                     currentData.map((item) => (
                       <TableRow key={item.id} className="hover:bg-blue-50/30">
                         <TableCell className="text-center">{item.equipmentNo}</TableCell>
+                        <TableCell className="text-center">{item.transformerType}</TableCell>
                         <TableCell className="text-center">{item.manufacturer}</TableCell>
                         <TableCell className="text-center">{item.capacity}</TableCell>
                         <TableCell className="text-center">
@@ -177,7 +179,7 @@ const TransformerBasicInfo = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center">
+                      <TableCell colSpan={6} className="h-24 text-center">
                         ไม่พบข้อมูลหม้อแปลงไฟฟ้า
                       </TableCell>
                     </TableRow>
