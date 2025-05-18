@@ -30,7 +30,7 @@ const TransformerBasicInfo = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("basic");
 
-  // Mock data for transformers - added transformerType as a visible column
+  // Mock data for transformers - modified to show name in the transformer column
   const transformerData = [
     { id: 1, name: "AN-472A", transformerType: "Power", station: "สถานี 1", equipmentNo: "70000016001", manufacturer: "ABB", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2015-06-15", serialNo: "T-123456", location: "Indoor" },
     { id: 2, name: "AN-K12A", transformerType: "Distribution", station: "สถานี 2", equipmentNo: "70000016003", manufacturer: "OSAKA", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-03-22", serialNo: "T-234567", location: "Outdoor" },
@@ -134,7 +134,7 @@ const TransformerBasicInfo = () => {
           </CardContent>
         </Card>
 
-        {/* Table Section - Added "หม้อแปลงไฟฟ้า" column */}
+        {/* Table Section - Updated "หม้อแปลงไฟฟ้า" column to show name format */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-4 md:p-6">
             <div className="overflow-x-auto">
@@ -154,7 +154,7 @@ const TransformerBasicInfo = () => {
                     currentData.map((item) => (
                       <TableRow key={item.id} className="hover:bg-blue-50/30">
                         <TableCell className="text-center">{item.equipmentNo}</TableCell>
-                        <TableCell className="text-center">{item.transformerType}</TableCell>
+                        <TableCell className="text-center">{item.name}</TableCell>
                         <TableCell className="text-center">{item.manufacturer}</TableCell>
                         <TableCell className="text-center">{item.capacity}</TableCell>
                         <TableCell className="text-center">
