@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -131,14 +130,13 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
           <Table>
             <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
               <TableRow>
-                <TableHead className="w-[150px] text-center whitespace-nowrap px-6">Device No.</TableHead>
-                {/* Removed the หม้อแปลงไฟฟ้า column */}
-                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Equipment No.</TableHead>
-                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Overall Condition(%)</TableHead>
-                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Importance Index(%)</TableHead>
-                <TableHead className="text-center">Risk</TableHead>
-                <TableHead className="text-center">Status</TableHead>
-                <TableHead className="text-center">Action</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap">Device No.</TableHead>
+                <TableHead className="w-[200px] text-center whitespace-nowrap">Equipment No.</TableHead>
+                <TableHead className="w-[220px] text-center whitespace-nowrap">Overall Condition(%)</TableHead>
+                <TableHead className="w-[220px] text-center whitespace-nowrap">Importance Index(%)</TableHead>
+                <TableHead className="w-[120px] text-center">Risk</TableHead>
+                <TableHead className="w-[120px] text-center">Status</TableHead>
+                <TableHead className="w-[120px] text-center">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -146,7 +144,6 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
                 displayData.map((row, index) => (
                   <TableRow key={index} className="hover:bg-blue-50/30">
                     <TableCell className="text-center">{row.deviceNo}</TableCell>
-                    {/* Removed the transformerType cell */}
                     <TableCell className="text-center">{row.equipmentNo}</TableCell>
                     <TableCell className="text-center">{row.condition}</TableCell>
                     <TableCell className="text-center">{row.importance}</TableCell>
