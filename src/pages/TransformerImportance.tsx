@@ -408,7 +408,7 @@ const TransformerImportance = () => {
                 <div className="flex items-center space-x-2">
                   <Checkbox id="spacing" defaultChecked={isEditing} />
                   <Label className="text-sm leading-tight" htmlFor="spacing">
-                    3. มีระยะห่างระหว่างหม้อแปลง > 11 m สำหรับหม้อแปลง Loading และ > 15m สำหรับหม้อแปลง Tie หรือไม่มีหม้อแปลงรอบข้าง
+                    3. มีระยะห่างระหว่างหม้อแปลง &gt; 11 m สำหรับหม้อแปลง Loading และ &gt; 15m สำหรับหม้อแปลง Tie หรือไม่มีหม้อแปลงรอบข้าง
                   </Label>
                 </div>
                 
