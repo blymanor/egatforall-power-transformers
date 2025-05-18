@@ -46,14 +46,14 @@ const ChangePassword = () => {
     <DashboardLayout>
       <div className="container mx-auto p-6">
         <h1 className="text-2xl font-semibold mb-6">เปลี่ยนรหัสผ่านผู้ใช้</h1>
-        <Card className="w-full max-w-md mx-auto">
-          <CardHeader>
-            <CardTitle className="text-center text-xl">เปลี่ยนรหัสผ่าน</CardTitle>
+        <Card className="w-full max-w-md mx-auto border border-blue-100 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
+            <CardTitle className="text-center text-xl text-blue-800">เปลี่ยนรหัสผ่าน</CardTitle>
           </CardHeader>
           <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 p-6">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">รหัสผ่านปัจจุบัน</Label>
+                <Label htmlFor="currentPassword" className="text-blue-800 font-medium">รหัสผ่านปัจจุบัน</Label>
                 <div className="relative">
                   <Input
                     id="currentPassword"
@@ -61,24 +61,24 @@ const ChangePassword = () => {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     required
-                    className="pr-10"
+                    className="pr-10 border-blue-200 focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700"
                     onClick={() => togglePasswordVisibility('current')}
                     tabIndex={-1}
                   >
                     {showCurrentPassword ? (
-                      <EyeOff size={20} className="text-gray-400" />
+                      <EyeOff size={20} />
                     ) : (
-                      <Eye size={20} className="text-gray-400" />
+                      <Eye size={20} />
                     )}
                   </button>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="newPassword">รหัสผ่านใหม่</Label>
+                <Label htmlFor="newPassword" className="text-blue-800 font-medium">รหัสผ่านใหม่</Label>
                 <div className="relative">
                   <Input
                     id="newPassword"
@@ -86,24 +86,24 @@ const ChangePassword = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
-                    className="pr-10"
+                    className="pr-10 border-blue-200 focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700"
                     onClick={() => togglePasswordVisibility('new')}
                     tabIndex={-1}
                   >
                     {showNewPassword ? (
-                      <EyeOff size={20} className="text-gray-400" />
+                      <EyeOff size={20} />
                     ) : (
-                      <Eye size={20} className="text-gray-400" />
+                      <Eye size={20} />
                     )}
                   </button>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">ยืนยันรหัสผ่านใหม่</Label>
+                <Label htmlFor="confirmPassword" className="text-blue-800 font-medium">ยืนยันรหัสผ่านใหม่</Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
@@ -111,25 +111,28 @@ const ChangePassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="pr-10"
+                    className="pr-10 border-blue-200 focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700"
                     onClick={() => togglePasswordVisibility('confirm')}
                     tabIndex={-1}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff size={20} className="text-gray-400" />
+                      <EyeOff size={20} />
                     ) : (
-                      <Eye size={20} className="text-gray-400" />
+                      <Eye size={20} />
                     )}
                   </button>
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button type="submit" className="w-full flex items-center justify-center">
+            <CardFooter className="bg-gradient-to-r from-blue-50 to-blue-100 px-6 py-4">
+              <Button 
+                type="submit" 
+                className="w-full flex items-center justify-center bg-[#1E5CFF] hover:bg-blue-700 text-white"
+              >
                 <Lock className="mr-2 h-4 w-4" />
                 เปลี่ยนรหัสผ่าน
               </Button>

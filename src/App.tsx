@@ -77,6 +77,7 @@ const App = () => (
           {/* User Management Routes */}
           <Route path="/management" element={<UserManagement />} />
           <Route path="/management/user" element={<UserManagement />} />
+          <Route path="/management/users" element={<UserManagement />} />
           <Route path="/management/change-password" element={<ChangePassword />} />
           
           {/* Utility Routes */}
