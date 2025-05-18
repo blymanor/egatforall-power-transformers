@@ -48,7 +48,8 @@ const PaginationLink = React.forwardRef<HTMLAnchorElement, PaginationLinkProps>(
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        isActive && "bg-blue-100 border-blue-300 text-blue-700",
+        isActive && "bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 hover:text-blue-800",
+        "min-w-[2rem] text-center justify-center",
         className
       )}
       {...props}

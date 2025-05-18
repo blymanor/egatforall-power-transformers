@@ -23,6 +23,8 @@ import EconomicAnalysisPriceLoss from "./pages/EconomicAnalysisPriceLoss";
 import EconomicAnalysisInfo from "./pages/EconomicAnalysisInfo";
 import TransformerMaintenanceSearch from "./pages/TransformerMaintenanceSearch";
 import TransformerVisualInspection from "./pages/TransformerVisualInspection";
+import ChangePassword from "./pages/ChangePassword";
+import UserManagement from "./pages/UserManagement";
 
 const queryClient = new QueryClient();
 
@@ -72,10 +74,10 @@ const App = () => (
           <Route path="/transformer-maintenance/all-test-results" element={<NotFound />} />
           <Route path="/transformer-maintenance/condition-check" element={<NotFound />} />
           
-          {/* Other Main Routes */}
-          <Route path="/economic-analysis" element={<NotFound />} />
-          <Route path="/inventory" element={<NotFound />} />
-          <Route path="/management" element={<NotFound />} />
+          {/* User Management Routes */}
+          <Route path="/management" element={<UserManagement />} />
+          <Route path="/management/user" element={<UserManagement />} />
+          <Route path="/management/change-password" element={<ChangePassword />} />
           
           {/* Utility Routes */}
           <Route path="/manual" element={<NotFound />} />
