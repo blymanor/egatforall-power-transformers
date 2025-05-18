@@ -49,16 +49,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </header>
         
-        {/* Only show the page-specific header if pageTitle or pageDescription is provided */}
-        {(pageTitle || pageDescription) && (
-          <div className="bg-[#f0f4fa] p-4 md:p-6">
-            <div className="mb-2">
-              <h2 className="text-xl font-semibold text-gray-800">{pageTitle}</h2>
-              {pageDescription && <p className="text-gray-600">{pageDescription}</p>}
-            </div>
-          </div>
-        )}
-        
         {children}
       </main>
     </div>

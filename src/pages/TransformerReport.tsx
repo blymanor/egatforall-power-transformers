@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +12,6 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { PieChart, BarChart, Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -87,151 +87,107 @@ const TransformerReport = () => {
   };
 
   return (
-    <DashboardLayout
-      pageTitle="รายงานข้อมูลหม้อแปลงไฟฟ้า"
-      pageDescription="Transformer Data Report"
-    >
+    <DashboardLayout>
+      <div className="bg-[#f0f4fa] p-4 md:p-6">
+        <div className="mb-2">
+          <h2 className="text-xl font-semibold text-gray-800">รายงานข้อมูลหม้อแปลงไฟฟ้า</h2>
+          <p className="text-gray-600">Transformer Data Report</p>
+        </div>
+      </div>
+
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6 md:p-8">
-            <h2 className="text-xl font-bold mb-8 text-center">รายงานตามผู้ใช้งานสำหรับหม้อแปลงไฟฟ้า</h2>
+            <h2 className="text-lg font-bold mb-6">เลือกเงื่อนไขในการสร้างรายงาน</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">เขต :</Label>
+                  <Select value={region} onValueChange={setRegion}>
+                    <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
+                      <SelectValue placeholder="ทั้งหมด" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="north">ภาคเหนือ</SelectItem>
+                      <SelectItem value="northeast">ภาคตะวันออกเฉียงเหนือ</SelectItem>
+                      <SelectItem value="central">ภาคกลาง</SelectItem>
+                      <SelectItem value="south">ภาคใต้</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-8">
-              <div className="space-y-6">
-                <h3 className="text-blue-600 font-medium text-lg">
-                  เลือกเงื่อนไขในการสร้างรายงาน
-                </h3>
+                <div className="flex items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">สถานีไฟฟ้า :</Label>
+                  <Select value={station} onValueChange={setStation}>
+                    <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
+                      <SelectValue placeholder="ทั้งหมด" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="station1">สถานีไฟฟ้า 1</SelectItem>
+                      <SelectItem value="station2">สถานีไฟฟ้า 2</SelectItem>
+                      <SelectItem value="station3">สถานีไฟฟ้า 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Label className="w-32 text-gray-700 font-medium text-right">เขต :</Label>
-                    <Select value={region} onValueChange={setRegion}>
-                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
-                        <SelectValue placeholder="ทั้งหมด" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">ทั้งหมด</SelectItem>
-                        <SelectItem value="north">ภาคเหนือ</SelectItem>
-                        <SelectItem value="northeast">ภาคตะวันออกเฉียงเหนือ</SelectItem>
-                        <SelectItem value="central">ภาคกลาง</SelectItem>
-                        <SelectItem value="south">ภาคใต้</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="flex items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">บริษัทผู้ผลิต :</Label>
+                  <Select value={manufacturer} onValueChange={setManufacturer}>
+                    <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
+                      <SelectValue placeholder="ทั้งหมด" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="abb">ABB</SelectItem>
+                      <SelectItem value="siemens">Siemens</SelectItem>
+                      <SelectItem value="hitachi">Hitachi</SelectItem>
+                      <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                  <div className="flex items-center">
-                    <Label className="w-32 text-gray-700 font-medium text-right">สถานีไฟฟ้า :</Label>
-                    <Select value={station} onValueChange={setStation}>
-                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
-                        <SelectValue placeholder="ทั้งหมด" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">ทั้งหมด</SelectItem>
-                        <SelectItem value="station1">สถานีไฟฟ้า 1</SelectItem>
-                        <SelectItem value="station2">สถานีไฟฟ้า 2</SelectItem>
-                        <SelectItem value="station3">สถานีไฟฟ้า 3</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center">
-                    <Label className="w-32 text-gray-700 font-medium text-right">บริษัทผู้ผลิต :</Label>
-                    <Select value={manufacturer} onValueChange={setManufacturer}>
-                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
-                        <SelectValue placeholder="ทั้งหมด" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">ทั้งหมด</SelectItem>
-                        <SelectItem value="abb">ABB</SelectItem>
-                        <SelectItem value="siemens">Siemens</SelectItem>
-                        <SelectItem value="hitachi">Hitachi</SelectItem>
-                        <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center">
-                    <Label className="w-32 text-gray-700 font-medium text-right">หม้อแปลงไฟฟ้า :</Label>
-                    <Select value={transformer} onValueChange={setTransformer}>
-                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
-                        <SelectValue placeholder="ทั้งหมด" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">ทั้งหมด</SelectItem>
-                        <SelectItem value="t1">AN-472A</SelectItem>
-                        <SelectItem value="t2">AN-473A</SelectItem>
-                        <SelectItem value="t3">AN-472B</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="flex items-center gap-4">
+                  <Label className="w-32 text-gray-700 font-medium">หม้อแปลงไฟฟ้า :</Label>
+                  <Select value={transformer} onValueChange={setTransformer}>
+                    <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
+                      <SelectValue placeholder="ทั้งหมด" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="t1">AN-472A</SelectItem>
+                      <SelectItem value="t2">AN-473A</SelectItem>
+                      <SelectItem value="t3">AN-472B</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
               
-              <div className="space-y-6">
-                <h3 className="text-blue-600 font-medium text-lg mb-4">
+              <div className="space-y-4">
+                <h3 className="text-gray-700 font-medium mb-4">
                   เลือกการแบ่งกลุ่ม (แบ่งตาม)
                 </h3>
                 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="radio" 
-                      id="group-by-region" 
-                      name="group-by" 
-                      value="region" 
-                      checked={groupBy === "region"} 
-                      onChange={(e) => setGroupBy(e.target.value)}
-                      className="w-4 h-4 text-blue-600"
-                    />
-                    <Label htmlFor="group-by-region" className="text-gray-700">เขต</Label>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="radio" 
-                      id="group-by-station" 
-                      name="group-by" 
-                      value="station"
-                      checked={groupBy === "station"} 
-                      onChange={(e) => setGroupBy(e.target.value)}
-                      className="w-4 h-4 text-blue-600"
-                    />
-                    <Label htmlFor="group-by-station" className="text-gray-700">สถานีไฟฟ้า</Label>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="radio" 
-                      id="group-by-manufacturer" 
-                      name="group-by" 
-                      value="manufacturer"
-                      checked={groupBy === "manufacturer"} 
-                      onChange={(e) => setGroupBy(e.target.value)}
-                      className="w-4 h-4 text-blue-600"
-                    />
-                    <Label htmlFor="group-by-manufacturer" className="text-gray-700">บริษัทผู้ผลิต</Label>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="radio" 
-                      id="group-by-age" 
-                      name="group-by" 
-                      value="age"
-                      checked={groupBy === "age"} 
-                      onChange={(e) => setGroupBy(e.target.value)}
-                      className="w-4 h-4 text-blue-600"
-                    />
-                    <Label htmlFor="group-by-age" className="text-gray-700">อายุการใช้งาน</Label>
-                  </div>
-                </div>
+                <Select value={groupBy} onValueChange={setGroupBy}>
+                  <SelectTrigger className="w-full focus-visible:ring-0 border border-gray-300">
+                    <SelectValue placeholder="เลือกวิธีการแบ่งกลุ่ม" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="region">เขต</SelectItem>
+                    <SelectItem value="station">สถานีไฟฟ้า</SelectItem>
+                    <SelectItem value="manufacturer">บริษัทผู้ผลิต</SelectItem>
+                    <SelectItem value="age">อายุการใช้งาน</SelectItem>
+                  </SelectContent>
+                </Select>
                 
-                <div className="flex justify-center pt-6">
+                <div className="flex justify-center pt-10">
                   <Button 
                     onClick={handleGenerateReport} 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 text-lg"
                   >
-                    สร้างรายงาน
+                    Done
                   </Button>
                 </div>
               </div>
