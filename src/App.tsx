@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +18,8 @@ import TransformerBasicInfo from "./pages/TransformerBasicInfo";
 import StandardReport from "./pages/StandardReport";
 import TransformerRelocationInfo from "./pages/TransformerRelocationInfo";
 import TransformerImportance from "./pages/TransformerImportance";
+import EconomicAnalysisFactorSetting from "./pages/EconomicAnalysisFactorSetting";
+import EconomicAnalysisPriceLoss from "./pages/EconomicAnalysisPriceLoss";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +51,11 @@ const App = () => (
           
           {/* Transformer Importance Route */}
           <Route path="/transformer-importance" element={<TransformerImportance />} />
+          
+          {/* Economic Analysis Routes */}
+          <Route path="/economic-analysis" element={<EconomicAnalysisFactorSetting />} />
+          <Route path="/economic-analysis/factor-setting" element={<EconomicAnalysisFactorSetting />} />
+          <Route path="/economic-analysis/price-loss" element={<EconomicAnalysisPriceLoss />} />
           
           {/* Transformer Maintenance Routes */}
           <Route path="/transformer-maintenance" element={<NotFound />} />
