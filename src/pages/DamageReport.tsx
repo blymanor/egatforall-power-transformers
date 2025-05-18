@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
 const DamageReport = () => {
   const { toast } = useToast();
+  const [selectedCriteria, setSelectedCriteria] = useState("age");
   const [region, setRegion] = useState("");
   const [station, setStation] = useState("");
   const [manufacturer, setManufacturer] = useState("");
@@ -42,6 +43,22 @@ const DamageReport = () => {
     { name: 'สภาพแวดล้อมไม่เหมาะสม', value: 30, color: '#FF8042' },
   ];
 
+  const criteriaOptions = [
+    { id: "age", label: "อายุ" },
+    { id: "region", label: "เขต" },
+    { id: "station", label: "สถานีไฟฟ้า" },
+    { id: "manufacturer", label: "ชื่อบริษัทผู้ผลิต" },
+    { id: "transformer", label: "หม้อแปลงไฟฟ้า" },
+    { id: "environment", label: "สภาพแวดล้อม" },
+    { id: "operationCondition", label: "สภาวะการใช้งานขณะพบความผิดปกติ" },
+    { id: "abnormalityDetail", label: "รายละเอียดความผิดปกติหรือเสียหาย" },
+    { id: "equipmentGroup", label: "กลุ่มอุปกรณ์" },
+    { id: "damagedComponent", label: "ชิ้นส่วนที่เสียหายหรือผิดปกติ" },
+    { id: "riskLevel", label: "ระดับความเสียหาย" },
+    { id: "rootCause", label: "สาเหตุที่แท้จริง" },
+    { id: "management", label: "การจัดการ" },
+  ];
+
   const handleDone = () => {
     toast({
       title: "สร้างรายงานสำเร็จ",
@@ -50,8 +67,214 @@ const DamageReport = () => {
     setShowChart(true);
   };
 
+  const handleCriteriaChange = (criteriaId) => {
+    setSelectedCriteria(criteriaId);
+  };
+
   // Common styles for select triggers
   const selectTriggerClass = "w-full sm:w-64 border border-gray-300";
+
+  const renderSelectedCriteriaInput = () => {
+    switch (selectedCriteria) {
+      case "age":
+        return (
+          <div className="grid grid-cols-2 gap-4 w-full sm:w-64">
+            <div>
+              <Label className="text-sm text-gray-500 mb-1">เริ่มต้น</Label>
+              <Input 
+                type="number" 
+                value={ageMin} 
+                onChange={(e) => setAgeMin(e.target.value)}
+                placeholder="0"
+                className="w-full" 
+              />
+            </div>
+            <div>
+              <Label className="text-sm text-gray-500 mb-1">สิ้นสุด</Label>
+              <Input 
+                type="number" 
+                value={ageMax} 
+                onChange={(e) => setAgeMax(e.target.value)}
+                placeholder="50"
+                className="w-full" 
+              />
+            </div>
+          </div>
+        );
+      case "region":
+        return (
+          <Select value={region} onValueChange={setRegion}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="north">ภาคเหนือ</SelectItem>
+              <SelectItem value="northeast">ภาคตะวันออกเฉียงเหนือ</SelectItem>
+              <SelectItem value="central">ภาคกลาง</SelectItem>
+              <SelectItem value="south">ภาคใต้</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "station":
+        return (
+          <Select value={station} onValueChange={setStation}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="station1">สถานีไฟฟ้า 1</SelectItem>
+              <SelectItem value="station2">สถานีไฟฟ้า 2</SelectItem>
+              <SelectItem value="station3">สถานีไฟฟ้า 3</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "manufacturer":
+        return (
+          <Select value={manufacturer} onValueChange={setManufacturer}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="abb">ABB</SelectItem>
+              <SelectItem value="siemens">Siemens</SelectItem>
+              <SelectItem value="hitachi">Hitachi</SelectItem>
+              <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "transformer":
+        return (
+          <Select value={transformer} onValueChange={setTransformer}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="t1">AN-472A</SelectItem>
+              <SelectItem value="t2">AN-473A</SelectItem>
+              <SelectItem value="t3">AN-472B</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "environment":
+        return (
+          <Select value={environment} onValueChange={setEnvironment}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="env1">ในร่ม</SelectItem>
+              <SelectItem value="env2">กลางแจ้ง</SelectItem>
+              <SelectItem value="env3">ทะเล</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "operationCondition":
+        return (
+          <Select value={operationCondition} onValueChange={setOperationCondition}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="op1">ขณะใช้งาน</SelectItem>
+              <SelectItem value="op2">ขณะซ่อมบำรุง</SelectItem>
+              <SelectItem value="op3">ขณะหยุดการใช้งาน</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "abnormalityDetail":
+        return (
+          <Select value={abnormalityDetail} onValueChange={setAbnormalityDetail}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="abn1">Oil Leak</SelectItem>
+              <SelectItem value="abn2">Overheating</SelectItem>
+              <SelectItem value="abn3">Bushing Failure</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "equipmentGroup":
+        return (
+          <Select value={equipmentGroup} onValueChange={setEquipmentGroup}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="eq1">Main Body</SelectItem>
+              <SelectItem value="eq2">Cooling System</SelectItem>
+              <SelectItem value="eq3">Control System</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "damagedComponent":
+        return (
+          <Select value={damagedComponent} onValueChange={setDamagedComponent}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="comp1">Bushing</SelectItem>
+              <SelectItem value="comp2">Radiator</SelectItem>
+              <SelectItem value="comp3">Gasket</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "riskLevel":
+        return (
+          <Select value={riskLevel} onValueChange={setRiskLevel}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="low">ต่ำ</SelectItem>
+              <SelectItem value="medium">ปานกลาง</SelectItem>
+              <SelectItem value="high">สูง</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "rootCause":
+        return (
+          <Select value={rootCause} onValueChange={setRootCause}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="cause1">การเสื่อมสภาพตามอายุ</SelectItem>
+              <SelectItem value="cause2">ความผิดพลาดจากผู้ปฏิบัติงาน</SelectItem>
+              <SelectItem value="cause3">สภาพแวดล้อมไม่เหมาะสม</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case "management":
+        return (
+          <Select value={management} onValueChange={setManagement}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Please Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="mgmt1">ซ่อมแซม</SelectItem>
+              <SelectItem value="mgmt2">เปลี่ยนอะไหล่</SelectItem>
+              <SelectItem value="mgmt3">เปลี่ยนทั้งหมด</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -74,213 +297,23 @@ const DamageReport = () => {
                 เลือกเงื่อนไขในการสร้างกราฟ (เลือกได้เพียงหนึ่งเงื่อนไขเท่านั้น)
               </h3>
 
-              <div className="grid grid-cols-1 gap-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">อายุ :</Label>
-                  <div className="grid grid-cols-2 gap-4 w-full sm:w-64">
-                    <div>
-                      <Label className="text-sm text-gray-500 mb-1">เริ่มต้น</Label>
-                      <Input 
-                        type="number" 
-                        value={ageMin} 
-                        onChange={(e) => setAgeMin(e.target.value)}
-                        placeholder="0"
-                        className="w-full" 
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm text-gray-500 mb-1">สิ้นสุด</Label>
-                      <Input 
-                        type="number" 
-                        value={ageMax} 
-                        onChange={(e) => setAgeMax(e.target.value)}
-                        placeholder="50"
-                        className="w-full" 
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {criteriaOptions.map((criteria) => (
+                  <Button
+                    key={criteria.id}
+                    variant={selectedCriteria === criteria.id ? "default" : "outline"}
+                    className={selectedCriteria === criteria.id ? "bg-blue-600" : ""}
+                    onClick={() => handleCriteriaChange(criteria.id)}
+                  >
+                    {criteria.label}
+                  </Button>
+                ))}
+              </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">เขต :</Label>
-                  <Select value={region} onValueChange={setRegion}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="north">ภาคเหนือ</SelectItem>
-                      <SelectItem value="northeast">ภาคตะวันออกเฉียงเหนือ</SelectItem>
-                      <SelectItem value="central">ภาคกลาง</SelectItem>
-                      <SelectItem value="south">ภาคใต้</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">สถานีไฟฟ้า :</Label>
-                  <Select value={station} onValueChange={setStation}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="station1">สถานีไฟฟ้า 1</SelectItem>
-                      <SelectItem value="station2">สถานีไฟฟ้า 2</SelectItem>
-                      <SelectItem value="station3">สถานีไฟฟ้า 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">ชื่อบริษัทผู้ผลิต :</Label>
-                  <Select value={manufacturer} onValueChange={setManufacturer}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="abb">ABB</SelectItem>
-                      <SelectItem value="siemens">Siemens</SelectItem>
-                      <SelectItem value="hitachi">Hitachi</SelectItem>
-                      <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">หม้อแปลงไฟฟ้า :</Label>
-                  <Select value={transformer} onValueChange={setTransformer}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="t1">AN-472A</SelectItem>
-                      <SelectItem value="t2">AN-473A</SelectItem>
-                      <SelectItem value="t3">AN-472B</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">สภาพแวดล้อม :</Label>
-                  <Select value={environment} onValueChange={setEnvironment}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="env1">ในร่ม</SelectItem>
-                      <SelectItem value="env2">กลางแจ้ง</SelectItem>
-                      <SelectItem value="env3">ทะเล</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium whitespace-normal sm:whitespace-nowrap">สภาวะการใช้งาน <br className="sm:hidden" />ขณะพบความผิดปกติ :</Label>
-                  <Select value={operationCondition} onValueChange={setOperationCondition}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="op1">ขณะใช้งาน</SelectItem>
-                      <SelectItem value="op2">ขณะซ่อมบำรุง</SelectItem>
-                      <SelectItem value="op3">ขณะหยุดการใช้งาน</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium whitespace-normal sm:whitespace-nowrap">รายละเอียดความ<br className="sm:hidden" />ผิดปกติหรือเสียหาย :</Label>
-                  <Select value={abnormalityDetail} onValueChange={setAbnormalityDetail}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="abn1">Oil Leak</SelectItem>
-                      <SelectItem value="abn2">Overheating</SelectItem>
-                      <SelectItem value="abn3">Bushing Failure</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">กลุ่มอุปกรณ์ :</Label>
-                  <Select value={equipmentGroup} onValueChange={setEquipmentGroup}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="eq1">Main Body</SelectItem>
-                      <SelectItem value="eq2">Cooling System</SelectItem>
-                      <SelectItem value="eq3">Control System</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium whitespace-normal sm:whitespace-nowrap">ชิ้นส่วนที่เสียหาย<br className="sm:hidden" />หรือผิดปกติ :</Label>
-                  <Select value={damagedComponent} onValueChange={setDamagedComponent}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="comp1">Bushing</SelectItem>
-                      <SelectItem value="comp2">Radiator</SelectItem>
-                      <SelectItem value="comp3">Gasket</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">ระดับความเสียหาย :</Label>
-                  <Select value={riskLevel} onValueChange={setRiskLevel}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="low">ต่ำ</SelectItem>
-                      <SelectItem value="medium">ปานกลาง</SelectItem>
-                      <SelectItem value="high">สูง</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">สาเหตุที่แท้จริง :</Label>
-                  <Select value={rootCause} onValueChange={setRootCause}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="cause1">การเสื่อมสภาพตามอายุ</SelectItem>
-                      <SelectItem value="cause2">ความผิดพลาดจากผู้ปฏิบัติงาน</SelectItem>
-                      <SelectItem value="cause3">สภาพแวดล้อมไม่เหมาะสม</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Label className="w-32 text-gray-700 font-medium">การจัดการ :</Label>
-                  <Select value={management} onValueChange={setManagement}>
-                    <SelectTrigger className={selectTriggerClass}>
-                      <SelectValue placeholder="Please Select..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="mgmt1">ซ่อมแซม</SelectItem>
-                      <SelectItem value="mgmt2">เปลี่ยนอะไหล่</SelectItem>
-                      <SelectItem value="mgmt3">เปลี่ยนทั้งหมด</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <Label className="w-48 text-gray-700 font-medium">{criteriaOptions.find(c => c.id === selectedCriteria)?.label} :</Label>
+                <div className="flex-1">
+                  {renderSelectedCriteriaInput()}
                 </div>
               </div>
             </div>
