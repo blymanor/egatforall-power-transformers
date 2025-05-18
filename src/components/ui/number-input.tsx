@@ -59,7 +59,7 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<Rea
         {...props}
       >
         <input
-          type="number"
+          type="text"
           value={value}
           onChange={handleChange}
           className={cn(
@@ -70,16 +70,18 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<Rea
           max={max}
           step={step}
           disabled={disabled}
+          inputMode="numeric"
         />
-        <div className="absolute right-1 flex flex-col">
+        <div className="absolute right-1 top-0 bottom-0 flex flex-col justify-center">
           <button
             type="button"
             onClick={handleIncrease}
             className={cn(
-              "flex h-4 w-6 items-center justify-center rounded-sm opacity-70 hover:opacity-100",
+              "flex h-5 w-6 items-center justify-center rounded-sm opacity-70 hover:opacity-100 hover:bg-gray-100",
               buttonClassName
             )}
             disabled={disabled}
+            aria-label="Increase value"
           >
             <ChevronUp className="h-3 w-3" />
           </button>
@@ -87,10 +89,11 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<Rea
             type="button"
             onClick={handleDecrease}
             className={cn(
-              "flex h-4 w-6 items-center justify-center rounded-sm opacity-70 hover:opacity-100",
+              "flex h-5 w-6 items-center justify-center rounded-sm opacity-70 hover:opacity-100 hover:bg-gray-100",
               buttonClassName
             )}
             disabled={disabled}
+            aria-label="Decrease value"
           >
             <ChevronDown className="h-3 w-3" />
           </button>

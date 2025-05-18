@@ -15,43 +15,86 @@ import { NumberInput } from "@/components/ui/number-input";
 import { toast } from "sonner";
 import { Calculator } from "lucide-react";
 
+// Mock transformers database - in a real app, this would come from API
 const mockTransformers = [
-  { id: "1", name: "AN-KT1A", equipmentNo: "7000016200" },
-  { id: "2", name: "BN-KT2A", equipmentNo: "7000016201" },
-  { id: "3", name: "CN-KT3A", equipmentNo: "7000016202" },
+  { 
+    id: "1", 
+    name: "AN-KT1A", 
+    equipmentNo: "7000016200",
+    mvaRating: "50.0",
+    hvRating: "115.0",
+    firstEnergized: "12/02/2007",
+    manufacturer: "ABB",
+    oltcManufacturer: "ABB",
+    oltcType: "UZFRN330/300",
+    vectoryGroup: "YYd1",
+    windingType: "Three Winging",
+    price: 600000,
+    noLoadLoss: 90,
+    loadLoss: 400
+  },
+  { 
+    id: "2", 
+    name: "BN-KT2A", 
+    equipmentNo: "7000016201",
+    mvaRating: "75.0",
+    hvRating: "230.0",
+    firstEnergized: "05/11/2012",
+    manufacturer: "Siemens",
+    oltcManufacturer: "Siemens",
+    oltcType: "VZFN250/200",
+    vectoryGroup: "YNd1",
+    windingType: "Double Winging",
+    price: 850000,
+    noLoadLoss: 120,
+    loadLoss: 520
+  },
+  { 
+    id: "3", 
+    name: "CN-KT3A", 
+    equipmentNo: "7000016202",
+    mvaRating: "100.0",
+    hvRating: "345.0",
+    firstEnergized: "17/08/2015",
+    manufacturer: "GE",
+    oltcManufacturer: "GE",
+    oltcType: "HTFN420/350",
+    vectoryGroup: "YYd11",
+    windingType: "Three Winging",
+    price: 1200000,
+    noLoadLoss: 150,
+    loadLoss: 680
+  },
 ];
-
-// Mock transformer details - in a real app, this would come from API
-const transformerDetails = {
-  name: "AN-KT1A",
-  equipmentNo: "7000016200",
-  mvaRating: "50.0",
-  hvRating: "115.0",
-  firstEnergized: "12/02/2007",
-  manufacturer: "ABB",
-  oltcManufacturer: "ABB",
-  oltcType: "UZFRN330/300",
-  vectoryGroup: "YYd1",
-  windingType: "Three Winging",
-  price: 600000,
-  noLoadLoss: 90,
-  loadLoss: 400
-};
 
 const EconomicAnalysisPriceLoss = () => {
   const [selectedTransformer, setSelectedTransformer] = useState<string>("");
   const [showDetails, setShowDetails] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<{ totalCost: number; annualLoss: number } | null>(null);
   
-  // Mock data for the transformer
+  // Current transformer data
+  const [currentTransformer, setCurrentTransformer] = useState(mockTransformers[0]);
+  
+  // Input data for analysis
   const [transformerData, setTransformerData] = useState({
-    price: transformerDetails.price,
-    noLoadLoss: transformerDetails.noLoadLoss,
-    loadLoss: transformerDetails.loadLoss,
+    price: 0,
+    noLoadLoss: 0,
+    loadLoss: 0,
   });
 
   const handleTransformerSelect = (value: string) => {
     setSelectedTransformer(value);
+    const selected = mockTransformers.find(t => t.id === value);
+    
+    if (selected) {
+      setCurrentTransformer(selected);
+      setTransformerData({
+        price: selected.price,
+        noLoadLoss: selected.noLoadLoss,
+        loadLoss: selected.loadLoss,
+      });
+    }
+    
     setShowDetails(true);
     setAnalysisResult(null);
   };
@@ -102,7 +145,7 @@ const EconomicAnalysisPriceLoss = () => {
                   <SelectContent>
                     {mockTransformers.map(transformer => (
                       <SelectItem key={transformer.id} value={transformer.id}>
-                        {transformer.name} - {transformer.equipmentNo}
+                        {transformer.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -119,43 +162,43 @@ const EconomicAnalysisPriceLoss = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="font-medium">Transformer Name:</span>
-                        <span>{transformerDetails.name}</span>
+                        <span>{currentTransformer.name}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">Equipment No.:</span>
-                        <span>{transformerDetails.equipmentNo}</span>
+                        <span>{currentTransformer.equipmentNo}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">MVA Rating:</span>
-                        <span>{transformerDetails.mvaRating} MVA</span>
+                        <span>{currentTransformer.mvaRating} MVA</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">HV Rating:</span>
-                        <span>{transformerDetails.hvRating} kV</span>
+                        <span>{currentTransformer.hvRating} kV</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">First Energized:</span>
-                        <span>{transformerDetails.firstEnergized}</span>
+                        <span>{currentTransformer.firstEnergized}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">Manufacturer:</span>
-                        <span>{transformerDetails.manufacturer}</span>
+                        <span>{currentTransformer.manufacturer}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">OLTC Manufacturer:</span>
-                        <span>{transformerDetails.oltcManufacturer}</span>
+                        <span>{currentTransformer.oltcManufacturer}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">OLTC Type:</span>
-                        <span>{transformerDetails.oltcType}</span>
+                        <span>{currentTransformer.oltcType}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">Vectory Group:</span>
-                        <span>{transformerDetails.vectoryGroup}</span>
+                        <span>{currentTransformer.vectoryGroup}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="font-medium">Winding Type:</span>
-                        <span>{transformerDetails.windingType}</span>
+                        <span>{currentTransformer.windingType}</span>
                       </div>
                     </div>
                   </CardContent>
