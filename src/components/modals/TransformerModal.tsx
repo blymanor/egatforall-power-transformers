@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Dialog,
@@ -77,21 +76,20 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
           </DialogDescription>
         </DialogHeader>
 
-        {/* Image file name field - Moved to top outside of the grid */}
-        <div className="mb-4">
-          <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-          <Input 
-            id="imageFileName" 
-            placeholder="ชื่อไฟล์รูปภาพ" 
-            value={imageFileName}
-            onChange={(e) => setImageFileName(e.target.value)}
-            className="w-full"
-          />
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
           {/* First column */}
           <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
+              <Input 
+                id="imageFileName" 
+                placeholder="ชื่อไฟล์รูปภาพ" 
+                value={imageFileName}
+                onChange={(e) => setImageFileName(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="deviceNo">Device No. *</Label>
               <Input 
@@ -174,7 +172,10 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 </SelectContent>
               </Select>
             </div>
+          </div>
 
+          {/* Second column */}
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="phasePosition">Phase Position *</Label>
               <Select value={phasePosition} onValueChange={setPhasePosition}>
@@ -187,10 +188,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 </SelectContent>
               </Select>
             </div>
-          </div>
-
-          {/* Second column */}
-          <div className="space-y-4">
+            
             <div className="space-y-2">
               <Label htmlFor="manufactureYear">Manufacture Year *</Label>
               <Input 
@@ -279,7 +277,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
           </div>
         </div>
 
-        <DialogFooter className="flex justify-end space-x-2">
+        <DialogFooter className="flex justify-end space-x-2 border-t pt-4 mt-2">
           <Button variant="outline" onClick={onClose}>
             ยกเลิก
           </Button>

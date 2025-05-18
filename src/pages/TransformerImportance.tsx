@@ -130,8 +130,8 @@ const TransformerImportance = () => {
         </div>
       </div>
 
-      <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        <Card className="bg-white shadow-md rounded-lg overflow-hidden border-0 max-w-5xl mx-auto">
+      <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa] flex justify-center">
+        <Card className="bg-white shadow-md rounded-lg overflow-hidden border-0 max-w-5xl w-full">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
               <div className="flex flex-col md:flex-row items-center gap-4">
@@ -173,24 +173,26 @@ const TransformerImportance = () => {
                       <TableCell className="text-center">{index + 1}</TableCell>
                       <TableCell className="text-center">{item.transformerName}</TableCell>
                       <TableCell className="text-center">{format(item.recordDate, "dd/MM/yyyy")}</TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-center p-2">
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           onClick={() => handleEditImportance(item.id)}
-                          className="mx-auto"
+                          className="mx-auto flex items-center justify-center w-full"
                         >
-                          <Edit className="h-4 w-4 text-blue-600" />
+                          <Edit className="h-4 w-4 text-blue-600 mr-1" />
+                          <span className="whitespace-nowrap">แก้ไข</span>
                         </Button>
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-center p-2">
                         <Button 
                           variant="ghost" 
                           size="sm"
                           onClick={() => handleDeleteImportance(item.id)}
-                          className="mx-auto"
+                          className="mx-auto flex items-center justify-center w-full"
                         >
-                          <Trash2 className="h-4 w-4 text-red-600" />
+                          <Trash2 className="h-4 w-4 text-red-600 mr-1" />
+                          <span className="whitespace-nowrap">ลบ</span>
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -220,59 +222,63 @@ const TransformerImportance = () => {
           </DialogHeader>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 gap-5">
-                <div className="flex items-center gap-4">
-                  <Label className="w-32 text-gray-700">ชื่อหม้อแปลง:</Label>
-                  <Select defaultValue={isEditing ? selectedTransformer : undefined}>
-                    <SelectTrigger className="w-full border border-gray-300">
-                      <SelectValue placeholder="เลือกหม้อแปลง" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
-                      <SelectItem value="AN-KT2B">AN-KT2B</SelectItem>
-                      <SelectItem value="AN-KT2C">AN-KT2C</SelectItem>
-                      <SelectItem value="AN-KT2D">AN-KT2D</SelectItem>
-                      <SelectItem value="AN-KT2E">AN-KT2E</SelectItem>
-                      <SelectItem value="AN-KT2F">AN-KT2F</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            <div className="space-y-6">
+              <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                <div className="grid grid-cols-1 gap-5">
+                  <div className="flex flex-col gap-1.5">
+                    <Label className="text-gray-700">ชื่อหม้อแปลง:</Label>
+                    <Select defaultValue={isEditing ? selectedTransformer : undefined}>
+                      <SelectTrigger className="w-full border border-gray-300">
+                        <SelectValue placeholder="เลือกหม้อแปลง" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
+                        <SelectItem value="AN-KT2B">AN-KT2B</SelectItem>
+                        <SelectItem value="AN-KT2C">AN-KT2C</SelectItem>
+                        <SelectItem value="AN-KT2D">AN-KT2D</SelectItem>
+                        <SelectItem value="AN-KT2E">AN-KT2E</SelectItem>
+                        <SelectItem value="AN-KT2F">AN-KT2F</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div className="flex items-center gap-4">
-                  <Label className="w-32 text-gray-700">วันที่บันทึก:</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? format(date, "dd/MM/yyyy") : <span>เลือกวันที่</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                        className={cn("p-3 pointer-events-auto")}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <div className="flex flex-col gap-1.5">
+                    <Label className="text-gray-700">วันที่บันทึก:</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {date ? format(date, "dd/MM/yyyy") : <span>เลือกวันที่</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                          className="p-3"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-4 pt-2">
+              <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 space-y-5">
+                <h3 className="text-lg font-medium text-gray-800 mb-3">System Parameters</h3>
+                
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Bus Voltage HV side [kV]:</Label>
                     <Select defaultValue={isEditing ? "115" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -295,7 +301,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Bus Voltage LV side [kV]:</Label>
                     <Select defaultValue={isEditing ? "22" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -313,12 +319,16 @@ const TransformerImportance = () => {
                     </div>
                   </div>
                 </div>
+              </div>
 
+              <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 space-y-5">
+                <h3 className="text-lg font-medium text-gray-800 mb-3">Operational Parameters</h3>
+                
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-gray-700 block mb-1.5">Probability Of Force Outage Per Year:</Label>
+                    <Label className="text-gray-700 block mb-1.5">Probability Of Force Outage:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -331,7 +341,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Social Aspect:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -347,7 +357,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Load Shedding:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -360,7 +370,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Public Image:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -376,7 +386,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">N-1 Criteria:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -389,7 +399,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Application Use:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -405,7 +415,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">System Stability:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -418,7 +428,7 @@ const TransformerImportance = () => {
                   <div>
                     <Label className="text-gray-700 block mb-1.5">Pollution:</Label>
                     <Select defaultValue={isEditing ? "medium" : undefined}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="เลือก" />
                       </SelectTrigger>
                       <SelectContent>
@@ -433,44 +443,44 @@ const TransformerImportance = () => {
             </div>
 
             <div className="space-y-6">
-              <div className="border border-gray-200 rounded-lg p-5 space-y-3 bg-gray-50">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 space-y-3">
                 <h3 className="text-lg font-medium mb-3 text-gray-800">Damage Of Property</h3>
                 
-                <div className="flex items-start space-x-2">
+                <div className="flex items-start space-x-2 p-2 hover:bg-gray-100 rounded-md">
                   <Checkbox id="fire-wall" defaultChecked={isEditing} className="mt-1" />
                   <Label htmlFor="fire-wall" className="text-gray-700">1. มีผนังกันไฟ (Fire Wall)</Label>
                 </div>
                 
-                <div className="flex items-start space-x-2">
+                <div className="flex items-start space-x-2 p-2 hover:bg-gray-100 rounded-md">
                   <Checkbox id="oil-pit" defaultChecked={isEditing} className="mt-1" />
                   <Label htmlFor="oil-pit" className="text-gray-700">2. มี Oil Pit</Label>
                 </div>
                 
-                <div className="flex items-start space-x-2">
+                <div className="flex items-start space-x-2 p-2 hover:bg-gray-100 rounded-md">
                   <Checkbox id="spacing" defaultChecked={isEditing} className="mt-1" />
                   <Label className="text-gray-700 leading-tight" htmlFor="spacing">
                     3. มีระยะห่างระหว่างหม้อแปลง &gt; 11 m สำหรับหม้อแปลง Loading และ &gt; 15m สำหรับหม้อแปลง Tie หรือไม่มีหม้อแปลงรอบข้าง
                   </Label>
                 </div>
                 
-                <div className="flex items-start space-x-2">
+                <div className="flex items-start space-x-2 p-2 hover:bg-gray-100 rounded-md">
                   <Checkbox id="fire-system" defaultChecked={isEditing} className="mt-1" />
                   <Label htmlFor="fire-system" className="text-gray-700">4. มีระบบดับเพลิง หรือสารดับเพลิงที่พร้อมใช้งาน</Label>
                 </div>
                 
-                <div className="flex items-start space-x-2">
+                <div className="flex items-start space-x-2 p-2 hover:bg-gray-100 rounded-md">
                   <Checkbox id="none-above" className="mt-1" />
                   <Label htmlFor="none-above" className="text-gray-700">5. ไม่มีทั้ง 4 ข้อข้างต้น</Label>
                 </div>
               </div>
               
-              <div className="border border-gray-200 rounded-lg p-5 space-y-4 bg-gray-50">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 space-y-4">
                 <h3 className="text-lg font-medium mb-2 text-gray-800">Load Factor</h3>
                 
-                <div className="grid grid-cols-2 gap-3 items-center">
+                <div className="grid grid-cols-2 gap-3 items-center p-2 hover:bg-gray-100 rounded-md">
                   <Label htmlFor="lf-1" className="text-gray-700">{"<= 0.6"}</Label>
                   <Select defaultValue={isEditing ? "3" : undefined}>
-                    <SelectTrigger id="lf-1">
+                    <SelectTrigger id="lf-1" className="w-full">
                       <SelectValue placeholder="จำนวนเดือน" />
                     </SelectTrigger>
                     <SelectContent>
@@ -483,10 +493,10 @@ const TransformerImportance = () => {
                   </Select>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3 items-center">
+                <div className="grid grid-cols-2 gap-3 items-center p-2 hover:bg-gray-100 rounded-md">
                   <Label htmlFor="lf-2" className="text-gray-700">{"0.6 < LF <= 1"}</Label>
                   <Select defaultValue={isEditing ? "4" : undefined}>
-                    <SelectTrigger id="lf-2">
+                    <SelectTrigger id="lf-2" className="w-full">
                       <SelectValue placeholder="จำนวนเดือน" />
                     </SelectTrigger>
                     <SelectContent>
@@ -499,10 +509,10 @@ const TransformerImportance = () => {
                   </Select>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3 items-center">
+                <div className="grid grid-cols-2 gap-3 items-center p-2 hover:bg-gray-100 rounded-md">
                   <Label htmlFor="lf-3" className="text-gray-700">{"1 < LF <= 1.2"}</Label>
                   <Select defaultValue={isEditing ? "3" : undefined}>
-                    <SelectTrigger id="lf-3">
+                    <SelectTrigger id="lf-3" className="w-full">
                       <SelectValue placeholder="จำนวนเดือน" />
                     </SelectTrigger>
                     <SelectContent>
@@ -515,10 +525,10 @@ const TransformerImportance = () => {
                   </Select>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3 items-center">
+                <div className="grid grid-cols-2 gap-3 items-center p-2 hover:bg-gray-100 rounded-md">
                   <Label htmlFor="lf-4" className="text-gray-700">{"1.2 < LF <= 1.5"}</Label>
                   <Select defaultValue={isEditing ? "2" : undefined}>
-                    <SelectTrigger id="lf-4">
+                    <SelectTrigger id="lf-4" className="w-full">
                       <SelectValue placeholder="จำนวนเดือน" />
                     </SelectTrigger>
                     <SelectContent>
@@ -531,10 +541,10 @@ const TransformerImportance = () => {
                   </Select>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3 items-center">
+                <div className="grid grid-cols-2 gap-3 items-center p-2 hover:bg-gray-100 rounded-md">
                   <Label htmlFor="lf-5" className="text-gray-700">{"< 1.5"}</Label>
                   <Select defaultValue={isEditing ? "0" : undefined}>
-                    <SelectTrigger id="lf-5">
+                    <SelectTrigger id="lf-5" className="w-full">
                       <SelectValue placeholder="จำนวนเดือน" />
                     </SelectTrigger>
                     <SelectContent>
@@ -550,7 +560,7 @@ const TransformerImportance = () => {
             </div>
           </div>
 
-          <DialogFooter className="pt-2">
+          <DialogFooter className="pt-2 border-t mt-4">
             <Button variant="outline" onClick={() => setIsModalOpen(false)} className="border-gray-300">
               ยกเลิก
             </Button>
