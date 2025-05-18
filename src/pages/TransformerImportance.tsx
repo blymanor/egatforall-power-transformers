@@ -1,199 +1,217 @@
+
 import React, { useState } from "react";
-import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Edit, Trash2, Plus } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
-// Mock data for transformer importance list
-const mockTransformerImportanceData = [
-  { id: 1, transformerName: "AN-KT2A", recordedDate: "28/05/2025" },
-  { id: 2, transformerName: "AN-KT2A", recordedDate: "28/05/2025" },
-  { id: 3, transformerName: "AN-KT2A", recordedDate: "28/05/2025" },
-  { id: 4, transformerName: "AN-KT2A", recordedDate: "28/05/2025" }
+// Mock data for demonstration
+const transformerOptions = [
+  { id: "t1", name: "หม้อแปลงไฟฟ้า A" },
+  { id: "t2", name: "หม้อแปลงไฟฟ้า B" },
+  { id: "t3", name: "หม้อแปลงไฟฟ้า C" },
+  { id: "t4", name: "หม้อแปลงไฟฟ้า D" },
 ];
 
-// Mock data for transformers dropdown
-const transformers = [
-  { id: 1, name: "AN-KT2A" },
-  { id: 2, name: "AN-472A" },
-  { id: 3, name: "AN-473A" },
-  { id: 4, name: "AN-474A" }
+const mockData = [
+  {
+    id: "1",
+    transformerName: "หม้อแปลงไฟฟ้า A",
+    date: "2023-05-16",
+    busVoltageHV: "115",
+    faultLevelHVKA: "40",
+    faultLevelHVMVA: "7962",
+    busVoltageLV: "22",
+    faultLevelLVKA: "25",
+    faultLevelLVMVA: "950",
+    probabilityOutage: "1",
+    socialAspect: "high",
+    loadShedding: "medium",
+    publicImage: "high",
+    n1Criteria: "important",
+    applicationUse: "very-important",
+    systemStability: "critical",
+    pollution: "medium",
+    damageProperty: [true, true, false, true, false],
+    loadFactor: {
+      "0.6": "3",
+      "0.6-1": "6",
+      "1-1.2": "2",
+      "1.2-1.5": "1",
+      ">1.5": "0",
+    },
+  },
+  {
+    id: "2",
+    transformerName: "หม้อแปลงไฟฟ้า B",
+    date: "2023-06-22",
+    busVoltageHV: "230",
+    faultLevelHVKA: "50",
+    faultLevelHVMVA: "19899",
+    busVoltageLV: "115",
+    faultLevelLVKA: "40",
+    faultLevelLVMVA: "7962",
+    probabilityOutage: "2",
+    socialAspect: "medium",
+    loadShedding: "high",
+    publicImage: "medium",
+    n1Criteria: "very-important",
+    applicationUse: "important",
+    systemStability: "high",
+    pollution: "low",
+    damageProperty: [false, true, true, true, false],
+    loadFactor: {
+      "0.6": "4",
+      "0.6-1": "5",
+      "1-1.2": "3",
+      "1.2-1.5": "0",
+      ">1.5": "0",
+    },
+  },
 ];
+
+interface RecordType {
+  id: string;
+  transformerName: string;
+  date: string;
+  busVoltageHV: string;
+  faultLevelHVKA: string;
+  faultLevelHVMVA: string;
+  busVoltageLV: string;
+  faultLevelLVKA: string;
+  faultLevelLVMVA: string;
+  probabilityOutage: string;
+  socialAspect: string;
+  loadShedding: string;
+  publicImage: string;
+  n1Criteria: string;
+  applicationUse: string;
+  systemStability: string;
+  pollution: string;
+  damageProperty: boolean[];
+  loadFactor: {
+    "0.6": string;
+    "0.6-1": string;
+    "1-1.2": string;
+    "1.2-1.5": string;
+    ">1.5": string;
+  };
+}
 
 const TransformerImportance = () => {
   const { toast } = useToast();
-  const [showModal, setShowModal] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
   const [selectedTransformer, setSelectedTransformer] = useState("");
-  
-  // Form states
-  const [formData, setFormData] = useState({
-    transformerName: "",
-    recordedDate: "",
-    busVoltageHV: "115",
-    systemFaultLevelHV: "",
-    mvaHV: "",
-    busVoltageLV: "22",
-    systemFaultLevelLV: "",
-    mvaLV: "",
-    probabilityOfForceOutage: "1",
-    socialAspect: "เมือง",
-    loadShedding: "Step 2",
-    publicImage: "Yes",
-    n1Criteria: "No",
-    applicationUse: "In-Service",
-    systemStability: "Loading 115/22 or 33 kV",
-    pollution: "High (25 mm/kV), ESDD: 0.04-0.15 mg/cm2",
-    damageOfProperty: {
-      fireWall: false,
-      oilPit: false,
-      spacing: false,
-      fireExtinguisher: false,
-      none: false
-    },
-    loadFactorMonths: {
-      lessThan06: "0",
-      between06And1: "0",
-      between1And12: "0",
-      between12And15: "0",
-      greaterThan15: "0"
+  const [records, setRecords] = useState<RecordType[]>(mockData);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<RecordType | null>(null);
+
+  const generateRandomId = () => {
+    return Math.random().toString(36).substring(2, 9);
+  };
+
+  const handleAddNewRecord = () => {
+    const emptyRecord: RecordType = {
+      id: generateRandomId(),
+      transformerName: selectedTransformer,
+      date: new Date().toISOString().split("T")[0],
+      busVoltageHV: "",
+      faultLevelHVKA: "",
+      faultLevelHVMVA: "",
+      busVoltageLV: "",
+      faultLevelLVKA: "",
+      faultLevelLVMVA: "",
+      probabilityOutage: "",
+      socialAspect: "",
+      loadShedding: "",
+      publicImage: "",
+      n1Criteria: "",
+      applicationUse: "",
+      systemStability: "",
+      pollution: "",
+      damageProperty: [false, false, false, false, false],
+      loadFactor: {
+        "0.6": "",
+        "0.6-1": "",
+        "1-1.2": "",
+        "1.2-1.5": "",
+        ">1.5": "",
+      },
+    };
+
+    setEditingRecord(emptyRecord);
+    setIsDialogOpen(true);
+  };
+
+  const handleEditRecord = (record: RecordType) => {
+    setEditingRecord({ ...record });
+    setIsDialogOpen(true);
+  };
+
+  const handleDeleteRecord = (id: string) => {
+    setRecords((prev) => prev.filter((record) => record.id !== id));
+    toast({
+      title: "ลบรายการสำเร็จ",
+      description: "ลบข้อมูลความสำคัญของหม้อแปลงเรียบร้อยแล้ว",
+    });
+  };
+
+  const handleSaveRecord = () => {
+    if (editingRecord) {
+      if (records.some((r) => r.id === editingRecord.id)) {
+        // Update existing record
+        setRecords((prev) =>
+          prev.map((record) =>
+            record.id === editingRecord.id ? editingRecord : record
+          )
+        );
+        toast({
+          title: "แก้ไขรายการสำเร็จ",
+          description: "อัปเดตข้อมูลความสำคัญของหม้อแปลงเรียบร้อยแล้ว",
+        });
+      } else {
+        // Add new record
+        setRecords((prev) => [...prev, editingRecord]);
+        toast({
+          title: "เพิ่มรายการสำเร็จ",
+          description: "บันทึกข้อมูลความสำคัญของหม้อแปลงเรียบร้อยแล้ว",
+        });
+      }
+      setIsDialogOpen(false);
+      setEditingRecord(null);
     }
-  });
-  
-  // Handle modal open for adding new item
-  const handleAddNew = () => {
-    setIsEditing(false);
-    setCurrentItem(null);
-    // Reset form data
-    setFormData({
-      transformerName: selectedTransformer || "",
-      recordedDate: new Date().toISOString().split('T')[0],
-      busVoltageHV: "115",
-      systemFaultLevelHV: "",
-      mvaHV: "",
-      busVoltageLV: "22",
-      systemFaultLevelLV: "",
-      mvaLV: "",
-      probabilityOfForceOutage: "1",
-      socialAspect: "เมือง",
-      loadShedding: "Step 2",
-      publicImage: "Yes",
-      n1Criteria: "No",
-      applicationUse: "In-Service",
-      systemStability: "Loading 115/22 or 33 kV",
-      pollution: "High (25 mm/kV), ESDD: 0.04-0.15 mg/cm2",
-      damageOfProperty: {
-        fireWall: false,
-        oilPit: false,
-        spacing: false,
-        fireExtinguisher: false,
-        none: false
-      },
-      loadFactorMonths: {
-        lessThan06: "0",
-        between06And1: "0",
-        between1And12: "0",
-        between12And15: "0",
-        greaterThan15: "0"
-      }
-    });
-    setShowModal(true);
   };
-  
-  // Handle modal open for editing
-  const handleEdit = (item) => {
-    setIsEditing(true);
-    setCurrentItem(item);
-    // Populate form with item data (in a real app, you would fetch the complete data)
-    setFormData({
-      transformerName: item.transformerName,
-      recordedDate: item.recordedDate.split('/').reverse().join('-'),
-      busVoltageHV: "115",
-      systemFaultLevelHV: "6.332",
-      mvaHV: "1261.20",
-      busVoltageLV: "22",
-      systemFaultLevelLV: "8.308",
-      mvaLV: "316.568",
-      probabilityOfForceOutage: "1",
-      socialAspect: "เมือง",
-      loadShedding: "Step 2",
-      publicImage: "Yes",
-      n1Criteria: "No",
-      applicationUse: "In-Service",
-      systemStability: "Loading 115/22 or 33 kV",
-      pollution: "High (25 mm/kV), ESDD: 0.04-0.15 mg/cm2",
-      damageOfProperty: {
-        fireWall: true,
-        oilPit: false,
-        spacing: false,
-        fireExtinguisher: false,
-        none: false
-      },
-      loadFactorMonths: {
-        lessThan06: "12",
-        between06And1: "0",
-        between1And12: "0",
-        between12And15: "0",
-        greaterThan15: "0"
-      }
-    });
-    setShowModal(true);
+
+  const handleDamagePropertyChange = (index: number, checked: boolean) => {
+    if (editingRecord) {
+      const newDamageProperty = [...editingRecord.damageProperty];
+      newDamageProperty[index] = checked;
+      setEditingRecord({ ...editingRecord, damageProperty: newDamageProperty });
+    }
   };
-  
-  // Handle delete
-  const handleDelete = (item) => {
-    toast({
-      title: "รายการถูกลบแล้ว",
-      description: `รายการความสำคัญของหม้อแปลง ${item.transformerName} ถูกลบแล้ว`,
-    });
-  };
-  
-  // Handle save
-  const handleSave = () => {
-    toast({
-      title: isEditing ? "บันทึกการแก้ไขสำเร็จ" : "เพิ่มรายการสำเร็จ",
-      description: isEditing 
-        ? `แก้ไขข้อมูลความสำคัญของหม้อแปลง ${formData.transformerName} เรียบร้อยแล้ว` 
-        : `เพิ่มข้อมูลความสำคัญของหม้อแปลง ${formData.transformerName} เรียบร้อยแล้ว`,
-    });
-    setShowModal(false);
-  };
-  
-  // Handle checkbox change
-  const handleCheckboxChange = (field) => {
-    setFormData(prev => ({
-      ...prev,
-      damageOfProperty: {
-        ...prev.damageOfProperty,
-        [field]: !prev.damageOfProperty[field]
-      }
-    }));
-  };
-  
-  // Handle input change
-  const handleInputChange = (field, value) => {
-    if (field.includes('.')) {
-      const [parent, child] = field.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [field]: value
-      }));
+
+  const handleLoadFactorChange = (key: keyof RecordType['loadFactor'], value: string) => {
+    if (editingRecord) {
+      setEditingRecord({
+        ...editingRecord,
+        loadFactor: { ...editingRecord.loadFactor, [key]: value },
+      });
     }
   };
 
@@ -202,537 +220,579 @@ const TransformerImportance = () => {
       <div className="bg-[#f0f4fa] p-4 md:p-6">
         <div className="mb-2">
           <h2 className="text-xl font-semibold text-gray-800">รายการความสำคัญของหม้อแปลง</h2>
-          <p className="text-gray-600">Transformer Importance List</p>
+          <p className="text-gray-600">Transformer Importance Records</p>
         </div>
       </div>
 
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Search and Add Section */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div className="flex items-center gap-3 w-full sm:w-auto">
-                <Label className="whitespace-nowrap">ชื่อหม้อแปลงไฟฟ้า:</Label>
-                <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
-                  <SelectTrigger className="w-full sm:w-60 border border-gray-300">
+          <CardContent className="p-6 md:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-4 w-full md:w-auto">
+                <Label htmlFor="transformer-select" className="whitespace-nowrap">
+                  ชื่อหม้อแปลงไฟฟ้า :
+                </Label>
+                <Select
+                  value={selectedTransformer}
+                  onValueChange={setSelectedTransformer}
+                >
+                  <SelectTrigger id="transformer-select" className="w-full md:w-[250px]">
                     <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    {transformers.map((transformer) => (
-                      <SelectItem key={transformer.id} value={transformer.name}>
-                        {transformer.name}
+                  <SelectContent>
+                    {transformerOptions.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-
               <Button 
-                onClick={handleAddNew}
-                className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+                onClick={handleAddNewRecord} 
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full md:w-auto"
               >
-                <Plus className="h-5 w-5" />
                 เพิ่มรายการความสำคัญของหม้อแปลง
               </Button>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Table Section */}
-        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
-          <CardContent className="p-4 md:p-6">
             <div className="overflow-x-auto">
-              <Table>
-                <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
-                  <TableRow>
-                    <TableHead className="text-center w-16">ลำดับที่</TableHead>
-                    <TableHead className="text-center">ชื่อหม้อแปลงไฟฟ้า</TableHead>
-                    <TableHead className="text-center">วันที่บันทึก</TableHead>
-                    <TableHead className="text-center w-28">แก้ไขรายการ</TableHead>
-                    <TableHead className="text-center w-28">ลบรายการ</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockTransformerImportanceData.map((item, index) => (
-                    <TableRow key={item.id} className="hover:bg-blue-50/30">
-                      <TableCell className="text-center">{index + 1}</TableCell>
-                      <TableCell className="text-center">{item.transformerName}</TableCell>
-                      <TableCell className="text-center">{item.recordedDate}</TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-slate-100">
+                    <th className="border border-slate-200 p-2 text-center">ลำดับที่</th>
+                    <th className="border border-slate-200 p-2 text-left">ชื่อหม้อแปลงไฟฟ้า</th>
+                    <th className="border border-slate-200 p-2 text-center">วันที่บันทึก</th>
+                    <th className="border border-slate-200 p-2 text-center">แก้ไขรายการ</th>
+                    <th className="border border-slate-200 p-2 text-center">ลบรายการ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {records.map((record, index) => (
+                    <tr key={record.id} className={index % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                      <td className="border border-slate-200 p-2 text-center">{index + 1}</td>
+                      <td className="border border-slate-200 p-2">
+                        {transformerOptions.find((t) => t.id === record.transformerName)?.name || record.transformerName}
+                      </td>
+                      <td className="border border-slate-200 p-2 text-center">{record.date}</td>
+                      <td className="border border-slate-200 p-2 text-center">
+                        <Button 
+                          onClick={() => handleEditRecord(record)}
+                          variant="outline" 
+                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
                           size="sm"
-                          onClick={() => handleEdit(item)}
-                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                         >
-                          <Edit className="h-5 w-5" />
-                          <span className="sr-only">Edit</span>
+                          แก้ไข
                         </Button>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
+                      </td>
+                      <td className="border border-slate-200 p-2 text-center">
+                        <Button 
+                          onClick={() => handleDeleteRecord(record.id)}
+                          variant="outline" 
+                          className="text-red-600 hover:text-red-800 hover:bg-red-50"
                           size="sm"
-                          onClick={() => handleDelete(item)}
-                          className="text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
                         >
-                          <Trash2 className="h-5 w-5" />
-                          <span className="sr-only">Delete</span>
+                          ลบ
                         </Button>
-                      </TableCell>
-                    </TableRow>
+                      </td>
+                    </tr>
                   ))}
-                </TableBody>
-              </Table>
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Add/Edit Modal */}
-      <Dialog open={showModal} onOpenChange={setShowModal}>
+      {/* Modal for adding/editing records */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-xl">
-              {isEditing ? "แก้ไขข้อมูลความสำคัญของหม้อแปลง" : "เพิ่มข้อมูลความสำคัญของหม้อแปลง"}
+            <DialogTitle>
+              {editingRecord && records.some((r) => r.id === editingRecord.id)
+                ? "แก้ไขรายการความสำคัญของหม้อแปลง"
+                : "เพิ่มรายการความสำคัญของหม้อแปลง"}
             </DialogTitle>
           </DialogHeader>
-          
-          <div className="py-4 space-y-6">
-            {/* Basic Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="transformer-name">ชื่อหม้อแปลง</Label>
-                <Select 
-                  value={formData.transformerName} 
-                  onValueChange={(value) => handleInputChange('transformerName', value)}
-                >
-                  <SelectTrigger id="transformer-name" className="w-full border border-gray-300">
-                    <SelectValue placeholder="เลือกหม้อแปลง" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    {transformers.map((transformer) => (
-                      <SelectItem key={transformer.id} value={transformer.name}>
-                        {transformer.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="recorded-date">วันที่บันทึก</Label>
-                <Input
-                  id="recorded-date"
-                  type="date"
-                  value={formData.recordedDate}
-                  onChange={(e) => handleInputChange('recordedDate', e.target.value)}
-                  className="border border-gray-300"
-                />
-              </div>
-            </div>
-            
-            {/* HV Voltage Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Bus Voltage HV side [kV]</Label>
-                <Select 
-                  value={formData.busVoltageHV} 
-                  onValueChange={(value) => handleInputChange('busVoltageHV', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="115">115</SelectItem>
-                    <SelectItem value="230">230</SelectItem>
-                    <SelectItem value="500">500</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>System Fault Level: HV side [kA]</Label>
-                <Input
-                  type="text"
-                  value={formData.systemFaultLevelHV}
-                  onChange={(e) => handleInputChange('systemFaultLevelHV', e.target.value)}
-                  className="border border-gray-300"
-                  placeholder="กรอกค่า"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label>[MVA]</Label>
-                <Input
-                  type="text"
-                  value={formData.mvaHV}
-                  onChange={(e) => handleInputChange('mvaHV', e.target.value)}
-                  className="border border-gray-300"
-                  placeholder="กรอกค่า"
-                />
-              </div>
-            </div>
-            
-            {/* LV Voltage Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Bus Voltage LV side [kV]</Label>
-                <Select 
-                  value={formData.busVoltageLV} 
-                  onValueChange={(value) => handleInputChange('busVoltageLV', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="22">22</SelectItem>
-                    <SelectItem value="33">33</SelectItem>
-                    <SelectItem value="115">115</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>System Fault Level: LV side [kA]</Label>
-                <Input
-                  type="text"
-                  value={formData.systemFaultLevelLV}
-                  onChange={(e) => handleInputChange('systemFaultLevelLV', e.target.value)}
-                  className="border border-gray-300"
-                  placeholder="กรอกค่า"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label>[MVA]</Label>
-                <Input
-                  type="text"
-                  value={formData.mvaLV}
-                  onChange={(e) => handleInputChange('mvaLV', e.target.value)}
-                  className="border border-gray-300"
-                  placeholder="กรอกค่า"
-                />
-              </div>
-            </div>
-            
-            {/* Other Parameters - Row 1 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>Probability Of Force Outage Per Year</Label>
-                <Select 
-                  value={formData.probabilityOfForceOutage} 
-                  onValueChange={(value) => handleInputChange('probabilityOfForceOutage', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="2">2</SelectItem>
-                    <SelectItem value="3">3</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Social Aspect</Label>
-                <Select 
-                  value={formData.socialAspect} 
-                  onValueChange={(value) => handleInputChange('socialAspect', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="เมือง">เมือง</SelectItem>
-                    <SelectItem value="ชนบท">ชนบท</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            {/* Other Parameters - Row 2 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>Load Shedding</Label>
-                <Select 
-                  value={formData.loadShedding} 
-                  onValueChange={(value) => handleInputChange('loadShedding', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="Step 1">Step 1</SelectItem>
-                    <SelectItem value="Step 2">Step 2</SelectItem>
-                    <SelectItem value="Step 3">Step 3</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Public Image</Label>
-                <Select 
-                  value={formData.publicImage} 
-                  onValueChange={(value) => handleInputChange('publicImage', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="Yes">Yes</SelectItem>
-                    <SelectItem value="No">No</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            {/* Other Parameters - Row 3 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>N-1 Criteria</Label>
-                <Select 
-                  value={formData.n1Criteria} 
-                  onValueChange={(value) => handleInputChange('n1Criteria', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="Yes">Yes</SelectItem>
-                    <SelectItem value="No">No</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Application Use</Label>
-                <Select 
-                  value={formData.applicationUse} 
-                  onValueChange={(value) => handleInputChange('applicationUse', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="In-Service">In-Service</SelectItem>
-                    <SelectItem value="Standby">Standby</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            {/* Other Parameters - Row 4 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>System Stability</Label>
-                <Select 
-                  value={formData.systemStability} 
-                  onValueChange={(value) => handleInputChange('systemStability', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md max-h-60">
-                    <SelectItem value="Loading 115/22 or 33 kV">Loading 115/22 or 33 kV</SelectItem>
-                    <SelectItem value="Tie 115/22 or 33 kV">Tie 115/22 or 33 kV</SelectItem>
-                    <SelectItem value="Loading 230/115 kV">Loading 230/115 kV</SelectItem>
-                    <SelectItem value="Tie 230/115 kV">Tie 230/115 kV</SelectItem>
-                    <SelectItem value="Loading 500/230 kV">Loading 500/230 kV</SelectItem>
-                    <SelectItem value="Tie 500/230 kV">Tie 500/230 kV</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Pollution</Label>
-                <Select 
-                  value={formData.pollution} 
-                  onValueChange={(value) => handleInputChange('pollution', value)}
-                >
-                  <SelectTrigger className="w-full border border-gray-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md max-h-60">
-                    <SelectItem value="Low (16 mm/kV), ESDD: < 0.03 mg/cm2">
-                      Low (16 mm/kV), ESDD: &lt; 0.03 mg/cm2
-                    </SelectItem>
-                    <SelectItem value="Medium (20 mm/kV), ESDD: 0.03-0.06 mg/cm2">
-                      Medium (20 mm/kV), ESDD: 0.03-0.06 mg/cm2
-                    </SelectItem>
-                    <SelectItem value="High (25 mm/kV), ESDD: 0.04-0.15 mg/cm2">
-                      High (25 mm/kV), ESDD: 0.04-0.15 mg/cm2
-                    </SelectItem>
-                    <SelectItem value="Very High (31 mm/kV), ESDD: 0.1-0.3 mg/cm2">
-                      Very High (31 mm/kV), ESDD: 0.1-0.3 mg/cm2
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            {/* Damage Of Property Section */}
-            <div className="space-y-3">
-              <Label className="text-lg font-medium">Damage Of Property</Label>
-              <div className="space-y-2 pl-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="fire-wall" 
-                    checked={formData.damageOfProperty.fireWall}
-                    onCheckedChange={() => handleCheckboxChange('fireWall')}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            {/* Left column */}
+            <div className="space-y-4">
+              {/* Transformer and Date */}
+              <div className="grid grid-cols-1 gap-4 mb-4">
+                <div className="space-y-2">
+                  <Label htmlFor="transformer-name">ชื่อหม้อแปลง</Label>
+                  <Select
+                    value={editingRecord?.transformerName}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, transformerName: value })
+                    }
+                  >
+                    <SelectTrigger id="transformer-name">
+                      <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {transformerOptions.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="record-date">วันที่บันทึก</Label>
+                  <Input
+                    id="record-date"
+                    type="date"
+                    value={editingRecord?.date}
+                    onChange={(e) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, date: e.target.value })
+                    }
                   />
-                  <Label htmlFor="fire-wall" className="font-normal">1. มีผนังกันไฟ (Fire Wall)</Label>
                 </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="oil-pit" 
-                    checked={formData.damageOfProperty.oilPit}
-                    onCheckedChange={() => handleCheckboxChange('oilPit')}
+              </div>
+
+              {/* HV Side */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Label>Bus Voltage HV side [kV]:</Label>
+                  <Select
+                    value={editingRecord?.busVoltageHV}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, busVoltageHV: value })
+                    }
+                  >
+                    <SelectTrigger className="w-24">
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="69">69</SelectItem>
+                      <SelectItem value="115">115</SelectItem>
+                      <SelectItem value="230">230</SelectItem>
+                      <SelectItem value="500">500</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Label className="ml-4">System Fault Level: HV side</Label>
+                  <Input
+                    className="w-20"
+                    placeholder="kA"
+                    value={editingRecord?.faultLevelHVKA}
+                    onChange={(e) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, faultLevelHVKA: e.target.value })
+                    }
                   />
-                  <Label htmlFor="oil-pit" className="font-normal">2. มี Oil Pit</Label>
+                  <Input
+                    className="w-20"
+                    placeholder="MVA"
+                    value={editingRecord?.faultLevelHVMVA}
+                    onChange={(e) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, faultLevelHVMVA: e.target.value })
+                    }
+                  />
                 </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="spacing" 
-                    checked={formData.damageOfProperty.spacing}
-                    onCheckedChange={() => handleCheckboxChange('spacing')}
+              </div>
+
+              {/* LV Side */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Label>Bus Voltage LV side [kV]:</Label>
+                  <Select
+                    value={editingRecord?.busVoltageLV}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, busVoltageLV: value })
+                    }
+                  >
+                    <SelectTrigger className="w-24">
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="22">22</SelectItem>
+                      <SelectItem value="33">33</SelectItem>
+                      <SelectItem value="69">69</SelectItem>
+                      <SelectItem value="115">115</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Label className="ml-4">System Fault Level: LV side</Label>
+                  <Input
+                    className="w-20"
+                    placeholder="kA"
+                    value={editingRecord?.faultLevelLVKA}
+                    onChange={(e) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, faultLevelLVKA: e.target.value })
+                    }
                   />
-                  <Label htmlFor="spacing" className="font-normal">
-                    3. มีระยะห่างระหว่างหม้อแปลง &gt; 11 m สำหรับหม้อแปลง Loading และ &gt; 15m สำหรับหม้อแปลง Tie หรือไม่มีหม้อแปลงรอบข้าง
-                  </Label>
+                  <Input
+                    className="w-20"
+                    placeholder="MVA"
+                    value={editingRecord?.faultLevelLVMVA}
+                    onChange={(e) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, faultLevelLVMVA: e.target.value })
+                    }
+                  />
                 </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="fire-extinguisher" 
-                    checked={formData.damageOfProperty.fireExtinguisher}
-                    onCheckedChange={() => handleCheckboxChange('fireExtinguisher')}
-                  />
-                  <Label htmlFor="fire-extinguisher" className="font-normal">
-                    4. มีระบบดับเพลิง หรือสารดับเพลิงที่พร้อมใช้งาน
-                  </Label>
+              </div>
+
+              {/* Probability and Social */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Probability Of Force Outage Per Year:</Label>
+                  <Select
+                    value={editingRecord?.probabilityOutage}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, probabilityOutage: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 ครั้ง/ปี</SelectItem>
+                      <SelectItem value="2">2 ครั้ง/ปี</SelectItem>
+                      <SelectItem value="3">3 ครั้ง/ปี</SelectItem>
+                      <SelectItem value="4">มากกว่า 3 ครั้ง/ปี</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="none" 
-                    checked={formData.damageOfProperty.none}
-                    onCheckedChange={() => handleCheckboxChange('none')}
-                  />
-                  <Label htmlFor="none" className="font-normal">5. ไม่มีทั้ง 4 ข้อข้างต้น</Label>
+                <div className="space-y-2">
+                  <Label>Social Aspect:</Label>
+                  <Select
+                    value={editingRecord?.socialAspect}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, socialAspect: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">ต่ำ</SelectItem>
+                      <SelectItem value="medium">กลาง</SelectItem>
+                      <SelectItem value="high">สูง</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Load Shedding and Public Image */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Load Shedding:</Label>
+                  <Select
+                    value={editingRecord?.loadShedding}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, loadShedding: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">ต่ำ</SelectItem>
+                      <SelectItem value="medium">กลาง</SelectItem>
+                      <SelectItem value="high">สูง</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Public Image:</Label>
+                  <Select
+                    value={editingRecord?.publicImage}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, publicImage: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">ต่ำ</SelectItem>
+                      <SelectItem value="medium">กลาง</SelectItem>
+                      <SelectItem value="high">สูง</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
-            
-            {/* Load Factor Section */}
-            <div className="space-y-3">
-              <Label className="text-lg font-medium">Load Factor</Label>
-              
-              <div className="border rounded-md overflow-hidden">
-                <div className="bg-blue-600 text-white grid grid-cols-2 p-3">
-                  <div className="font-medium">Load Factor</div>
-                  <div className="font-medium">Number of Months</div>
+
+            {/* Right column */}
+            <div className="space-y-4">
+              {/* N-1 Criteria and Application Use */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>N-1 Criteria:</Label>
+                  <Select
+                    value={editingRecord?.n1Criteria}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, n1Criteria: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="not-important">ไม่สำคัญ</SelectItem>
+                      <SelectItem value="important">สำคัญ</SelectItem>
+                      <SelectItem value="very-important">สำคัญมาก</SelectItem>
+                      <SelectItem value="critical">วิกฤติ</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                
-                <div className="divide-y">
-                  <div className="grid grid-cols-2 p-3 items-center hover:bg-gray-50">
-                    <div>&lt;= 0.6</div>
-                    <Select 
-                      value={formData.loadFactorMonths.lessThan06} 
-                      onValueChange={(value) => handleInputChange('loadFactorMonths.lessThan06', value)}
-                    >
-                      <SelectTrigger className="w-full border border-gray-300">
-                        <SelectValue placeholder="0" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border shadow-md">
-                        {Array.from({ length: 13 }).map((_, i) => (
-                          <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                <div className="space-y-2">
+                  <Label>Application Use:</Label>
+                  <Select
+                    value={editingRecord?.applicationUse}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, applicationUse: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="not-important">ไม่สำคัญ</SelectItem>
+                      <SelectItem value="important">สำคัญ</SelectItem>
+                      <SelectItem value="very-important">สำคัญมาก</SelectItem>
+                      <SelectItem value="critical">วิกฤติ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* System Stability and Pollution */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>System Stability:</Label>
+                  <Select
+                    value={editingRecord?.systemStability}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, systemStability: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">ต่ำ</SelectItem>
+                      <SelectItem value="medium">กลาง</SelectItem>
+                      <SelectItem value="high">สูง</SelectItem>
+                      <SelectItem value="critical">วิกฤติ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Pollution:</Label>
+                  <Select
+                    value={editingRecord?.pollution}
+                    onValueChange={(value) =>
+                      editingRecord && setEditingRecord({ ...editingRecord, pollution: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="เลือก" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">ต่ำ</SelectItem>
+                      <SelectItem value="medium">ปานกลาง</SelectItem>
+                      <SelectItem value="high">สูง</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Damage of Property */}
+              <div className="space-y-4 mt-6">
+                <h3 className="font-medium text-gray-800">Damage Of Property</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="damage-1"
+                      checked={editingRecord?.damageProperty[0]}
+                      onCheckedChange={(checked) => 
+                        handleDamagePropertyChange(0, checked === true)
+                      }
+                    />
+                    <Label htmlFor="damage-1">1. มีผนังกันไฟ (Fire Wall)</Label>
                   </div>
-                  
-                  <div className="grid grid-cols-2 p-3 items-center hover:bg-gray-50">
-                    <div>0.6 &lt; LF &lt;= 1</div>
-                    <Select 
-                      value={formData.loadFactorMonths.between06And1} 
-                      onValueChange={(value) => handleInputChange('loadFactorMonths.between06And1', value)}
-                    >
-                      <SelectTrigger className="w-full border border-gray-300">
-                        <SelectValue placeholder="0" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border shadow-md">
-                        {Array.from({ length: 13 }).map((_, i) => (
-                          <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="damage-2" 
+                      checked={editingRecord?.damageProperty[1]}
+                      onCheckedChange={(checked) => 
+                        handleDamagePropertyChange(1, checked === true)
+                      }
+                    />
+                    <Label htmlFor="damage-2">2. มี Oil Pit</Label>
                   </div>
-                  
-                  <div className="grid grid-cols-2 p-3 items-center hover:bg-gray-50">
-                    <div>1 &lt; LF &lt;= 1.2</div>
-                    <Select 
-                      value={formData.loadFactorMonths.between1And12} 
-                      onValueChange={(value) => handleInputChange('loadFactorMonths.between1And12', value)}
-                    >
-                      <SelectTrigger className="w-full border border-gray-300">
-                        <SelectValue placeholder="0" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border shadow-md">
-                        {Array.from({ length: 13 }).map((_, i) => (
-                          <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="flex items-start space-x-2">
+                    <Checkbox 
+                      id="damage-3" 
+                      className="mt-1"
+                      checked={editingRecord?.damageProperty[2]}
+                      onCheckedChange={(checked) => 
+                        handleDamagePropertyChange(2, checked === true)
+                      }
+                    />
+                    <Label htmlFor="damage-3" className="text-sm">
+                      3. มีระยะห่างระหว่างหม้อแปลง &gt; 11 m สำหรับหม้อแปลง Loading
+                      <br />และ &gt; 15m สำหรับหม้อแปลง Tie หรือไม่มีหม้อแปลงรอบข้าง
+                    </Label>
                   </div>
-                  
-                  <div className="grid grid-cols-2 p-3 items-center hover:bg-gray-50">
-                    <div>1.2 &lt; LF &lt;= 1.5</div>
-                    <Select 
-                      value={formData.loadFactorMonths.between12And15} 
-                      onValueChange={(value) => handleInputChange('loadFactorMonths.between12And15', value)}
-                    >
-                      <SelectTrigger className="w-full border border-gray-300">
-                        <SelectValue placeholder="0" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border shadow-md">
-                        {Array.from({ length: 13 }).map((_, i) => (
-                          <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="damage-4" 
+                      checked={editingRecord?.damageProperty[3]}
+                      onCheckedChange={(checked) => 
+                        handleDamagePropertyChange(3, checked === true)
+                      }
+                    />
+                    <Label htmlFor="damage-4">4. มีระบบดับเพลิง หรือสารดับเพลิงที่พร้อมใช้งาน</Label>
                   </div>
-                  
-                  <div className="grid grid-cols-2 p-3 items-center hover:bg-gray-50">
-                    <div>&lt; 1.5</div>
-                    <Select 
-                      value={formData.loadFactorMonths.greaterThan15} 
-                      onValueChange={(value) => handleInputChange('loadFactorMonths.greaterThan15', value)}
-                    >
-                      <SelectTrigger className="w-full border border-gray-300">
-                        <SelectValue placeholder="0" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border shadow-md">
-                        {Array.from({ length: 13 }).map((_, i) => (
-                          <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="damage-5" 
+                      checked={editingRecord?.damageProperty[4]}
+                      onCheckedChange={(checked) => 
+                        handleDamagePropertyChange(4, checked === true)
+                      }
+                    />
+                    <Label htmlFor="damage-5">5. ไม่มีทั้ง 4 ข้อข้างต้น</Label>
                   </div>
+                </div>
+              </div>
+
+              {/* Load Factor */}
+              <div className="space-y-4 mt-6">
+                <h3 className="font-medium text-gray-800">Load Factor</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr>
+                        <th className="text-left pb-2 pr-4">Load Factor</th>
+                        <th className="text-left pb-2">Number of Months</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="py-2 pr-4">&lt;= 0.6</td>
+                        <td className="py-2">
+                          <Select
+                            value={editingRecord?.loadFactor["0.6"]}
+                            onValueChange={(value) => handleLoadFactorChange("0.6", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="เลือก" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({length: 13}).map((_, i) => (
+                                <SelectItem key={i} value={i.toString()}>
+                                  {i}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4">0.6 &lt; LF &lt;= 1</td>
+                        <td className="py-2">
+                          <Select
+                            value={editingRecord?.loadFactor["0.6-1"]}
+                            onValueChange={(value) => handleLoadFactorChange("0.6-1", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="เลือก" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({length: 13}).map((_, i) => (
+                                <SelectItem key={i} value={i.toString()}>
+                                  {i}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4">1 &lt; LF &lt;= 1.2</td>
+                        <td className="py-2">
+                          <Select
+                            value={editingRecord?.loadFactor["1-1.2"]}
+                            onValueChange={(value) => handleLoadFactorChange("1-1.2", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="เลือก" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({length: 13}).map((_, i) => (
+                                <SelectItem key={i} value={i.toString()}>
+                                  {i}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4">1.2 &lt; LF &lt;= 1.5</td>
+                        <td className="py-2">
+                          <Select
+                            value={editingRecord?.loadFactor["1.2-1.5"]}
+                            onValueChange={(value) => handleLoadFactorChange("1.2-1.5", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="เลือก" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({length: 13}).map((_, i) => (
+                                <SelectItem key={i} value={i.toString()}>
+                                  {i}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4">&gt; 1.5</td>
+                        <td className="py-2">
+                          <Select
+                            value={editingRecord?.loadFactor[">1.5"]}
+                            onValueChange={(value) => handleLoadFactorChange(">1.5", value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="เลือก" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({length: 13}).map((_, i) => (
+                                <SelectItem key={i} value={i.toString()}>
+                                  {i}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
-          
-          <DialogFooter className="sm:justify-end pt-2">
-            <Button variant="outline" onClick={() => setShowModal(false)} className="mr-2">
+
+          <DialogFooter className="mt-6">
+            <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
               ยกเลิก
             </Button>
-            <Button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700">
-              {isEditing ? "บันทึกการแก้ไข" : "บันทึก"}
+            <Button 
+              type="button" 
+              onClick={handleSaveRecord} 
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              บันทึก
             </Button>
           </DialogFooter>
         </DialogContent>
