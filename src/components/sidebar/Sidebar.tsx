@@ -119,15 +119,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
           ]}
         />
         
+        {/* Modified: Removed subMenuItems from transformer-importance */}
         <SidebarItem 
           icon="transformer-importance" 
           path="/transformer-importance" 
           label="ความสำคัญหม้อแปลง" 
           collapsed={collapsed}
-          subMenuItems={[
-            { icon: "add-item", label: "เพิ่มรายการ", path: "/transformer-importance/add" },
-            { icon: "search", label: "ค้นหาและแก้ไข", path: "/transformer-importance/search" }
-          ]}
         />
         
         <SidebarItem 
