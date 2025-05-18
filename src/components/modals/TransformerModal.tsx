@@ -80,6 +80,17 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
           {/* First column */}
           <div className="space-y-4">
+            {/* Moved "ชื่อไฟล์รูปภาพที่ต้องการเก็บ" to be first in this column */}
+            <div className="space-y-2">
+              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
+              <Input 
+                id="imageFileName" 
+                placeholder="ชื่อไฟล์รูปภาพ" 
+                value={imageFileName}
+                onChange={(e) => setImageFileName(e.target.value)}
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="deviceNo">Device No. *</Label>
               <Input 
@@ -169,16 +180,6 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                   <SelectItem value="three">Three Phase</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-              <Input 
-                id="imageFileName" 
-                placeholder="ชื่อไฟล์รูปภาพ" 
-                value={imageFileName}
-                onChange={(e) => setImageFileName(e.target.value)}
-              />
             </div>
           </div>
 

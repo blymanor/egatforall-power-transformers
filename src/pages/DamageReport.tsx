@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -83,9 +82,9 @@ const DamageReport = () => {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* Date Range Selection Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="col-span-1 md:col-span-3">
+                {/* Date Range Selection Section - MODIFIED: Removed "ระยะเวลา" dropdown */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="col-span-1 md:col-span-2">
                     <div className="flex text-blue-600 font-medium">เลือกเงื่อนไขในการสร้างกราฟ (เพียงหนึ่งเงื่อนไขเท่านั้น)</div>
                   </div>
                   <div>
@@ -120,24 +119,6 @@ const DamageReport = () => {
                         <SelectItem value="20">20 ปี</SelectItem>
                         <SelectItem value="25">25 ปี</SelectItem>
                         <SelectItem value="30">30 ปี</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <Label>ระยะเวลา:</Label>
-                    </div>
-                    <Select>
-                      <SelectTrigger className="w-full border border-gray-300">
-                        <SelectValue placeholder="เลือกระยะเวลา" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">1 ปี</SelectItem>
-                        <SelectItem value="5">5 ปี</SelectItem>
-                        <SelectItem value="10">10 ปี</SelectItem>
-                        <SelectItem value="15">15 ปี</SelectItem>
-                        <SelectItem value="20">20 ปี</SelectItem>
-                        <SelectItem value="custom">กำหนดเอง</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
