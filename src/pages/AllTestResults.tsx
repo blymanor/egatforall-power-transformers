@@ -197,7 +197,7 @@ const AllTestResults = () => {
         <Card className="max-w-full overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-white p-6 border-b">
             <CardTitle className="text-xl font-bold text-blue-700">
-              ข้อมูลบำรุงรักษาหม้อแปลง - ดูข้อมูลผลการทดสอบทั้งหมด
+              ผลการทดสอบของหม้อแปลงไฟฟ้า
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
