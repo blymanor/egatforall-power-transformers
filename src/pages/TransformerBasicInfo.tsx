@@ -90,28 +90,23 @@ const TransformerBasicInfo = () => {
   };
 
   return (
-    <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0442AF]">ข้อมูลพื้นฐานหม้อแปลงไฟฟ้า</h1>
-          <p className="text-gray-500">Transformer Basic Information</p>
-        </div>
-      </header>
-
+    <DashboardLayout
+      pageTitle="ข้อมูลพื้นฐานหม้อแปลงไฟฟ้า"
+      pageDescription="Transformer Basic Information"
+    >
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
+        {/* Filters Section - Separate from table */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
-          <CardContent className="p-6 md:p-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <h2 className="text-xl font-bold">หม้อแปลงไฟฟ้า</h2>
-                
-                <div className="flex items-center gap-3">
-                  <Label className="text-gray-700">เขต:</Label>
+          <CardContent className="p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  <Label className="text-gray-700 whitespace-nowrap">เขต:</Label>
                   <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                    <SelectTrigger className="w-40">
+                    <SelectTrigger className="w-full sm:w-40 focus:ring-0 border-none">
                       <SelectValue placeholder="ทั้งหมด" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border shadow-md">
                       <SelectItem value="all">ทั้งหมด</SelectItem>
                       <SelectItem value="สถานี 1">สถานี 1</SelectItem>
                       <SelectItem value="สถานี 2">สถานี 2</SelectItem>
@@ -127,7 +122,7 @@ const TransformerBasicInfo = () => {
                     placeholder="ค้นหาหม้อแปลง..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 focus-visible:ring-0"
                   />
                 </div>
               </div>
@@ -136,12 +131,16 @@ const TransformerBasicInfo = () => {
                 + เพิ่มหม้อแปลงไฟฟ้า
               </Button>
             </div>
+          </CardContent>
+        </Card>
 
+        {/* Table Section */}
+        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
+          <CardContent className="p-4 md:p-6">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center">หม้อแปลงไฟฟ้า</TableHead>
                     <TableHead className="text-center">Equipment No.</TableHead>
                     <TableHead className="text-center">บริษัทผู้ผลิต</TableHead>
                     <TableHead className="text-center">พิกัดกำลังไฟฟ้า (MVA)</TableHead>
@@ -153,7 +152,6 @@ const TransformerBasicInfo = () => {
                   {currentData.length > 0 ? (
                     currentData.map((item) => (
                       <TableRow key={item.id} className="hover:bg-blue-50/30">
-                        <TableCell className="text-center">{item.name}</TableCell>
                         <TableCell className="text-center">{item.equipmentNo}</TableCell>
                         <TableCell className="text-center">{item.manufacturer}</TableCell>
                         <TableCell className="text-center">{item.capacity}</TableCell>
@@ -179,7 +177,7 @@ const TransformerBasicInfo = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6} className="h-24 text-center">
+                      <TableCell colSpan={5} className="h-24 text-center">
                         ไม่พบข้อมูลหม้อแปลงไฟฟ้า
                       </TableCell>
                     </TableRow>
@@ -253,8 +251,8 @@ const TransformerBasicInfo = () => {
           
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="basic">ข้อมูลทั่วไป</TabsTrigger>
-              <TabsTrigger value="accessories">Accessories</TabsTrigger>
+              <TabsTrigger value="basic" className="focus:ring-0">ข้อมูลทั่วไป</TabsTrigger>
+              <TabsTrigger value="accessories" className="focus:ring-0">Accessories</TabsTrigger>
             </TabsList>
             
             <TabsContent value="basic" className="py-4">
@@ -266,6 +264,7 @@ const TransformerBasicInfo = () => {
                       id="equipment-no" 
                       defaultValue={isEditing ? currentTransformer?.equipmentNo : ""} 
                       placeholder="กรอกรหัสอุปกรณ์"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
@@ -275,16 +274,17 @@ const TransformerBasicInfo = () => {
                       id="contract-no" 
                       defaultValue={isEditing ? "12345678" : ""} 
                       placeholder="กรอกเลขที่สัญญา"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="station">สถานีไฟฟ้า</Label>
                     <Select defaultValue={isEditing ? currentTransformer?.station : ""}>
-                      <SelectTrigger id="station">
+                      <SelectTrigger id="station" className="focus:ring-0 focus-visible:ring-0">
                         <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border shadow-md">
                         <SelectItem value="สถานี 1">สถานีไฟฟ้า 1</SelectItem>
                         <SelectItem value="สถานี 2">สถานีไฟฟ้า 2</SelectItem>
                         <SelectItem value="สถานี 3">สถานีไฟฟ้า 3</SelectItem>
@@ -299,16 +299,17 @@ const TransformerBasicInfo = () => {
                       id="transformer-name" 
                       defaultValue={isEditing ? currentTransformer?.name : ""} 
                       placeholder="กรอกชื่อหม้อแปลง"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="manufacturer">บริษัทผู้ผลิต</Label>
                     <Select defaultValue={isEditing ? currentTransformer?.manufacturer : ""}>
-                      <SelectTrigger id="manufacturer">
+                      <SelectTrigger id="manufacturer" className="focus:ring-0 focus-visible:ring-0">
                         <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border shadow-md">
                         <SelectItem value="ABB">ABB</SelectItem>
                         <SelectItem value="Siemens">Siemens</SelectItem>
                         <SelectItem value="Hitachi">Hitachi</SelectItem>
@@ -324,16 +325,17 @@ const TransformerBasicInfo = () => {
                       id="manufacturer-no" 
                       defaultValue={isEditing ? currentTransformer?.serialNo : ""} 
                       placeholder="กรอกหมายเลขผู้ผลิต"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="phase-count">จำนวนเฟส</Label>
                     <Select defaultValue="3">
-                      <SelectTrigger id="phase-count">
+                      <SelectTrigger id="phase-count" className="focus:ring-0 focus-visible:ring-0">
                         <SelectValue placeholder="เลือกจำนวนเฟส" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border shadow-md">
                         <SelectItem value="1">1</SelectItem>
                         <SelectItem value="3">3</SelectItem>
                       </SelectContent>
@@ -345,6 +347,7 @@ const TransformerBasicInfo = () => {
                     <Input 
                       id="phase-position" 
                       placeholder="กรอกตำแหน่งเฟส"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                 </div>
@@ -357,6 +360,7 @@ const TransformerBasicInfo = () => {
                       type="number"
                       defaultValue={isEditing ? currentTransformer?.capacity : ""} 
                       placeholder="กรอกพิกัดกำลังไฟฟ้า"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
@@ -367,6 +371,7 @@ const TransformerBasicInfo = () => {
                       type="number"
                       defaultValue={isEditing ? currentTransformer?.primaryVoltage : ""} 
                       placeholder="กรอกพิกัดแรงดันไฟฟ้า Primary"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
@@ -377,6 +382,7 @@ const TransformerBasicInfo = () => {
                       type="number"
                       defaultValue={isEditing ? currentTransformer?.secondaryVoltage : ""} 
                       placeholder="กรอกพิกัดแรงดันไฟฟ้า Secondary"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
@@ -386,6 +392,7 @@ const TransformerBasicInfo = () => {
                       id="tertiary-voltage" 
                       type="number"
                       placeholder="กรอกพิกัดแรงดันไฟฟ้า Tertiary"
+                      className="focus-visible:ring-0"
                     />
                   </div>
 
@@ -396,16 +403,17 @@ const TransformerBasicInfo = () => {
                       type="date"
                       defaultValue={isEditing ? currentTransformer?.installDate : ""} 
                       placeholder="เลือกวันที่นำเข้าใช้งาน"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="winding-insulation">ชนิด Winding Insulation</Label>
                     <Select defaultValue="paper">
-                      <SelectTrigger id="winding-insulation">
+                      <SelectTrigger id="winding-insulation" className="focus:ring-0 focus-visible:ring-0">
                         <SelectValue placeholder="เลือกชนิด Winding Insulation" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border shadow-md">
                         <SelectItem value="paper">Paper</SelectItem>
                         <SelectItem value="nomex">Nomex</SelectItem>
                         <SelectItem value="other">อื่นๆ</SelectItem>
@@ -418,6 +426,7 @@ const TransformerBasicInfo = () => {
                     <Input 
                       id="vector-group" 
                       placeholder="กรอก Vector Group"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
@@ -426,24 +435,29 @@ const TransformerBasicInfo = () => {
                     <Input 
                       id="usage" 
                       placeholder="กรอกลักษณะการใช้งาน"
+                      className="focus-visible:ring-0"
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
-                    <Input 
-                      id="remark" 
-                      placeholder="กรอกรายละเอียดเพิ่มเติม"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="image">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-                    <Input 
-                      id="image" 
-                      type="file"
-                      className="cursor-pointer"
-                    />
+                  {/* Moved to same row */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="image">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
+                      <Input 
+                        id="image" 
+                        type="file"
+                        className="cursor-pointer focus-visible:ring-0"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
+                      <Input 
+                        id="remark" 
+                        placeholder="กรอกรายละเอียดเพิ่มเติม"
+                        className="focus-visible:ring-0"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -461,29 +475,29 @@ const TransformerBasicInfo = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="hv-bushing-manufacturer">Manufacturer</Label>
-                        <Input id="hv-bushing-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                        <Input id="hv-bushing-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-bushing-type">Type</Label>
-                        <Input id="hv-bushing-type" placeholder="กรอกประเภท" className="mt-1" />
+                        <Input id="hv-bushing-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-bushing-year">ปีใน Nameplate</Label>
-                        <Input id="hv-bushing-year" placeholder="กรอกปี" className="mt-1" />
+                        <Input id="hv-bushing-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="hv-bushing-serial-h0">Serial No. H0</Label>
-                        <Input id="hv-bushing-serial-h0" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="hv-bushing-serial-h0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-bushing-serial-h1">Serial No. H1</Label>
-                        <Input id="hv-bushing-serial-h1" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="hv-bushing-serial-h1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-bushing-serial-h2">Serial No. H2</Label>
-                        <Input id="hv-bushing-serial-h2" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="hv-bushing-serial-h2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                   </div>
@@ -494,29 +508,29 @@ const TransformerBasicInfo = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="lv-bushing-manufacturer">Manufacturer</Label>
-                        <Input id="lv-bushing-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                        <Input id="lv-bushing-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-bushing-type">Type</Label>
-                        <Input id="lv-bushing-type" placeholder="กรอกประเภท" className="mt-1" />
+                        <Input id="lv-bushing-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-bushing-year">ปีใน Nameplate</Label>
-                        <Input id="lv-bushing-year" placeholder="กรอกปี" className="mt-1" />
+                        <Input id="lv-bushing-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="lv-bushing-serial-x0">Serial No. X0</Label>
-                        <Input id="lv-bushing-serial-x0" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="lv-bushing-serial-x0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-bushing-serial-x1">Serial No. X1</Label>
-                        <Input id="lv-bushing-serial-x1" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="lv-bushing-serial-x1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-bushing-serial-x2">Serial No. X2</Label>
-                        <Input id="lv-bushing-serial-x2" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="lv-bushing-serial-x2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                   </div>
@@ -527,29 +541,29 @@ const TransformerBasicInfo = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="tv-bushing-manufacturer">Manufacturer</Label>
-                        <Input id="tv-bushing-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                        <Input id="tv-bushing-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-bushing-type">Type</Label>
-                        <Input id="tv-bushing-type" placeholder="กรอกประเภท" className="mt-1" />
+                        <Input id="tv-bushing-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-bushing-year">ปีใน Nameplate</Label>
-                        <Input id="tv-bushing-year" placeholder="กรอกปี" className="mt-1" />
+                        <Input id="tv-bushing-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="tv-bushing-serial-y0">Serial No. Y0</Label>
-                        <Input id="tv-bushing-serial-y0" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="tv-bushing-serial-y0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-bushing-serial-y1">Serial No. Y1</Label>
-                        <Input id="tv-bushing-serial-y1" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="tv-bushing-serial-y1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-bushing-serial-y2">Serial No. Y2</Label>
-                        <Input id="tv-bushing-serial-y2" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="tv-bushing-serial-y2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                   </div>
@@ -565,39 +579,39 @@ const TransformerBasicInfo = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="hv-arrester-manufacturer">Manufacturer</Label>
-                        <Input id="hv-arrester-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                        <Input id="hv-arrester-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-arrester-type">Type</Label>
-                        <Input id="hv-arrester-type" placeholder="กรอกประเภท" className="mt-1" />
+                        <Input id="hv-arrester-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-arrester-year">ปีใน Nameplate</Label>
-                        <Input id="hv-arrester-year" placeholder="กรอกปี" className="mt-1" />
+                        <Input id="hv-arrester-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="hv-arrester-serial-h0">Serial No. H0</Label>
-                        <Input id="hv-arrester-serial-h0" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="hv-arrester-serial-h0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-arrester-serial-h1">Serial No. H1</Label>
-                        <Input id="hv-arrester-serial-h1" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="hv-arrester-serial-h1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="hv-arrester-serial-h2">Serial No. H2</Label>
-                        <Input id="hv-arrester-serial-h2" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="hv-arrester-serial-h2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="flex items-center space-x-6 mt-2">
                       <RadioGroup defaultValue="gap" className="flex space-x-4">
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="gap" id="hv-gap" />
+                          <RadioGroupItem value="gap" id="hv-gap" className="focus:ring-0" />
                           <Label htmlFor="hv-gap">Gap</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="gapless" id="hv-gapless" />
+                          <RadioGroupItem value="gapless" id="hv-gapless" className="focus:ring-0" />
                           <Label htmlFor="hv-gapless">Gapless</Label>
                         </div>
                       </RadioGroup>
@@ -610,39 +624,39 @@ const TransformerBasicInfo = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="lv-arrester-manufacturer">Manufacturer</Label>
-                        <Input id="lv-arrester-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                        <Input id="lv-arrester-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-arrester-type">Type</Label>
-                        <Input id="lv-arrester-type" placeholder="กรอกประเภท" className="mt-1" />
+                        <Input id="lv-arrester-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-arrester-year">ปีใน Nameplate</Label>
-                        <Input id="lv-arrester-year" placeholder="กรอกปี" className="mt-1" />
+                        <Input id="lv-arrester-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="lv-arrester-serial-x0">Serial No. X0</Label>
-                        <Input id="lv-arrester-serial-x0" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="lv-arrester-serial-x0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-arrester-serial-x1">Serial No. X1</Label>
-                        <Input id="lv-arrester-serial-x1" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="lv-arrester-serial-x1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="lv-arrester-serial-x2">Serial No. X2</Label>
-                        <Input id="lv-arrester-serial-x2" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="lv-arrester-serial-x2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="flex items-center space-x-6 mt-2">
                       <RadioGroup defaultValue="gap" className="flex space-x-4">
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="gap" id="lv-gap" />
+                          <RadioGroupItem value="gap" id="lv-gap" className="focus:ring-0" />
                           <Label htmlFor="lv-gap">Gap</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="gapless" id="lv-gapless" />
+                          <RadioGroupItem value="gapless" id="lv-gapless" className="focus:ring-0" />
                           <Label htmlFor="lv-gapless">Gapless</Label>
                         </div>
                       </RadioGroup>
@@ -655,39 +669,39 @@ const TransformerBasicInfo = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="tv-arrester-manufacturer">Manufacturer</Label>
-                        <Input id="tv-arrester-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                        <Input id="tv-arrester-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-arrester-type">Type</Label>
-                        <Input id="tv-arrester-type" placeholder="กรอกประเภท" className="mt-1" />
+                        <Input id="tv-arrester-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-arrester-year">ปีใน Nameplate</Label>
-                        <Input id="tv-arrester-year" placeholder="กรอกปี" className="mt-1" />
+                        <Input id="tv-arrester-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="tv-arrester-serial-y0">Serial No. Y0</Label>
-                        <Input id="tv-arrester-serial-y0" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="tv-arrester-serial-y0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-arrester-serial-y1">Serial No. Y1</Label>
-                        <Input id="tv-arrester-serial-y1" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="tv-arrester-serial-y1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                       <div>
                         <Label htmlFor="tv-arrester-serial-y2">Serial No. Y2</Label>
-                        <Input id="tv-arrester-serial-y2" placeholder="กรอก Serial No." className="mt-1" />
+                        <Input id="tv-arrester-serial-y2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                       </div>
                     </div>
                     <div className="flex items-center space-x-6 mt-2">
                       <RadioGroup defaultValue="gap" className="flex space-x-4">
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="gap" id="tv-gap" />
+                          <RadioGroupItem value="gap" id="tv-gap" className="focus:ring-0" />
                           <Label htmlFor="tv-gap">Gap</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="gapless" id="tv-gapless" />
+                          <RadioGroupItem value="gapless" id="tv-gapless" className="focus:ring-0" />
                           <Label htmlFor="tv-gapless">Gapless</Label>
                         </div>
                       </RadioGroup>
@@ -701,29 +715,29 @@ const TransformerBasicInfo = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="oltc-manufacturer">Manufacturer</Label>
-                      <Input id="oltc-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1" />
+                      <Input id="oltc-manufacturer" placeholder="กรอกชื่อผู้ผลิต" className="mt-1 focus-visible:ring-0" />
                     </div>
                     <div>
                       <Label htmlFor="oltc-type">Type</Label>
-                      <Input id="oltc-type" placeholder="กรอกประเภท" className="mt-1" />
+                      <Input id="oltc-type" placeholder="กรอกประเภท" className="mt-1 focus-visible:ring-0" />
                     </div>
                     <div>
                       <Label htmlFor="oltc-year">ปีใน Nameplate</Label>
-                      <Input id="oltc-year" placeholder="กรอกปี" className="mt-1" />
+                      <Input id="oltc-year" placeholder="กรอกปี" className="mt-1 focus-visible:ring-0" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="oltc-serial-h0">Serial No. H0</Label>
-                      <Input id="oltc-serial-h0" placeholder="กรอก Serial No." className="mt-1" />
+                      <Input id="oltc-serial-h0" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                     </div>
                     <div>
                       <Label htmlFor="oltc-serial-h1">Serial No. H1</Label>
-                      <Input id="oltc-serial-h1" placeholder="กรอก Serial No." className="mt-1" />
+                      <Input id="oltc-serial-h1" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                     </div>
                     <div>
                       <Label htmlFor="oltc-serial-h2">Serial No. H2</Label>
-                      <Input id="oltc-serial-h2" placeholder="กรอก Serial No." className="mt-1" />
+                      <Input id="oltc-serial-h2" placeholder="กรอก Serial No." className="mt-1 focus-visible:ring-0" />
                     </div>
                   </div>
                 </div>
@@ -732,10 +746,10 @@ const TransformerBasicInfo = () => {
           </Tabs>
           
           <DialogFooter className="sm:justify-end pt-2">
-            <Button variant="outline" onClick={() => setShowAddEditModal(false)} className="mr-2">
+            <Button variant="outline" onClick={() => setShowAddEditModal(false)} className="mr-2 focus:ring-0">
               ยกเลิก
             </Button>
-            <Button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700 focus:ring-0">
               {isEditing ? "บันทึกการแก้ไข" : "เพิ่มหม้อแปลงไฟฟ้า"}
             </Button>
           </DialogFooter>

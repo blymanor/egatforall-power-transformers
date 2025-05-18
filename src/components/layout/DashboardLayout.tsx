@@ -6,11 +6,15 @@ import { cn } from "@/lib/utils";
 interface DashboardLayoutProps {
   children: React.ReactNode;
   className?: string;
+  pageTitle?: string;
+  pageDescription?: string;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ 
   children, 
-  className 
+  className,
+  pageTitle,
+  pageDescription
 }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
@@ -37,6 +41,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         sidebarCollapsed ? "ml-[80px]" : "ml-[320px]", 
         className
       )}>
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
+          <div>
+            <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
+            <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
+          </div>
+        </header>
+        
+        {(pageTitle || pageDescription) && (
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm border-b border-gray-100">
+            <div>
+              <h1 className="text-2xl font-bold text-[#0442AF]">{pageTitle}</h1>
+              <p className="text-gray-500">{pageDescription}</p>
+            </div>
+          </header>
+        )}
+        
         {children}
       </main>
     </div>

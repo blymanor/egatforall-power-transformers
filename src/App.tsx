@@ -16,6 +16,7 @@ import TransformerReport from "./pages/TransformerReport";
 import DamageReport from "./pages/DamageReport";
 import TransformerBasicInfo from "./pages/TransformerBasicInfo";
 import StandardReport from "./pages/StandardReport";
+import TransformerRelocationInfo from "./pages/TransformerRelocationInfo";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +44,7 @@ const App = () => (
           {/* Transformer Info Routes */}
           <Route path="/transformer-info" element={<TransformerBasicInfo />} />
           <Route path="/transformer-info/details" element={<TransformerBasicInfo />} />
-          <Route path="/transformer-info/relocation" element={<TransformerBasicInfo />} />
+          <Route path="/transformer-info/relocation" element={<TransformerRelocationInfo />} />
           
           {/* Transformer Maintenance Routes */}
           <Route path="/transformer-maintenance" element={<NotFound />} />
