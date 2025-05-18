@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-interface NumberInputProps extends React.InputHTMLAttributes<HTMLDivElement> {
+interface NumberInputProps {
   value: number
   onChange: (value: number) => void
   min?: number
@@ -13,22 +13,26 @@ interface NumberInputProps extends React.InputHTMLAttributes<HTMLDivElement> {
   className?: string
   inputClassName?: string
   buttonClassName?: string
+  disabled?: boolean
 }
 
-const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps>(
-  ({ value, onChange, min = 0, max = 100, step = 1, className, inputClassName, buttonClassName, ...props }, ref) => {
+const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'>>(
+  ({ value, onChange, min = 0, max = 100, step = 1, className, inputClassName, buttonClassName, disabled, ...props }, ref) => {
     
     const handleIncrease = () => {
+      if (disabled) return
       if (max !== undefined && value + step > max) return
       onChange(value + step)
     }
 
     const handleDecrease = () => {
+      if (disabled) return
       if (min !== undefined && value - step < min) return
       onChange(value - step)
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (disabled) return
       const newValue = parseInt(e.target.value, 10)
       if (isNaN(newValue)) return
       
@@ -65,6 +69,7 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps>(
           min={min}
           max={max}
           step={step}
+          disabled={disabled}
         />
         <div className="absolute right-1 flex flex-col">
           <button
@@ -74,6 +79,7 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps>(
               "flex h-4 w-6 items-center justify-center rounded-sm opacity-70 hover:opacity-100",
               buttonClassName
             )}
+            disabled={disabled}
           >
             <ChevronUp className="h-3 w-3" />
           </button>
@@ -84,6 +90,7 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps>(
               "flex h-4 w-6 items-center justify-center rounded-sm opacity-70 hover:opacity-100",
               buttonClassName
             )}
+            disabled={disabled}
           >
             <ChevronDown className="h-3 w-3" />
           </button>
