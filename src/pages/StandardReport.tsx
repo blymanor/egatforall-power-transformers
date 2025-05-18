@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -105,7 +104,7 @@ const StandardReport = () => {
                 <div>
                   <Button 
                     onClick={handleGenerateReport}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
                     disabled={!selectedReport}
                   >
                     แสดงข้อมูล

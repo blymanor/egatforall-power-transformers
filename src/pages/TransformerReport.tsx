@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,6 +24,7 @@ const TransformerReport = () => {
   const [showReport, setShowReport] = useState(false);
   
   // Mock data for the pie chart
+  
   const regionData = [
     { name: 'ภาคเหนือ', value: 25, color: '#0088FE' },
     { name: 'ภาคตะวันออกเฉียงเหนือ', value: 35, color: '#00C49F' },
@@ -166,7 +166,7 @@ const TransformerReport = () => {
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-gray-700 font-medium mb-4">
+                <h3 className="text-black font-bold mb-4">
                   เลือกการแบ่งกลุ่ม (แบ่งตาม)
                 </h3>
                 
@@ -185,9 +185,9 @@ const TransformerReport = () => {
                 <div className="flex justify-center pt-10">
                   <Button 
                     onClick={handleGenerateReport} 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 text-lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
                   >
-                    Done
+                    แสดงรายงาน
                   </Button>
                 </div>
               </div>
