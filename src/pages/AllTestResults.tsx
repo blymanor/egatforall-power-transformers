@@ -6,8 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-// Test categories
+// Test categories with their items
 const testCategories = [
   {
     title: "Arrester",
@@ -30,32 +36,31 @@ const testCategories = [
     items: []
   },
   {
-    title: "การทดสอบน้ำมัน",
+    title: "Exciting Current",
+    items: []
+  },
+  {
+    title: "HV WINDING Tests",
     items: [
-      "Oil Aging",
-      "Oil Contamination"
+      "DC Resistance",
+      "Insulation Resistance",
+      "%Power Factor@20°C,Capacitance,PI"
     ]
   },
   {
-    title: "การทดสอบ OLTC",
+    title: "LV WINDING Tests",
     items: [
-      "OLTC Contact",
-      "Dielectric Property",
-      "DGA FACTOR",
-      "DGA of Gas",
-      "OLTC Oil Contamination"
+      "DC Resistance",
+      "Insulation Resistance",
+      "%Power Factor@20°C,Capacitance,PI"
     ]
   },
   {
-    title: "การทดสอบ Visual Inspection",
+    title: "TV WINDING Tests",
     items: [
-      "DGA FACTOR",
-      "DGA of Gas",
-      "Furan",
-      "Power Factor",
-      "Load History",
-      "Thermo Scan",
-      "Oil Quality"
+      "DC Resistance",
+      "Insulation Resistance",
+      "%Power Factor@20°C,Capacitance,PI"
     ]
   },
   {
@@ -94,7 +99,7 @@ const testCategories = [
     ]
   },
   {
-    title: "Auto Winding Insulation Resistance Measurement",
+    title: "Auto Winding Insulation Resistance",
     items: [
       "HV WINDING %Power Factor@20°C,Capacitance,PI",
       "HV WINDING Insulation Resistance",
@@ -103,7 +108,7 @@ const testCategories = [
     ]
   },
   {
-    title: "Two Winding Insulation Resistance Measurement",
+    title: "Two Winding Insulation Resistance",
     items: [
       "HV WINDING %Power Factor@20°C,Capacitance,PI",
       "HV WINDING Impedance Measurement",
@@ -112,7 +117,7 @@ const testCategories = [
     ]
   },
   {
-    title: "Three Winding Insulation Resistance Measurement",
+    title: "Three Winding Insulation Resistance",
     items: [
       "HV WINDING %Power Factor@20°C,Capacitance,PI",
       "HV Impedance Measurement",
@@ -131,6 +136,37 @@ const testCategories = [
       "HV WINDING HV-TV Ratio",
       "LV WINDING LV-TV %Error From Nameplate",
       "LV WINDING LV-TV Ratio"
+    ]
+  },
+  {
+    title: "Oil Tests",
+    items: [
+      "Oil Aging",
+      "Oil DGA",
+      "Oil Furan",
+      "Oil Contamination"
+    ]
+  },
+  {
+    title: "OLTC Tests",
+    items: [
+      "OLTC Contact",
+      "Dielectric Property",
+      "DGA FACTOR",
+      "DGA of Gas",
+      "OLTC Oil Contamination"
+    ]
+  },
+  {
+    title: "Visual Inspection",
+    items: [
+      "DGA FACTOR",
+      "DGA of Gas",
+      "Furan",
+      "Power Factor",
+      "Load History",
+      "Thermo Scan",
+      "Oil Quality"
     ]
   }
 ];
@@ -161,20 +197,15 @@ const AllTestResults = () => {
         <Card className="max-w-full overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-white p-6 border-b">
             <CardTitle className="text-xl font-bold text-blue-700">
-              ผลการทดสอบของหม้อแปลงไฟฟ้า
+              ข้อมูลบำรุงรักษาหม้อแปลง - ดูข้อมูลผลการทดสอบทั้งหมด
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8 border border-gray-100">
-              <h2 className="text-lg font-bold text-red-600 mb-6">
-                ผลการทดสอบของหม้อแปลงไฟฟ้า :
-              </h2>
-              
-              <div className="flex flex-col md:flex-row items-start md:items-end gap-6 p-6 bg-gray-50 rounded-lg border border-gray-200 mb-8">
-                <div className="flex items-center gap-4">
-                  <label htmlFor="transformer" className="text-lg font-medium text-purple-700">
-                    หม้อแปลงไฟฟ้า:
-                  </label>
+            <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+              {/* Selection area */}
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200 mb-8">
+                <div className="flex items-center gap-3">
+                  <span className="text-base font-medium text-gray-700">หม้อแปลงไฟฟ้า:</span>
                   <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
                     <SelectTrigger className="w-48 border-gray-300">
                       <SelectValue placeholder="เลือกหม้อแปลง" />
@@ -197,24 +228,36 @@ const AllTestResults = () => {
                 </Button>
               </div>
               
+              {/* Results area - new accordion-based design */}
               {resultsGenerated && (
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="mt-8 grid grid-cols-1 gap-4">
                   {testCategories.map((category, index) => (
-                    <div key={index} className="mb-8">
-                      <h3 className="text-base font-bold mb-3 text-red-700 flex items-center gap-2">
-                        <span className="inline-block w-2 h-2 bg-red-700 rounded-full"></span>
-                        {category.title}
-                      </h3>
-                      
-                      <ul className="ml-4 space-y-2">
-                        {category.items.map((item, idx) => (
-                          <li key={idx} className="ml-4 text-sm text-gray-700 flex items-baseline gap-2">
-                            <span className="inline-block w-1.5 h-1.5 bg-blue-700 rounded-full mt-2"></span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <Accordion 
+                      key={index} 
+                      type="single" 
+                      collapsible 
+                      className="border rounded-md overflow-hidden bg-white"
+                    >
+                      <AccordionItem value={`item-${index}`} className="border-0">
+                        <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 font-medium text-blue-800">
+                          {category.title}
+                        </AccordionTrigger>
+                        <AccordionContent className="px-6 pt-2 pb-4">
+                          <ul className="space-y-2">
+                            {category.items.length > 0 ? (
+                              category.items.map((item, idx) => (
+                                <li key={idx} className="text-sm text-gray-700 flex items-baseline gap-2">
+                                  <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></span>
+                                  {item}
+                                </li>
+                              ))
+                            ) : (
+                              <li className="text-sm text-gray-500">ไม่มีข้อมูล</li>
+                            )}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                   ))}
                 </div>
               )}
