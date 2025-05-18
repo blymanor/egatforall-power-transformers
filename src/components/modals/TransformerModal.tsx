@@ -77,20 +77,21 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
           </DialogDescription>
         </DialogHeader>
 
+        {/* Image file name field - Moved to top outside of the grid */}
+        <div className="mb-4">
+          <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
+          <Input 
+            id="imageFileName" 
+            placeholder="ชื่อไฟล์รูปภาพ" 
+            value={imageFileName}
+            onChange={(e) => setImageFileName(e.target.value)}
+            className="w-full"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
           {/* First column */}
           <div className="space-y-4">
-            {/* Moved "ชื่อไฟล์รูปภาพที่ต้องการเก็บ" to be first in this column */}
-            <div className="space-y-2">
-              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-              <Input 
-                id="imageFileName" 
-                placeholder="ชื่อไฟล์รูปภาพ" 
-                value={imageFileName}
-                onChange={(e) => setImageFileName(e.target.value)}
-              />
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="deviceNo">Device No. *</Label>
               <Input 
@@ -98,6 +99,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 placeholder="รหัสอุปกรณ์" 
                 value={deviceNo}
                 onChange={(e) => setDeviceNo(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -108,6 +110,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 placeholder="หมายเลขอุปกรณ์" 
                 value={equipmentNo}
                 onChange={(e) => setEquipmentNo(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -118,6 +121,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 placeholder="บริษัทผู้ผลิต" 
                 value={manufacturer}
                 onChange={(e) => setManufacturer(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -128,6 +132,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 placeholder="สถานที่ติดตั้ง" 
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -153,6 +158,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 placeholder="ชื่อสถานีไฟฟ้า" 
                 value={substationName}
                 onChange={(e) => setSubstationName(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -193,6 +199,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 type="number" 
                 value={manufactureYear}
                 onChange={(e) => setManufactureYear(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -205,6 +212,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 step="0.01" 
                 value={ratedCapacity}
                 onChange={(e) => setRatedCapacity(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -217,6 +225,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 step="0.01" 
                 value={ratedVoltage}
                 onChange={(e) => setRatedVoltage(e.target.value)}
+                className="w-full"
               />
             </div>
 
@@ -226,7 +235,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 id="primary-voltage" 
                 type="number"
                 placeholder="กรอกพิกัดแรงดันไฟฟ้า Primary"
-                className="focus-visible:ring-0"
+                className="w-full focus-visible:ring-0"
                 value={primaryVoltage}
                 onChange={(e) => setPrimaryVoltage(e.target.value)}
               />
@@ -238,7 +247,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 id="secondary-voltage" 
                 type="number"
                 placeholder="กรอกพิกัดแรงดันไฟฟ้า Secondary"
-                className="focus-visible:ring-0"
+                className="w-full focus-visible:ring-0"
                 value={secondaryVoltage}
                 onChange={(e) => setSecondaryVoltage(e.target.value)}
               />
@@ -250,7 +259,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 id="tertiary-voltage" 
                 type="number"
                 placeholder="กรอกพิกัดแรงดันไฟฟ้า Tertiary"
-                className="focus-visible:ring-0"
+                className="w-full focus-visible:ring-0"
                 value={tertiaryVoltage}
                 onChange={(e) => setTertiaryVoltage(e.target.value)}
               />
@@ -264,6 +273,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 rows={4} 
                 value={remark}
                 onChange={(e) => setRemark(e.target.value)}
+                className="w-full"
               />
             </div>
           </div>

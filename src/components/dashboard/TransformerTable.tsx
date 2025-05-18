@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 interface TransformerData {
   deviceNo: string;
   equipmentNo: string;
-  transformerType: string;  // Added transformer type
+  transformerType: string;  // We'll keep this in the data structure but won't display it
   condition: number;
   importance: number;
   risk: string;
@@ -132,7 +132,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
             <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
               <TableRow>
                 <TableHead className="w-[150px] text-center whitespace-nowrap px-6">Device No.</TableHead>
-                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">หม้อแปลงไฟฟ้า</TableHead>
+                {/* Removed the หม้อแปลงไฟฟ้า column */}
                 <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Equipment No.</TableHead>
                 <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Overall Condition(%)</TableHead>
                 <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Importance Index(%)</TableHead>
@@ -146,7 +146,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
                 displayData.map((row, index) => (
                   <TableRow key={index} className="hover:bg-blue-50/30">
                     <TableCell className="text-center">{row.deviceNo}</TableCell>
-                    <TableCell className="text-center">{row.transformerType}</TableCell>
+                    {/* Removed the transformerType cell */}
                     <TableCell className="text-center">{row.equipmentNo}</TableCell>
                     <TableCell className="text-center">{row.condition}</TableCell>
                     <TableCell className="text-center">{row.importance}</TableCell>
@@ -175,7 +175,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-24 text-center">
+                  <TableCell colSpan={7} className="h-24 text-center">
                     No transformers found for the selected filters
                   </TableCell>
                 </TableRow>
