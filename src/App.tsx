@@ -15,6 +15,7 @@ import ElectricalTestUpload from "./pages/ElectricalTestUpload";
 import TransformerReport from "./pages/TransformerReport";
 import DamageReport from "./pages/DamageReport";
 import TransformerBasicInfo from "./pages/TransformerBasicInfo";
+import StandardReport from "./pages/StandardReport";
 
 const queryClient = new QueryClient();
 
@@ -35,7 +36,7 @@ const App = () => (
           
           {/* Reports Routes */}
           <Route path="/reports" element={<NotFound />} />
-          <Route path="/reports/standard" element={<TransformerReport />} />
+          <Route path="/reports/standard" element={<StandardReport />} />
           <Route path="/reports/transformers" element={<TransformerReport />} />
           <Route path="/reports/damages" element={<DamageReport />} />
           

@@ -4,498 +4,396 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Search } from "lucide-react";
 
 const TransformerBasicInfo = () => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("general");
+  const [showAddEditModal, setShowAddEditModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTransformer, setCurrentTransformer] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Form fields
-  const [equipmentNo, setEquipmentNo] = useState("7000088630");
-  const [transformerRegion, setTransformerRegion] = useState("ภาคเหนือ");
-  const [transformerType, setTransformerType] = useState("ABB");
-  const [transformerModel, setTransformerModel] = useState("KTTA");
-  const [manufacturer, setManufacturer] = useState("ABB");
-  const [serialNumber, setSerialNumber] = useState("3");
-  const [transformerClass, setTransformerClass] = useState("A");
-  const [capacity, setCapacity] = useState("50.0");
-  const [primaryVoltage, setPrimaryVoltage] = useState("115.0");
-  const [secondaryVoltage, setSecondaryVoltage] = useState("22.0");
-  const [tertiaryVoltage, setTertiaryVoltage] = useState("11.0");
-  const [manufacturingDate, setManufacturingDate] = useState("12/10/2007");
-  const [insulationType, setInsulationType] = useState("Three Winding");
-  const [vectorGroup, setVectorGroup] = useState("YNyn0");
-  const [usageType, setUsageType] = useState("โรงงานอุตสาหกรรม");
-  const [remarks, setRemarks] = useState("");
+  // Mock data for transformers
+  const transformerData = [
+    { id: 1, name: "AN-472A", station: "สถานี 1", equipmentNo: "70000016001", manufacturer: "ABB", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2015-06-15", serialNo: "T-123456", location: "Indoor" },
+    { id: 2, name: "AN-K12A", station: "สถานี 2", equipmentNo: "70000016003", manufacturer: "OSAKA", capacity: "50.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-03-22", serialNo: "T-234567", location: "Outdoor" },
+    { id: 3, name: "AN-472B", station: "สถานี 1", equipmentNo: "70000016201", manufacturer: "Siemens", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2018-09-10", serialNo: "T-345678", location: "Indoor" },
+    { id: 4, name: "AN-473A", station: "สถานี 3", equipmentNo: "70000016202", manufacturer: "Hitachi", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "33", installDate: "2019-11-05", serialNo: "T-456789", location: "Outdoor" },
+    { id: 5, name: "AN-474A", station: "สถานี 3", equipmentNo: "70000016203", manufacturer: "Mitsubishi", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2020-07-18", serialNo: "T-567890", location: "Indoor" },
+    { id: 6, name: "AN-475A", station: "สถานี 2", equipmentNo: "70000016204", manufacturer: "OSAKA", capacity: "300.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2021-02-28", serialNo: "T-678901", location: "Outdoor" },
+    { id: 7, name: "AN-476A", station: "สถานี 4", equipmentNo: "70000016205", manufacturer: "ABB", capacity: "150.0", primaryVoltage: "115", secondaryVoltage: "33", installDate: "2017-05-14", serialNo: "T-789012", location: "Indoor" },
+    { id: 8, name: "AN-477A", station: "สถานี 1", equipmentNo: "70000016206", manufacturer: "Siemens", capacity: "150.0", primaryVoltage: "115", secondaryVoltage: "22", installDate: "2016-08-20", serialNo: "T-890123", location: "Outdoor" },
+  ];
 
-  // Relocation fields
-  const [relocationEquipmentNo, setRelocationEquipmentNo] = useState("PMITSUBISHI-2");
-  const [currentLocation, setCurrentLocation] = useState("จ.เชียงราย");
-  const [transformerType2, setTransformerType2] = useState("ABB KTLA");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  // Filter by region and search query
+  const filteredData = transformerData.filter(item => {
+    const matchesRegion = selectedRegion === "all" || item.station.includes(selectedRegion);
+    const matchesSearch = searchQuery === "" || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.manufacturer.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesRegion && matchesSearch;
+  });
 
-  const handleSave = () => {
+  // Pagination
+  const itemsPerPage = 6;
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleAdd = () => {
+    setIsEditing(false);
+    setCurrentTransformer(null);
+    setShowAddEditModal(true);
+  };
+
+  const handleEdit = (transformer) => {
+    setIsEditing(true);
+    setCurrentTransformer(transformer);
+    setShowAddEditModal(true);
+  };
+
+  const handleDelete = (id) => {
+    // Implement delete functionality
     toast({
-      title: "บันทึกข้อมูลสำเร็จ",
-      description: "ข้อมูลพื้นฐานของหม้อแปลงถูกบันทึกเรียบร้อยแล้ว",
+      title: "ลบรายการสำเร็จ",
+      description: "ข้อมูลหม้อแปลงไฟฟ้าถูกลบเรียบร้อยแล้ว",
     });
   };
 
-  const handleSaveRelocation = () => {
+  const handleSave = () => {
     toast({
-      title: "บันทึกข้อมูลสำเร็จ",
-      description: "ข้อมูลการเคลื่อนย้ายหม้อแปลงถูกบันทึกเรียบร้อยแล้ว",
+      title: isEditing ? "บันทึกการแก้ไขสำเร็จ" : "เพิ่มรายการสำเร็จ",
+      description: isEditing ? "แก้ไขข้อมูลหม้อแปลงไฟฟ้าเรียบร้อยแล้ว" : "เพิ่มข้อมูลหม้อแปลงไฟฟ้าเรียบร้อยแล้ว",
     });
+    setShowAddEditModal(false);
   };
 
   return (
     <DashboardLayout>
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
         <div>
-          <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
-          <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
+          <h1 className="text-2xl font-bold text-[#0442AF]">ข้อมูลพื้นฐานหม้อแปลงไฟฟ้า</h1>
+          <p className="text-gray-500">Transformer Basic Information</p>
         </div>
       </header>
 
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">ข้อมูลพื้นฐานของหม้อแปลง</h2>
-          <p className="text-gray-600">จัดการข้อมูลพื้นฐานและการเคลื่อนย้ายของหม้อแปลงไฟฟ้า</p>
-        </div>
-
-        <Tabs defaultValue="general" onValueChange={setActiveTab}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="general">ข้อมูลทั่วไป</TabsTrigger>
-            <TabsTrigger value="relocation">การเคลื่อนย้าย</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="general" className="mt-4">
-            <Card className="bg-white shadow-md rounded-lg overflow-hidden border-0">
-              <CardContent className="p-6">
-                <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
-                  <h2 className="text-lg font-semibold text-center text-gray-800">แก้ไขข้อมูลหม้อแปลงไฟฟ้า</h2>
+        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
+          <CardContent className="p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <h2 className="text-xl font-bold">หม้อแปลงไฟฟ้า</h2>
+                
+                <div className="flex items-center gap-3">
+                  <Label className="text-gray-700">เขต:</Label>
+                  <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                    <SelectTrigger className="w-40">
+                      <SelectValue placeholder="ทั้งหมด" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">ทั้งหมด</SelectItem>
+                      <SelectItem value="สถานี 1">สถานี 1</SelectItem>
+                      <SelectItem value="สถานี 2">สถานี 2</SelectItem>
+                      <SelectItem value="สถานี 3">สถานี 3</SelectItem>
+                      <SelectItem value="สถานี 4">สถานี 4</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Equipment No.
-                    </label>
-                    <Input 
-                      value={equipmentNo}
-                      onChange={(e) => setEquipmentNo(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      สัญญาเลขที่
-                    </label>
-                    <Input 
-                      placeholder="สัญญาเลขที่"
-                      className="w-full"
-                      value="40/5-30-5-30-HO(K)"
-                      readOnly
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      เขตพื้นที่
-                    </label>
-                    <Select value={transformerRegion} onValueChange={setTransformerRegion}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกเขตพื้นที่" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ภาคกลาง">ภาคกลาง</SelectItem>
-                        <SelectItem value="ภาคเหนือ">ภาคเหนือ</SelectItem>
-                        <SelectItem value="ภาคตะวันออกเฉียงเหนือ">ภาคตะวันออกเฉียงเหนือ</SelectItem>
-                        <SelectItem value="ภาคใต้">ภาคใต้</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ชื่อหม้อแปลงไฟฟ้า
-                    </label>
-                    <Select value={transformerType} onValueChange={setTransformerType}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกชื่อหม้อแปลงไฟฟ้า" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ABB">ABB</SelectItem>
-                        <SelectItem value="Siemens">Siemens</SelectItem>
-                        <SelectItem value="Mitsubishi">Mitsubishi</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      รูปแบบของหม้อแปลง
-                    </label>
-                    <Select value={transformerModel} onValueChange={setTransformerModel}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกรูปแบบของหม้อแปลง" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="KTTA">KTTA</SelectItem>
-                        <SelectItem value="KTLA">KTLA</SelectItem>
-                        <SelectItem value="KTTB">KTTB</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ผู้ผลิต
-                    </label>
-                    <Select value={manufacturer} onValueChange={setManufacturer}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกผู้ผลิต" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ABB">ABB</SelectItem>
-                        <SelectItem value="Siemens">Siemens</SelectItem>
-                        <SelectItem value="Mitsubishi">Mitsubishi</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      หมายเลขผลิต
-                    </label>
-                    <Input 
-                      value={serialNumber}
-                      onChange={(e) => setSerialNumber(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      จำนวนเฟส
-                    </label>
-                    <Select value={transformerClass} onValueChange={setTransformerClass}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกจำนวนเฟส" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="A">A</SelectItem>
-                        <SelectItem value="B">B</SelectItem>
-                        <SelectItem value="C">C</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      สถิติกำลังไฟฟ้าสูงสุด (MVA)
-                    </label>
-                    <Input 
-                      value={capacity}
-                      onChange={(e) => setCapacity(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      แรงดันไฟฟ้า Primary, HV (kV)
-                    </label>
-                    <Input 
-                      value={primaryVoltage}
-                      onChange={(e) => setPrimaryVoltage(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      แรงดันไฟฟ้า Secondary, LV (kV)
-                    </label>
-                    <Input 
-                      value={secondaryVoltage}
-                      onChange={(e) => setSecondaryVoltage(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      แรงดันไฟฟ้า Tertiary, TV (kV)
-                    </label>
-                    <Input 
-                      value={tertiaryVoltage}
-                      onChange={(e) => setTertiaryVoltage(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      วันที่ผลิต/ใช้งาน
-                    </label>
-                    <Input 
-                      type="date"
-                      value={manufacturingDate}
-                      onChange={(e) => setManufacturingDate(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ฉนวน Winding Insulation
-                    </label>
-                    <Select value={insulationType} onValueChange={setInsulationType}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกฉนวน" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Three Winding">Three Winding</SelectItem>
-                        <SelectItem value="Single Winding">Single Winding</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Vector Group
-                    </label>
-                    <Input 
-                      value={vectorGroup}
-                      onChange={(e) => setVectorGroup(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      สถานที่ใช้งานของหม้อแปลงไฟฟ้า
-                    </label>
-                    <Select value={usageType} onValueChange={setUsageType}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="เลือกสถานที่ใช้งาน" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="โรงงานอุตสาหกรรม">โรงงานอุตสาหกรรม</SelectItem>
-                        <SelectItem value="สถานีไฟฟ้า">สถานีไฟฟ้า</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      รายละเอียดเพิ่มเติม (Remark)
-                    </label>
-                    <Input 
-                      value={remarks}
-                      onChange={(e) => setRemarks(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
+                <div className="relative w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="ค้นหาหม้อแปลง..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
                 </div>
+              </div>
 
-                <div className="mt-8">
-                  <h3 className="text-lg font-medium mb-4">Accessories</h3>
-                  
-                  <h4 className="font-medium text-gray-700 mb-2">Bushing</h4>
-                  <div className="space-y-4 mb-6">
-                    {/* HV Bushing */}
-                    <div>
-                      <div className="flex items-center mb-1">
-                        <span className="w-10 inline-block">HV</span>
-                        <div className="flex-1 grid grid-cols-4 gap-2">
-                          <div>
-                            <label className="block text-xs text-gray-500">Manufacturer</label>
-                            <Select defaultValue="ABB">
-                              <SelectTrigger className="w-full text-xs">
-                                <SelectValue placeholder="Select" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="ABB">ABB</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500">Type</label>
-                            <Input defaultValue="GOB 550" className="h-9 text-xs" />
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500">ปีที่ Nameplate</label>
-                            <Input defaultValue="1993" className="h-9 text-xs" />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center ml-10">
-                        <span className="text-xs text-gray-500 w-24">Serial No.</span>
-                        <div className="flex-1 grid grid-cols-4 gap-2">
-                          <Input defaultValue="H1 30221B" className="h-8 text-xs" />
-                          <Input defaultValue="H2 30221B" className="h-8 text-xs" />
-                          <Input defaultValue="H3 30221B" className="h-8 text-xs" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* LV Bushing */}
-                    <div>
-                      <div className="flex items-center mb-1">
-                        <span className="w-10 inline-block">LV</span>
-                        <div className="flex-1 grid grid-cols-4 gap-2">
-                          <div>
-                            <label className="block text-xs text-gray-500">Manufacturer</label>
-                            <Select defaultValue="ABB">
-                              <SelectTrigger className="w-full text-xs">
-                                <SelectValue placeholder="Select" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="ABB">ABB</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500">Type</label>
-                            <Input defaultValue="O Plus C" className="h-9 text-xs" />
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500">ปีที่ Nameplate</label>
-                            <Input defaultValue="1993" className="h-9 text-xs" />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center ml-10">
-                        <span className="text-xs text-gray-500 w-24">Serial No.</span>
-                        <div className="flex-1 grid grid-cols-4 gap-2">
-                          <Input defaultValue="X0 30221B" className="h-8 text-xs" />
-                          <Input defaultValue="X1 30221B" className="h-8 text-xs" />
-                          <Input defaultValue="X2 30221B" className="h-8 text-xs" />
-                          <Input defaultValue="X3 30221B" className="h-8 text-xs" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <h4 className="font-medium text-gray-700 mb-2">OLTC</h4>
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    <div>
-                      <label className="block text-xs text-gray-500">Manufacturer</label>
-                      <Select defaultValue="ABB">
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="ABB">ABB</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-500">Type</label>
-                      <Input defaultValue="UZF180230/3D" />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-500">ปีที่ Nameplate</label>
-                      <Input defaultValue="0" />
-                    </div>
-                  </div>
-                </div>
+              <Button onClick={handleAdd} className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap">
+                + เพิ่มหม้อแปลงไฟฟ้า
+              </Button>
+            </div>
 
-                <div className="mt-6 flex justify-center">
-                  <Button 
-                    onClick={handleSave} 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8"
-                  >
-                    บันทึก
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="relocation" className="mt-4">
-            <Card className="bg-white shadow-md rounded-lg overflow-hidden border-0">
-              <CardContent className="p-6">
-                <div className="bg-blue-50 rounded-md p-3 mb-4 border-l-4 border-blue-500">
-                  <h2 className="text-lg font-semibold text-center text-gray-800">เคลื่อนย้ายหม้อแปลง</h2>
-                </div>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>หม้อแปลงไฟฟ้า</TableHead>
+                    <TableHead>Equipment No.</TableHead>
+                    <TableHead>สถานีไฟฟ้า</TableHead>
+                    <TableHead>บริษัทผู้ผลิต</TableHead>
+                    <TableHead>พิกัดกำลังไฟฟ้า (MVA)</TableHead>
+                    <TableHead>แก้ไข</TableHead>
+                    <TableHead>ลบ</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentData.length > 0 ? (
+                    currentData.map((item) => (
+                      <TableRow key={item.id} className="hover:bg-blue-50/30">
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell>{item.equipmentNo}</TableCell>
+                        <TableCell>{item.station}</TableCell>
+                        <TableCell>{item.manufacturer}</TableCell>
+                        <TableCell>{item.capacity}</TableCell>
+                        <TableCell>
+                          <Button 
+                            variant="ghost" 
+                            className="text-blue-600 hover:text-blue-800" 
+                            onClick={() => handleEdit(item)}
+                          >
+                            แก้ไข
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button 
+                            variant="ghost" 
+                            className="text-red-600 hover:text-red-800"
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            ลบ
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={7} className="h-24 text-center">
+                        ไม่พบข้อมูลหม้อแปลงไฟฟ้า
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            {filteredData.length > 0 && (
+              <div className="flex justify-center items-center mt-6 space-x-2">
+                <Button 
+                  variant="outline" 
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                >
+                  ก่อนหน้า
+                </Button>
                 
-                <div className="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Equipment No.
-                    </label>
-                    <Input 
-                      value={relocationEquipmentNo}
-                      onChange={(e) => setRelocationEquipmentNo(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
+                {Array.from({ length: Math.min(3, totalPages) }).map((_, idx) => {
+                  const page = currentPage <= 2 ? idx + 1 : 
+                              currentPage >= totalPages - 1 ? totalPages - 2 + idx : 
+                              currentPage - 1 + idx;
                   
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      สถานที่ตั้ง
-                    </label>
-                    <Input 
-                      value={currentLocation}
-                      onChange={(e) => setCurrentLocation(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ชื่อหม้อแปลงไฟฟ้า (เช่น KTTA,...)
-                    </label>
-                    <Input 
-                      value={transformerType2}
-                      onChange={(e) => setTransformerType2(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      วันที่ย้าย
-                    </label>
-                    <Input 
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ผู้ย้ายทำ
-                    </label>
-                    <Input className="w-full" />
-                  </div>
-                </div>
-
-                <div className="mt-6 flex justify-center">
-                  <Button 
-                    onClick={handleSaveRelocation} 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8"
-                  >
-                    บันทึก
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                  if (page > 0 && page <= totalPages) {
+                    return (
+                      <Button 
+                        key={page} 
+                        variant={page === currentPage ? "default" : "outline"} 
+                        className={page === currentPage ? "bg-blue-600 text-white" : ""}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </Button>
+                    );
+                  }
+                  return null;
+                })}
+                
+                {totalPages > 3 && currentPage < totalPages - 1 && (
+                  <>
+                    {currentPage < totalPages - 2 && <span>...</span>}
+                    <Button 
+                      variant={currentPage === totalPages ? "default" : "outline"}
+                      className={currentPage === totalPages ? "bg-blue-600 text-white" : ""}
+                      onClick={() => setCurrentPage(totalPages)}
+                    >
+                      {totalPages}
+                    </Button>
+                  </>
+                )}
+                
+                <Button 
+                  variant="outline" 
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                >
+                  ถัดไป
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
+
+      {/* Add/Edit Transformer Modal */}
+      <Dialog open={showAddEditModal} onOpenChange={setShowAddEditModal}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl">{isEditing ? "แก้ไขข้อมูลหม้อแปลงไฟฟ้า" : "เพิ่มข้อมูลหม้อแปลงไฟฟ้า"}</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="equipment-no">Equipment No.</Label>
+                <Input 
+                  id="equipment-no" 
+                  defaultValue={isEditing ? currentTransformer?.equipmentNo : ""} 
+                  placeholder="กรอกรหัสอุปกรณ์"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="contract-no">สัญญาเลขที่</Label>
+                <Input 
+                  id="contract-no" 
+                  defaultValue={isEditing ? "12345678" : ""} 
+                  placeholder="กรอกเลขที่สัญญา"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="station">สถานีไฟฟ้า</Label>
+                <Select defaultValue={isEditing ? currentTransformer?.station : ""}>
+                  <SelectTrigger id="station">
+                    <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="สถานี 1">สถานีไฟฟ้า 1</SelectItem>
+                    <SelectItem value="สถานี 2">สถานีไฟฟ้า 2</SelectItem>
+                    <SelectItem value="สถานี 3">สถานีไฟฟ้า 3</SelectItem>
+                    <SelectItem value="สถานี 4">สถานีไฟฟ้า 4</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="transformer-name">ชื่อหม้อแปลงไฟฟ้า</Label>
+                <Input 
+                  id="transformer-name" 
+                  defaultValue={isEditing ? currentTransformer?.name : ""} 
+                  placeholder="กรอกชื่อหม้อแปลง"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="serial-no">หมายเลขผลิต</Label>
+                <Input 
+                  id="serial-no" 
+                  defaultValue={isEditing ? currentTransformer?.serialNo : ""} 
+                  placeholder="กรอกหมายเลขผลิต"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="location">ตำแหน่งที่ตั้ง</Label>
+                <Select defaultValue={isEditing ? currentTransformer?.location : ""}>
+                  <SelectTrigger id="location">
+                    <SelectValue placeholder="เลือกตำแหน่งที่ตั้ง" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Indoor">Indoor</SelectItem>
+                    <SelectItem value="Outdoor">Outdoor</SelectItem>
+                    <SelectItem value="Substation">Substation</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="capacity">พิกัดกำลังไฟฟ้าสูงสุด (MVA)</Label>
+                <Input 
+                  id="capacity" 
+                  type="number"
+                  defaultValue={isEditing ? currentTransformer?.capacity : ""} 
+                  placeholder="กรอกพิกัดกำลังไฟฟ้า"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="primary-voltage">พิกัดแรงดันไฟฟ้า Primary, kV (kV)</Label>
+                <Input 
+                  id="primary-voltage" 
+                  type="number"
+                  defaultValue={isEditing ? currentTransformer?.primaryVoltage : ""} 
+                  placeholder="กรอกพิกัดแรงดันไฟฟ้า Primary"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="secondary-voltage">พิกัดแรงดันไฟฟ้า Secondary, LV (kV)</Label>
+                <Input 
+                  id="secondary-voltage" 
+                  type="number"
+                  defaultValue={isEditing ? currentTransformer?.secondaryVoltage : ""} 
+                  placeholder="กรอกพิกัดแรงดันไฟฟ้า Secondary"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="manufacturer">บริษัทผู้ผลิต</Label>
+                <Select defaultValue={isEditing ? currentTransformer?.manufacturer : ""}>
+                  <SelectTrigger id="manufacturer">
+                    <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ABB">ABB</SelectItem>
+                    <SelectItem value="Siemens">Siemens</SelectItem>
+                    <SelectItem value="Hitachi">Hitachi</SelectItem>
+                    <SelectItem value="Mitsubishi">Mitsubishi</SelectItem>
+                    <SelectItem value="OSAKA">OSAKA</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="install-date">วันที่ติดตั้ง</Label>
+                <Input 
+                  id="install-date" 
+                  type="date"
+                  defaultValue={isEditing ? currentTransformer?.installDate : ""} 
+                  placeholder="เลือกวันที่ติดตั้ง"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="service-year">อายุการใช้งาน (ปี)</Label>
+                <Input 
+                  id="service-year" 
+                  type="number" 
+                  defaultValue={isEditing ? "5" : ""} 
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="sm:justify-end pt-2">
+            <Button variant="outline" onClick={() => setShowAddEditModal(false)} className="mr-2">
+              ยกเลิก
+            </Button>
+            <Button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700">
+              {isEditing ? "บันทึกการแก้ไข" : "เพิ่มหม้อแปลงไฟฟ้า"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };
