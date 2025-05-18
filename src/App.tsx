@@ -58,6 +58,7 @@ const App = () => (
           <Route path="/economic-analysis/factor-setting" element={<EconomicAnalysisFactorSetting />} />
           <Route path="/economic-analysis/price-loss" element={<EconomicAnalysisPriceLoss />} />
           <Route path="/economic-analysis/info" element={<EconomicAnalysisInfo />} />
+          <Route path="/economic-analysis/consideration-data" element={<EconomicAnalysisInfo />} />
           
           {/* Transformer Maintenance Routes */}
           <Route path="/transformer-maintenance" element={<NotFound />} />
