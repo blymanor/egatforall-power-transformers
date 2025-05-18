@@ -103,7 +103,6 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
               </Select>
             </div>
             
-            {/* Moved "ชื่อไฟล์รูปภาพ" field to be after "Phase Position" */}
             <div className="space-y-2">
               <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
               <Input id="imageFileName" placeholder="ชื่อไฟล์รูปภาพ" />
