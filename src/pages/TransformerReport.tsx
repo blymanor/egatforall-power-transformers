@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -88,14 +87,10 @@ const TransformerReport = () => {
   };
 
   return (
-    <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0442AF]">รายงานข้อมูลหม้อแปลงไฟฟ้า</h1>
-          <p className="text-gray-500">Transformer Data Report</p>
-        </div>
-      </header>
-
+    <DashboardLayout
+      pageTitle="รายงานข้อมูลหม้อแปลงไฟฟ้า"
+      pageDescription="Transformer Data Report"
+    >
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6 md:p-8">
@@ -108,10 +103,10 @@ const TransformerReport = () => {
                 </h3>
 
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">เขต :</Label>
                     <Select value={region} onValueChange={setRegion}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>
@@ -124,10 +119,10 @@ const TransformerReport = () => {
                     </Select>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">สถานีไฟฟ้า :</Label>
                     <Select value={station} onValueChange={setStation}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>
@@ -139,10 +134,10 @@ const TransformerReport = () => {
                     </Select>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">บริษัทผู้ผลิต :</Label>
                     <Select value={manufacturer} onValueChange={setManufacturer}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>
@@ -155,10 +150,10 @@ const TransformerReport = () => {
                     </Select>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">หม้อแปลงไฟฟ้า :</Label>
                     <Select value={transformer} onValueChange={setTransformer}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>

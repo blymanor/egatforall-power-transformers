@@ -25,6 +25,7 @@ const TransformerRelocationInfo = () => {
   const [currentTransformer, setCurrentTransformer] = useState(null);
   const [selectedRegion, setSelectedRegion] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
   // Mock data for transformers
@@ -34,22 +35,24 @@ const TransformerRelocationInfo = () => {
     { id: 3, equipmentNo: "70000016201", manufacturer: "Meiden", status: "เป็น Spare" },
     { id: 4, equipmentNo: "70000016202", manufacturer: "Mitsubishi", status: "เป็น Spare" },
     { id: 5, equipmentNo: "70000016203", manufacturer: "Elektro Roxurg", status: "เป็น Spare" },
-    { id: 6, equipmentNo: "70000016204", manufacturer: "OSAKA", status: "เป็น Spare" },
-    { id: 7, equipmentNo: "70000016205", manufacturer: "Meiden", status: "เป็น Spare" },
+    { id: 6, equipmentNo: "70000016204", manufacturer: "OSAKA", status: "ถูกปลดออกจากระบบ" },
+    { id: 7, equipmentNo: "70000016205", manufacturer: "Meiden", status: "อยู่ในระหว่างซ่อม" },
     { id: 8, equipmentNo: "70000016206", manufacturer: "Mitsubishi", status: "เป็น Spare" },
-    { id: 9, equipmentNo: "70000016207", manufacturer: "Elektro Roxurg", status: "เป็น Spare" },
-    { id: 10, equipmentNo: "70000016208", manufacturer: "OSAKA", status: "เป็น Spare" },
+    { id: 9, equipmentNo: "70000016207", manufacturer: "Elektro Roxurg", status: "ถูกปลดออกจากระบบ" },
+    { id: 10, equipmentNo: "70000016208", manufacturer: "OSAKA", status: "อยู่ในระหว่างซ่อม" },
     { id: 11, equipmentNo: "70000016209", manufacturer: "Meiden", status: "เป็น Spare" },
-    { id: 12, equipmentNo: "70000016210", manufacturer: "Mitsubishi", status: "เป็น Spare" },
+    { id: 12, equipmentNo: "70000016210", manufacturer: "Mitsubishi", status: "อยู่ในระหว่างซ่อม" },
   ];
 
-  // Filter by region and search query
+  // Filter by status and search query
   const filteredData = transformerData.filter(item => {
     const matchesSearch = searchQuery === "" || 
       item.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.manufacturer.toLowerCase().includes(searchQuery.toLowerCase());
     
-    return matchesSearch;
+    const matchesStatus = selectedStatus === "all" || item.status === selectedStatus;
+    
+    return matchesSearch && matchesStatus;
   });
 
   // Pagination
@@ -94,10 +97,10 @@ const TransformerRelocationInfo = () => {
 
   return (
     <DashboardLayout
-      pageTitle="การย้ายหม้อแปลง"
+      pageTitle="การย้ายหม้อแปลงไฟฟ้า"
       pageDescription="Transformer Relocation"
     >
-      <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
+      <div className="p-4 md:p-6 space-y-4 bg-[#f0f4fa]">
         {/* Filters Section */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6">
@@ -106,11 +109,25 @@ const TransformerRelocationInfo = () => {
                 <div className="relative w-full sm:w-64">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    placeholder="ค้นหาหม้อแปลง..."
+                    placeholder="ค้นหา Equipment No..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10 focus-visible:ring-0"
                   />
+                </div>
+                
+                <div className="w-full sm:w-64">
+                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                    <SelectTrigger className="focus-visible:ring-0 border border-gray-300">
+                      <SelectValue placeholder="เลือกสถานะทั้งหมด" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">สถานะทั้งหมด</SelectItem>
+                      <SelectItem value="เป็น Spare">เป็น Spare</SelectItem>
+                      <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
+                      <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -139,7 +156,7 @@ const TransformerRelocationInfo = () => {
                         <TableCell className="text-center">{item.manufacturer}</TableCell>
                         <TableCell className="text-center">
                           <Select defaultValue={item.status} onValueChange={(value) => handleStatusChange(item.id, value)}>
-                            <SelectTrigger className="w-full max-w-[200px] mx-auto focus-visible:ring-0 border-none text-center justify-center">
+                            <SelectTrigger className="w-full max-w-[200px] mx-auto focus-visible:ring-0 border border-gray-200 text-center justify-center">
                               <SelectValue placeholder="เลือกสถานะ" />
                             </SelectTrigger>
                             <SelectContent className="bg-white border shadow-md">
@@ -152,7 +169,7 @@ const TransformerRelocationInfo = () => {
                         <TableCell className="text-center">
                           <Button 
                             variant="outline" 
-                            className="bg-slate-600 text-white hover:bg-slate-700 focus:ring-0"
+                            className="bg-slate-600 text-white hover:bg-slate-700 focus-visible:ring-0"
                             onClick={() => handleEdit(item)}
                           >
                             แก้ไขหม้อแปลง
@@ -161,7 +178,7 @@ const TransformerRelocationInfo = () => {
                         <TableCell className="text-center">
                           <Button 
                             variant="outline" 
-                            className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-0"
+                            className="bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-0"
                             onClick={() => handleRelocate(item)}
                           >
                             ย้ายเข้าหม้อแปลง
@@ -186,7 +203,7 @@ const TransformerRelocationInfo = () => {
                   variant="outline" 
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  className="focus:ring-0"
+                  className="focus-visible:ring-0"
                 >
                   ก่อนหน้า
                 </Button>
@@ -212,7 +229,7 @@ const TransformerRelocationInfo = () => {
                         <Button 
                           key={pageNum} 
                           variant={pageNum === currentPage ? "default" : "outline"} 
-                          className={`${pageNum === currentPage ? "bg-blue-600 text-white" : ""} focus:ring-0`}
+                          className={`${pageNum === currentPage ? "bg-blue-600 text-white" : ""} focus-visible:ring-0`}
                           onClick={() => setCurrentPage(pageNum)}
                         >
                           {pageNum}
@@ -227,7 +244,7 @@ const TransformerRelocationInfo = () => {
                   variant="outline" 
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  className="focus:ring-0"
+                  className="focus-visible:ring-0"
                 >
                   ถัดไป
                 </Button>
@@ -258,7 +275,7 @@ const TransformerRelocationInfo = () => {
             <div className="space-y-2">
               <Label htmlFor="edit-status">สถานะหม้อแปลงไฟฟ้า</Label>
               <Select defaultValue={currentTransformer?.status}>
-                <SelectTrigger id="edit-status" className="focus:ring-0 focus-visible:ring-0">
+                <SelectTrigger id="edit-status" className="focus-visible:ring-0 border border-gray-300">
                   <SelectValue placeholder="เลือกสถานะ" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border shadow-md">
@@ -280,10 +297,10 @@ const TransformerRelocationInfo = () => {
           </div>
           
           <DialogFooter className="sm:justify-end pt-2">
-            <Button variant="outline" onClick={() => setShowEditModal(false)} className="mr-2 focus:ring-0">
+            <Button variant="outline" onClick={() => setShowEditModal(false)} className="mr-2 focus-visible:ring-0">
               ยกเลิก
             </Button>
-            <Button onClick={handleSaveEdit} className="bg-blue-600 hover:bg-blue-700 focus:ring-0">
+            <Button onClick={handleSaveEdit} className="bg-blue-600 hover:bg-blue-700 focus-visible:ring-0">
               บันทึกการแก้ไข
             </Button>
           </DialogFooter>
@@ -320,7 +337,7 @@ const TransformerRelocationInfo = () => {
             <div className="space-y-2">
               <Label htmlFor="new-station">ย้ายไปสถานีใหม่</Label>
               <Select>
-                <SelectTrigger id="new-station" className="focus:ring-0 focus-visible:ring-0">
+                <SelectTrigger id="new-station" className="focus-visible:ring-0 border border-gray-300">
                   <SelectValue placeholder="เลือกสถานีใหม่" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border shadow-md">
@@ -361,10 +378,10 @@ const TransformerRelocationInfo = () => {
           </div>
           
           <DialogFooter className="sm:justify-end pt-2">
-            <Button variant="outline" onClick={() => setShowRelocationModal(false)} className="mr-2 focus:ring-0">
+            <Button variant="outline" onClick={() => setShowRelocationModal(false)} className="mr-2 focus-visible:ring-0">
               ยกเลิก
             </Button>
-            <Button onClick={handleSaveRelocation} className="bg-blue-600 hover:bg-blue-700 focus:ring-0">
+            <Button onClick={handleSaveRelocation} className="bg-blue-600 hover:bg-blue-700 focus-visible:ring-0">
               บันทึกการย้าย
             </Button>
           </DialogFooter>
