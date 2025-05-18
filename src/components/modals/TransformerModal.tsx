@@ -60,7 +60,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
             <div className="space-y-2">
               <Label htmlFor="region">Region *</Label>
               <Select>
-                <SelectTrigger id="region" className="border border-gray-300">
+                <SelectTrigger id="region" className="w-full border border-gray-300">
                   <SelectValue placeholder="เลือกเขต" />
                 </SelectTrigger>
                 <SelectContent>
@@ -80,7 +80,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
             <div className="space-y-2">
               <Label htmlFor="transformerType">Transformer Type *</Label>
               <Select>
-                <SelectTrigger id="transformerType" className="border border-gray-300">
+                <SelectTrigger id="transformerType" className="w-full border border-gray-300">
                   <SelectValue placeholder="เลือกประเภทหม้อแปลง" />
                 </SelectTrigger>
                 <SelectContent>
@@ -111,7 +111,7 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
             <div className="space-y-2">
               <Label htmlFor="phasePosition">Phase Position *</Label>
               <Select>
-                <SelectTrigger id="phasePosition" className="border border-gray-300">
+                <SelectTrigger id="phasePosition" className="w-full border border-gray-300">
                   <SelectValue placeholder="เลือกตำแหน่งเฟส" />
                 </SelectTrigger>
                 <SelectContent>

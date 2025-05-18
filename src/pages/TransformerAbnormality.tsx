@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -148,6 +149,13 @@ const TransformerAbnormality = () => {
       pageTitle="ความผิดปกติของหม้อแปลง"
       pageDescription="การบันทึกและจัดการข้อมูลความผิดปกติของหม้อแปลงไฟฟ้า"
     >
+      <div className="bg-[#f0f4fa] p-4 md:p-6">
+        <div className="mb-2">
+          <h2 className="text-xl font-semibold text-gray-800">ความผิดปกติของหม้อแปลง</h2>
+          <p className="text-gray-600">Transformer Abnormality</p>
+        </div>
+      </div>
+
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <Card className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-0">
           <CardContent className="p-6 space-y-6">

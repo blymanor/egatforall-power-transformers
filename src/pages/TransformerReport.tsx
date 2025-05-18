@@ -26,6 +26,15 @@ const TransformerReport = () => {
     setShowReport(true);
   };
 
+  const handleGroupByChange = (value: string) => {
+    // If the same value is clicked again, reset to default "region"
+    if (value === groupBy) {
+      setGroupBy("region");
+    } else {
+      setGroupBy(value);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="bg-[#f0f4fa] p-4 md:p-6">
@@ -50,7 +59,7 @@ const TransformerReport = () => {
               transformer={transformer}
               setTransformer={setTransformer}
               groupBy={groupBy}
-              setGroupBy={setGroupBy}
+              setGroupBy={handleGroupByChange}
               onGenerateReport={handleGenerateReport}
             />
             

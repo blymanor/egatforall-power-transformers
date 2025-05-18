@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -61,13 +60,6 @@ const ActivateTestResults = () => {
 
   return (
     <DashboardLayout>
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
-          <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
-        </div>
-      </header>
-
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         {/* Section title with larger font */}
         <div className="mb-8">
