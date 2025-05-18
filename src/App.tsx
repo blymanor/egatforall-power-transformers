@@ -20,6 +20,7 @@ import TransformerRelocationInfo from "./pages/TransformerRelocationInfo";
 import TransformerImportance from "./pages/TransformerImportance";
 import EconomicAnalysisFactorSetting from "./pages/EconomicAnalysisFactorSetting";
 import EconomicAnalysisPriceLoss from "./pages/EconomicAnalysisPriceLoss";
+import EconomicAnalysisInfo from "./pages/EconomicAnalysisInfo";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/economic-analysis" element={<EconomicAnalysisFactorSetting />} />
           <Route path="/economic-analysis/factor-setting" element={<EconomicAnalysisFactorSetting />} />
           <Route path="/economic-analysis/price-loss" element={<EconomicAnalysisPriceLoss />} />
+          <Route path="/economic-analysis/info" element={<EconomicAnalysisInfo />} />
           
           {/* Transformer Maintenance Routes */}
           <Route path="/transformer-maintenance" element={<NotFound />} />
