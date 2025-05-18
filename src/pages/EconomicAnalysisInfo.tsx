@@ -22,19 +22,19 @@ const EconomicAnalysisInfo = () => {
   ];
   
   // Mock transformer details
-  const transformerDetails = {
-    equipmentNo: "7000016200",
-    hvRating: "115.0",
-    mvaRating: "50.0",
-    firstEnergized: "12/02/2007",
-    endOfLife: "49.67",
-    expectedLifetime: "19.36",
-    remainingLife: "30.32",
-    overallCondition: "74.35",
-  };
+  const [transformerDetails, setTransformerDetails] = useState({
+    equipmentNo: "",
+    hvRating: "",
+    mvaRating: "",
+    firstEnergized: "",
+    endOfLife: "",
+    expectedLifetime: "",
+    remainingLife: "",
+    overallCondition: "",
+  });
 
-  // Form data for different options
-  const [repairData, setRepairData] = useState({
+  // Initial form data
+  const initialRepairData = {
     usageYears: "25",
     failureRiskCost: "0",
     maintenanceCost: "1500000",
@@ -58,9 +58,9 @@ const EconomicAnalysisInfo = () => {
     replacingBCT: "2508740",
     others: "2508740",
     totalCost: "2508740",
-  });
+  };
 
-  const [option1Data, setOption1Data] = useState({
+  const initialOption1Data = {
     replacementCost: "7000000000",
     noLoadLoss: "85",
     loadLoss: "250",
@@ -86,9 +86,9 @@ const EconomicAnalysisInfo = () => {
     replacingBCT: "2508740",
     others: "2508740",
     totalCost: "2508740",
-  });
+  };
 
-  const [option2Data, setOption2Data] = useState({
+  const initialOption2Data = {
     newTransformerCost: "25",
     ratedPower: "700000000",
     noLoadLoss: "85",
@@ -96,9 +96,9 @@ const EconomicAnalysisInfo = () => {
     failureRiskCost: "0",
     maintenanceCost: "1500000",
     disposalCost: "0",
-  });
+  };
 
-  const [option3Data, setOption3Data] = useState({
+  const initialOption3Data = {
     newTransformerCost: "25",
     ratedPower: "700000000",
     noLoadLoss: "85",
@@ -106,7 +106,13 @@ const EconomicAnalysisInfo = () => {
     failureRiskCost: "0",
     maintenanceCost: "1500000",
     disposalCost: "0",
-  });
+  };
+
+  // Form data for different options
+  const [repairData, setRepairData] = useState(initialRepairData);
+  const [option1Data, setOption1Data] = useState(initialOption1Data);
+  const [option2Data, setOption2Data] = useState(initialOption2Data);
+  const [option3Data, setOption3Data] = useState(initialOption3Data);
 
   // Mock summary data
   const summaryData = [
@@ -118,6 +124,25 @@ const EconomicAnalysisInfo = () => {
 
   const handleTransformerSelect = (value: string) => {
     setSelectedTransformer(value);
+    
+    // Find the selected transformer
+    const selectedTransformerData = transformers.find(t => t.id === value);
+    
+    // Update transformer details based on selection
+    if (selectedTransformerData) {
+      // In a real app, you would fetch this data from an API
+      // Here we're simulating different data for each transformer
+      setTransformerDetails({
+        equipmentNo: selectedTransformerData.equipmentNo,
+        hvRating: "115.0",
+        mvaRating: "50.0",
+        firstEnergized: "12/02/2007",
+        endOfLife: "49.67",
+        expectedLifetime: "19.36",
+        remainingLife: "30.32",
+        overallCondition: "74.35",
+      });
+    }
   };
 
   const handleSave = () => {
@@ -127,6 +152,17 @@ const EconomicAnalysisInfo = () => {
   };
 
   const handleClearData = () => {
+    // Reset all form data to initial values
+    if (activeTab === "repair-data") {
+      setRepairData({...initialRepairData});
+    } else if (activeTab === "option1") {
+      setOption1Data({...initialOption1Data});
+    } else if (activeTab === "option2") {
+      setOption2Data({...initialOption2Data});
+    } else if (activeTab === "option3") {
+      setOption3Data({...initialOption3Data});
+    }
+    
     toast.success("ล้างข้อมูลสำเร็จ", {
       description: "ข้อมูลได้ถูกล้างออกเรียบร้อยแล้ว",
     });
@@ -200,7 +236,7 @@ const EconomicAnalysisInfo = () => {
                   <SelectContent>
                     {transformers.map((transformer) => (
                       <SelectItem key={transformer.id} value={transformer.id}>
-                        {transformer.name} - {transformer.equipmentNo}
+                        {transformer.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -671,57 +707,248 @@ const EconomicAnalysisInfo = () => {
                     
                     <h3 className="text-lg font-medium text-blue-600 mb-4">รายการที่ต้องซ่อมหม้อแปลงตัวที่ 2 (รวมค่าแรงและค่าของ)</h3>
                     
-                    {/* Same structure for Option 1 repair items as in repair-data tab */}
-                    <div className="space-y-6 mb-4">
-                      {/* Winding */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                        <div>
-                          <Label>Winding [Baht]</Label>
-                        </div>
-                        <div className="flex space-x-4">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox 
-                              id="winding-new-opt1" 
-                              checked={option1Data.winding.new} 
-                              onCheckedChange={(checked) => 
-                                setOption1Data({...option1Data, winding: {...option1Data.winding, new: checked === true}})
-                              } 
-                            />
-                            <Label htmlFor="winding-new-opt1">New</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox 
-                              id="winding-repair-opt1" 
-                              checked={option1Data.winding.repair} 
-                              onCheckedChange={(checked) => 
-                                setOption1Data({...option1Data, winding: {...option1Data.winding, repair: checked === true}})
-                              } 
-                            />
-                            <Label htmlFor="winding-repair-opt1">Repair</Label>
-                          </div>
-                        </div>
-                        <Input 
-                          value={option1Data.winding.cost}
-                          onChange={(e) => setOption1Data({
-                            ...option1Data, 
-                            winding: {...option1Data.winding, cost: e.target.value}
-                          })}
-                        />
+                    {/* Winding */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>Winding [Baht]</Label>
                       </div>
-                      
-                      {/* More items would be here */}
-                      
-                      {/* Total Cost */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                        <div>
-                          <Label>ค่าใช้จ่ายในการซ่อมหม้อแปลงที่เสียหายตัวที่ 2 (ค่าแรงและค่าของ)</Label>
+                      <div className="flex space-x-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="winding-new-opt1" 
+                            checked={option1Data.winding.new} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, winding: {...option1Data.winding, new: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="winding-new-opt1">New</Label>
                         </div>
-                        <div></div>
-                        <Input 
-                          value={option1Data.totalCost}
-                          onChange={(e) => setOption1Data({...option1Data, totalCost: e.target.value})}
-                        />
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="winding-repair-opt1" 
+                            checked={option1Data.winding.repair} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, winding: {...option1Data.winding, repair: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="winding-repair-opt1">Repair</Label>
+                        </div>
                       </div>
+                      <Input 
+                        value={option1Data.winding.cost}
+                        onChange={(e) => setOption1Data({
+                          ...option1Data, 
+                          winding: {...option1Data.winding, cost: e.target.value}
+                        })}
+                      />
+                    </div>
+                    
+                    {/* Bushing */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>Bushing [Baht]</Label>
+                      </div>
+                      <div className="flex space-x-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="bushing-oip-opt1" 
+                            checked={option1Data.bushing.oip} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, bushing: {...option1Data.bushing, oip: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="bushing-oip-opt1">OIP</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="bushing-rip-opt1" 
+                            checked={option1Data.bushing.rip} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, bushing: {...option1Data.bushing, rip: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="bushing-rip-opt1">RIP</Label>
+                        </div>
+                      </div>
+                      <Input 
+                        value={option1Data.bushing.cost}
+                        onChange={(e) => setOption1Data({
+                          ...option1Data, 
+                          bushing: {...option1Data.bushing, cost: e.target.value}
+                        })}
+                      />
+                    </div>
+                    
+                    {/* Arrester */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>Arrester [Baht]</Label>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="arrester-gap-opt1" 
+                            checked={option1Data.arrester.gap} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, arrester: {...option1Data.arrester, gap: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="arrester-gap-opt1">Gap</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="arrester-silicon-opt1" 
+                            checked={option1Data.arrester.gaplessSilicon} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, arrester: {...option1Data.arrester, gaplessSilicon: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="arrester-silicon-opt1">Gapless with silicon housing</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="arrester-porcelain-opt1" 
+                            checked={option1Data.arrester.gaplessPorcelain} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, arrester: {...option1Data.arrester, gaplessPorcelain: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="arrester-porcelain-opt1">Gapless with porcelain housing</Label>
+                        </div>
+                      </div>
+                      <Input 
+                        value={option1Data.arrester.cost}
+                        onChange={(e) => setOption1Data({
+                          ...option1Data, 
+                          arrester: {...option1Data.arrester, cost: e.target.value}
+                        })}
+                      />
+                    </div>
+                    
+                    {/* OLTC */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>OLTC [Baht]</Label>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="oltc-oil1-opt1" 
+                            checked={option1Data.oltc.oil1Chamber} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, oltc: {...option1Data.oltc, oil1Chamber: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="oltc-oil1-opt1">Oil 1 Chamber</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="oltc-oil2-opt1" 
+                            checked={option1Data.oltc.oil2Chambers} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, oltc: {...option1Data.oltc, oil2Chambers: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="oltc-oil2-opt1">Oil 2 Chambers</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="oltc-oil3-opt1" 
+                            checked={option1Data.oltc.oil3Chambers} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, oltc: {...option1Data.oltc, oil3Chambers: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="oltc-oil3-opt1">Oil 3 Chambers</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="oltc-vacuum-opt1" 
+                            checked={option1Data.oltc.vacuum} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, oltc: {...option1Data.oltc, vacuum: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="oltc-vacuum-opt1">Vacuum</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="oltc-others-opt1" 
+                            checked={option1Data.oltc.others} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, oltc: {...option1Data.oltc, others: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="oltc-others-opt1">Others</Label>
+                        </div>
+                      </div>
+                      <Input 
+                        value={option1Data.oltc.cost}
+                        onChange={(e) => setOption1Data({
+                          ...option1Data, 
+                          oltc: {...option1Data.oltc, cost: e.target.value}
+                        })}
+                      />
+                    </div>
+                    
+                    {/* Hot Line Oil Filter */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>Hot Line Oil Filter [Baht]</Label>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="filter-12-opt1" 
+                            checked={option1Data.hotLineOilFilter.chamber12} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, hotLineOilFilter: {...option1Data.hotLineOilFilter, chamber12: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="filter-12-opt1">1-2 Chamber</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="filter-3-opt1" 
+                            checked={option1Data.hotLineOilFilter.chambers3} 
+                            onCheckedChange={(checked) => 
+                              setOption1Data({...option1Data, hotLineOilFilter: {...option1Data.hotLineOilFilter, chambers3: checked === true}})
+                            } 
+                          />
+                          <Label htmlFor="filter-3-opt1">3 Chambers</Label>
+                        </div>
+                      </div>
+                      <Input 
+                        value={option1Data.hotLineOilFilter.cost}
+                        onChange={(e) => setOption1Data({
+                          ...option1Data, 
+                          hotLineOilFilter: {...option1Data.hotLineOilFilter, cost: e.target.value}
+                        })}
+                      />
+                    </div>
+                    
+                    {/* Cooling */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>Cooling [Baht]</Label>
+                      </div>
+                      <div></div>
+                      <Input 
+                        value={option1Data.cooling}
+                        onChange={(e) => setOption1Data({...option1Data, cooling: e.target.value})}
+                      />
+                    </div>
+                    
+                    {/* Total Cost */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                      <div>
+                        <Label>ค่าใช้จ่ายในการซ่อมหม้อแปลงที่เสียหายตัวที่ 2 (ค่าแรงและค่าของ)</Label>
+                      </div>
+                      <div></div>
+                      <Input 
+                        value={option1Data.totalCost}
+                        onChange={(e) => setOption1Data({...option1Data, totalCost: e.target.value})}
+                      />
                     </div>
                     
                     <div className="flex justify-center gap-4 mt-6">
@@ -821,9 +1048,9 @@ const EconomicAnalysisInfo = () => {
                     </div>
                   </TabsContent>
                   
-                  {/* Tab Content for Option 3 */}
+                  {/* Tab Content for Option 3 - Updated to match provided image */}
                   <TabsContent value="option3" className="p-4 border rounded-lg">
-                    <h3 className="text-lg font-medium text-blue-600 mb-4">เลือกนำหม้อแปลงใหม่เมื่อสิ้นสุดการใช้งานหม้อแปลงตัวเดิม</h3>
+                    <h3 className="text-lg font-medium text-blue-600 mb-4">ข้อมูลการซื้อหม้อแปลงใหม่</h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                       <div className="space-y-2">
@@ -908,9 +1135,9 @@ const EconomicAnalysisInfo = () => {
                     </div>
                   </TabsContent>
                   
-                  {/* Tab Content for Summary */}
+                  {/* Tab Content for Summary - Updated title */}
                   <TabsContent value="summary" className="p-4 border rounded-lg">
-                    <h3 className="text-lg font-medium text-blue-600 mb-4">รายชื่อทุกที่ 3 ทางเลือก</h3>
+                    <h3 className="text-lg font-medium text-blue-600 mb-4">ราคาต้นทุนทั้ง 3 ทางเลือก</h3>
                     
                     <Table className="w-full mb-6">
                       <TableHeader>

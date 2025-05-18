@@ -59,7 +59,7 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<Rea
         {...props}
       >
         <input
-          type="number"
+          type="text"
           value={value}
           onChange={handleChange}
           className={cn(
@@ -70,6 +70,7 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<Rea
           max={max}
           step={step}
           disabled={disabled}
+          inputMode="numeric"
         />
         <div className="absolute right-1 top-0 bottom-0 flex flex-col justify-center">
           <button
