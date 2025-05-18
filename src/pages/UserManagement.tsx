@@ -239,9 +239,9 @@ const UserManagement = () => {
                   <TableHead>Delete</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="bg-white">
                 {paginatedUsers.map((user) => (
-                  <TableRow key={user.id}>
+                  <TableRow key={user.id} className="bg-white border-b">
                     <TableCell>{user.login}</TableCell>
                     <TableCell>{user.firstName}</TableCell>
                     <TableCell>{user.lastName}</TableCell>
@@ -278,10 +278,10 @@ const UserManagement = () => {
             </Table>
           </div>
           
-          <div className="p-4 flex justify-between items-center">
+          <div className="p-4 flex justify-between items-center bg-white">
             <Button 
               onClick={handleAddUser} 
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-[#1E5CFF] hover:bg-blue-600 text-white"
             >
               <UserPlus className="h-4 w-4" />
               เพิ่มผู้ใช้งาน
@@ -402,7 +402,7 @@ const UserManagement = () => {
             <Button variant="outline" onClick={handleDialogClose}>
               ยกเลิก
             </Button>
-            <Button onClick={handleSaveUser}>
+            <Button onClick={handleSaveUser} className="bg-[#1E5CFF] hover:bg-blue-600">
               บันทึก
             </Button>
           </DialogFooter>
