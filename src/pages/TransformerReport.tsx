@@ -106,7 +106,7 @@ const TransformerReport = () => {
                   <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">เขต :</Label>
                     <Select value={region} onValueChange={setRegion}>
-                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
+                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>
@@ -122,7 +122,7 @@ const TransformerReport = () => {
                   <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">สถานีไฟฟ้า :</Label>
                     <Select value={station} onValueChange={setStation}>
-                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
+                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>
@@ -137,7 +137,7 @@ const TransformerReport = () => {
                   <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">บริษัทผู้ผลิต :</Label>
                     <Select value={manufacturer} onValueChange={setManufacturer}>
-                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
+                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>
@@ -153,7 +153,7 @@ const TransformerReport = () => {
                   <div className="flex items-center">
                     <Label className="w-32 text-gray-700 font-medium text-right">หม้อแปลงไฟฟ้า :</Label>
                     <Select value={transformer} onValueChange={setTransformer}>
-                      <SelectTrigger className="w-full ml-4 focus-visible:ring-0 border border-gray-300">
+                      <SelectTrigger className="w-52 ml-4 focus-visible:ring-0 border border-gray-300">
                         <SelectValue placeholder="ทั้งหมด" />
                       </SelectTrigger>
                       <SelectContent>

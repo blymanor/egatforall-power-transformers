@@ -1,19 +1,17 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { NumberInput } from "@/components/ui/number-input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const DamageReport = () => {
   const { toast } = useToast();
   const [region, setRegion] = useState("");
-  const [minAge, setMinAge] = useState(0);
-  const [maxAge, setMaxAge] = useState(20);
+  const [minAge, setMinAge] = useState("0");
+  const [maxAge, setMaxAge] = useState("20");
   const [showReport, setShowReport] = useState(false);
   
   const handleGenerateReport = () => {
@@ -45,24 +43,30 @@ const DamageReport = () => {
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2">
                               <Label className="text-gray-700">จาก</Label>
-                              <NumberInput 
-                                value={minAge}
-                                onChange={setMinAge}
-                                min={0}
-                                max={50}
-                                className="w-20"
-                              />
+                              <Select value={minAge} onValueChange={setMinAge}>
+                                <SelectTrigger className="w-20 focus-visible:ring-0 border border-gray-300">
+                                  <SelectValue placeholder="0" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white">
+                                  {Array.from({length: 51}, (_, i) => (
+                                    <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
                             
                             <div className="flex items-center gap-2">
                               <Label className="text-gray-700">ถึง</Label>
-                              <NumberInput
-                                value={maxAge}
-                                onChange={setMaxAge}
-                                min={minAge}
-                                max={50}
-                                className="w-20"
-                              />
+                              <Select value={maxAge} onValueChange={setMaxAge}>
+                                <SelectTrigger className="w-20 focus-visible:ring-0 border border-gray-300">
+                                  <SelectValue placeholder="20" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white">
+                                  {Array.from({length: 51}, (_, i) => (
+                                    <SelectItem key={i} value={i.toString()}>{i}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
                             <Label className="text-gray-700">ปี</Label>
                           </div>
