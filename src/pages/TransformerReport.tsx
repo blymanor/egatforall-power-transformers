@@ -12,19 +12,8 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { PieChart, BarChart, Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const TransformerReport = () => {
@@ -34,53 +23,60 @@ const TransformerReport = () => {
   const [manufacturer, setManufacturer] = useState("");
   const [transformer, setTransformer] = useState("");
   const [groupBy, setGroupBy] = useState("region");
-  const [dateRange, setDateRange] = useState("month");
   const [showReport, setShowReport] = useState(false);
-  const [showTable, setShowTable] = useState(true);
-  const [showAddEditModal, setShowAddEditModal] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentTransformer, setCurrentTransformer] = useState(null);
-
+  
   // Mock data for the pie chart
-  const reportData = [
+  const regionData = [
     { name: 'ภาคเหนือ', value: 25, color: '#0088FE' },
     { name: 'ภาคตะวันออกเฉียงเหนือ', value: 35, color: '#00C49F' },
     { name: 'ภาคกลาง', value: 30, color: '#FFBB28' },
     { name: 'ภาคใต้', value: 10, color: '#FF8042' },
   ];
-
-  // Mock data for the transformer table
-  const transformerData = [
-    { id: 1, name: "AN-A", equipmentNo: "70000016001", manufacturer: "Electro Bangkok", capacity: "50.0", actions: "" },
-    { id: 2, name: "AN-K12A", equipmentNo: "70000016003", manufacturer: "OSAKA", capacity: "50.0", actions: "" },
-    { id: 3, name: "AN-K12A", equipmentNo: "70000016201", manufacturer: "DoRan", capacity: "300.0", actions: "" },
-    { id: 4, name: "AN-K12A", equipmentNo: "70000016201", manufacturer: "Siemens", capacity: "300.0", actions: "" },
-    { id: 5, name: "AN-K12A", equipmentNo: "70000016201", manufacturer: "Siemens", capacity: "300.0", actions: "" },
-    { id: 6, name: "AN-K12A", equipmentNo: "70000016201", manufacturer: "OSAKA", capacity: "300.0", actions: "" },
+  
+  const stationData = [
+    { name: 'สถานี 1', value: 15, color: '#0088FE' },
+    { name: 'สถานี 2', value: 12, color: '#00C49F' },
+    { name: 'สถานี 3', value: 18, color: '#FFBB28' },
+    { name: 'สถานี 4', value: 22, color: '#FF8042' },
+    { name: 'สถานี 5', value: 10, color: '#8884d8' },
+    { name: 'สถานี 6', value: 13, color: '#82ca9d' },
+  ];
+  
+  const manufacturerData = [
+    { name: 'ABB', value: 28, color: '#0088FE' },
+    { name: 'Siemens', value: 22, color: '#00C49F' },
+    { name: 'Mitsubishi', value: 18, color: '#FFBB28' },
+    { name: 'Hitachi', value: 15, color: '#FF8042' },
+    { name: 'OSAKA', value: 10, color: '#8884d8' },
+    { name: 'อื่นๆ', value: 7, color: '#82ca9d' },
+  ];
+  
+  const ageData = [
+    { name: '0-5 ปี', value: 20, color: '#0088FE' },
+    { name: '6-10 ปี', value: 25, color: '#00C49F' },
+    { name: '11-15 ปี', value: 35, color: '#FFBB28' },
+    { name: '16-20 ปี', value: 15, color: '#FF8042' },
+    { name: '21+ ปี', value: 5, color: '#8884d8' },
   ];
 
-  const handleEdit = (transformer) => {
-    setIsEditing(true);
-    setCurrentTransformer(transformer);
-    setShowAddEditModal(true);
+  const getReportData = () => {
+    switch (groupBy) {
+      case "region": return regionData;
+      case "station": return stationData;
+      case "manufacturer": return manufacturerData;
+      case "age": return ageData;
+      default: return regionData;
+    }
   };
-
-  const handleAdd = () => {
-    setIsEditing(false);
-    setCurrentTransformer(null);
-    setShowAddEditModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowAddEditModal(false);
-  };
-
-  const handleSave = () => {
-    toast({
-      title: isEditing ? "บันทึกการแก้ไขสำเร็จ" : "เพิ่มรายการสำเร็จ",
-      description: isEditing ? "แก้ไขข้อมูลหม้อแปลงไฟฟ้าเรียบร้อยแล้ว" : "เพิ่มข้อมูลหม้อแปลงไฟฟ้าเรียบร้อยแล้ว",
-    });
-    setShowAddEditModal(false);
+  
+  const getGroupByLabel = () => {
+    switch (groupBy) {
+      case "region": return "เขต";
+      case "station": return "สถานีไฟฟ้า";
+      case "manufacturer": return "บริษัทผู้ผลิต";
+      case "age": return "อายุการใช้งาน";
+      default: return "เขต";
+    }
   };
   
   const handleGenerateReport = () => {
@@ -107,31 +103,6 @@ const TransformerReport = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-8">
               <div className="space-y-6">
-                <div>
-                  <h3 className="text-blue-600 font-medium text-lg mb-4">
-                    ช่วงเวลาของข้อมูล
-                  </h3>
-                  
-                  <RadioGroup value={dateRange} onValueChange={setDateRange} className="flex flex-wrap gap-4">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="week" id="week" />
-                      <Label htmlFor="week">รายสัปดาห์</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="month" id="month" />
-                      <Label htmlFor="month">รายเดือน</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="quarter" id="quarter" />
-                      <Label htmlFor="quarter">รายไตรมาส</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="year" id="year" />
-                      <Label htmlFor="year">รายปี</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-                
                 <h3 className="text-blue-600 font-medium text-lg">
                   เลือกเงื่อนไขในการสร้างรายงาน
                 </h3>
@@ -183,11 +154,7 @@ const TransformerReport = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="space-y-4">
+
                   <div className="flex items-center gap-4">
                     <Label className="w-32 text-gray-700 font-medium text-right">หม้อแปลงไฟฟ้า :</Label>
                     <Select value={transformer} onValueChange={setTransformer}>
@@ -202,132 +169,173 @@ const TransformerReport = () => {
                       </SelectContent>
                     </Select>
                   </div>
-
-                  <div className="flex items-center gap-4">
-                    <Label className="w-32 text-gray-700 font-medium text-right">อายุใช้งาน :</Label>
-                    <div className="flex items-center gap-2 w-full">
-                      <Input type="number" placeholder="ต่ำสุด" className="w-full" />
-                      <span>-</span>
-                      <Input type="number" placeholder="สูงสุด" className="w-full" />
-                      <span>ปี</span>
-                    </div>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <h3 className="text-blue-600 font-medium text-lg mb-4">
+                  เลือกการแบ่งกลุ่ม (แบ่งตาม)
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      id="group-by-region" 
+                      name="group-by" 
+                      value="region" 
+                      checked={groupBy === "region"} 
+                      onChange={(e) => setGroupBy(e.target.value)}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <Label htmlFor="group-by-region" className="text-gray-700">เขต</Label>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      id="group-by-station" 
+                      name="group-by" 
+                      value="station"
+                      checked={groupBy === "station"} 
+                      onChange={(e) => setGroupBy(e.target.value)}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <Label htmlFor="group-by-station" className="text-gray-700">สถานีไฟฟ้า</Label>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      id="group-by-manufacturer" 
+                      name="group-by" 
+                      value="manufacturer"
+                      checked={groupBy === "manufacturer"} 
+                      onChange={(e) => setGroupBy(e.target.value)}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <Label htmlFor="group-by-manufacturer" className="text-gray-700">บริษัทผู้ผลิต</Label>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      id="group-by-age" 
+                      name="group-by" 
+                      value="age"
+                      checked={groupBy === "age"} 
+                      onChange={(e) => setGroupBy(e.target.value)}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <Label htmlFor="group-by-age" className="text-gray-700">อายุการใช้งาน</Label>
                   </div>
                 </div>
                 
-                <div className="pt-6">
-                  <h3 className="text-blue-600 font-medium text-lg mb-4">
-                    เลือกการแบ่งกลุ่ม (แบ่งตาม)
-                  </h3>
-
-                  <div>
-                    <RadioGroup value={groupBy} onValueChange={setGroupBy} className="flex flex-wrap gap-4">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="region" id="group-region" />
-                        <Label htmlFor="group-region">เขต</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="station" id="group-station" />
-                        <Label htmlFor="group-station">สถานีไฟฟ้า</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="manufacturer" id="group-manufacturer" />
-                        <Label htmlFor="group-manufacturer">บริษัทผู้ผลิต</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="age" id="group-age" />
-                        <Label htmlFor="group-age">อายุการใช้งาน</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
+                <div className="flex justify-center pt-6">
+                  <Button 
+                    onClick={handleGenerateReport} 
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-lg"
+                  >
+                    สร้างรายงาน
+                  </Button>
                 </div>
               </div>
-            </div>
-
-            <div className="flex justify-center mt-10">
-              <Button 
-                onClick={handleGenerateReport} 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-lg"
-              >
-                สร้างรายงาน
-              </Button>
             </div>
             
             {showReport && (
               <div className="mt-10 pt-8 border-t border-gray-200 animate-fade-in">
-                <h3 className="text-xl font-bold mb-4 text-center">ผลลัพธ์รายงานหม้อแปลงไฟฟ้า ({groupBy === 'region' ? 'แบ่งตามเขต' : 
-                groupBy === 'station' ? 'แบ่งตามสถานีไฟฟ้า' : 
-                groupBy === 'manufacturer' ? 'แบ่งตามบริษัทผู้ผลิต' : 'แบ่งตามอายุการใช้งาน'})</h3>
+                <h3 className="text-xl font-bold mb-6 text-center">รายงานหม้อแปลงไฟฟ้า (แบ่งตาม{getGroupByLabel()})</h3>
                 
-                <Tabs defaultValue="chart" className="w-full mt-6">
+                <Tabs defaultValue="pie" className="w-full">
                   <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-                    <TabsTrigger value="chart">แผนภูมิ</TabsTrigger>
-                    <TabsTrigger value="table">ตาราง</TabsTrigger>
+                    <TabsTrigger value="pie">แผนภูมิวงกลม</TabsTrigger>
+                    <TabsTrigger value="bar">แผนภูมิแท่ง</TabsTrigger>
                   </TabsList>
-                  <TabsContent value="chart">
+                  
+                  <TabsContent value="pie" className="mt-6">
                     <Card>
                       <CardContent className="p-6">
-                        <div className="h-80 w-full">
-                          <ChartContainer 
-                            config={{
-                              region1: { label: "ภาคเหนือ", color: "#0088FE" },
-                              region2: { label: "ภาคตะวันออกเฉียงเหนือ", color: "#00C49F" },
-                              region3: { label: "ภาคกลาง", color: "#FFBB28" },
-                              region4: { label: "ภาคใต้", color: "#FF8042" },
-                            }}
-                          >
+                        <div className="h-96 w-full">
+                          <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                               <Pie
-                                data={reportData}
+                                data={getReportData()}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={true}
-                                outerRadius={120}
+                                outerRadius={150}
                                 fill="#8884d8"
                                 dataKey="value"
                                 nameKey="name"
                                 label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                               >
-                                {reportData.map((entry, index) => (
+                                {getReportData().map((entry, index) => (
                                   <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                               </Pie>
                               <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-                              <ChartTooltip />
+                              <Tooltip formatter={(value) => [`จำนวน: ${value}`, getGroupByLabel()]} />
                             </PieChart>
-                          </ChartContainer>
+                          </ResponsiveContainer>
                         </div>
                       </CardContent>
                     </Card>
                   </TabsContent>
-                  <TabsContent value="table">
+                  
+                  <TabsContent value="bar" className="mt-6">
                     <Card>
                       <CardContent className="p-6">
-                        <div className="overflow-x-auto">
-                          <table className="w-full border-collapse">
-                            <thead>
-                              <tr className="bg-slate-100">
-                                <th className="border border-slate-200 p-2">เขต</th>
-                                <th className="border border-slate-200 p-2">จำนวนหม้อแปลง</th>
-                                <th className="border border-slate-200 p-2">เปอร์เซ็นต์</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {reportData.map((item, index) => (
-                                <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                                  <td className="border border-slate-200 p-2 text-center">{item.name}</td>
-                                  <td className="border border-slate-200 p-2 text-center">{item.value}</td>
-                                  <td className="border border-slate-200 p-2 text-center">
-                                    {(item.value / reportData.reduce((acc, curr) => acc + curr.value, 0) * 100).toFixed(1)}%
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                        <div className="h-96 w-full">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                              data={getReportData()}
+                              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="name" />
+                              <YAxis />
+                              <Tooltip formatter={(value) => [`จำนวน: ${value}`, getGroupByLabel()]} />
+                              <Legend />
+                              <Bar dataKey="value" name="จำนวนหม้อแปลง">
+                                {getReportData().map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                              </Bar>
+                            </BarChart>
+                          </ResponsiveContainer>
                         </div>
                       </CardContent>
                     </Card>
                   </TabsContent>
                 </Tabs>
+                
+                <div className="mt-6">
+                  <h4 className="font-medium mb-4">ตารางข้อมูล</h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-slate-100">
+                          <th className="border border-slate-200 p-2">{getGroupByLabel()}</th>
+                          <th className="border border-slate-200 p-2">จำนวน</th>
+                          <th className="border border-slate-200 p-2">เปอร์เซ็นต์</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {getReportData().map((item, index) => {
+                          const total = getReportData().reduce((acc, cur) => acc + cur.value, 0);
+                          const percent = ((item.value / total) * 100).toFixed(1);
+                          return (
+                            <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                              <td className="border border-slate-200 p-2 text-center">{item.name}</td>
+                              <td className="border border-slate-200 p-2 text-center">{item.value}</td>
+                              <td className="border border-slate-200 p-2 text-center">{percent}%</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 
                 <div className="flex justify-end mt-6">
                   <Button className="bg-green-600 hover:bg-green-700">
