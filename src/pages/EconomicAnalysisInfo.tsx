@@ -33,6 +33,81 @@ const EconomicAnalysisInfo = () => {
     overallCondition: "",
   });
 
+  // Empty form states for reset
+  const emptyRepairData = {
+    usageYears: "",
+    failureRiskCost: "",
+    maintenanceCost: "",
+    disposalCost: "",
+    winding: { new: false, repair: false, cost: "" },
+    bushing: { oip: false, rip: false, cost: "" },
+    arrester: { gap: false, gaplessSilicon: false, gaplessPorcelain: false, cost: "" },
+    oltc: { 
+      oil1Chamber: false, 
+      oil2Chambers: false, 
+      oil3Chambers: false, 
+      vacuum: false, 
+      others: false,
+      cost: "" 
+    },
+    hotLineOilFilter: { chamber12: false, chambers3: false, cost: "" },
+    cooling: "",
+    overhaul: "",
+    overhaulRefurbish: "",
+    replacingRubberBag: "",
+    replacingBCT: "",
+    others: "",
+    totalCost: "",
+  };
+
+  const emptyOption1Data = {
+    replacementCost: "",
+    noLoadLoss: "",
+    loadLoss: "",
+    failureRiskCost: "",
+    maintenanceCost: "",
+    disposalCost: "",
+    winding: { new: false, repair: false, cost: "" },
+    bushing: { oip: false, rip: false, cost: "" },
+    arrester: { gap: false, gaplessSilicon: false, gaplessPorcelain: false, cost: "" },
+    oltc: { 
+      oil1Chamber: false, 
+      oil2Chambers: false, 
+      oil3Chambers: false, 
+      vacuum: false, 
+      others: false,
+      cost: "" 
+    },
+    hotLineOilFilter: { chamber12: false, chambers3: false, cost: "" },
+    cooling: "",
+    overhaul: "",
+    overhaulRefurbish: "",
+    replacingRubberBag: "",
+    replacingBCT: "",
+    others: "",
+    totalCost: "",
+  };
+
+  const emptyOption2Data = {
+    newTransformerCost: "",
+    ratedPower: "",
+    noLoadLoss: "",
+    loadLoss: "",
+    failureRiskCost: "",
+    maintenanceCost: "",
+    disposalCost: "",
+  };
+
+  const emptyOption3Data = {
+    newTransformerCost: "",
+    ratedPower: "",
+    noLoadLoss: "",
+    loadLoss: "",
+    failureRiskCost: "",
+    maintenanceCost: "",
+    disposalCost: "",
+  };
+
   // Initial form data
   const initialRepairData = {
     usageYears: "25",
@@ -152,15 +227,15 @@ const EconomicAnalysisInfo = () => {
   };
 
   const handleClearData = () => {
-    // Reset all form data to initial values
+    // Reset all form data to empty values
     if (activeTab === "repair-data") {
-      setRepairData({...initialRepairData});
+      setRepairData({...emptyRepairData});
     } else if (activeTab === "option1") {
-      setOption1Data({...initialOption1Data});
+      setOption1Data({...emptyOption1Data});
     } else if (activeTab === "option2") {
-      setOption2Data({...initialOption2Data});
+      setOption2Data({...emptyOption2Data});
     } else if (activeTab === "option3") {
-      setOption3Data({...initialOption3Data});
+      setOption3Data({...emptyOption3Data});
     }
     
     toast.success("ล้างข้อมูลสำเร็จ", {
@@ -1048,7 +1123,7 @@ const EconomicAnalysisInfo = () => {
                     </div>
                   </TabsContent>
                   
-                  {/* Tab Content for Option 3 - Updated to match provided image */}
+                  {/* Tab Content for Option 3 */}
                   <TabsContent value="option3" className="p-4 border rounded-lg">
                     <h3 className="text-lg font-medium text-blue-600 mb-4">ข้อมูลการซื้อหม้อแปลงใหม่</h3>
                     
@@ -1135,7 +1210,7 @@ const EconomicAnalysisInfo = () => {
                     </div>
                   </TabsContent>
                   
-                  {/* Tab Content for Summary - Updated title */}
+                  {/* Tab Content for Summary */}
                   <TabsContent value="summary" className="p-4 border rounded-lg">
                     <h3 className="text-lg font-medium text-blue-600 mb-4">ราคาต้นทุนทั้ง 3 ทางเลือก</h3>
                     

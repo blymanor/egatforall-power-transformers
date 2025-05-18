@@ -59,11 +59,13 @@ const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps & Omit<Rea
         {...props}
       >
         <input
-          type="text"
+          type="number"
           value={value}
           onChange={handleChange}
           className={cn(
             "h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50",
+            // Remove default spinner buttons
+            "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
             inputClassName
           )}
           min={min}

@@ -21,6 +21,8 @@ import TransformerImportance from "./pages/TransformerImportance";
 import EconomicAnalysisFactorSetting from "./pages/EconomicAnalysisFactorSetting";
 import EconomicAnalysisPriceLoss from "./pages/EconomicAnalysisPriceLoss";
 import EconomicAnalysisInfo from "./pages/EconomicAnalysisInfo";
+import TransformerMaintenanceSearch from "./pages/TransformerMaintenanceSearch";
+import TransformerVisualInspection from "./pages/TransformerVisualInspection";
 
 const queryClient = new QueryClient();
 
@@ -61,9 +63,9 @@ const App = () => (
           <Route path="/economic-analysis/consideration-data" element={<EconomicAnalysisInfo />} />
           
           {/* Transformer Maintenance Routes */}
-          <Route path="/transformer-maintenance" element={<NotFound />} />
-          <Route path="/transformer-maintenance/search" element={<NotFound />} />
-          <Route path="/transformer-maintenance/visual-inspection" element={<NotFound />} />
+          <Route path="/transformer-maintenance" element={<TransformerMaintenanceSearch />} />
+          <Route path="/transformer-maintenance/search" element={<TransformerMaintenanceSearch />} />
+          <Route path="/transformer-maintenance/visual-inspection" element={<TransformerVisualInspection />} />
           <Route path="/transformer-maintenance/oil-test" element={<NotFound />} />
           <Route path="/transformer-maintenance/electrical-test" element={<NotFound />} />
           <Route path="/transformer-maintenance/oltc" element={<NotFound />} />
