@@ -23,6 +23,10 @@ import EconomicAnalysisPriceLoss from "./pages/EconomicAnalysisPriceLoss";
 import EconomicAnalysisInfo from "./pages/EconomicAnalysisInfo";
 import TransformerMaintenanceSearch from "./pages/TransformerMaintenanceSearch";
 import TransformerVisualInspection from "./pages/TransformerVisualInspection";
+import OilTestResults from "./pages/OilTestResults";
+import ElectricalTestResults from "./pages/ElectricalTestResults";
+import OLTCMaintenance from "./pages/OLTCMaintenance";
+import AllTestResults from "./pages/AllTestResults";
 import ChangePassword from "./pages/ChangePassword";
 import UserManagement from "./pages/UserManagement";
 
@@ -68,10 +72,10 @@ const App = () => (
           <Route path="/transformer-maintenance" element={<TransformerMaintenanceSearch />} />
           <Route path="/transformer-maintenance/search" element={<TransformerMaintenanceSearch />} />
           <Route path="/transformer-maintenance/visual-inspection" element={<TransformerVisualInspection />} />
-          <Route path="/transformer-maintenance/oil-test" element={<NotFound />} />
-          <Route path="/transformer-maintenance/electrical-test" element={<NotFound />} />
-          <Route path="/transformer-maintenance/oltc" element={<NotFound />} />
-          <Route path="/transformer-maintenance/all-test-results" element={<NotFound />} />
+          <Route path="/transformer-maintenance/oil-test" element={<OilTestResults />} />
+          <Route path="/transformer-maintenance/electrical-test" element={<ElectricalTestResults />} />
+          <Route path="/transformer-maintenance/oltc" element={<OLTCMaintenance />} />
+          <Route path="/transformer-maintenance/all-test-results" element={<AllTestResults />} />
           <Route path="/transformer-maintenance/condition-check" element={<NotFound />} />
           
           {/* User Management Routes */}
