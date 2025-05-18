@@ -163,8 +163,8 @@ const TransformerImportance = () => {
                     <TableHead className="w-[80px] text-center">ลำดับที่</TableHead>
                     <TableHead className="text-center">ชื่อหม้อแปลงไฟฟ้า</TableHead>
                     <TableHead className="text-center">วันที่บันทึก</TableHead>
-                    <TableHead className="w-[100px] text-center">แก้ไขรายการ</TableHead>
-                    <TableHead className="w-[100px] text-center">ลบรายการ</TableHead>
+                    <TableHead className="w-[120px] text-center">แก้ไขรายการ</TableHead>
+                    <TableHead className="w-[120px] text-center">ลบรายการ</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -173,26 +173,26 @@ const TransformerImportance = () => {
                       <TableCell className="text-center">{index + 1}</TableCell>
                       <TableCell className="text-center">{item.transformerName}</TableCell>
                       <TableCell className="text-center">{format(item.recordDate, "dd/MM/yyyy")}</TableCell>
-                      <TableCell className="text-center p-2">
+                      <TableCell className="text-center">
                         <Button 
                           variant="ghost" 
                           size="sm" 
                           onClick={() => handleEditImportance(item.id)}
-                          className="mx-auto flex items-center justify-center w-full"
+                          className="inline-flex items-center whitespace-nowrap"
                         >
                           <Edit className="h-4 w-4 text-blue-600 mr-1" />
-                          <span className="whitespace-nowrap">แก้ไข</span>
+                          แก้ไข
                         </Button>
                       </TableCell>
-                      <TableCell className="text-center p-2">
+                      <TableCell className="text-center">
                         <Button 
                           variant="ghost" 
                           size="sm"
                           onClick={() => handleDeleteImportance(item.id)}
-                          className="mx-auto flex items-center justify-center w-full"
+                          className="inline-flex items-center whitespace-nowrap"
                         >
                           <Trash2 className="h-4 w-4 text-red-600 mr-1" />
-                          <span className="whitespace-nowrap">ลบ</span>
+                          ลบ
                         </Button>
                       </TableCell>
                     </TableRow>
