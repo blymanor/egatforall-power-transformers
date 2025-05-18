@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 interface TransformerData {
   deviceNo: string;
   equipmentNo: string;
+  transformerType: string;  // Added transformer type
   condition: number;
   importance: number;
   risk: string;
@@ -20,35 +21,35 @@ interface TransformerData {
 
 // Extended dataset with more transformers to ensure at least 6 per region
 const allTransformers: TransformerData[] = [
-  // Original data
-  { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
-  { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
-  { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
-  { deviceNo: "АN-474A", equipmentNo: "TGPOS68023", condition: 90.10, importance: 25.45, risk: "Low", status: "Good", action: "Relocate", region: "central" },
-  { deviceNo: "АN-475A", equipmentNo: "TGPOS68024", condition: 45.33, importance: 67.21, risk: "High", status: "Faulty", action: "Refurbish", region: "south" },
-  { deviceNo: "АN-476A", equipmentNo: "TGPOS68025", condition: 78.42, importance: 31.89, risk: "Low", status: "Good", action: "Investigation", region: "south" },
-  { deviceNo: "АN-477A", equipmentNo: "TGPOS68026", condition: 55.67, importance: 58.75, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
-  { deviceNo: "АN-478A", equipmentNo: "TGPOS68027", condition: 82.29, importance: 42.13, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
-  // Additional data for north region
-  { deviceNo: "АN-479A", equipmentNo: "TGPOS68028", condition: 81.15, importance: 38.45, risk: "Low", status: "Good", action: "Investigation", region: "north" },
-  { deviceNo: "АN-480A", equipmentNo: "TGPOS68029", condition: 65.78, importance: 52.33, risk: "Moderate", status: "Repair", action: "Refurbish", region: "north" },
-  { deviceNo: "АN-481A", equipmentNo: "TGPOS68030", condition: 42.56, importance: 71.22, risk: "High", status: "Faulty", action: "Refurbish", region: "north" },
-  { deviceNo: "АN-482A", equipmentNo: "TGPOS68031", condition: 77.89, importance: 41.67, risk: "Low", status: "Good", action: "Investigation", region: "north" },
-  // Additional data for northeast region
-  { deviceNo: "АN-483A", equipmentNo: "TGPOS68032", condition: 71.34, importance: 49.78, risk: "Moderate", status: "Good", action: "Investigation", region: "northeast" },
-  { deviceNo: "АN-484A", equipmentNo: "TGPOS68033", condition: 58.21, importance: 63.42, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
-  { deviceNo: "АN-485A", equipmentNo: "TGPOS68034", condition: 41.67, importance: 76.91, risk: "High", status: "Faulty", action: "Refurbish", region: "northeast" },
-  { deviceNo: "АN-486A", equipmentNo: "TGPOS68035", condition: 81.45, importance: 32.56, risk: "Low", status: "Good", action: "Relocate", region: "northeast" },
-  // Additional data for central region
-  { deviceNo: "АN-487A", equipmentNo: "TGPOS68036", condition: 76.23, importance: 47.89, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
-  { deviceNo: "АN-488A", equipmentNo: "TGPOS68037", condition: 59.78, importance: 62.33, risk: "High", status: "Repair", action: "Refurbish", region: "central" },
-  { deviceNo: "АN-489A", equipmentNo: "TGPOS68038", condition: 44.56, importance: 73.21, risk: "High", status: "Faulty", action: "Refurbish", region: "central" },
-  { deviceNo: "АN-490A", equipmentNo: "TGPOS68039", condition: 84.67, importance: 29.45, risk: "Low", status: "Good", action: "Investigation", region: "central" },
-  // Additional data for south region
-  { deviceNo: "АN-491A", equipmentNo: "TGPOS68040", condition: 72.89, importance: 48.76, risk: "Moderate", status: "Good", action: "Investigation", region: "south" },
-  { deviceNo: "АN-492A", equipmentNo: "TGPOS68041", condition: 56.45, importance: 64.33, risk: "High", status: "Repair", action: "Refurbish", region: "south" },
-  { deviceNo: "АN-493A", equipmentNo: "TGPOS68042", condition: 40.21, importance: 78.67, risk: "High", status: "Faulty", action: "Refurbish", region: "south" },
-  { deviceNo: "АN-494A", equipmentNo: "TGPOS68043", condition: 85.56, importance: 28.91, risk: "Low", status: "Good", action: "Relocate", region: "south" },
+  // Original data with transformer type added
+  { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", transformerType: "Power", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
+  { deviceNo: "АN-472B", equipmentNo: "TGPOS68021", transformerType: "Power", condition: 75.50, importance: 45.12, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
+  { deviceNo: "АN-473A", equipmentNo: "TGPOS68022", transformerType: "Distribution", condition: 60.75, importance: 55.90, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-474A", equipmentNo: "TGPOS68023", transformerType: "Power", condition: 90.10, importance: 25.45, risk: "Low", status: "Good", action: "Relocate", region: "central" },
+  { deviceNo: "АN-475A", equipmentNo: "TGPOS68024", transformerType: "Power", condition: 45.33, importance: 67.21, risk: "High", status: "Faulty", action: "Refurbish", region: "south" },
+  { deviceNo: "АN-476A", equipmentNo: "TGPOS68025", transformerType: "Distribution", condition: 78.42, importance: 31.89, risk: "Low", status: "Good", action: "Investigation", region: "south" },
+  { deviceNo: "АN-477A", equipmentNo: "TGPOS68026", transformerType: "Power", condition: 55.67, importance: 58.75, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-478A", equipmentNo: "TGPOS68027", transformerType: "Power", condition: 82.29, importance: 42.13, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
+  // Additional data for north region with transformer type
+  { deviceNo: "АN-479A", equipmentNo: "TGPOS68028", transformerType: "Power", condition: 81.15, importance: 38.45, risk: "Low", status: "Good", action: "Investigation", region: "north" },
+  { deviceNo: "АN-480A", equipmentNo: "TGPOS68029", transformerType: "Distribution", condition: 65.78, importance: 52.33, risk: "Moderate", status: "Repair", action: "Refurbish", region: "north" },
+  { deviceNo: "АN-481A", equipmentNo: "TGPOS68030", transformerType: "Power", condition: 42.56, importance: 71.22, risk: "High", status: "Faulty", action: "Refurbish", region: "north" },
+  { deviceNo: "АN-482A", equipmentNo: "TGPOS68031", transformerType: "Distribution", condition: 77.89, importance: 41.67, risk: "Low", status: "Good", action: "Investigation", region: "north" },
+  // Additional data for northeast region with transformer type
+  { deviceNo: "АN-483A", equipmentNo: "TGPOS68032", transformerType: "Power", condition: 71.34, importance: 49.78, risk: "Moderate", status: "Good", action: "Investigation", region: "northeast" },
+  { deviceNo: "АN-484A", equipmentNo: "TGPOS68033", transformerType: "Power", condition: 58.21, importance: 63.42, risk: "High", status: "Repair", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-485A", equipmentNo: "TGPOS68034", transformerType: "Distribution", condition: 41.67, importance: 76.91, risk: "High", status: "Faulty", action: "Refurbish", region: "northeast" },
+  { deviceNo: "АN-486A", equipmentNo: "TGPOS68035", transformerType: "Power", condition: 81.45, importance: 32.56, risk: "Low", status: "Good", action: "Relocate", region: "northeast" },
+  // Additional data for central region with transformer type
+  { deviceNo: "АN-487A", equipmentNo: "TGPOS68036", transformerType: "Distribution", condition: 76.23, importance: 47.89, risk: "Moderate", status: "Good", action: "Investigation", region: "central" },
+  { deviceNo: "АN-488A", equipmentNo: "TGPOS68037", transformerType: "Power", condition: 59.78, importance: 62.33, risk: "High", status: "Repair", action: "Refurbish", region: "central" },
+  { deviceNo: "АN-489A", equipmentNo: "TGPOS68038", transformerType: "Distribution", condition: 44.56, importance: 73.21, risk: "High", status: "Faulty", action: "Refurbish", region: "central" },
+  { deviceNo: "АN-490A", equipmentNo: "TGPOS68039", transformerType: "Power", condition: 84.67, importance: 29.45, risk: "Low", status: "Good", action: "Investigation", region: "central" },
+  // Additional data for south region with transformer type
+  { deviceNo: "АN-491A", equipmentNo: "TGPOS68040", transformerType: "Power", condition: 72.89, importance: 48.76, risk: "Moderate", status: "Good", action: "Investigation", region: "south" },
+  { deviceNo: "АN-492A", equipmentNo: "TGPOS68041", transformerType: "Distribution", condition: 56.45, importance: 64.33, risk: "High", status: "Repair", action: "Refurbish", region: "south" },
+  { deviceNo: "АN-493A", equipmentNo: "TGPOS68042", transformerType: "Power", condition: 40.21, importance: 78.67, risk: "High", status: "Faulty", action: "Refurbish", region: "south" },
+  { deviceNo: "АN-494A", equipmentNo: "TGPOS68043", transformerType: "Distribution", condition: 85.56, importance: 28.91, risk: "Low", status: "Good", action: "Relocate", region: "south" },
 ];
 
 const getActionBadgeColor = (action: string) => {
@@ -131,6 +132,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
             <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
               <TableRow>
                 <TableHead className="w-[150px] text-center whitespace-nowrap px-6">Device No.</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap px-6">หม้อแปลงไฟฟ้า</TableHead>
                 <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Equipment No.</TableHead>
                 <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Overall Condition(%)</TableHead>
                 <TableHead className="w-[180px] text-center whitespace-nowrap px-6">Importance Index(%)</TableHead>
@@ -144,6 +146,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
                 displayData.map((row, index) => (
                   <TableRow key={index} className="hover:bg-blue-50/30">
                     <TableCell className="text-center">{row.deviceNo}</TableCell>
+                    <TableCell className="text-center">{row.transformerType}</TableCell>
                     <TableCell className="text-center">{row.equipmentNo}</TableCell>
                     <TableCell className="text-center">{row.condition}</TableCell>
                     <TableCell className="text-center">{row.importance}</TableCell>
@@ -172,7 +175,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
+                  <TableCell colSpan={8} className="h-24 text-center">
                     No transformers found for the selected filters
                   </TableCell>
                 </TableRow>
