@@ -123,12 +123,12 @@ const TransformerOilInventory = () => {
                   <CardTitle className="text-lg font-semibold text-blue-700">แนวโน้มปริมาณน้ำมันหม้อแปลง</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="h-72 w-full"> {/* Changed height from h-80 to h-72 and added w-full */}
+                  <div className="h-72 w-full">
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 5, right: 5, left: 5, bottom: 5 }} {/* Adjusted margins */}
+                          margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
