@@ -35,13 +35,13 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         <TabsContent value="pie" className="mt-6">
           <Card>
             <CardContent className="p-6">
-              <div className="chart-container w-full" style={{ height: "380px" }}>
+              <div className="chart-container w-full" style={{ height: "400px" }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart margin={{ top: 0, right: 0, bottom: 80, left: 0 }}>
+                  <PieChart margin={{ top: 0, right: 0, bottom: 60, left: 0 }}>
                     <Pie
                       data={data}
                       cx="50%"
-                      cy="45%"
+                      cy="40%"
                       labelLine={true}
                       outerRadius={120}
                       fill="#8884d8"
@@ -55,12 +55,11 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
                     </Pie>
                     <Legend 
                       layout="horizontal" 
-                      verticalAlign="bottom" 
-                      align="center"
-                      wrapperStyle={{
-                        bottom: 0,
-                        position: "relative",
-                        marginTop: "10px"
+                      verticalAlign="bottom"
+                      align="center" 
+                      wrapperStyle={{ 
+                        paddingTop: "20px",
+                        bottom: 0
                       }}
                     />
                     <Tooltip formatter={(value) => [`จำนวน: ${value}`, groupByLabel]} />
@@ -74,11 +73,11 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         <TabsContent value="bar" className="mt-6">
           <Card>
             <CardContent className="p-6">
-              <div className="chart-container w-full" style={{ height: "380px" }}>
+              <div className="chart-container w-full" style={{ height: "400px" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={data}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
@@ -86,12 +85,11 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
                     <Tooltip formatter={(value) => [`จำนวน: ${value}`, groupByLabel]} />
                     <Legend 
                       layout="horizontal" 
-                      verticalAlign="bottom" 
+                      verticalAlign="bottom"
                       align="center"
-                      wrapperStyle={{
-                        bottom: 0,
-                        position: "relative",
-                        marginTop: "10px"
+                      wrapperStyle={{ 
+                        paddingTop: "20px",
+                        bottom: 0
                       }}
                     />
                     <Bar dataKey="value" name="จำนวนหม้อแปลง">

@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -193,7 +194,7 @@ const TransformerOilInventory = () => {
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 10, right: 30, left: 15, bottom: 80 }}
+                          margin={{ top: 10, right: 30, left: 15, bottom: 60 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
@@ -209,12 +210,11 @@ const TransformerOilInventory = () => {
                           />
                           <ChartTooltip content={<ChartTooltipContent />} />
                           <Legend 
-                            verticalAlign="bottom" 
-                            height={50}
+                            verticalAlign="bottom"
+                            align="center"
                             wrapperStyle={{ 
-                              position: "relative",
-                              bottom: 0,
-                              marginTop: "10px"
+                              paddingTop: "20px",
+                              bottom: 0
                             }}
                           />
                           <Area 
