@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,30 @@ const chartConfig = {
 };
 
 const TransformerOilInventory = () => {
+  const chartContainerRef = useRef(null);
+  const [chartHeight, setChartHeight] = useState(400);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartContainerRef.current) {
+        // Ensure chart stays within bounds and doesn't overflow
+        const containerHeight = window.innerHeight * 0.5; // Limit to 50% of viewport height
+        setChartHeight(containerHeight > 300 ? containerHeight : 300); // Minimum height of 300px
+      }
+    };
+    
+    handleResize(); // Set initial size
+    window.addEventListener('resize', handleResize);
+    
+    // Handle fullscreen change events
+    document.addEventListener('fullscreenchange', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('fullscreenchange', handleResize);
+    };
+  }, []);
+
   return (
     <DashboardLayout>
       <div className="p-6 animate-fade-in">
@@ -130,7 +154,7 @@ const TransformerOilInventory = () => {
             
             {/* Right column - Chart and table */}
             <div className="lg:col-span-9 space-y-8">
-              {/* Chart - แก้ไขการล้นออกนอกกรอบ */}
+              {/* Chart - ป้องกันการล้นออกนอกกรอบ */}
               <Card className="border-none shadow-md hover:shadow-lg transition-all duration-300">
                 <CardHeader className="border-b border-blue-100 bg-gradient-to-r from-blue-50 to-white rounded-t-lg flex flex-row justify-between items-center">
                   <CardTitle className="text-lg font-semibold text-blue-700 flex items-center gap-2">
@@ -139,8 +163,12 @@ const TransformerOilInventory = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 bg-white">
-                  {/* กำหนดให้ chart อยู่ในกรอบ container เสมอ แม้จะขยายจอใหญ่ */}
-                  <div className="w-full" style={{ height: "400px", maxHeight: "calc(100vh - 400px)" }}>
+                  {/* Chart container with dynamic height adjustment and overflow protection */}
+                  <div 
+                    ref={chartContainerRef}
+                    className="w-full relative" 
+                    style={{ height: `${chartHeight}px` }}
+                  >
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
