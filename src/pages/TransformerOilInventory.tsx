@@ -52,8 +52,8 @@ const TransformerOilInventory = () => {
         
         let newHeight;
         if (isInFullscreen) {
-          // In fullscreen, use a percentage of the screen height, but constrain it
-          newHeight = Math.min(window.innerHeight * 0.5, window.innerHeight - 300);
+          // In fullscreen, calculate height to leave room for legend
+          newHeight = Math.min(window.innerHeight - 180, window.innerHeight * 0.7);
         } else {
           // Normal mode - more conservative height
           newHeight = Math.min(window.innerHeight * 0.35, 400);
@@ -180,21 +180,24 @@ const TransformerOilInventory = () => {
                     แนวโน้มปริมาณน้ำมันหม้อแปลง
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 bg-white">
+                <CardContent className="p-6 bg-white relative" style={{ 
+                  minHeight: isFullscreen ? 'calc(100vh - 120px)' : '500px'
+                }}>
                   {/* Chart container with improved overflow protection */}
                   <div 
                     ref={chartContainerRef}
                     className={`chart-container w-full ${isFullscreen ? 'fullscreen-chart' : ''}`}
                     style={{ 
                       height: `${chartHeight}px`,
-                      maxHeight: isFullscreen ? '55vh' : '50vh'
+                      position: "relative",
+                      paddingBottom: isFullscreen ? "80px" : "60px"
                     }}
                   >
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 10, right: 30, left: 15, bottom: 60 }}
+                          margin={{ top: 10, right: 30, left: 15, bottom: isFullscreen ? 80 : 60 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
@@ -213,8 +216,10 @@ const TransformerOilInventory = () => {
                             verticalAlign="bottom"
                             align="center"
                             wrapperStyle={{ 
-                              paddingTop: "20px",
-                              bottom: 0
+                              position: "absolute",
+                              bottom: 0,
+                              left: 0,
+                              width: "100%"
                             }}
                           />
                           <Area 

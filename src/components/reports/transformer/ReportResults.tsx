@@ -34,8 +34,8 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         
         <TabsContent value="pie" className="mt-6">
           <Card>
-            <CardContent className="p-6">
-              <div className="chart-container w-full" style={{ height: "400px" }}>
+            <CardContent className="p-6 relative" style={{ minHeight: "480px" }}>
+              <div className="chart-container w-full" style={{ height: "400px", position: "relative" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart margin={{ top: 0, right: 0, bottom: 60, left: 0 }}>
                     <Pie
@@ -57,10 +57,6 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
                       layout="horizontal" 
                       verticalAlign="bottom"
                       align="center" 
-                      wrapperStyle={{ 
-                        paddingTop: "20px",
-                        bottom: 0
-                      }}
                     />
                     <Tooltip formatter={(value) => [`จำนวน: ${value}`, groupByLabel]} />
                   </PieChart>
@@ -72,8 +68,8 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         
         <TabsContent value="bar" className="mt-6">
           <Card>
-            <CardContent className="p-6">
-              <div className="chart-container w-full" style={{ height: "400px" }}>
+            <CardContent className="p-6 relative" style={{ minHeight: "480px" }}>
+              <div className="chart-container w-full" style={{ height: "400px", position: "relative" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={data}
@@ -87,10 +83,6 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
                       layout="horizontal" 
                       verticalAlign="bottom"
                       align="center"
-                      wrapperStyle={{ 
-                        paddingTop: "20px",
-                        bottom: 0
-                      }}
                     />
                     <Bar dataKey="value" name="จำนวนหม้อแปลง">
                       {data.map((entry, index) => (
