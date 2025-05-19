@@ -7,7 +7,6 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Input } from "@/components/ui/input";
-import { NumberInput } from "@/components/ui/number-input";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Droplet } from "lucide-react";
 
@@ -124,15 +123,25 @@ const TransformerOilInventory = () => {
                   <CardTitle className="text-lg font-semibold text-blue-700">แนวโน้มปริมาณน้ำมันหม้อแปลง</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="h-80">
+                  <div className="h-72 w-full"> {/* Changed height from h-80 to h-72 and added w-full */}
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
-                          <CartesianGrid stroke="#f5f5f5" />
-                          <XAxis dataKey="date" />
-                          <YAxis />
+                        <AreaChart 
+                          data={data} 
+                          margin={{ top: 5, right: 5, left: 5, bottom: 5 }} {/* Adjusted margins */}
+                        >
+                          <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
+                          <XAxis 
+                            dataKey="date" 
+                            tick={{ fontSize: 12 }} 
+                            tickMargin={10}
+                          />
+                          <YAxis 
+                            tick={{ fontSize: 12 }}
+                            tickMargin={10}
+                          />
                           <ChartTooltip content={<ChartTooltipContent />} />
-                          <Legend />
+                          <Legend verticalAlign="bottom" height={36} />
                           <Area 
                             type="monotone" 
                             dataKey="volume" 
