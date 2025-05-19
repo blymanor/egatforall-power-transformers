@@ -123,25 +123,32 @@ const TransformerOilInventory = () => {
                   <CardTitle className="text-lg font-semibold text-blue-700">แนวโน้มปริมาณน้ำมันหม้อแปลง</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="h-72 w-full">
+                  {/* Fixed height with max-height to prevent overflow */}
+                  <div className="h-64 max-h-64 w-full overflow-hidden">
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                          margin={{ top: 5, right: 5, left: 5, bottom: 20 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
                             dataKey="date" 
-                            tick={{ fontSize: 12 }} 
+                            tick={{ fontSize: 11 }} 
                             tickMargin={10}
+                            height={30}
                           />
                           <YAxis 
-                            tick={{ fontSize: 12 }}
+                            tick={{ fontSize: 11 }}
                             tickMargin={10}
+                            width={40}
                           />
                           <ChartTooltip content={<ChartTooltipContent />} />
-                          <Legend verticalAlign="bottom" height={36} />
+                          <Legend 
+                            verticalAlign="bottom" 
+                            height={30} 
+                            wrapperStyle={{ paddingTop: "5px", fontSize: "11px" }}
+                          />
                           <Area 
                             type="monotone" 
                             dataKey="volume" 
@@ -240,3 +247,4 @@ const TransformerOilInventory = () => {
 };
 
 export default TransformerOilInventory;
+
