@@ -53,10 +53,10 @@ const TransformerOilInventory = () => {
         let newHeight;
         if (isInFullscreen) {
           // In fullscreen, use a percentage of the screen height, but constrain it
-          newHeight = Math.min(window.innerHeight * 0.6, window.innerHeight - 200);
+          newHeight = Math.min(window.innerHeight * 0.5, window.innerHeight - 300);
         } else {
           // Normal mode - more conservative height
-          newHeight = Math.min(window.innerHeight * 0.4, 500);
+          newHeight = Math.min(window.innerHeight * 0.35, 400);
         }
         
         // Ensure minimum height
@@ -184,35 +184,41 @@ const TransformerOilInventory = () => {
                   {/* Chart container with improved overflow protection */}
                   <div 
                     ref={chartContainerRef}
-                    className={`w-full relative overflow-hidden ${isFullscreen ? 'fullscreen-chart' : ''}`}
+                    className={`w-full relative ${isFullscreen ? 'fullscreen-chart' : ''}`}
                     style={{ 
                       height: `${chartHeight}px`,
-                      maxHeight: isFullscreen ? '70vh' : '60vh'
+                      maxHeight: isFullscreen ? '55vh' : '50vh'
                     }}
                   >
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 10, right: 10, left: 10, bottom: 30 }}
+                          margin={{ top: 10, right: 30, left: 15, bottom: 60 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
                             dataKey="date" 
                             tick={{ fontSize: 12 }} 
                             tickMargin={10}
-                            height={30}
+                            height={40}
                           />
                           <YAxis 
                             tick={{ fontSize: 12 }}
                             tickMargin={10}
-                            width={50}
+                            width={60}
                           />
                           <ChartTooltip content={<ChartTooltipContent />} />
                           <Legend 
                             verticalAlign="bottom" 
-                            height={36} 
-                            wrapperStyle={{ paddingTop: "10px", fontSize: "12px" }}
+                            height={50}
+                            wrapperStyle={{ 
+                              paddingTop: "20px", 
+                              fontSize: "12px",
+                              bottom: 0,
+                              left: "50%",
+                              transform: "translateX(-50%)"
+                            }}
                           />
                           <Area 
                             type="monotone" 

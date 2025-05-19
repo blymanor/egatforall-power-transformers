@@ -35,9 +35,9 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         <TabsContent value="pie" className="mt-6">
           <Card>
             <CardContent className="p-6">
-              <div className="h-96 w-full overflow-hidden" style={{ maxHeight: "calc(100vh - 300px)" }}>
+              <div className="h-96 w-full overflow-visible" style={{ maxHeight: "calc(100vh - 350px)" }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
+                  <PieChart margin={{ top: 0, right: 0, bottom: 30, left: 0 }}>
                     <Pie
                       data={data}
                       cx="50%"
@@ -53,7 +53,17 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                    <Legend 
+                      layout="horizontal" 
+                      verticalAlign="bottom" 
+                      align="center"
+                      wrapperStyle={{
+                        bottom: 0,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "100%"
+                      }}
+                    />
                     <Tooltip formatter={(value) => [`จำนวน: ${value}`, groupByLabel]} />
                   </PieChart>
                 </ResponsiveContainer>
@@ -65,17 +75,26 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         <TabsContent value="bar" className="mt-6">
           <Card>
             <CardContent className="p-6">
-              <div className="h-96 w-full overflow-hidden" style={{ maxHeight: "calc(100vh - 300px)" }}>
+              <div className="h-96 w-full overflow-visible" style={{ maxHeight: "calc(100vh - 350px)" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={data}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip formatter={(value) => [`จำนวน: ${value}`, groupByLabel]} />
-                    <Legend />
+                    <Legend 
+                      layout="horizontal" 
+                      verticalAlign="bottom" 
+                      wrapperStyle={{
+                        bottom: 0,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "100%"
+                      }}
+                    />
                     <Bar dataKey="value" name="จำนวนหม้อแปลง">
                       {data.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />

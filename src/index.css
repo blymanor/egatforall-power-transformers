@@ -103,11 +103,36 @@
 
 /* Chart fullscreen fixes */
 .fullscreen-chart {
-  max-height: 70vh !important;
+  max-height: 55vh !important;
+  overflow: visible !important;
 }
 
 /* Fix for chart container in fullscreen mode */
 :fullscreen .fullscreen-chart {
-  height: 70vh !important;
-  max-height: 70vh !important;
+  height: 55vh !important;
+  max-height: 55vh !important;
+}
+
+/* Fix legend positioning */
+.recharts-legend-wrapper {
+  width: 100% !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+.recharts-default-legend {
+  width: auto !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+}
+
+.recharts-legend-item {
+  margin: 0 8px !important;
+  white-space: nowrap !important;
 }
