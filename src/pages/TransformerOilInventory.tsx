@@ -37,20 +37,38 @@ const chartConfig = {
 const TransformerOilInventory = () => {
   const chartContainerRef = useRef(null);
   const [chartHeight, setChartHeight] = useState(400);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  
+  // Function to check if element is in fullscreen mode
+  const checkFullscreen = () => {
+    return document.fullscreenElement !== null;
+  };
   
   useEffect(() => {
     const handleResize = () => {
       if (chartContainerRef.current) {
-        // Ensure chart stays within bounds and doesn't overflow
-        const containerHeight = window.innerHeight * 0.5; // Limit to 50% of viewport height
-        setChartHeight(containerHeight > 300 ? containerHeight : 300); // Minimum height of 300px
+        const isInFullscreen = checkFullscreen();
+        setIsFullscreen(isInFullscreen);
+        
+        let newHeight;
+        if (isInFullscreen) {
+          // In fullscreen, use a percentage of the screen height, but constrain it
+          newHeight = Math.min(window.innerHeight * 0.6, window.innerHeight - 200);
+        } else {
+          // Normal mode - more conservative height
+          newHeight = Math.min(window.innerHeight * 0.4, 500);
+        }
+        
+        // Ensure minimum height
+        newHeight = Math.max(newHeight, 300);
+        setChartHeight(newHeight);
       }
     };
     
     handleResize(); // Set initial size
-    window.addEventListener('resize', handleResize);
     
-    // Handle fullscreen change events
+    // Add event listeners
+    window.addEventListener('resize', handleResize);
     document.addEventListener('fullscreenchange', handleResize);
     
     return () => {
@@ -163,11 +181,14 @@ const TransformerOilInventory = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 bg-white">
-                  {/* Chart container with dynamic height adjustment and overflow protection */}
+                  {/* Chart container with improved overflow protection */}
                   <div 
                     ref={chartContainerRef}
-                    className="w-full relative" 
-                    style={{ height: `${chartHeight}px` }}
+                    className={`w-full relative overflow-hidden ${isFullscreen ? 'fullscreen-chart' : ''}`}
+                    style={{ 
+                      height: `${chartHeight}px`,
+                      maxHeight: isFullscreen ? '70vh' : '60vh'
+                    }}
                   >
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">

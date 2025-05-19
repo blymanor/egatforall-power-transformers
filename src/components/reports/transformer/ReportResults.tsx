@@ -35,7 +35,7 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         <TabsContent value="pie" className="mt-6">
           <Card>
             <CardContent className="p-6">
-              <div className="h-96 w-full">
+              <div className="h-96 w-full overflow-hidden" style={{ maxHeight: "calc(100vh - 300px)" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -65,7 +65,7 @@ const ReportResults: React.FC<ReportResultsProps> = ({ data, groupByLabel, showR
         <TabsContent value="bar" className="mt-6">
           <Card>
             <CardContent className="p-6">
-              <div className="h-96 w-full">
+              <div className="h-96 w-full overflow-hidden" style={{ maxHeight: "calc(100vh - 300px)" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={data}

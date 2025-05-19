@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -98,4 +99,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Chart fullscreen fixes */
+.fullscreen-chart {
+  max-height: 70vh !important;
+}
+
+/* Fix for chart container in fullscreen mode */
+:fullscreen .fullscreen-chart {
+  height: 70vh !important;
+  max-height: 70vh !important;
 }
