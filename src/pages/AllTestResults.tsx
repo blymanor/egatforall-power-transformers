@@ -37,7 +37,15 @@ const testCategories = [
   },
   {
     title: "Exciting Current",
-    items: []
+    items: [
+      "HV WINDING %Idiff@200V",
+      "HV WINDING %Idiff@10kV",
+      "HV WINDING Iexc",
+      "LV WINDING %Idiff@200V",
+      "LV WINDING Iexc",
+      "TV WINDING %Idiff@200V",
+      "TV WINDING Iexc"
+    ]
   },
   {
     title: "HV WINDING Tests",
@@ -139,7 +147,7 @@ const testCategories = [
     ]
   },
   {
-    title: "Oil Tests",
+    title: "การทดสอบทางน้ำมัน",
     items: [
       "Oil Aging",
       "Oil DGA",
@@ -148,7 +156,7 @@ const testCategories = [
     ]
   },
   {
-    title: "OLTC Tests",
+    title: "การทดสอบ OLTC",
     items: [
       "OLTC Contact",
       "Dielectric Property",
@@ -158,7 +166,7 @@ const testCategories = [
     ]
   },
   {
-    title: "Visual Inspection",
+    title: "การทดสอบ Visual Inspection",
     items: [
       "DGA FACTOR",
       "DGA of Gas",

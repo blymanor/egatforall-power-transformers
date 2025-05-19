@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -95,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
             { icon: "electrical-test", label: "การทดสอบทางไฟฟ้า", path: "/transformer-maintenance/electrical-test" },
             { icon: "oltc", label: "บำรุงรักษา OLTC", path: "/transformer-maintenance/oltc" },
             { icon: "all-test-results", label: "ผลการทดสอบทั้งหมด", path: "/transformer-maintenance/all-test-results" },
-            { icon: "condition-check", label: "ตรวจสอบสภาพ", path: "/transformer-maintenance/condition-check" },
+            { icon: "condition-check", label: "ตรวจสอบสภาพหม้อแปลงไฟฟ้า", path: "/transformer-maintenance/condition-check" },
           ]}
         />
         

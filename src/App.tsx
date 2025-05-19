@@ -29,6 +29,7 @@ import OLTCMaintenance from "./pages/OLTCMaintenance";
 import AllTestResults from "./pages/AllTestResults";
 import ChangePassword from "./pages/ChangePassword";
 import UserManagement from "./pages/UserManagement";
+import TransformerOilInventory from "./pages/TransformerOilInventory";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,12 @@ const App = () => (
           <Route path="/transformer-maintenance/oltc" element={<OLTCMaintenance />} />
           <Route path="/transformer-maintenance/all-test-results" element={<AllTestResults />} />
           <Route path="/transformer-maintenance/condition-check" element={<NotFound />} />
+          
+          {/* Inventory Routes */}
+          <Route path="/inventory" element={<NotFound />} />
+          <Route path="/inventory/oil" element={<TransformerOilInventory />} />
+          <Route path="/inventory/oil/stock" element={<TransformerOilInventory />} />
+          <Route path="/inventory/components" element={<NotFound />} />
           
           {/* User Management Routes */}
           <Route path="/management" element={<UserManagement />} />
