@@ -130,7 +130,7 @@ const TransformerOilInventory = () => {
             
             {/* Right column - Chart and table */}
             <div className="lg:col-span-9 space-y-8">
-              {/* Chart - ปรับความสูงให้เหมาะสม */}
+              {/* Chart - แก้ไขการล้นออกนอกกรอบ */}
               <Card className="border-none shadow-md hover:shadow-lg transition-all duration-300">
                 <CardHeader className="border-b border-blue-100 bg-gradient-to-r from-blue-50 to-white rounded-t-lg flex flex-row justify-between items-center">
                   <CardTitle className="text-lg font-semibold text-blue-700 flex items-center gap-2">
@@ -139,8 +139,8 @@ const TransformerOilInventory = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 bg-white">
-                  {/* ปรับความสูงเพื่อไม่ให้ล้นออกมาทับข้อมูลอื่นๆ */}
-                  <div className="h-80 w-full">
+                  {/* กำหนดให้ chart อยู่ในกรอบ container เสมอ แม้จะขยายจอใหญ่ */}
+                  <div className="w-full" style={{ height: "400px", maxHeight: "calc(100vh - 400px)" }}>
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
