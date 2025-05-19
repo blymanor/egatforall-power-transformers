@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -53,14 +52,14 @@ const TransformerOilInventory = () => {
         let newHeight;
         if (isInFullscreen) {
           // In fullscreen, calculate height to leave room for legend
-          newHeight = Math.min(window.innerHeight - 200, window.innerHeight * 0.6);
+          newHeight = Math.min(window.innerHeight - 180, window.innerHeight * 0.6);
         } else {
           // Normal mode - more conservative height
-          newHeight = Math.min(window.innerHeight * 0.3, 350);
+          newHeight = Math.min(window.innerHeight * 0.35, 400);
         }
         
         // Ensure minimum height
-        newHeight = Math.max(newHeight, 280);
+        newHeight = Math.max(newHeight, 300);
         setChartHeight(newHeight);
       }
     };
@@ -180,25 +179,27 @@ const TransformerOilInventory = () => {
                     แนวโน้มปริมาณน้ำมันหม้อแปลง
                   </CardTitle>
                 </CardHeader>
-                <CardContent 
-                  className="p-6 bg-white relative overflow-hidden" 
-                  style={{ 
-                    minHeight: isFullscreen ? 'calc(100vh - 180px)' : '470px'
-                  }}
-                >
+                <CardContent className="p-6 bg-white relative" style={{ 
+                  minHeight: isFullscreen ? 'calc(100vh - 120px)' : '500px',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                  {/* Chart container with improved overflow protection */}
                   <div 
                     ref={chartContainerRef}
-                    className={`chart-container ${isFullscreen ? 'fullscreen-chart' : ''}`}
+                    className={`chart-container w-full ${isFullscreen ? 'fullscreen-chart' : ''}`}
                     style={{ 
                       height: `${chartHeight}px`,
-                      overflow: 'hidden'
+                      position: "relative",
+                      display: 'flex',
+                      flexDirection: 'column'
                     }}
                   >
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 10, right: 30, left: 15, bottom: 60 }}
+                          margin={{ top: 10, right: 30, left: 15, bottom: 30 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
@@ -217,11 +218,10 @@ const TransformerOilInventory = () => {
                             verticalAlign="bottom"
                             align="center"
                             wrapperStyle={{ 
-                              paddingTop: "10px",
+                              position: "relative",
+                              width: "100%",
                               marginTop: "10px",
-                              bottom: 0,
-                              left: 0,
-                              width: "100%"
+                              paddingTop: "10px"
                             }}
                           />
                           <Area 
