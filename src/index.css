@@ -116,12 +116,14 @@
 /* Fix legend positioning */
 .recharts-legend-wrapper {
   width: 100% !important;
-  position: absolute !important;
-  bottom: 0 !important;
+  position: relative !important;
+  margin: 0 auto !important;
+  bottom: 5px !important;
   left: 0 !important;
+  text-align: center !important;
   display: flex !important;
   justify-content: center !important;
-  overflow: visible !important;
+  align-items: center !important;
 }
 
 .recharts-default-legend {
@@ -130,9 +132,31 @@
   flex-wrap: wrap !important;
   justify-content: center !important;
   margin: 0 auto !important;
+  padding: 0 !important;
 }
 
 .recharts-legend-item {
   margin: 0 8px !important;
   white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* Ensure legend items are visible */
+.recharts-legend-item-text {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin-left: 4px !important;
+}
+
+/* Fix chart sizing and overflow issues */
+.recharts-responsive-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 300px !important;
+}
+
+/* Improve tooltip appearance */
+.recharts-tooltip-wrapper {
+  z-index: 1000 !important;
 }
