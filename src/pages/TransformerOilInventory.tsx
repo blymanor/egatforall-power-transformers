@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -184,7 +183,7 @@ const TransformerOilInventory = () => {
                   {/* Chart container with improved overflow protection */}
                   <div 
                     ref={chartContainerRef}
-                    className={`w-full relative ${isFullscreen ? 'fullscreen-chart' : ''}`}
+                    className={`chart-container w-full ${isFullscreen ? 'fullscreen-chart' : ''}`}
                     style={{ 
                       height: `${chartHeight}px`,
                       maxHeight: isFullscreen ? '55vh' : '50vh'
@@ -194,7 +193,7 @@ const TransformerOilInventory = () => {
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
                           data={data} 
-                          margin={{ top: 10, right: 30, left: 15, bottom: 60 }}
+                          margin={{ top: 10, right: 30, left: 15, bottom: 80 }}
                         >
                           <CartesianGrid stroke="#f5f5f5" strokeDasharray="3 3" />
                           <XAxis 
@@ -213,11 +212,9 @@ const TransformerOilInventory = () => {
                             verticalAlign="bottom" 
                             height={50}
                             wrapperStyle={{ 
-                              paddingTop: "20px", 
-                              fontSize: "12px",
+                              position: "relative",
                               bottom: 0,
-                              left: "50%",
-                              transform: "translateX(-50%)"
+                              marginTop: "10px"
                             }}
                           />
                           <Area 

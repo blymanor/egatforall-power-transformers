@@ -112,3 +112,30 @@
   height: 55vh !important;
   max-height: 55vh !important;
 }
+
+/* Chart container specific styling */
+.chart-container {
+  position: relative;
+  margin: 0 auto;
+  max-height: 500px;
+}
+
+/* Legend styling */
+.recharts-legend-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.recharts-default-legend {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+}
+
+.recharts-legend-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 6px !important;
+}
