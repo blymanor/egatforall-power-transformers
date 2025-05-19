@@ -56,22 +56,6 @@ const TransformerOilInventory = () => {
             </div>
           </div>
           
-          {/* Data input card */}
-          <Card className="bg-gradient-to-r from-blue-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <CardContent className="p-6">
-              <div className="text-center relative overflow-hidden p-4">
-                <div className="absolute inset-0 bg-blue-500/5 rounded-full blur-3xl transform -translate-x-1/2"></div>
-                <h3 className="text-lg font-medium mb-1 relative z-10">กรุณากรอกราคาน้ำมันที่เบิกจ่ายของปีที่ผ่านมา</h3>
-                <p className="text-sm text-gray-500 mb-4 relative z-10">(เพื่อคำนวณการเติมอัตโนมัติ ฯ)</p>
-                <Button 
-                  className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all relative z-10"
-                >
-                  คลิกเพื่อกรอกข้อมูล
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          
           {/* Main content */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left column - Inventory summary */}
@@ -97,6 +81,20 @@ const TransformerOilInventory = () => {
                   </div>
                   
                   <div className="space-y-5">
+                    {/* ย้ายข้อความและปุ่มกรอกข้อมูลมาอยู่ตรงนี้ */}
+                    <div className="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition-all duration-300">
+                      <div className="text-center relative overflow-hidden">
+                        <div className="absolute inset-0 bg-blue-500/5 rounded-full blur-3xl transform -translate-x-1/2"></div>
+                        <p className="text-sm font-medium mb-2 text-gray-700 relative z-10">กรุณากรอกราคาน้ำมันที่เบิกจ่ายของปีที่ผ่านมา</p>
+                        <p className="text-xs text-gray-500 mb-3 relative z-10">(เพื่อคำนวณการเติมอัตโนมัติ ฯ)</p>
+                        <Button 
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all relative z-10"
+                        >
+                          คลิกเพื่อกรอกข้อมูล
+                        </Button>
+                      </div>
+                    </div>
+                    
                     <div className="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition-all duration-300">
                       <div className="text-gray-700 font-medium mb-2">สถานะ</div>
                       <div className="flex items-center">
@@ -132,7 +130,7 @@ const TransformerOilInventory = () => {
             
             {/* Right column - Chart and table */}
             <div className="lg:col-span-9 space-y-8">
-              {/* Chart */}
+              {/* Chart - ปรับความสูงให้เหมาะสม */}
               <Card className="border-none shadow-md hover:shadow-lg transition-all duration-300">
                 <CardHeader className="border-b border-blue-100 bg-gradient-to-r from-blue-50 to-white rounded-t-lg flex flex-row justify-between items-center">
                   <CardTitle className="text-lg font-semibold text-blue-700 flex items-center gap-2">
@@ -141,8 +139,8 @@ const TransformerOilInventory = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 bg-white">
-                  {/* Fixed height with increased size */}
-                  <div className="h-96 max-h-96 w-full">
+                  {/* ปรับความสูงเพื่อไม่ให้ล้นออกมาทับข้อมูลอื่นๆ */}
+                  <div className="h-80 w-full">
                     <ChartContainer config={chartConfig}>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart 
