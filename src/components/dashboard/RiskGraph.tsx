@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -21,7 +20,7 @@ const RiskGraph: React.FC = () => {
               
               {/* Y-axis label (rotated) */}
               <div className="absolute -left-20 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-medium text-gray-700 whitespace-nowrap">
-                Probability of Failure (%)
+                Probability of Failure (100-%Overall Condition)
               </div>
               
               {/* Y-axis values */}
