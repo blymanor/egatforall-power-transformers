@@ -8,7 +8,7 @@ import RegionDropdown from "@/components/dashboard/RegionDropdown";
 import WelcomeSection from "@/components/dashboard/WelcomeSection";
 import QuickActions from "@/components/dashboard/QuickActions";
 import RecentMaintenance from "@/components/dashboard/RecentMaintenance";
-import { Database, Wrench, AlertCircle, TrendingUp, Activity } from "lucide-react";
+import { Database, Wrench, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Index = () => {
@@ -21,33 +21,6 @@ const Index = () => {
   return (
     <DashboardLayout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        {/* Hero Section */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="relative px-6 py-12">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center space-y-4">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                  ระบบจัดการหม้อแปลงไฟฟ้า
-                </h1>
-                <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                  ติดตามและควบคุมสถานะหม้อแปลงไฟฟ้าได้อย่างมีประสิทธิภาพ
-                </p>
-                <div className="flex items-center justify-center space-x-8 pt-4">
-                  <div className="flex items-center space-x-2">
-                    <Activity className="h-5 w-5 text-green-300" />
-                    <span className="text-sm font-medium">ระบบออนไลน์</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-5 w-5 text-blue-300" />
-                    <span className="text-sm font-medium">อัพเดทแบบเรียลไทม์</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
           {/* Welcome and Quick Stats */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -59,8 +32,8 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Status Cards - Redesigned */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Enhanced Status Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <StatusCard 
               title="หม้อแปลงทั้งหมด" 
               count={totalTransformers} 
