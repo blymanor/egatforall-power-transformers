@@ -20,19 +20,19 @@ const Index = () => {
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatusCard 
-            title="Total Transformers" 
+            title="หม้อแปลงทั้งหมด" 
             count={totalTransformers} 
             color="green" 
             icon={<Database className="text-blue-600" />} 
           />
           <StatusCard 
-            title="Needs Repair" 
+            title="ต้องการซ่อมแซม" 
             count={23} 
             color="yellow" 
             icon={<Wrench className="text-yellow-500" />} 
           />
           <StatusCard 
-            title="Faulty" 
+            title="ชำรุด" 
             count={8} 
             color="red" 
             icon={<AlertCircle className="text-red-500" />} 
@@ -40,7 +40,7 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          {/* Region dropdown in its own card - Changed title to "เขต" */}
+          {/* Region dropdown in its own card */}
           <Card className="bg-white shadow-sm border border-gray-100">
             <CardContent className="p-4">
               <h2 className="text-xl font-bold text-black mb-3">เขต</h2>
