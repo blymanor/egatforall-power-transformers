@@ -64,31 +64,31 @@ const RiskGraph: React.FC = () => {
               {/* Risk zones background */}
               <div className="absolute inset-0">
                 {/* Low-Low (Green) */}
-                <div className="absolute bg-green-400 opacity-70" style={{ left: '0%', bottom: '0%', width: '31%', height: '42%' }}></div>
+                <div className="absolute bg-green-600" style={{ left: '0%', bottom: '0%', width: '31%', height: '42%' }}></div>
                 
                 {/* Moderate-Low (Blue) */}
-                <div className="absolute bg-blue-400 opacity-70" style={{ left: '31%', bottom: '0%', width: '25%', height: '42%' }}></div>
+                <div className="absolute bg-blue-600" style={{ left: '31%', bottom: '0%', width: '25%', height: '42%' }}></div>
                 
                 {/* High-Low (Orange) */}
-                <div className="absolute bg-orange-400 opacity-70" style={{ left: '56%', bottom: '0%', width: '44%', height: '42%' }}></div>
+                <div className="absolute bg-orange-600" style={{ left: '56%', bottom: '0%', width: '44%', height: '42%' }}></div>
                 
                 {/* Low-Moderate (Blue) */}
-                <div className="absolute bg-blue-400 opacity-70" style={{ left: '0%', bottom: '42%', width: '31%', height: '25%' }}></div>
+                <div className="absolute bg-blue-600" style={{ left: '0%', bottom: '42%', width: '31%', height: '25%' }}></div>
                 
                 {/* Moderate-Moderate (Yellow) */}
-                <div className="absolute bg-yellow-300 opacity-70" style={{ left: '31%', bottom: '42%', width: '25%', height: '25%' }}></div>
+                <div className="absolute bg-yellow-600" style={{ left: '31%', bottom: '42%', width: '25%', height: '25%' }}></div>
                 
                 {/* High-Moderate (Orange) */}
-                <div className="absolute bg-orange-400 opacity-70" style={{ left: '56%', bottom: '42%', width: '44%', height: '25%' }}></div>
+                <div className="absolute bg-orange-600" style={{ left: '56%', bottom: '42%', width: '44%', height: '25%' }}></div>
                 
                 {/* Low-High (Orange) */}
-                <div className="absolute bg-orange-400 opacity-70" style={{ left: '0%', bottom: '67%', width: '31%', height: '33%' }}></div>
+                <div className="absolute bg-orange-600" style={{ left: '0%', bottom: '67%', width: '31%', height: '33%' }}></div>
                 
                 {/* Moderate-High (Red) */}
-                <div className="absolute bg-red-400 opacity-70" style={{ left: '31%', bottom: '67%', width: '25%', height: '33%' }}></div>
+                <div className="absolute bg-red-600" style={{ left: '31%', bottom: '67%', width: '25%', height: '33%' }}></div>
                 
                 {/* High-High (Dark Red) */}
-                <div className="absolute bg-red-500 opacity-80" style={{ left: '56%', bottom: '67%', width: '44%', height: '33%' }}></div>
+                <div className="absolute bg-red-700" style={{ left: '56%', bottom: '67%', width: '44%', height: '33%' }}></div>
               </div>
               
               {/* Grid lines */}
@@ -102,12 +102,12 @@ const RiskGraph: React.FC = () => {
                 <div className="absolute top-0 bottom-0 border-l-2 border-gray-800" style={{ left: '56%' }}></div>
               </div>
               
-              {/* Data points - all yellow as shown in the image */}
+              {/* Data points - all yellow with darker tone */}
               {/* Dense cluster in Low-Low zone */}
               {Array.from({ length: 40 }).map((_, i) => (
                 <div
                   key={`cluster1-${i}`}
-                  className="absolute rounded-full bg-yellow-500 w-1 h-1 opacity-80"
+                  className="absolute rounded-full bg-yellow-700 w-1 h-1"
                   style={{
                     left: `${8 + Math.random() * 18}%`,
                     bottom: `${8 + Math.random() * 28}%`,
@@ -119,7 +119,7 @@ const RiskGraph: React.FC = () => {
               {Array.from({ length: 180 }).map((_, i) => (
                 <div
                   key={`cluster2-${i}`}
-                  className="absolute rounded-full bg-yellow-500 w-1 h-1 opacity-80"
+                  className="absolute rounded-full bg-yellow-700 w-1 h-1"
                   style={{
                     left: `${15 + Math.random() * 35}%`,
                     bottom: `${35 + Math.random() * 25}%`,
@@ -131,7 +131,7 @@ const RiskGraph: React.FC = () => {
               {Array.from({ length: 60 }).map((_, i) => (
                 <div
                   key={`cluster3-${i}`}
-                  className="absolute rounded-full bg-yellow-500 w-1 h-1 opacity-80"
+                  className="absolute rounded-full bg-yellow-700 w-1 h-1"
                   style={{
                     left: `${25 + Math.random() * 45}%`,
                     bottom: `${20 + Math.random() * 50}%`,
@@ -143,7 +143,7 @@ const RiskGraph: React.FC = () => {
               {Array.from({ length: 25 }).map((_, i) => (
                 <div
                   key={`cluster4-${i}`}
-                  className="absolute rounded-full bg-yellow-500 w-1 h-1 opacity-80"
+                  className="absolute rounded-full bg-yellow-700 w-1 h-1"
                   style={{
                     left: `${55 + Math.random() * 35}%`,
                     bottom: `${60 + Math.random() * 30}%`,
@@ -155,7 +155,7 @@ const RiskGraph: React.FC = () => {
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={`cluster5-${i}`}
-                  className="absolute rounded-full bg-yellow-500 w-1 h-1 opacity-80"
+                  className="absolute rounded-full bg-yellow-700 w-1 h-1"
                   style={{
                     left: `${70 + Math.random() * 25}%`,
                     bottom: `${75 + Math.random() * 20}%`,
