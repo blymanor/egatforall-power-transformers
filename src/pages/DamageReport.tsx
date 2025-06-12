@@ -13,13 +13,20 @@ const DamageReport = () => {
     startAge: "",
     endAge: "",
     region: false,
+    regionValue: "",
     station: false,
+    stationValue: "",
     manufacturer: false,
+    manufacturerValue: "",
     transformer: false,
+    transformerValue: "",
     waterContent: false,
+    waterContentValue: "",
     usage: false,
+    usageValue: "",
     ageGroup: "",
     damageLevel: false,
+    damageLevelValue: "",
     groupBy: ""
   });
 
@@ -80,14 +87,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.region} 
-                        onCheckedChange={(checked) => setConditions({...conditions, region: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, region: !!checked})}
                         id="region-use" 
                       />
                       <Label htmlFor="region-use" className="text-base font-medium text-gray-700 cursor-pointer">เขต : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select>
+                      <Select value={conditions.regionValue} onValueChange={(value) => setConditions({...conditions, regionValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกเขต" />
                         </SelectTrigger>
@@ -105,14 +112,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.manufacturer} 
-                        onCheckedChange={(checked) => setConditions({...conditions, manufacturer: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, manufacturer: !!checked})}
                         id="manufacturer-use" 
                       />
                       <Label htmlFor="manufacturer-use" className="text-base font-medium text-gray-700 cursor-pointer">บริษัทผู้ผลิต : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select>
+                      <Select value={conditions.manufacturerValue} onValueChange={(value) => setConditions({...conditions, manufacturerValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
                         </SelectTrigger>
@@ -129,14 +136,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.waterContent} 
-                        onCheckedChange={(checked) => setConditions({...conditions, waterContent: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, waterContent: !!checked})}
                         id="water-use" 
                       />
                       <Label htmlFor="water-use" className="text-base font-medium text-gray-700 cursor-pointer">สภาพแวดล้อม : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select>
+                      <Select value={conditions.waterContentValue} onValueChange={(value) => setConditions({...conditions, waterContentValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกสภาพแวดล้อม" />
                         </SelectTrigger>
@@ -153,14 +160,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.damageLevel} 
-                        onCheckedChange={(checked) => setConditions({...conditions, damageLevel: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, damageLevel: !!checked})}
                         id="damage-use" 
                       />
                       <Label htmlFor="damage-use" className="text-base font-medium text-gray-700 cursor-pointer">รายละเอียดความผิดปกติ : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select>
+                      <Select value={conditions.damageLevelValue} onValueChange={(value) => setConditions({...conditions, damageLevelValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกรายละเอียดความผิดปกติ" />
                         </SelectTrigger>
@@ -194,14 +201,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.station} 
-                        onCheckedChange={(checked) => setConditions({...conditions, station: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, station: !!checked})}
                         id="station-use" 
                       />
                       <Label htmlFor="station-use" className="text-base font-medium text-gray-700 cursor-pointer">สถานีไฟฟ้า : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select>
+                      <Select value={conditions.stationValue} onValueChange={(value) => setConditions({...conditions, stationValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
                         </SelectTrigger>
@@ -218,14 +225,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.transformer} 
-                        onCheckedChange={(checked) => setConditions({...conditions, transformer: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, transformer: !!checked})}
                         id="transformer-use" 
                       />
                       <Label htmlFor="transformer-use" className="text-base font-medium text-gray-700 cursor-pointer">หม่อมฟองไฟฟ้า : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select>
+                      <Select value={conditions.transformerValue} onValueChange={(value) => setConditions({...conditions, transformerValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกหม่อมฟองไฟฟ้า" />
                         </SelectTrigger>
@@ -242,14 +249,14 @@ const DamageReport = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={conditions.usage} 
-                        onCheckedChange={(checked) => setConditions({...conditions, usage: checked})}
+                        onCheckedChange={(checked) => setConditions({...conditions, usage: !!checked})}
                         id="usage-use" 
                       />
                       <Label htmlFor="usage-use" className="text-base font-medium text-gray-700 cursor-pointer">สถานะการใช้งาน : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
-                      <Select value={conditions.usage} onValueChange={(value) => setConditions({...conditions, usage: value})}>
+                      <Select value={conditions.usageValue} onValueChange={(value) => setConditions({...conditions, usageValue: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกสถานะการใช้งาน" />
                         </SelectTrigger>
