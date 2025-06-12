@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -12,12 +12,14 @@ const DamageReport = () => {
   const [conditions, setConditions] = useState({
     startAge: "",
     endAge: "",
-    region: "",
-    manufacturer: "",
-    waterContent: "",
+    region: false,
+    station: false,
+    manufacturer: false,
+    transformer: false,
+    waterContent: false,
+    usage: false,
     ageGroup: "",
-    damageLevel: "",
-    usage: "",
+    damageLevel: false,
     groupBy: ""
   });
 
@@ -40,7 +42,7 @@ const DamageReport = () => {
   return (
     <DashboardLayout>
       <div className="bg-[#f0f4fa] p-6">
-        <div className="mb-4">
+        <div className="border-l-4 border-blue-500 pl-4 mb-4">
           <h2 className="text-2xl font-semibold text-gray-800">รายงานข้อมูลความเสียหาย</h2>
           <p className="text-lg text-gray-600">Damage Report</p>
         </div>
@@ -75,18 +77,13 @@ const DamageReport = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">เขต :</Label>
-                      <RadioGroup value={conditions.region} onValueChange={(value) => setConditions({...conditions, region: value})} className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="region-use" />
-                          <Label htmlFor="region-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="region-no-use" />
-                          <Label htmlFor="region-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.region} 
+                        onCheckedChange={(checked) => setConditions({...conditions, region: checked})}
+                        id="region-use" 
+                      />
+                      <Label htmlFor="region-use" className="text-base font-medium text-gray-700 cursor-pointer">เขต : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
@@ -105,18 +102,13 @@ const DamageReport = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">บริษัทผู้ผลิต :</Label>
-                      <RadioGroup value={conditions.manufacturer} onValueChange={(value) => setConditions({...conditions, manufacturer: value})} className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="manufacturer-use" />
-                          <Label htmlFor="manufacturer-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="manufacturer-no-use" />
-                          <Label htmlFor="manufacturer-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.manufacturer} 
+                        onCheckedChange={(checked) => setConditions({...conditions, manufacturer: checked})}
+                        id="manufacturer-use" 
+                      />
+                      <Label htmlFor="manufacturer-use" className="text-base font-medium text-gray-700 cursor-pointer">บริษัทผู้ผลิต : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
@@ -134,18 +126,13 @@ const DamageReport = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">สภาพแวดล้อม :</Label>
-                      <RadioGroup value={conditions.waterContent} onValueChange={(value) => setConditions({...conditions, waterContent: value})} className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="water-use" />
-                          <Label htmlFor="water-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="water-no-use" />
-                          <Label htmlFor="water-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.waterContent} 
+                        onCheckedChange={(checked) => setConditions({...conditions, waterContent: checked})}
+                        id="water-use" 
+                      />
+                      <Label htmlFor="water-use" className="text-base font-medium text-gray-700 cursor-pointer">สภาพแวดล้อม : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
@@ -162,20 +149,14 @@ const DamageReport = () => {
                     </div>
                   </div>
 
-                  {/* Additional fields from left column */}
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">รายละเอียดความผิดปกติ :</Label>
-                      <RadioGroup className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="damage-use" />
-                          <Label htmlFor="damage-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="damage-no-use" />
-                          <Label htmlFor="damage-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.damageLevel} 
+                        onCheckedChange={(checked) => setConditions({...conditions, damageLevel: checked})}
+                        id="damage-use" 
+                      />
+                      <Label htmlFor="damage-use" className="text-base font-medium text-gray-700 cursor-pointer">รายละเอียดความผิดปกติ : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
@@ -210,18 +191,13 @@ const DamageReport = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">สถานีไฟฟ้า :</Label>
-                      <RadioGroup className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="station-use" />
-                          <Label htmlFor="station-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="station-no-use" />
-                          <Label htmlFor="station-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.station} 
+                        onCheckedChange={(checked) => setConditions({...conditions, station: checked})}
+                        id="station-use" 
+                      />
+                      <Label htmlFor="station-use" className="text-base font-medium text-gray-700 cursor-pointer">สถานีไฟฟ้า : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
@@ -239,18 +215,13 @@ const DamageReport = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">หม่อมฟองไฟฟ้า :</Label>
-                      <RadioGroup className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="transformer-use" />
-                          <Label htmlFor="transformer-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="transformer-no-use" />
-                          <Label htmlFor="transformer-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.transformer} 
+                        onCheckedChange={(checked) => setConditions({...conditions, transformer: checked})}
+                        id="transformer-use" 
+                      />
+                      <Label htmlFor="transformer-use" className="text-base font-medium text-gray-700 cursor-pointer">หม่อมฟองไฟฟ้า : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>
@@ -268,18 +239,13 @@ const DamageReport = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                      <Label className="text-base font-medium text-gray-700">สถานะการใช้งาน :</Label>
-                      <RadioGroup value={conditions.usage} onValueChange={(value) => setConditions({...conditions, usage: value})} className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="use" id="usage-use" />
-                          <Label htmlFor="usage-use" className="text-base text-gray-700 cursor-pointer">ใช้เงื่อนไข</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="no-use" id="usage-no-use" />
-                          <Label htmlFor="usage-no-use" className="text-base text-gray-700 cursor-pointer">ไม่ใช้เงื่อนไข</Label>
-                        </div>
-                      </RadioGroup>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={conditions.usage} 
+                        onCheckedChange={(checked) => setConditions({...conditions, usage: checked})}
+                        id="usage-use" 
+                      />
+                      <Label htmlFor="usage-use" className="text-base font-medium text-gray-700 cursor-pointer">สถานะการใช้งาน : ใช้เงื่อนไข</Label>
                     </div>
 
                     <div>

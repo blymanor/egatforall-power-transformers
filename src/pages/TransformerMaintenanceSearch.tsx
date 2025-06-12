@@ -85,7 +85,7 @@ const TransformerMaintenanceSearch = () => {
         {/* Header with blue left border like reference image */}
         <div className="mb-6">
           <div className="border-l-4 border-blue-500 pl-4">
-            <h1 className="text-xl font-bold text-black">ค้นหาข้อมูลบำรุงรักษาหม้อแปลง</h1>
+            <h1 className="text-xl font-bold text-black">ค้นหาและแก้ไขข้อมูลบำรุงรักษาหม้อแปลง</h1>
             <p className="text-base text-gray-600">Search Transformer Maintenance Data</p>
           </div>
         </div>
