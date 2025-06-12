@@ -54,17 +54,31 @@ const DamageReport = () => {
     });
   };
 
-  if (showResults) {
-    return (
-      <DashboardLayout>
-        <ReportResults 
-          onBack={() => setShowResults(false)}
-          reportType="damage"
-          groupBy={groupBy}
-        />
-      </DashboardLayout>
-    );
-  }
+  // Mock data for the report
+  const mockReportData = [
+    { name: "เหนือ", value: 25, color: "#3b82f6" },
+    { name: "ตะวันออกเฉียงเหนือ", value: 30, color: "#10b981" },
+    { name: "กลาง", value: 20, color: "#f59e0b" },
+    { name: "ใต้", value: 15, color: "#ef4444" },
+  ];
+
+  const getGroupByLabel = () => {
+    const labels: { [key: string]: string } = {
+      region: "เขต",
+      station: "สถานีไฟฟ้า",
+      manufacturer: "ชื่อบริษัทผู้ผลิต",
+      transformer: "หม้อแปลงไฟฟ้า",
+      environment: "สภาพแวดล้อม",
+      operatingCondition: "สภาวะการใช้งานขณะพบความผิดปกติ",
+      abnormalityDetails: "รายละเอียดความผิดปกติหรือเสียหาย",
+      equipmentGroup: "กลุ่มอุปกรณ์",
+      damagedParts: "ชิ้นส่วนที่เสียหายหรือผิดปกติ",
+      damageLevel: "ระดับความเสียหาย",
+      rootCause: "สาเหตุที่แท้จริง",
+      management: "การจัดการ"
+    };
+    return labels[groupBy] || "เขต";
+  };
 
   return (
     <DashboardLayout>
@@ -317,6 +331,13 @@ const DamageReport = () => {
             ส่งออกรายงาน
           </Button>
         </div>
+
+        {/* Report Results */}
+        <ReportResults 
+          data={mockReportData} 
+          groupByLabel={getGroupByLabel()} 
+          showReport={showResults} 
+        />
       </div>
     </DashboardLayout>
   );
