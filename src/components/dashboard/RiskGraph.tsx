@@ -235,55 +235,61 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Risk zones background - different gradient style based on reference image */}
+                {/* Risk zones with diagonal pattern like reference image */}
                 <div className="absolute inset-0">
-                  {/* Green triangle (Low-Low) */}
-                  <div style={{
-                    position: 'absolute',
-                    left: '0%',
-                    bottom: '0%',
-                    width: '0',
-                    height: '0',
-                    borderLeft: '150px solid #22c55e',
-                    borderTop: '150px solid transparent'
-                  }}></div>
-                  
-                  {/* Blue triangle */}
-                  <div style={{
-                    position: 'absolute',
-                    left: '31%',
-                    bottom: '0%',
-                    width: '0',
-                    height: '0',
-                    borderLeft: '120px solid #3b82f6',
-                    borderTop: '240px solid transparent'
-                  }}></div>
-                  
-                  {/* Yellow gradient area */}
-                  <div className="absolute bg-gradient-to-br from-yellow-300 to-yellow-500" 
-                    style={{ left: '15%', bottom: '15%', width: '50%', height: '50%' }}></div>
-                  
-                  {/* Orange gradient area */}
-                  <div className="absolute bg-gradient-to-br from-orange-400 to-orange-600" 
-                    style={{ left: '40%', bottom: '30%', width: '45%', height: '55%' }}></div>
-                  
-                  {/* Red gradient area */}
-                  <div className="absolute bg-gradient-to-br from-red-500 to-red-700" 
-                    style={{ left: '60%', bottom: '60%', width: '40%', height: '40%' }}></div>
+                  {/* Create diagonal zones using CSS triangles and gradients */}
+                  <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+                    <defs>
+                      {/* Define color zones */}
+                      <linearGradient id="greenToBlue" x1="0%" y1="100%" x2="50%" y2="0%">
+                        <stop offset="0%" style={{stopColor:"#22c55e", stopOpacity:1}} />
+                        <stop offset="100%" style={{stopColor:"#3b82f6", stopOpacity:1}} />
+                      </linearGradient>
+                      <linearGradient id="blueToYellow" x1="0%" y1="100%" x2="70%" y2="0%">
+                        <stop offset="0%" style={{stopColor:"#3b82f6", stopOpacity:1}} />
+                        <stop offset="100%" style={{stopColor:"#eab308", stopOpacity:1}} />
+                      </linearGradient>
+                      <linearGradient id="yellowToOrange" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" style={{stopColor:"#eab308", stopOpacity:1}} />
+                        <stop offset="100%" style={{stopColor:"#f97316", stopOpacity:1}} />
+                      </linearGradient>
+                      <linearGradient id="orangeToRed" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" style={{stopColor:"#f97316", stopOpacity:1}} />
+                        <stop offset="100%" style={{stopColor:"#dc2626", stopOpacity:1}} />
+                      </linearGradient>
+                    </defs>
+                    
+                    {/* Green triangle (bottom-left) */}
+                    <polygon points="0,360 149,360 0,211" fill="#22c55e" />
+                    
+                    {/* Blue diagonal zone */}
+                    <polygon points="0,211 149,360 268,360 119,211 0,211" fill="#3b82f6" />
+                    
+                    {/* Yellow diagonal zone */}
+                    <polygon points="119,211 268,360 387,360 238,211 119,211" fill="#eab308" />
+                    
+                    {/* Orange diagonal zone */}
+                    <polygon points="238,211 387,360 480,360 331,211 238,211" fill="#f97316" />
+                    
+                    {/* Red triangle (top-right) */}
+                    <polygon points="331,211 480,360 480,0 331,0 331,211" fill="#dc2626" />
+                    
+                    {/* Additional orange zone at top */}
+                    <polygon points="0,0 331,0 331,211 0,211" fill="#f97316" />
+                  </svg>
                 </div>
                 
-                {/* Diagonal grid lines - creating triangular pattern like in reference */}
+                {/* Diagonal grid lines */}
                 <div className="absolute inset-0">
-                  {/* Main diagonal lines */}
                   <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-                    {/* Diagonal line from bottom-left to top-right */}
-                    <line x1="0%" y1="100%" x2="31%" y2="58%" stroke="black" strokeWidth="2"/>
-                    <line x1="31%" y1="100%" x2="56%" y2="33%" stroke="black" strokeWidth="2"/>
-                    <line x1="0%" y1="58%" x2="100%" y2="0%" stroke="black" strokeWidth="2"/>
+                    {/* Main diagonal lines creating triangular pattern */}
+                    <line x1="0%" y1="100%" x2="31%" y2="58.3%" stroke="black" strokeWidth="2"/>
+                    <line x1="31%" y1="100%" x2="56%" y2="41.7%" stroke="black" strokeWidth="2"/>
+                    <line x1="56%" y1="100%" x2="100%" y2="0%" stroke="black" strokeWidth="2"/>
                     
                     {/* Horizontal lines */}
-                    <line x1="0%" y1="42%" x2="100%" y2="42%" stroke="black" strokeWidth="2"/>
-                    <line x1="0%" y1="67%" x2="100%" y2="67%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="41.7%" x2="100%" y2="41.7%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="58.3%" x2="100%" y2="58.3%" stroke="black" strokeWidth="2"/>
                     
                     {/* Vertical lines */}
                     <line x1="31%" y1="0%" x2="31%" y2="100%" stroke="black" strokeWidth="2"/>
@@ -291,30 +297,34 @@ const RiskGraph: React.FC = () => {
                   </svg>
                 </div>
                 
-                {/* Data points - same yellow dots but distributed across triangular zones */}
+                {/* Data points distributed across diagonal zones */}
                 {Array.from({ length: 300 }).map((_, i) => {
-                  // Create distribution that follows triangular pattern
+                  // Create distribution that follows diagonal pattern like reference image
                   let x, y;
                   const rand = Math.random();
                   
-                  if (rand < 0.6) {
-                    // Most points in lower triangle area
-                    x = 10 + Math.random() * 60;
-                    y = 10 + Math.random() * 50;
-                  } else if (rand < 0.85) {
-                    // Some points in middle area
-                    x = 30 + Math.random() * 50;
-                    y = 30 + Math.random() * 40;
+                  if (rand < 0.4) {
+                    // Most points in lower diagonal area (green-blue zone)
+                    x = 5 + Math.random() * 40;
+                    y = 5 + Math.random() * 35;
+                  } else if (rand < 0.7) {
+                    // Medium cluster in middle diagonal (yellow zone)
+                    x = 25 + Math.random() * 40;
+                    y = 15 + Math.random() * 40;
+                  } else if (rand < 0.9) {
+                    // Some points in orange zone
+                    x = 45 + Math.random() * 40;
+                    y = 25 + Math.random() * 50;
                   } else {
-                    // Few points in high risk area
-                    x = 60 + Math.random() * 35;
+                    // Few points in red zone
+                    x = 65 + Math.random() * 30;
                     y = 60 + Math.random() * 35;
                   }
                   
                   return (
                     <div
-                      key={`alt-cluster-${i}`}
-                      className="absolute rounded-full bg-yellow-600 w-1 h-1"
+                      key={`diagonal-cluster-${i}`}
+                      className="absolute rounded-full bg-white w-1.5 h-1.5 border border-gray-400"
                       style={{
                         left: `${x}%`,
                         bottom: `${y}%`,
