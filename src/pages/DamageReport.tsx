@@ -16,19 +16,9 @@ const DamageReport = () => {
   const { toast } = useToast();
   const [showResults, setShowResults] = useState(false);
   
-  // Filter states
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedStation, setSelectedStation] = useState("");
-  const [selectedManufacturer, setSelectedManufacturer] = useState("");
-  const [selectedTransformer, setSelectedTransformer] = useState("");
-  const [selectedEnvironment, setSelectedEnvironment] = useState("");
-  const [selectedOperatingCondition, setSelectedOperatingCondition] = useState("");
-  const [selectedAbnormalityDetails, setSelectedAbnormalityDetails] = useState("");
-  const [selectedEquipmentGroup, setSelectedEquipmentGroup] = useState("");
-  const [selectedDamagedParts, setSelectedDamagedParts] = useState("");
-  const [selectedDamageLevel, setSelectedDamageLevel] = useState("");
-  const [selectedRootCause, setSelectedRootCause] = useState("");
-  const [selectedManagement, setSelectedManagement] = useState("");
+  // Filter states - now single select only
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [filterValue, setFilterValue] = useState("");
   
   const [groupBy, setGroupBy] = useState("");
 
@@ -80,6 +70,39 @@ const DamageReport = () => {
     return labels[groupBy] || "เขต";
   };
 
+  const filterOptions = [
+    { value: "region", label: "เขต" },
+    { value: "station", label: "สถานีไฟฟ้า" },
+    { value: "manufacturer", label: "ชื่อบริษัทผู้ผลิต" },
+    { value: "transformer", label: "หม้อแปลงไฟฟ้า" },
+    { value: "environment", label: "สภาพแวดล้อม" },
+    { value: "operatingCondition", label: "สภาวะการใช้งานขณะพบความผิดปกติ" },
+    { value: "abnormalityDetails", label: "รายละเอียดความผิดปกติหรือเสียหาย" },
+    { value: "equipmentGroup", label: "กลุ่มอุปกรณ์" },
+    { value: "damagedParts", label: "ชิ้นส่วนที่เสียหายหรือผิดปกติ" },
+    { value: "damageLevel", label: "ระดับความเสียหาย" },
+    { value: "rootCause", label: "สาเหตุที่แท้จริง" },
+    { value: "management", label: "การจัดการ" }
+  ];
+
+  const getFilterValueOptions = (filterType: string) => {
+    const options: { [key: string]: string[] } = {
+      region: ["เหนือ", "ตะวันออกเฉียงเหนือ", "กลาง", "ใต้"],
+      station: ["สถานี 1", "สถานี 2", "สถานี 3"],
+      manufacturer: ["ABB", "Siemens", "Mitsubishi"],
+      transformer: ["หม้อแปลง 1", "หม้อแปลง 2", "หม้อแปลง 3"],
+      environment: ["ในอาคาร", "กลางแจ้ง", "ชายฝั่งทะเล"],
+      operatingCondition: ["ปกติ", "โอเวอร์โหลด", "ระหว่างบำรุงรักษา"],
+      abnormalityDetails: ["ไฟฟ้า", "เครื่องกล", "ความร้อน"],
+      equipmentGroup: ["อุปกรณ์หลัก", "อุปกรณ์รอง", "ระบบควบคุม"],
+      damagedParts: ["คอยล์", "แกนเหล็ก", "ถังน้ำมัน"],
+      damageLevel: ["เล็กน้อย", "ปานกลาง", "รุนแรง"],
+      rootCause: ["อายุการใช้งาน", "การบำรุงรักษา", "สภาพแวดล้อม"],
+      management: ["ซ่อมแซม", "เปลี่ยนใหม่", "ติดตาม"]
+    };
+    return options[filterType] || [];
+  };
+
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6 bg-[#f0f4fa]">
@@ -93,189 +116,45 @@ const DamageReport = () => {
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b">
             <CardTitle className="text-xl font-semibold text-gray-800">เงื่อนไขการค้นหา</CardTitle>
+            <p className="text-sm text-gray-600 mt-2">เลือกเงื่อนไขในการสร้างรายงานได้เพียงหนึ่งเงื่อนไข</p>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* เขต */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Filter Type Selection */}
               <div className="space-y-2">
-                <Label htmlFor="region">เขต :</Label>
-                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                <Label htmlFor="filterType">เลือกประเภทเงื่อนไข :</Label>
+                <Select value={selectedFilter} onValueChange={(value) => { setSelectedFilter(value); setFilterValue(""); }}>
                   <SelectTrigger>
-                    <SelectValue placeholder="เลือกเขต" />
+                    <SelectValue placeholder="เลือกประเภทเงื่อนไข" />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
-                    <SelectItem value="north">เหนือ</SelectItem>
-                    <SelectItem value="northeast">ตะวันออกเฉียงเหนือ</SelectItem>
-                    <SelectItem value="central">กลาง</SelectItem>
-                    <SelectItem value="south">ใต้</SelectItem>
+                    {filterOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* สถานีไฟฟ้า */}
-              <div className="space-y-2">
-                <Label htmlFor="station">สถานีไฟฟ้า :</Label>
-                <Select value={selectedStation} onValueChange={setSelectedStation}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="station1">สถานี 1</SelectItem>
-                    <SelectItem value="station2">สถานี 2</SelectItem>
-                    <SelectItem value="station3">สถานี 3</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* ชื่อบริษัทผู้ผลิต */}
-              <div className="space-y-2">
-                <Label htmlFor="manufacturer">ชื่อบริษัทผู้ผลิต :</Label>
-                <Select value={selectedManufacturer} onValueChange={setSelectedManufacturer}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="abb">ABB</SelectItem>
-                    <SelectItem value="siemens">Siemens</SelectItem>
-                    <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* หม้อแปลงไฟฟ้า */}
-              <div className="space-y-2">
-                <Label htmlFor="transformer">หม้อแปลงไฟฟ้า :</Label>
-                <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="transformer1">หม้อแปลง 1</SelectItem>
-                    <SelectItem value="transformer2">หม้อแปลง 2</SelectItem>
-                    <SelectItem value="transformer3">หม้อแปลง 3</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* สภาพแวดล้อม */}
-              <div className="space-y-2">
-                <Label htmlFor="environment">สภาพแวดล้อม :</Label>
-                <Select value={selectedEnvironment} onValueChange={setSelectedEnvironment}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกสภาพแวดล้อม" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="indoor">ในอาคาร</SelectItem>
-                    <SelectItem value="outdoor">กลางแจ้ง</SelectItem>
-                    <SelectItem value="coastal">ชายฝั่งทะเล</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* สภาวะการใช้งานขณะพบความผิดปกติ */}
-              <div className="space-y-2">
-                <Label htmlFor="operatingCondition">สภาวะการใช้งานขณะพบความผิดปกติ :</Label>
-                <Select value={selectedOperatingCondition} onValueChange={setSelectedOperatingCondition}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกสภาวะการใช้งาน" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="normal">ปกติ</SelectItem>
-                    <SelectItem value="overload">โอเวอร์โหลด</SelectItem>
-                    <SelectItem value="maintenance">ระหว่างบำรุงรักษา</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* รายละเอียดความผิดปกติหรือเสียหาย */}
-              <div className="space-y-2">
-                <Label htmlFor="abnormalityDetails">รายละเอียดความผิดปกติหรือเสียหาย :</Label>
-                <Select value={selectedAbnormalityDetails} onValueChange={setSelectedAbnormalityDetails}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกรายละเอียด" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="electrical">ไฟฟ้า</SelectItem>
-                    <SelectItem value="mechanical">เครื่องกล</SelectItem>
-                    <SelectItem value="thermal">ความร้อน</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* กลุ่มอุปกรณ์ */}
-              <div className="space-y-2">
-                <Label htmlFor="equipmentGroup">กลุ่มอุปกรณ์ :</Label>
-                <Select value={selectedEquipmentGroup} onValueChange={setSelectedEquipmentGroup}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกกลุ่มอุปกรณ์" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="primary">อุปกรณ์หลัก</SelectItem>
-                    <SelectItem value="secondary">อุปกรณ์รอง</SelectItem>
-                    <SelectItem value="control">ระบบควบคุม</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* ชิ้นส่วนที่เสียหายหรือผิดปกติ */}
-              <div className="space-y-2">
-                <Label htmlFor="damagedParts">ชิ้นส่วนที่เสียหายหรือผิดปกติ :</Label>
-                <Select value={selectedDamagedParts} onValueChange={setSelectedDamagedParts}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกชิ้นส่วน" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="winding">คอยล์</SelectItem>
-                    <SelectItem value="core">แกนเหล็ก</SelectItem>
-                    <SelectItem value="tank">ถังน้ำมัน</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* ระดับความเสียหาย */}
-              <div className="space-y-2">
-                <Label htmlFor="damageLevel">ระดับความเสียหาย :</Label>
-                <Select value={selectedDamageLevel} onValueChange={setSelectedDamageLevel}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกระดับความเสียหาย" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="minor">เล็กน้อย</SelectItem>
-                    <SelectItem value="moderate">ปานกลาง</SelectItem>
-                    <SelectItem value="severe">รุนแรง</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* สาเหตุที่แท้จริง */}
-              <div className="space-y-2">
-                <Label htmlFor="rootCause">สาเหตุที่แท้จริง :</Label>
-                <Select value={selectedRootCause} onValueChange={setSelectedRootCause}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกสาเหตุ" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="aging">อายุการใช้งาน</SelectItem>
-                    <SelectItem value="maintenance">การบำรุงรักษา</SelectItem>
-                    <SelectItem value="environment">สภาพแวดล้อม</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* การจัดการ */}
-              <div className="space-y-2">
-                <Label htmlFor="management">การจัดการ :</Label>
-                <Select value={selectedManagement} onValueChange={setSelectedManagement}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกการจัดการ" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="repair">ซ่อมแซม</SelectItem>
-                    <SelectItem value="replace">เปลี่ยนใหม่</SelectItem>
-                    <SelectItem value="monitor">ติดตาม</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              {/* Filter Value Selection */}
+              {selectedFilter && (
+                <div className="space-y-2">
+                  <Label htmlFor="filterValue">{filterOptions.find(f => f.value === selectedFilter)?.label} :</Label>
+                  <Select value={filterValue} onValueChange={setFilterValue}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={`เลือก${filterOptions.find(f => f.value === selectedFilter)?.label}`} />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      {getFilterValueOptions(selectedFilter).map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -288,7 +167,7 @@ const DamageReport = () => {
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="groupBy">เลือกการแบ่งกลุ่ม :</Label>
+                <Label htmlFor="groupBy">เลือกการแบ่งกลุ่ม(แบ่งตาม) :</Label>
                 <Select value={groupBy} onValueChange={setGroupBy}>
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกการแบ่งกลุ่ม" />
