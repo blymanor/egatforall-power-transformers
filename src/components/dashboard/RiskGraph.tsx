@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -100,17 +101,6 @@ const RiskGraph: React.FC = () => {
                   
                   {/* High-High (Dark Red) */}
                   <div className="absolute bg-red-600" style={{ left: '56%', bottom: '67%', width: '44%', height: '33%' }}></div>
-                </div>
-                
-                {/* Grid lines */}
-                <div className="absolute inset-0">
-                  {/* Horizontal lines at 42% and 67% (corresponding to 15 and 30 on Y-axis) */}
-                  <div className="absolute left-0 right-0 border-t-2 border-gray-800" style={{ bottom: '42%' }}></div>
-                  <div className="absolute left-0 right-0 border-t-2 border-gray-800" style={{ bottom: '67%' }}></div>
-                  
-                  {/* Vertical lines at 31% and 56% (corresponding to 40 and 60 on X-axis) */}
-                  <div className="absolute top-0 bottom-0 border-l-2 border-gray-800" style={{ left: '31%' }}></div>
-                  <div className="absolute top-0 bottom-0 border-l-2 border-gray-800" style={{ left: '56%' }}></div>
                 </div>
                 
                 {/* Data points - all yellow with medium tone */}
@@ -234,64 +224,47 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Risk zones with diagonal pattern like reference image */}
+                {/* Risk zones with diagonal pattern - starting from left side properly */}
                 <div className="absolute inset-0">
-                  {/* Create diagonal zones using CSS triangles and gradients */}
                   <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
                     <defs>
-                      {/* Define color zones */}
                       <linearGradient id="greenToBlue" x1="0%" y1="100%" x2="50%" y2="0%">
                         <stop offset="0%" style={{stopColor:"#22c55e", stopOpacity:1}} />
                         <stop offset="100%" style={{stopColor:"#3b82f6", stopOpacity:1}} />
                       </linearGradient>
-                      <linearGradient id="blueToYellow" x1="0%" y1="100%" x2="70%" y2="0%">
-                        <stop offset="0%" style={{stopColor:"#3b82f6", stopOpacity:1}} />
-                        <stop offset="100%" style={{stopColor:"#eab308", stopOpacity:1}} />
-                      </linearGradient>
-                      <linearGradient id="yellowToOrange" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" style={{stopColor:"#eab308", stopOpacity:1}} />
-                        <stop offset="100%" style={{stopColor:"#f97316", stopOpacity:1}} />
-                      </linearGradient>
-                      <linearGradient id="orangeToRed" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" style={{stopColor:"#f97316", stopOpacity:1}} />
-                        <stop offset="100%" style={{stopColor:"#dc2626", stopOpacity:1}} />
-                      </linearGradient>
                     </defs>
                     
-                    {/* Green triangle (bottom-left) */}
-                    <polygon points="0,360 149,360 0,211" fill="#22c55e" />
+                    {/* Green zone (bottom-left triangle) */}
+                    <polygon points="0,360 150,360 0,150" fill="#22c55e" />
                     
                     {/* Blue diagonal zone */}
-                    <polygon points="0,211 149,360 268,360 119,211 0,211" fill="#3b82f6" />
+                    <polygon points="0,150 150,360 270,360 0,90" fill="#3b82f6" />
                     
                     {/* Yellow diagonal zone */}
-                    <polygon points="119,211 268,360 387,360 238,211 119,211" fill="#eab308" />
+                    <polygon points="0,90 270,360 390,360 0,30" fill="#eab308" />
                     
                     {/* Orange diagonal zone */}
-                    <polygon points="238,211 387,360 480,360 331,211 238,211" fill="#f97316" />
+                    <polygon points="0,30 390,360 480,360 0,0 200,0" fill="#f97316" />
                     
-                    {/* Red triangle (top-right) */}
-                    <polygon points="331,211 480,360 480,0 331,0 331,211" fill="#dc2626" />
-                    
-                    {/* Additional orange zone at top */}
-                    <polygon points="0,0 331,0 331,211 0,211" fill="#f97316" />
+                    {/* Red zone (top-right area) */}
+                    <polygon points="200,0 480,0 480,360 390,360" fill="#dc2626" />
                   </svg>
                 </div>
                 
-                {/* Diagonal grid lines */}
+                {/* Diagonal grid lines - only the main diagonal separators */}
                 <div className="absolute inset-0">
                   <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-                    {/* Main diagonal lines creating triangular pattern */}
-                    <line x1="0%" y1="58.6%" x2="31%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="31%" y1="58.6%" x2="56%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="56%" y1="58.6%" x2="100%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="69%" y1="0%" x2="100%" y2="100%" stroke="black" strokeWidth="2"/>
+                    {/* Main diagonal lines creating risk zones */}
+                    <line x1="0%" y1="58.3%" x2="31.25%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="25%" x2="56.25%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="8.3%" x2="81.25%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="41.7%" y1="0%" x2="100%" y2="100%" stroke="black" strokeWidth="2"/>
                   </svg>
                 </div>
                 
                 {/* Data points distributed across diagonal zones */}
                 {Array.from({ length: 300 }).map((_, i) => {
-                  // Create distribution that follows diagonal pattern like reference image
+                  // Create distribution that follows diagonal pattern
                   let x, y;
                   const rand = Math.random();
                   

@@ -3,9 +3,8 @@ import React, { useMemo, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Edit, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import FilterDropdown from "./FilterDropdown";
-import TransformerModal from "@/components/modals/TransformerModal";
 import { cn } from "@/lib/utils";
 
 interface TransformerData {
@@ -82,8 +81,6 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
   selectedRegion 
 }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const itemsPerPage = 6;
 
   const filteredData = useMemo(() => {
@@ -117,153 +114,113 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
     ? filteredData.slice(0, 6) 
     : currentData;
 
-  const handleEdit = () => {
-    setIsEditing(true);
-    setIsModalOpen(true);
-  };
-
-  const handleDelete = () => {
-    // Handle delete logic here
-    console.log("Delete transformer");
-  };
-
   return (
-    <>
-      <Card className="bg-white shadow-md border border-gray-100">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl font-bold text-black">ความสำคัญของหม้อแปลง</CardTitle>
-          <FilterDropdown 
-            value={statusFilter} 
-            onValueChange={setStatusFilter} 
-            variant="default" 
-            placeholder="Filter by Status"
-          />
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
-                <TableRow>
-                  <TableHead className="w-[180px] text-center whitespace-nowrap">หมายเลขอุปกรณ์</TableHead>
-                  <TableHead className="w-[200px] text-center whitespace-nowrap">รหัสอุปกรณ์</TableHead>
-                  <TableHead className="w-[220px] text-center whitespace-nowrap">สภาพโดยรวม(%)</TableHead>
-                  <TableHead className="w-[220px] text-center whitespace-nowrap">ดัชนีความสำคัญ(%)</TableHead>
-                  <TableHead className="w-[120px] text-center">ความเสี่ยง</TableHead>
-                  <TableHead className="w-[120px] text-center">สถานะ</TableHead>
-                  <TableHead className="w-[120px] text-center">การดำเนินการ</TableHead>
-                  <TableHead className="w-[80px] text-center"><Edit className="h-4 w-4 mx-auto" /></TableHead>
-                  <TableHead className="w-[80px] text-center"><Trash2 className="h-4 w-4 mx-auto" /></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {displayData.length > 0 ? (
-                  displayData.map((row, index) => (
-                    <TableRow key={index} className="hover:bg-blue-50/30">
-                      <TableCell className="text-center">{row.deviceNo}</TableCell>
-                      <TableCell className="text-center">{row.equipmentNo}</TableCell>
-                      <TableCell className="text-center">{row.condition}</TableCell>
-                      <TableCell className="text-center">{row.importance}</TableCell>
-                      <TableCell className="text-center">{row.risk}</TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex justify-center">
-                          <span className={cn(
-                            "px-3 py-1 rounded-full text-xs font-medium border",
-                            getStatusBadgeColor(row.status)
-                          )}>
-                            {row.status}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex justify-center">
-                          <span className={cn(
-                            "px-3 py-1 rounded-full text-xs font-medium border",
-                            getActionBadgeColor(row.action)
-                          )}>
-                            {row.action}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={handleEdit}
-                          className="p-2 hover:bg-blue-50"
-                        >
-                          <Edit className="h-4 w-4 text-blue-600" />
-                        </Button>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={handleDelete}
-                          className="p-2 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={9} className="h-24 text-center">
-                      No transformers found for the selected filters
+    <Card className="bg-white shadow-md border border-gray-100">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between">
+        <CardTitle className="text-2xl font-bold text-black">ความสำคัญของหม้อแปลง</CardTitle>
+        <FilterDropdown 
+          value={statusFilter} 
+          onValueChange={setStatusFilter} 
+          variant="default" 
+          placeholder="Filter by Status"
+        />
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
+              <TableRow>
+                <TableHead className="w-[180px] text-center whitespace-nowrap">หมายเลขอุปกรณ์</TableHead>
+                <TableHead className="w-[200px] text-center whitespace-nowrap">รหัสอุปกรณ์</TableHead>
+                <TableHead className="w-[220px] text-center whitespace-nowrap">สภาพโดยรวม(%)</TableHead>
+                <TableHead className="w-[220px] text-center whitespace-nowrap">ดัชนีความสำคัญ(%)</TableHead>
+                <TableHead className="w-[120px] text-center">ความเสี่ยง</TableHead>
+                <TableHead className="w-[120px] text-center">สถานะ</TableHead>
+                <TableHead className="w-[120px] text-center">การดำเนินการ</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {displayData.length > 0 ? (
+                displayData.map((row, index) => (
+                  <TableRow key={index} className="hover:bg-blue-50/30">
+                    <TableCell className="text-center">{row.deviceNo}</TableCell>
+                    <TableCell className="text-center">{row.equipmentNo}</TableCell>
+                    <TableCell className="text-center">{row.condition}</TableCell>
+                    <TableCell className="text-center">{row.importance}</TableCell>
+                    <TableCell className="text-center">{row.risk}</TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <span className={cn(
+                          "px-3 py-1 rounded-full text-xs font-medium border",
+                          getStatusBadgeColor(row.status)
+                        )}>
+                          {row.status}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <span className={cn(
+                          "px-3 py-1 rounded-full text-xs font-medium border",
+                          getActionBadgeColor(row.action)
+                        )}>
+                          {row.action}
+                        </span>
+                      </div>
                     </TableCell>
                   </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No transformers found for the selected filters
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-between p-4 pt-2 border-t">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          ก่อนหน้า
+        </Button>
+        <div className="flex items-center gap-1">
+          {Array.from({ length: Math.min(4, totalPages) }).map((_, idx) => {
+            const page = idx + 1;
+            return (
+              <Button 
+                key={page} 
+                variant={page === currentPage ? "default" : "outline"} 
+                size="sm" 
+                className={cn(
+                  "w-8 h-8 p-0",
+                  page === currentPage && "bg-[#1E5CFF] hover:bg-[#1E5CFF]/90"
                 )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between p-4 pt-2 border-t">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            ก่อนหน้า
-          </Button>
-          <div className="flex items-center gap-1">
-            {Array.from({ length: Math.min(4, totalPages) }).map((_, idx) => {
-              const page = idx + 1;
-              return (
-                <Button 
-                  key={page} 
-                  variant={page === currentPage ? "default" : "outline"} 
-                  size="sm" 
-                  className={cn(
-                    "w-8 h-8 p-0",
-                    page === currentPage && "bg-[#1E5CFF] hover:bg-[#1E5CFF]/90"
-                  )}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </Button>
-              );
-            })}
-          </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            disabled={currentPage === totalPages || displayData.length === 0}
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          >
-            ถัดไป
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </CardFooter>
-      </Card>
-
-      <TransformerModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)}
-        isEditing={isEditing}
-      />
-    </>
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </Button>
+            );
+          })}
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={currentPage === totalPages || displayData.length === 0}
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+        >
+          ถัดไป
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

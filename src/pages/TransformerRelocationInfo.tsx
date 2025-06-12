@@ -22,11 +22,20 @@ const TransformerRelocationInfo = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
-  // Mock data for transformers
+  // Mock data for transformers - updated to match reference image
   const transformers = [
-    { id: 1, deviceNo: "70000016001", equipmentNo: "AN-472A", manufacturer: "ABB", location: "Bangkok", region: "Central", substationName: "Substation A", status: "spare" },
-    { id: 2, deviceNo: "70000016003", equipmentNo: "AN-K12A", manufacturer: "Siemens", location: "Chiang Mai", region: "North", substationName: "Substation B", status: "ถูกปลดออกจากระบบ" },
-    { id: 3, deviceNo: "70000016201", equipmentNo: "AN-472B", manufacturer: "Hitachi", location: "Phuket", region: "South", substationName: "Substation C", status: "อยู่ในระหว่างซ่อม" },
+    { id: 1, deviceNo: "70000016201", equipmentNo: "Electro Busang", location: "Bangkok", status: "spare" },
+    { id: 2, deviceNo: "70000016202", equipmentNo: "Meiden", location: "Chiang Mai", status: "spare" },
+    { id: 3, deviceNo: "70000016203", equipmentNo: "Meiden", location: "Phuket", status: "spare" },
+    { id: 4, deviceNo: "70000016204", equipmentNo: "Mitsubishi", location: "Bangkok", status: "spare" },
+    { id: 5, deviceNo: "70000016205", equipmentNo: "Electro Busang", location: "Chiang Mai", status: "spare" },
+    { id: 6, deviceNo: "70000016206", equipmentNo: "OSAKA", location: "Phuket", status: "spare" },
+    { id: 7, deviceNo: "70000016207", equipmentNo: "Meiden", location: "Bangkok", status: "spare" },
+    { id: 8, deviceNo: "70000016208", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "spare" },
+    { id: 9, deviceNo: "70000016209", equipmentNo: "Electro Busang", location: "Phuket", status: "spare" },
+    { id: 10, deviceNo: "70000016210", equipmentNo: "OSAKA", location: "Bangkok", status: "spare" },
+    { id: 11, deviceNo: "70000016211", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "spare" },
+    { id: 12, deviceNo: "70000016212", equipmentNo: "Mitsubishi", location: "Phuket", status: "spare" },
   ];
 
   // Filter transformers based on search and status
@@ -34,7 +43,6 @@ const TransformerRelocationInfo = () => {
     const matchesSearch = searchQuery === "" || 
       transformer.deviceNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
       transformer.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transformer.manufacturer.toLowerCase().includes(searchQuery.toLowerCase()) ||
       transformer.location.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesStatus = selectedStatus === "all" || transformer.status === selectedStatus;
@@ -54,15 +62,6 @@ const TransformerRelocationInfo = () => {
       title: "ย้ายเข้าหม้อแปลง",
       description: `ย้ายเข้าหม้อแปลง ${transformer.equipmentNo}`,
     });
-  };
-
-  const getStatusBadgeColor = (status) => {
-    switch(status) {
-      case "spare": return "bg-blue-100 text-blue-800";
-      case "ถูกปลดออกจากระบบ": return "bg-red-100 text-red-800";
-      case "อยู่ในระหว่างซ่อม": return "bg-yellow-100 text-yellow-800";
-      default: return "bg-gray-100 text-gray-800";
-    }
   };
 
   const updateStatus = (transformerId, newStatus) => {
@@ -123,12 +122,8 @@ const TransformerRelocationInfo = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center">Device No.</TableHead>
                     <TableHead className="text-center">Equipment No.</TableHead>
-                    <TableHead className="text-center">Manufacturer</TableHead>
-                    <TableHead className="text-center">Location</TableHead>
-                    <TableHead className="text-center">Region</TableHead>
-                    <TableHead className="text-center">Substation Name</TableHead>
+                    <TableHead className="text-center">บริษัทผู้ผลิต</TableHead>
                     <TableHead className="text-center">สถานะ</TableHead>
                     <TableHead className="text-center">แก้ไข</TableHead>
                     <TableHead className="text-center">ย้ายเข้า</TableHead>
@@ -140,10 +135,6 @@ const TransformerRelocationInfo = () => {
                       <TableRow key={transformer.id} className="hover:bg-blue-50/30">
                         <TableCell className="text-center">{transformer.deviceNo}</TableCell>
                         <TableCell className="text-center">{transformer.equipmentNo}</TableCell>
-                        <TableCell className="text-center">{transformer.manufacturer}</TableCell>
-                        <TableCell className="text-center">{transformer.location}</TableCell>
-                        <TableCell className="text-center">{transformer.region}</TableCell>
-                        <TableCell className="text-center">{transformer.substationName}</TableCell>
                         <TableCell className="text-center">
                           <Select 
                             value={transformer.status} 
@@ -183,7 +174,7 @@ const TransformerRelocationInfo = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={9} className="h-24 text-center">
+                      <TableCell colSpan={5} className="h-24 text-center">
                         ไม่พบข้อมูลหม้อแปลงไฟฟ้า
                       </TableCell>
                     </TableRow>

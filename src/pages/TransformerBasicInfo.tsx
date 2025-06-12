@@ -25,11 +25,14 @@ const TransformerBasicInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Mock data for transformers
+  // Mock data for transformers - updated to match reference image
   const transformers = [
-    { id: 1, deviceNo: "70000016001", equipmentNo: "AN-472A", manufacturer: "ABB", location: "Bangkok", region: "Central", substationName: "Substation A", type: "Power", phase: "Three Phase", manufactureYear: 2015, capacity: 100, voltage: 22 },
-    { id: 2, deviceNo: "70000016003", equipmentNo: "AN-K12A", manufacturer: "Siemens", location: "Chiang Mai", region: "North", substationName: "Substation B", type: "Distribution", phase: "Single Phase", manufactureYear: 2018, capacity: 50, voltage: 11 },
-    { id: 3, deviceNo: "70000016201", equipmentNo: "AN-472B", manufacturer: "Hitachi", location: "Phuket", region: "South", substationName: "Substation C", type: "Power", phase: "Three Phase", manufactureYear: 2020, capacity: 150, voltage: 33 },
+    { id: 1, deviceNo: "70000016001", equipmentNo: "AN-472A", manufacturer: "ABB", capacity: 50.0, condition: "แก้ไข", status: "ลบ" },
+    { id: 2, deviceNo: "70000016003", equipmentNo: "AN-K12A", manufacturer: "OSAKA", capacity: 50.0, condition: "แก้ไข", status: "ลบ" },
+    { id: 3, deviceNo: "70000016201", equipmentNo: "AN-472B", manufacturer: "Siemens", capacity: 300.0, condition: "แก้ไข", status: "ลบ" },
+    { id: 4, deviceNo: "70000016202", equipmentNo: "AN-473A", manufacturer: "Hitachi", capacity: 300.0, condition: "แก้ไข", status: "ลบ" },
+    { id: 5, deviceNo: "70000016203", equipmentNo: "AN-474A", manufacturer: "Mitsubishi", capacity: 300.0, condition: "แก้ไข", status: "ลบ" },
+    { id: 6, deviceNo: "70000016204", equipmentNo: "AN-475A", manufacturer: "OSAKA", capacity: 300.0, condition: "แก้ไข", status: "ลบ" },
   ];
 
   // Filter transformers based on search and region
@@ -37,12 +40,9 @@ const TransformerBasicInfo = () => {
     const matchesSearch = searchQuery === "" || 
       transformer.deviceNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
       transformer.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transformer.manufacturer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transformer.location.toLowerCase().includes(searchQuery.toLowerCase());
+      transformer.manufacturer.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesRegion = selectedRegion === "all" || transformer.region === selectedRegion;
-    
-    return matchesSearch && matchesRegion;
+    return matchesSearch;
   });
 
   const handleAddTransformer = () => {
@@ -80,7 +80,7 @@ const TransformerBasicInfo = () => {
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6">
             <div className="flex justify-between items-center gap-4">
-              {/* Left side - Search */}
+              {/* Left side - Search and Add button */}
               <div className="flex items-center gap-4">
                 <div className="relative flex-1 min-w-80">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -127,17 +127,10 @@ const TransformerBasicInfo = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center">Device No.</TableHead>
                     <TableHead className="text-center">Equipment No.</TableHead>
-                    <TableHead className="text-center">Manufacturer</TableHead>
-                    <TableHead className="text-center">Location</TableHead>
-                    <TableHead className="text-center">Region</TableHead>
-                    <TableHead className="text-center">Substation Name</TableHead>
-                    <TableHead className="text-center">Type</TableHead>
-                    <TableHead className="text-center">Phase</TableHead>
-                    <TableHead className="text-center">Year</TableHead>
-                    <TableHead className="text-center">Capacity (MVA)</TableHead>
-                    <TableHead className="text-center">Voltage (kV)</TableHead>
+                    <TableHead className="text-center">หมายเลขอุปกรณ์</TableHead>
+                    <TableHead className="text-center">บริษัทผู้ผลิต</TableHead>
+                    <TableHead className="text-center">กำลังไฟฟ้า (MVA)</TableHead>
                     <TableHead className="text-center">แก้ไข</TableHead>
                     <TableHead className="text-center">ลบ</TableHead>
                   </TableRow>
@@ -149,14 +142,7 @@ const TransformerBasicInfo = () => {
                         <TableCell className="text-center">{transformer.deviceNo}</TableCell>
                         <TableCell className="text-center">{transformer.equipmentNo}</TableCell>
                         <TableCell className="text-center">{transformer.manufacturer}</TableCell>
-                        <TableCell className="text-center">{transformer.location}</TableCell>
-                        <TableCell className="text-center">{transformer.region}</TableCell>
-                        <TableCell className="text-center">{transformer.substationName}</TableCell>
-                        <TableCell className="text-center">{transformer.type}</TableCell>
-                        <TableCell className="text-center">{transformer.phase}</TableCell>
-                        <TableCell className="text-center">{transformer.manufactureYear}</TableCell>
                         <TableCell className="text-center">{transformer.capacity}</TableCell>
-                        <TableCell className="text-center">{transformer.voltage}</TableCell>
                         <TableCell className="text-center">
                           <Button 
                             variant="ghost" 
@@ -181,7 +167,7 @@ const TransformerBasicInfo = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={13} className="h-24 text-center">
+                      <TableCell colSpan={6} className="h-24 text-center">
                         ไม่พบข้อมูลหม้อแปลงไฟฟ้า
                       </TableCell>
                     </TableRow>
