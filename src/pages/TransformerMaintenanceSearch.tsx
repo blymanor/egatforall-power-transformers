@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Search } from "lucide-react";
 
 const TransformerMaintenanceSearch = () => {
@@ -23,6 +24,16 @@ const TransformerMaintenanceSearch = () => {
   const [selectedYear, setSelectedYear] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Form state for search conditions
+  const [searchConditions, setSearchConditions] = useState({
+    searchBy: "equipmentNo",
+    searchValue: "",
+    stationCondition: "",
+    stationName: "",
+    inspectionDate: "",
+    inspectorName: ""
+  });
 
   // Mock data for maintenance records
   const maintenanceData = [
@@ -69,157 +80,171 @@ const TransformerMaintenanceSearch = () => {
   };
 
   return (
-    <DashboardLayout
-      pageTitle="ค้นหาข้อมูลบำรุงรักษาหม้อแปลง"
-      pageDescription="Search Transformer Maintenance Data"
-    >
+    <DashboardLayout>
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Header with black text */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-black mb-2">ค้นหาข้อมูลบำรุงรักษาหม้อแปลง</h1>
-          <p className="text-lg text-gray-600">Search Transformer Maintenance Data</p>
+        {/* Header with blue left border like reference image */}
+        <div className="mb-6">
+          <div className="border-l-4 border-blue-500 pl-4">
+            <h1 className="text-xl font-bold text-black">ค้นหาข้อมูลบำรุงรักษาหม้อแปลง</h1>
+            <p className="text-base text-gray-600">Search Transformer Maintenance Data</p>
+          </div>
         </div>
 
-        {/* Search and Filter Section */}
+        {/* Search Form Section 1 */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <h3 className="text-lg font-bold text-blue-600 mb-4">ค้นหาข้อมูลหม้อแปลงไฟฟ้า</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">คำสำคัญ :</Label>
                 <Input
-                  placeholder="ค้นหา Equipment No., ชื่อหม้อแปลง, ช่างเทคนิค..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 focus-visible:ring-0"
+                  placeholder=""
+                  value={searchConditions.searchValue}
+                  onChange={(e) => setSearchConditions(prev => ({...prev, searchValue: e.target.value}))}
+                  className="focus-visible:ring-0"
                 />
               </div>
 
-              <div className="space-y-1">
-                <Label className="text-sm text-gray-600">ปี</Label>
-                <Select value={selectedYear} onValueChange={setSelectedYear}>
-                  <SelectTrigger className="focus:ring-0 border border-gray-300">
-                    <SelectValue placeholder="เลือกปี" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2023">2023</SelectItem>
-                    <SelectItem value="2022">2022</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-3 block">ค้นหาโดย :</Label>
+                <RadioGroup 
+                  value={searchConditions.searchBy} 
+                  onValueChange={(value) => setSearchConditions(prev => ({...prev, searchBy: value}))}
+                  className="flex space-x-6"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="equipmentNo" id="equipmentNo" />
+                    <Label htmlFor="equipmentNo" className="text-base text-gray-700 cursor-pointer">Equipment No.</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="transformerName" id="transformerName" />
+                    <Label htmlFor="transformerName" className="text-base text-gray-700 cursor-pointer">ชื่อหม้อแปลง</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="stationName" id="stationName" />
+                    <Label htmlFor="stationName" className="text-base text-gray-700 cursor-pointer">สถานีไฟฟ้า</Label>
+                  </div>
+                </RadioGroup>
               </div>
 
-              <div className="space-y-1">
-                <Label className="text-sm text-gray-600">ประเภทการบำรุงรักษา</Label>
-                <Select value={selectedType} onValueChange={setSelectedType}>
-                  <SelectTrigger className="focus:ring-0 border border-gray-300">
-                    <SelectValue placeholder="เลือกประเภท" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
-                    <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="Preventive">Preventive</SelectItem>
-                    <SelectItem value="Corrective">Corrective</SelectItem>
-                    <SelectItem value="Emergency">Emergency</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-end">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  ค้นหา
+              <div className="flex justify-start">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2">
+                  Search
                 </Button>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Results Table */}
+        {/* Search Form Section 2 */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
-          <CardContent className="p-4 md:p-6">
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="text-center">Equipment No.</TableHead>
-                    <TableHead className="text-center">ชื่อหม้อแปลง</TableHead>
-                    <TableHead className="text-center">ประเภทการบำรุงรักษา</TableHead>
-                    <TableHead className="text-center">วันที่</TableHead>
-                    <TableHead className="text-center">ช่างเทคนิค</TableHead>
-                    <TableHead className="text-center">สถานะ</TableHead>
-                    <TableHead className="text-center">กำหนดครั้งถัดไป</TableHead>
-                    <TableHead className="text-center">แก้ไข</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentData.length > 0 ? (
-                    currentData.map((item) => (
-                      <TableRow key={item.id} className="hover:bg-blue-50/30">
-                        <TableCell className="text-center">{item.equipmentNo}</TableCell>
-                        <TableCell className="text-center">{item.transformerName}</TableCell>
-                        <TableCell className="text-center">{item.maintenanceType}</TableCell>
-                        <TableCell className="text-center">{new Date(item.date).toLocaleDateString('th-TH')}</TableCell>
-                        <TableCell className="text-center">{item.technician}</TableCell>
-                        <TableCell className="text-center">
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
-                            {item.status}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-center">{new Date(item.nextDue).toLocaleDateString('th-TH')}</TableCell>
-                        <TableCell className="text-center">
-                          <Button 
-                            variant="ghost" 
-                            className="text-blue-600 hover:text-blue-800" 
-                            onClick={() => handleEdit(item)}
-                          >
-                            แก้ไข
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={8} className="h-24 text-center">
-                        ไม่พบข้อมูลการบำรุงรักษา
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-bold text-blue-600 mb-4">ค้นหาข้อมูลการทดสอบหม้อแปลงไฟฟ้า</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">ชนิดการทดสอบ :</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Please Select..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-md">
+                    <SelectItem value="visual">Visual Inspection</SelectItem>
+                    <SelectItem value="electrical">Electrical Test</SelectItem>
+                    <SelectItem value="oil">Oil Test</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {filteredData.length > 0 && (
-              <div className="flex justify-center items-center mt-6 space-x-2">
-                <Button 
-                  variant="outline" 
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                >
-                  ก่อนหน้า
-                </Button>
-                
-                {Array.from({ length: Math.min(3, totalPages) }).map((_, idx) => {
-                  const page = idx + 1;
-                  return (
-                    <Button 
-                      key={page} 
-                      variant={page === currentPage ? "default" : "outline"} 
-                      className={page === currentPage ? "bg-blue-600 text-white" : ""}
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page}
-                    </Button>
-                  );
-                })}
-                
-                <Button 
-                  variant="outline" 
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                >
-                  ถัดไป
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">ชื่อหม้อแปลงไฟฟ้า :</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-md">
+                    <SelectItem value="an472a">AN-472A</SelectItem>
+                    <SelectItem value="ank12a">AN-K12A</SelectItem>
+                    <SelectItem value="an472b">AN-472B</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex justify-start">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2">
+                  Search
                 </Button>
               </div>
-            )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Search Form Section 3 */}
+        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-bold text-blue-600 mb-4">เลือกหม้อแปลงไฟฟ้าเพื่อทราบข้อมูลการทดสอบ Visual Inspection</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">ชื่อหม้อแปลงไฟฟ้า :</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-md">
+                    <SelectItem value="an472a">AN-472A</SelectItem>
+                    <SelectItem value="ank12a">AN-K12A</SelectItem>
+                    <SelectItem value="an472b">AN-472B</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">รูปแบบการทดสอบ :</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-md">
+                    <SelectItem value="routine">Routine Inspection</SelectItem>
+                    <SelectItem value="detailed">Detailed Inspection</SelectItem>
+                    <SelectItem value="emergency">Emergency Inspection</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">วันที่ตรวจสอบ :</Label>
+                <Input
+                  type="date"
+                  value="2025-06-12"
+                  className="focus-visible:ring-0"
+                />
+              </div>
+
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">ผู้ตรวจสอบ :</Label>
+                <Input
+                  placeholder=""
+                  className="focus-visible:ring-0"
+                />
+              </div>
+
+              <div>
+                <Label className="text-base font-medium text-gray-700 mb-2 block">เลขที่ใบปฏิบัติงาน :</Label>
+                <Input
+                  placeholder=""
+                  className="focus-visible:ring-0"
+                />
+              </div>
+
+              <div className="flex justify-start">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2">
+                  Done
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

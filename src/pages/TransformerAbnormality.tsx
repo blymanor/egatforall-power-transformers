@@ -82,18 +82,17 @@ const TransformerAbnormality = () => {
   };
 
   return (
-    <DashboardLayout
-      pageTitle="ความผิดปกติของหม้อแปลง"
-      pageDescription="Transformer Abnormality"
-    >
+    <DashboardLayout>
       <div className="p-4 md:p-8 space-y-8 bg-[#f0f4fa]">
-        {/* Header with increased size */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">ความผิดปกติของหม้อแปลง</h1>
-          <p className="text-xl text-gray-600">Transformer Abnormality</p>
+        {/* Header with blue left border like reference image */}
+        <div className="mb-8">
+          <div className="border-l-4 border-blue-500 pl-4">
+            <h1 className="text-xl font-bold text-gray-800">ความผิดปกติของหม้อแปลงไฟฟ้า</h1>
+            <p className="text-base text-gray-600">Transformer Abnormality</p>
+          </div>
         </div>
 
-        {/* Report Form - increased size */}
+        {/* Report Form */}
         <Card className="mx-auto shadow-lg rounded-xl overflow-hidden border-0 max-w-6xl">
           <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
             <CardTitle className="text-2xl font-bold text-center">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</CardTitle>

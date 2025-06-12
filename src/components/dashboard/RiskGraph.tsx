@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -283,17 +282,10 @@ const RiskGraph: React.FC = () => {
                 <div className="absolute inset-0">
                   <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
                     {/* Main diagonal lines creating triangular pattern */}
-                    <line x1="0%" y1="100%" x2="31%" y2="58.3%" stroke="black" strokeWidth="2"/>
-                    <line x1="31%" y1="100%" x2="56%" y2="41.7%" stroke="black" strokeWidth="2"/>
-                    <line x1="56%" y1="100%" x2="100%" y2="0%" stroke="black" strokeWidth="2"/>
-                    
-                    {/* Horizontal lines */}
-                    <line x1="0%" y1="41.7%" x2="100%" y2="41.7%" stroke="black" strokeWidth="2"/>
-                    <line x1="0%" y1="58.3%" x2="100%" y2="58.3%" stroke="black" strokeWidth="2"/>
-                    
-                    {/* Vertical lines */}
-                    <line x1="31%" y1="0%" x2="31%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="56%" y1="0%" x2="56%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="58.6%" x2="31%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="31%" y1="58.6%" x2="56%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="56%" y1="58.6%" x2="100%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="69%" y1="0%" x2="100%" y2="100%" stroke="black" strokeWidth="2"/>
                   </svg>
                 </div>
                 
