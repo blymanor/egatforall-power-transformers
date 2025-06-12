@@ -5,7 +5,6 @@ import StatusCard from "@/components/dashboard/StatusCard";
 import TransformerTable from "@/components/dashboard/TransformerTable";
 import RiskGraph from "@/components/dashboard/RiskGraph";
 import RegionDropdown from "@/components/dashboard/RegionDropdown";
-import WelcomeSection from "@/components/dashboard/WelcomeSection";
 import QuickActions from "@/components/dashboard/QuickActions";
 import RecentMaintenance from "@/components/dashboard/RecentMaintenance";
 import { Database, Wrench, AlertCircle } from "lucide-react";
@@ -22,12 +21,9 @@ const Index = () => {
     <DashboardLayout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-          {/* Welcome and Quick Stats */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-3">
-              <WelcomeSection />
-            </div>
-            <div className="lg:col-span-1">
+          {/* Quick Actions Section */}
+          <div className="flex justify-end">
+            <div className="w-full max-w-xs">
               <QuickActions />
             </div>
           </div>
