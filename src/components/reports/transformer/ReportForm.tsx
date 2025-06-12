@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { 
@@ -11,41 +11,29 @@ import {
 } from "@/components/ui/select";
 
 interface ReportFormProps {
-  region: string;
-  setRegion: (value: string) => void;
-  station: string;
-  setStation: (value: string) => void;
-  manufacturer: string;
-  setManufacturer: (value: string) => void;
-  transformer: string;
-  setTransformer: (value: string) => void;
-  groupBy: string;
-  setGroupBy: (value: string) => void;
-  onGenerateReport: () => void;
+  onSave: () => void;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({
-  region,
-  setRegion,
-  station,
-  setStation,
-  manufacturer,
-  setManufacturer,
-  transformer,
-  setTransformer,
-  groupBy,
-  setGroupBy,
-  onGenerateReport,
-}) => {
+const ReportForm: React.FC<ReportFormProps> = ({ onSave }) => {
+  const [region, setRegion] = useState("");
+  const [station, setStation] = useState("");
+  const [manufacturer, setManufacturer] = useState("");
+  const [transformer, setTransformer] = useState("");
+  const [groupBy, setGroupBy] = useState("");
+
+  const handleGenerateReport = () => {
+    onSave();
+  };
+
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-2xl font-bold text-black mb-8">เลือกเงื่อนไขในการสร้างรายงาน</h3>
+        <h3 className="text-xl font-semibold text-black mb-8">เลือกเงื่อนไขในการสร้างรายงาน</h3>
         
         <div className="mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <div className="flex items-center gap-4">
-              <Label className="w-32 text-gray-700 font-medium text-base">เขต :</Label>
+              <Label className="w-32 text-gray-700 font-medium text-sm">เขต :</Label>
               <Select value={region} onValueChange={setRegion}>
                 <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
                   <SelectValue placeholder="ทั้งหมด" />
@@ -61,7 +49,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
             </div>
 
             <div className="flex items-center gap-4">
-              <Label className="w-32 text-gray-700 font-medium text-base">สถานีไฟฟ้า :</Label>
+              <Label className="w-32 text-gray-700 font-medium text-sm">สถานีไฟฟ้า :</Label>
               <Select value={station} onValueChange={setStation}>
                 <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
                   <SelectValue placeholder="ทั้งหมด" />
@@ -76,7 +64,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
             </div>
 
             <div className="flex items-center gap-4">
-              <Label className="w-32 text-gray-700 font-medium text-base">บริษัทผู้ผลิต :</Label>
+              <Label className="w-32 text-gray-700 font-medium text-sm">บริษัทผู้ผลิต :</Label>
               <Select value={manufacturer} onValueChange={setManufacturer}>
                 <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
                   <SelectValue placeholder="ทั้งหมด" />
@@ -92,7 +80,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
             </div>
 
             <div className="flex items-center gap-4">
-              <Label className="w-32 text-gray-700 font-medium text-base">หม้อแปลงไฟฟ้า :</Label>
+              <Label className="w-32 text-gray-700 font-medium text-sm">หม้อแปลงไฟฟ้า :</Label>
               <Select value={transformer} onValueChange={setTransformer}>
                 <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
                   <SelectValue placeholder="ทั้งหมด" />
@@ -109,9 +97,9 @@ const ReportForm: React.FC<ReportFormProps> = ({
         </div>
 
         <div className="mb-8">
-          <h4 className="text-xl font-semibold text-black mb-4">เลือกการแบ่งกลุ่ม (แบ่งตาม)</h4>
+          <h4 className="text-lg font-semibold text-black mb-4">เลือกการแบ่งกลุ่ม (แบ่งตาม)</h4>
           <div className="flex items-center gap-4">
-            <Label className="w-32 text-gray-700 font-medium text-base">แบ่งตาม :</Label>
+            <Label className="w-32 text-gray-700 font-medium text-sm">แบ่งตาม :</Label>
             <Select value={groupBy} onValueChange={setGroupBy}>
               <SelectTrigger className="w-52 focus-visible:ring-0 border border-gray-300">
                 <SelectValue placeholder="เลือกวิธีการแบ่งกลุ่ม" />
@@ -128,7 +116,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
 
         <div className="flex justify-center pt-4">
           <Button 
-            onClick={onGenerateReport} 
+            onClick={handleGenerateReport} 
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2"
           >
             แสดงรายงาน
