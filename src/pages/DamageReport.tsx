@@ -16,21 +16,24 @@ const DamageReport = () => {
   const { toast } = useToast();
   const [showResults, setShowResults] = useState(false);
   
-  // Filter states
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedStation, setSelectedStation] = useState("");
-  const [selectedManufacturer, setSelectedManufacturer] = useState("");
-  const [selectedTransformer, setSelectedTransformer] = useState("");
-  const [selectedEnvironment, setSelectedEnvironment] = useState("");
-  const [selectedOperatingCondition, setSelectedOperatingCondition] = useState("");
-  const [selectedAbnormalityDetails, setSelectedAbnormalityDetails] = useState("");
-  const [selectedEquipmentGroup, setSelectedEquipmentGroup] = useState("");
-  const [selectedDamagedParts, setSelectedDamagedParts] = useState("");
-  const [selectedDamageLevel, setSelectedDamageLevel] = useState("");
-  const [selectedRootCause, setSelectedRootCause] = useState("");
-  const [selectedManagement, setSelectedManagement] = useState("");
+  // Single filter state (only one can be selected at a time)
+  const [selectedFilter, setSelectedFilter] = useState<{type: string, value: string} | null>(null);
   
   const [groupBy, setGroupBy] = useState("");
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    if (value) {
+      setSelectedFilter({ type: filterType, value });
+    } else {
+      setSelectedFilter(null);
+    }
+  };
+
+  const clearOtherFilters = (currentFilterType: string) => {
+    if (selectedFilter && selectedFilter.type !== currentFilterType) {
+      setSelectedFilter(null);
+    }
+  };
 
   const handleGenerateReport = () => {
     toast({
@@ -86,20 +89,27 @@ const DamageReport = () => {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">รายงานข้อมูลความเสียหาย</h1>
-          <p className="text-sm text-gray-600">Damage Information Report</p>
+          <p className="text-sm text-gray-600">damage information report</p>
         </div>
 
         {/* Filter Form */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b">
             <CardTitle className="text-xl font-semibold text-gray-800">เงื่อนไขการค้นหา</CardTitle>
+            <p className="text-sm text-gray-600 mt-1">เลือกเงื่อนไขในการสร้างรายงานได้เพียงหนึ่งเงื่อนไข</p>
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* เขต */}
               <div className="space-y-2">
                 <Label htmlFor="region">เขต :</Label>
-                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                <Select 
+                  value={selectedFilter?.type === 'region' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('region');
+                    handleFilterChange('region', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกเขต" />
                   </SelectTrigger>
@@ -115,7 +125,13 @@ const DamageReport = () => {
               {/* สถานีไฟฟ้า */}
               <div className="space-y-2">
                 <Label htmlFor="station">สถานีไฟฟ้า :</Label>
-                <Select value={selectedStation} onValueChange={setSelectedStation}>
+                <Select 
+                  value={selectedFilter?.type === 'station' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('station');
+                    handleFilterChange('station', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
                   </SelectTrigger>
@@ -130,7 +146,13 @@ const DamageReport = () => {
               {/* ชื่อบริษัทผู้ผลิต */}
               <div className="space-y-2">
                 <Label htmlFor="manufacturer">ชื่อบริษัทผู้ผลิต :</Label>
-                <Select value={selectedManufacturer} onValueChange={setSelectedManufacturer}>
+                <Select 
+                  value={selectedFilter?.type === 'manufacturer' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('manufacturer');
+                    handleFilterChange('manufacturer', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
                   </SelectTrigger>
@@ -145,7 +167,13 @@ const DamageReport = () => {
               {/* หม้อแปลงไฟฟ้า */}
               <div className="space-y-2">
                 <Label htmlFor="transformer">หม้อแปลงไฟฟ้า :</Label>
-                <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
+                <Select 
+                  value={selectedFilter?.type === 'transformer' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('transformer');
+                    handleFilterChange('transformer', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                   </SelectTrigger>
@@ -160,7 +188,13 @@ const DamageReport = () => {
               {/* สภาพแวดล้อม */}
               <div className="space-y-2">
                 <Label htmlFor="environment">สภาพแวดล้อม :</Label>
-                <Select value={selectedEnvironment} onValueChange={setSelectedEnvironment}>
+                <Select 
+                  value={selectedFilter?.type === 'environment' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('environment');
+                    handleFilterChange('environment', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกสภาพแวดล้อม" />
                   </SelectTrigger>
@@ -175,7 +209,13 @@ const DamageReport = () => {
               {/* สภาวะการใช้งานขณะพบความผิดปกติ */}
               <div className="space-y-2">
                 <Label htmlFor="operatingCondition">สภาวะการใช้งานขณะพบความผิดปกติ :</Label>
-                <Select value={selectedOperatingCondition} onValueChange={setSelectedOperatingCondition}>
+                <Select 
+                  value={selectedFilter?.type === 'operatingCondition' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('operatingCondition');
+                    handleFilterChange('operatingCondition', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกสภาวะการใช้งาน" />
                   </SelectTrigger>
@@ -190,7 +230,13 @@ const DamageReport = () => {
               {/* รายละเอียดความผิดปกติหรือเสียหาย */}
               <div className="space-y-2">
                 <Label htmlFor="abnormalityDetails">รายละเอียดความผิดปกติหรือเสียหาย :</Label>
-                <Select value={selectedAbnormalityDetails} onValueChange={setSelectedAbnormalityDetails}>
+                <Select 
+                  value={selectedFilter?.type === 'abnormalityDetails' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('abnormalityDetails');
+                    handleFilterChange('abnormalityDetails', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกรายละเอียด" />
                   </SelectTrigger>
@@ -205,7 +251,13 @@ const DamageReport = () => {
               {/* กลุ่มอุปกรณ์ */}
               <div className="space-y-2">
                 <Label htmlFor="equipmentGroup">กลุ่มอุปกรณ์ :</Label>
-                <Select value={selectedEquipmentGroup} onValueChange={setSelectedEquipmentGroup}>
+                <Select 
+                  value={selectedFilter?.type === 'equipmentGroup' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('equipmentGroup');
+                    handleFilterChange('equipmentGroup', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกกลุ่มอุปกรณ์" />
                   </SelectTrigger>
@@ -220,7 +272,13 @@ const DamageReport = () => {
               {/* ชิ้นส่วนที่เสียหายหรือผิดปกติ */}
               <div className="space-y-2">
                 <Label htmlFor="damagedParts">ชิ้นส่วนที่เสียหายหรือผิดปกติ :</Label>
-                <Select value={selectedDamagedParts} onValueChange={setSelectedDamagedParts}>
+                <Select 
+                  value={selectedFilter?.type === 'damagedParts' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('damagedParts');
+                    handleFilterChange('damagedParts', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกชิ้นส่วน" />
                   </SelectTrigger>
@@ -235,7 +293,13 @@ const DamageReport = () => {
               {/* ระดับความเสียหาย */}
               <div className="space-y-2">
                 <Label htmlFor="damageLevel">ระดับความเสียหาย :</Label>
-                <Select value={selectedDamageLevel} onValueChange={setSelectedDamageLevel}>
+                <Select 
+                  value={selectedFilter?.type === 'damageLevel' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('damageLevel');
+                    handleFilterChange('damageLevel', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกระดับความเสียหาย" />
                   </SelectTrigger>
@@ -250,7 +314,13 @@ const DamageReport = () => {
               {/* สาเหตุที่แท้จริง */}
               <div className="space-y-2">
                 <Label htmlFor="rootCause">สาเหตุที่แท้จริง :</Label>
-                <Select value={selectedRootCause} onValueChange={setSelectedRootCause}>
+                <Select 
+                  value={selectedFilter?.type === 'rootCause' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('rootCause');
+                    handleFilterChange('rootCause', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกสาเหตุ" />
                   </SelectTrigger>
@@ -265,7 +335,13 @@ const DamageReport = () => {
               {/* การจัดการ */}
               <div className="space-y-2">
                 <Label htmlFor="management">การจัดการ :</Label>
-                <Select value={selectedManagement} onValueChange={setSelectedManagement}>
+                <Select 
+                  value={selectedFilter?.type === 'management' ? selectedFilter.value : ""} 
+                  onValueChange={(value) => {
+                    clearOtherFilters('management');
+                    handleFilterChange('management', value);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกการจัดการ" />
                   </SelectTrigger>
@@ -283,7 +359,7 @@ const DamageReport = () => {
         {/* Report Configuration */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b">
-            <CardTitle className="text-xl font-semibold text-gray-800">การตั้งค่ารายงาน</CardTitle>
+            <CardTitle className="text-xl font-semibold text-gray-800">เลือกการแบ่งกลุ่ม(แบ่งตาม)</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
