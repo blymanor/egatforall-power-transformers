@@ -26,14 +26,14 @@ const ReportForm: React.FC<ReportFormProps> = ({ onSave }) => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">เลือกเงื่อนไขในการสร้างรายงาน</h2>
-      </div>
-
+    <div className="max-w-6xl mx-auto">
       {/* White frame container */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-800 mb-2">เลือกเงื่อนไขในการสร้างรายงาน</h2>
+        </div>
+
         {/* First row of filters */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <div className="flex items-center gap-4">
