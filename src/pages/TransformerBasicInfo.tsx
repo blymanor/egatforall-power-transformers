@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Search, Edit, Trash2 } from "lucide-react";
+import { Search, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Table,
@@ -24,6 +23,8 @@ const TransformerBasicInfo = () => {
   const [selectedRegion, setSelectedRegion] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // Mock data for transformers - updated with more data per region
   const transformers = [
@@ -64,6 +65,11 @@ const TransformerBasicInfo = () => {
     return matchesSearch && matchesRegion;
   });
 
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredTransformers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = filteredTransformers.slice(startIndex, startIndex + itemsPerPage);
+
   const handleAddTransformer = () => {
     setIsEditing(false);
     setIsModalOpen(true);
@@ -91,8 +97,8 @@ const TransformerBasicInfo = () => {
       <div className="p-6 space-y-6 bg-[#f0f4fa]">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">ข้อมูลหม้อแปลงไฟฟ้า</h1>
-          <p className="text-lg text-gray-600">Transformer Information</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">ข้อมูลหม้อแปลงไฟฟ้า</h1>
+          <p className="text-sm text-gray-600">Transformer Information</p>
         </div>
 
         {/* Search and Filter Section */}
@@ -119,7 +125,7 @@ const TransformerBasicInfo = () => {
                 
                 <Button 
                   onClick={handleAddTransformer}
-                  className="bg-[#1E5CFF] hover:bg-[#1E5CFF]/90 text-white px-6 py-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
                 >
                   เพิ่มหม้อแปลง
                 </Button>
@@ -155,8 +161,8 @@ const TransformerBasicInfo = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredTransformers.length > 0 ? (
-                    filteredTransformers.map((transformer) => (
+                  {currentData.length > 0 ? (
+                    currentData.map((transformer) => (
                       <TableRow key={transformer.id} className="hover:bg-blue-50/30">
                         <TableCell className="text-center">{transformer.deviceNo}</TableCell>
                         <TableCell className="text-center">{transformer.equipmentNo}</TableCell>
@@ -196,6 +202,33 @@ const TransformerBasicInfo = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Pagination */}
+        <div className="flex justify-between items-center">
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            ก่อนหน้า
+          </Button>
+          
+          <span className="text-sm text-gray-600">
+            หน้า {currentPage} จาก {totalPages}
+          </span>
+          
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-2"
+          >
+            ถัดไป
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Modal */}

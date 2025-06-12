@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Search, Edit, ArrowRight } from "lucide-react";
+import { Search, Edit, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Table,
@@ -16,26 +16,40 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+import TransformerEditModal from "@/components/modals/TransformerEditModal";
+import TransformerRelocateModal from "@/components/modals/TransformerRelocateModal";
 
 const TransformerRelocationInfo = () => {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRelocateModalOpen, setIsRelocateModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  // Mock data for transformers - updated to match reference image
+  // Mock data for transformers - updated to show different statuses
   const transformers = [
-    { id: 1, deviceNo: "70000016201", equipmentNo: "Electro Busang", location: "Bangkok", status: "spare" },
-    { id: 2, deviceNo: "70000016202", equipmentNo: "Meiden", location: "Chiang Mai", status: "spare" },
-    { id: 3, deviceNo: "70000016203", equipmentNo: "Meiden", location: "Phuket", status: "spare" },
-    { id: 4, deviceNo: "70000016204", equipmentNo: "Mitsubishi", location: "Bangkok", status: "spare" },
-    { id: 5, deviceNo: "70000016205", equipmentNo: "Electro Busang", location: "Chiang Mai", status: "spare" },
-    { id: 6, deviceNo: "70000016206", equipmentNo: "OSAKA", location: "Phuket", status: "spare" },
-    { id: 7, deviceNo: "70000016207", equipmentNo: "Meiden", location: "Bangkok", status: "spare" },
-    { id: 8, deviceNo: "70000016208", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "spare" },
-    { id: 9, deviceNo: "70000016209", equipmentNo: "Electro Busang", location: "Phuket", status: "spare" },
-    { id: 10, deviceNo: "70000016210", equipmentNo: "OSAKA", location: "Bangkok", status: "spare" },
-    { id: 11, deviceNo: "70000016211", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "spare" },
-    { id: 12, deviceNo: "70000016212", equipmentNo: "Mitsubishi", location: "Phuket", status: "spare" },
+    // เป็น spare status (5 items)
+    { id: 1, deviceNo: "70000016201", equipmentNo: "Electro Busang", location: "Bangkok", status: "เป็น spare" },
+    { id: 2, deviceNo: "70000016202", equipmentNo: "Meiden", location: "Chiang Mai", status: "เป็น spare" },
+    { id: 3, deviceNo: "70000016203", equipmentNo: "Meiden", location: "Phuket", status: "เป็น spare" },
+    { id: 4, deviceNo: "70000016204", equipmentNo: "Mitsubishi", location: "Bangkok", status: "เป็น spare" },
+    { id: 5, deviceNo: "70000016205", equipmentNo: "Electro Busang", location: "Chiang Mai", status: "เป็น spare" },
+    
+    // ถูกปลดออกจากระบบ status (5 items)
+    { id: 6, deviceNo: "70000016206", equipmentNo: "OSAKA", location: "Phuket", status: "ถูกปลดออกจากระบบ" },
+    { id: 7, deviceNo: "70000016207", equipmentNo: "Meiden", location: "Bangkok", status: "ถูกปลดออกจากระบบ" },
+    { id: 8, deviceNo: "70000016208", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "ถูกปลดออกจากระบบ" },
+    { id: 9, deviceNo: "70000016209", equipmentNo: "Electro Busang", location: "Phuket", status: "ถูกปลดออกจากระบบ" },
+    { id: 10, deviceNo: "70000016210", equipmentNo: "OSAKA", location: "Bangkok", status: "ถูกปลดออกจากระบบ" },
+    
+    // อยู่ในระหว่างซ่อม status (5 items)
+    { id: 11, deviceNo: "70000016211", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "อยู่ในระหว่างซ่อม" },
+    { id: 12, deviceNo: "70000016212", equipmentNo: "Mitsubishi", location: "Phuket", status: "อยู่ในระหว่างซ่อม" },
+    { id: 13, deviceNo: "70000016213", equipmentNo: "ABB", location: "Bangkok", status: "อยู่ในระหว่างซ่อม" },
+    { id: 14, deviceNo: "70000016214", equipmentNo: "Siemens", location: "Chiang Mai", status: "อยู่ในระหว่างซ่อม" },
+    { id: 15, deviceNo: "70000016215", equipmentNo: "Hitachi", location: "Phuket", status: "อยู่ในระหว่างซ่อม" },
   ];
 
   // Filter transformers based on search and status
@@ -50,22 +64,20 @@ const TransformerRelocationInfo = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredTransformers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = filteredTransformers.slice(startIndex, startIndex + itemsPerPage);
+
   const handleEdit = (transformer) => {
-    toast({
-      title: "แก้ไขข้อมูล",
-      description: `แก้ไขข้อมูลหม้อแปลง ${transformer.equipmentNo}`,
-    });
+    setIsEditModalOpen(true);
   };
 
   const handleRelocate = (transformer) => {
-    toast({
-      title: "ย้ายเข้าหม้อแปลง",
-      description: `ย้ายเข้าหม้อแปลง ${transformer.equipmentNo}`,
-    });
+    setIsRelocateModalOpen(true);
   };
 
   const updateStatus = (transformerId, newStatus) => {
-    // Update status logic here
     toast({
       title: "อัปเดตสถานะ",
       description: `เปลี่ยนสถานะเป็น ${newStatus}`,
@@ -77,26 +89,15 @@ const TransformerRelocationInfo = () => {
       <div className="p-6 space-y-6 bg-[#f0f4fa]">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">การย้ายหม้อแปลงไฟฟ้า</h1>
-          <p className="text-lg text-gray-600">Transformer Relocation Information</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">การย้ายหม้อแปลงไฟฟ้า</h1>
+          <p className="text-sm text-gray-600">Transformer Relocation Information</p>
         </div>
 
         {/* Search and Filter Section */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6">
             <div className="flex justify-between items-center gap-4">
-              {/* Left side - Search */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="ค้นหาหม้อแปลง..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 focus-visible:ring-0"
-                />
-              </div>
-
-              {/* Right side - Status Filter */}
+              {/* Left side - Status Filter */}
               <div className="flex items-center gap-2">
                 <Label className="text-sm text-gray-600 whitespace-nowrap">สถานะ:</Label>
                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>
@@ -105,11 +106,22 @@ const TransformerRelocationInfo = () => {
                   </SelectTrigger>
                   <SelectContent className="bg-white border shadow-md">
                     <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="spare">spare</SelectItem>
+                    <SelectItem value="เป็น spare">เป็น spare</SelectItem>
                     <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
                     <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Right side - Search */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="ค้นหาหม้อแปลง..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 focus-visible:ring-0"
+                />
               </div>
             </div>
           </CardContent>
@@ -130,8 +142,8 @@ const TransformerRelocationInfo = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredTransformers.length > 0 ? (
-                    filteredTransformers.map((transformer) => (
+                  {currentData.length > 0 ? (
+                    currentData.map((transformer) => (
                       <TableRow key={transformer.id} className="hover:bg-blue-50/30">
                         <TableCell className="text-center">{transformer.deviceNo}</TableCell>
                         <TableCell className="text-center">{transformer.equipmentNo}</TableCell>
@@ -144,7 +156,7 @@ const TransformerRelocationInfo = () => {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-white border shadow-md">
-                              <SelectItem value="spare">spare</SelectItem>
+                              <SelectItem value="เป็น spare">เป็น spare</SelectItem>
                               <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
                               <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
                             </SelectContent>
@@ -184,7 +196,44 @@ const TransformerRelocationInfo = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Pagination */}
+        <div className="flex justify-between items-center">
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            ก่อนหน้า
+          </Button>
+          
+          <span className="text-sm text-gray-600">
+            หน้า {currentPage} จาก {totalPages}
+          </span>
+          
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-2"
+          >
+            ถัดไป
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
+
+      {/* Modals */}
+      <TransformerEditModal 
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
+      <TransformerRelocateModal 
+        isOpen={isRelocateModalOpen}
+        onClose={() => setIsRelocateModalOpen(false)}
+      />
     </DashboardLayout>
   );
 };
