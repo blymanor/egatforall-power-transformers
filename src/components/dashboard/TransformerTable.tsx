@@ -121,7 +121,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
         <FilterDropdown 
           value={statusFilter} 
           onValueChange={setStatusFilter} 
-          variant="colorful" 
+          variant="default" 
           placeholder="Filter by Status"
         />
       </CardHeader>
@@ -130,8 +130,8 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
           <Table>
             <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
               <TableRow>
-                <TableHead className="w-[180px] text-center whitespace-nowrap">รหัสอุปกรณ์</TableHead>
-                <TableHead className="w-[200px] text-center whitespace-nowrap">รหัสครุภัณฑ์</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap">หมายเลขอุปกรณ์</TableHead>
+                <TableHead className="w-[200px] text-center whitespace-nowrap">รหัสอุปกรณ์</TableHead>
                 <TableHead className="w-[220px] text-center whitespace-nowrap">สภาพโดยรวม(%)</TableHead>
                 <TableHead className="w-[220px] text-center whitespace-nowrap">ดัชนีความสำคัญ(%)</TableHead>
                 <TableHead className="w-[120px] text-center">ความเสี่ยง</TableHead>

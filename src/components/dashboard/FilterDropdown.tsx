@@ -48,7 +48,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           </div>
         </SelectTrigger>
         <SelectContent className="bg-white border border-[#1E5CFF]/20 shadow-lg">
-          <SelectItem value="all" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">All</SelectItem>
+          <SelectItem value="all" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">ทั้งหมด</SelectItem>
           <SelectItem value="good" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">Good</SelectItem>
           <SelectItem value="repair" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">Repair</SelectItem>
           <SelectItem value="damaged" className="hover:bg-blue-50 hover:text-[#1E5CFF] focus:bg-blue-50 focus:text-[#1E5CFF] focus-visible:outline-none">Faulty</SelectItem>
