@@ -47,8 +47,6 @@ const TransformerReport = () => {
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-6 md:p-8">
-            <h2 className="text-lg font-bold mb-6">เลือกเงื่อนไขในการสร้างรายงาน</h2>
-            
             <ReportForm 
               region={region}
               setRegion={setRegion}

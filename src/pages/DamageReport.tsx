@@ -19,7 +19,7 @@ const DamageReport = () => {
   const [showReport, setShowReport] = useState(false);
   const [activeChartTab, setActiveChartTab] = useState("pie");
   
-  // Mock data for charts
+  // Mock data for charts - using same colors as TransformerReport
   const mockChartData = [
     { name: 'ภาคเหนือ', value: 35, color: '#0088FE' },
     { name: 'ภาคตะวันออกเฉียงเหนือ', value: 25, color: '#00C49F' },
