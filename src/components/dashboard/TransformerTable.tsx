@@ -151,8 +151,8 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
                   <TableHead className="w-[120px] text-center">ความเสี่ยง</TableHead>
                   <TableHead className="w-[120px] text-center">สถานะ</TableHead>
                   <TableHead className="w-[120px] text-center">การดำเนินการ</TableHead>
-                  <TableHead className="w-[120px] text-center">แก้ไข</TableHead>
-                  <TableHead className="w-[120px] text-center">ลบ</TableHead>
+                  <TableHead className="w-[80px] text-center"><Edit className="h-4 w-4 mx-auto" /></TableHead>
+                  <TableHead className="w-[80px] text-center"><Trash2 className="h-4 w-4 mx-auto" /></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

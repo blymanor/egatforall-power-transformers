@@ -164,21 +164,6 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="manufactureYear">Manufacture Year *</Label>
-              <Input 
-                id="manufactureYear" 
-                placeholder="ปีที่ผลิต" 
-                type="number" 
-                value={manufactureYear}
-                onChange={(e) => setManufactureYear(e.target.value)}
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          {/* Second column */}
-          <div className="space-y-4">
-            <div className="space-y-2">
               <Label htmlFor="phasePosition">Phase Position *</Label>
               <Select value={phasePosition} onValueChange={setPhasePosition}>
                 <SelectTrigger id="phasePosition" className="w-full border border-gray-300">
@@ -201,7 +186,22 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 className="w-full"
               />
             </div>
+          </div>
 
+          {/* Second column */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="manufactureYear">Manufacture Year *</Label>
+              <Input 
+                id="manufactureYear" 
+                placeholder="ปีที่ผลิต" 
+                type="number" 
+                value={manufactureYear}
+                onChange={(e) => setManufactureYear(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="ratedCapacity">Rated Capacity (MVA) *</Label>
               <Input 
@@ -263,20 +263,19 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 onChange={(e) => setTertiaryVoltage(e.target.value)}
               />
             </div>
-          </div>
-        </div>
 
-        {/* Remark field below transformer type */}
-        <div className="space-y-2 mt-4">
-          <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
-          <Textarea 
-            id="remark" 
-            placeholder="ข้อมูลเพิ่มเติม" 
-            rows={4} 
-            value={remark}
-            onChange={(e) => setRemark(e.target.value)}
-            className="w-full"
-          />
+            <div className="space-y-2">
+              <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
+              <Textarea 
+                id="remark" 
+                placeholder="ข้อมูลเพิ่มเติม" 
+                rows={4} 
+                value={remark}
+                onChange={(e) => setRemark(e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
         </div>
 
         <DialogFooter className="flex justify-end space-x-2 border-t pt-4 mt-2">

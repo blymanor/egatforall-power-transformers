@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search } from "lucide-react";
+import { Search, Edit, Trash2 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -134,7 +133,7 @@ const TransformerBasicInfo = () => {
           </CardContent>
         </Card>
 
-        {/* Table Section - Updated "หม้อแปลงไฟฟ้า" column to show name format */}
+        {/* Table Section - Updated headers to use icons */}
         <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
           <CardContent className="p-4 md:p-6">
             <div className="overflow-x-auto">
@@ -145,8 +144,8 @@ const TransformerBasicInfo = () => {
                     <TableHead className="text-center">หม้อแปลงไฟฟ้า</TableHead>
                     <TableHead className="text-center">บริษัทผู้ผลิต</TableHead>
                     <TableHead className="text-center">พิกัดกำลังไฟฟ้า (MVA)</TableHead>
-                    <TableHead className="text-center">แก้ไข</TableHead>
-                    <TableHead className="text-center">ลบ</TableHead>
+                    <TableHead className="text-center w-16"><Edit className="h-4 w-4 mx-auto" /></TableHead>
+                    <TableHead className="text-center w-16"><Trash2 className="h-4 w-4 mx-auto" /></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -160,19 +159,21 @@ const TransformerBasicInfo = () => {
                         <TableCell className="text-center">
                           <Button 
                             variant="ghost" 
-                            className="text-blue-600 hover:text-blue-800" 
+                            size="sm"
+                            className="p-2 hover:bg-blue-50" 
                             onClick={() => handleEdit(item)}
                           >
-                            แก้ไข
+                            <Edit className="h-4 w-4 text-blue-600" />
                           </Button>
                         </TableCell>
                         <TableCell className="text-center">
                           <Button 
                             variant="ghost" 
-                            className="text-red-600 hover:text-red-800"
+                            size="sm"
+                            className="p-2 hover:bg-red-50"
                             onClick={() => handleDelete(item.id)}
                           >
-                            ลบ
+                            <Trash2 className="h-4 w-4 text-red-600" />
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -244,7 +245,7 @@ const TransformerBasicInfo = () => {
         </Card>
       </div>
 
-      {/* Add/Edit Transformer Modal with Tabs */}
+      {/* Add/Edit Transformer Modal with reordered fields */}
       <Dialog open={showAddEditModal} onOpenChange={setShowAddEditModal}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -352,6 +353,15 @@ const TransformerBasicInfo = () => {
                       className="focus-visible:ring-0"
                     />
                   </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="image">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
+                    <Input 
+                      id="image" 
+                      type="file"
+                      className="cursor-pointer focus-visible:ring-0"
+                    />
+                  </div>
                 </div>
                 
                 <div className="space-y-4">
@@ -440,26 +450,14 @@ const TransformerBasicInfo = () => {
                       className="focus-visible:ring-0"
                     />
                   </div>
-                  
-                  {/* Moved to same row */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="image">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-                      <Input 
-                        id="image" 
-                        type="file"
-                        className="cursor-pointer focus-visible:ring-0"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
-                      <Input 
-                        id="remark" 
-                        placeholder="กรอกรายละเอียดเพิ่มเติม"
-                        className="focus-visible:ring-0"
-                      />
-                    </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
+                    <Input 
+                      id="remark" 
+                      placeholder="กรอกรายละเอียดเพิ่มเติม"
+                      className="focus-visible:ring-0"
+                    />
                   </div>
                 </div>
               </div>

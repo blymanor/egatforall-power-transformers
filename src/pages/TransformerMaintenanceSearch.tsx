@@ -1,240 +1,225 @@
 
 import React, { useState } from "react";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import DashboardLayout from "@/components/layout/DashboardLayout";
-import { toast } from "sonner";
+import { Search } from "lucide-react";
 
 const TransformerMaintenanceSearch = () => {
-  const [searchType, setSearchType] = useState("equipment");
-  const [keyword, setKeyword] = useState("");
-  const [testType, setTestType] = useState("");
-  const [transformerName, setTransformerName] = useState("");
-  const [inspectionType, setInspectionType] = useState("");
-  const [inspectionDate, setInspectionDate] = useState("");
-  const [inspector, setInspector] = useState("");
-  const [operationId, setOperationId] = useState("");
+  const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedYear, setSelectedYear] = useState("all");
+  const [selectedType, setSelectedType] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Mock data for dropdowns
-  const testTypes = ["Please Select...", "Oil Test", "Electrical Test", "Visual Inspection"];
-  const transformers = ["AN-KT1A", "BN-KT1B", "CN-KT1C"];
-  const inspectionTypes = ["Weekly Test", "Monthly Test", "Yearly Test"];
+  // Mock data for maintenance records
+  const maintenanceData = [
+    { id: 1, equipmentNo: "70000016001", transformerName: "AN-472A", maintenanceType: "Preventive", date: "2024-01-15", technician: "วิศวกร สมชาย", status: "Completed", nextDue: "2024-07-15" },
+    { id: 2, equipmentNo: "70000016003", transformerName: "AN-K12A", maintenanceType: "Corrective", date: "2024-02-20", technician: "วิศวกร สมหญิง", status: "In Progress", nextDue: "2024-08-20" },
+    { id: 3, equipmentNo: "70000016201", transformerName: "AN-472B", maintenanceType: "Preventive", date: "2024-03-10", technician: "วิศวกร สมศักดิ์", status: "Completed", nextDue: "2024-09-10" },
+    { id: 4, equipmentNo: "70000016202", transformerName: "AN-473A", maintenanceType: "Emergency", date: "2024-04-05", technician: "วิศวกร สมพงษ์", status: "Completed", nextDue: "2024-10-05" },
+    { id: 5, equipmentNo: "70000016203", transformerName: "AN-474A", maintenanceType: "Preventive", date: "2024-05-12", technician: "วิศวกร สมใจ", status: "Scheduled", nextDue: "2024-11-12" },
+  ];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success("กำลังค้นหาข้อมูล", {
-      description: "กำลังประมวลผลการค้นหา",
+  // Filter data
+  const filteredData = maintenanceData.filter(item => {
+    const matchesSearch = searchQuery === "" || 
+      item.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.transformerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.technician.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesYear = selectedYear === "all" || item.date.includes(selectedYear);
+    const matchesType = selectedType === "all" || item.maintenanceType === selectedType;
+    
+    return matchesSearch && matchesYear && matchesType;
+  });
+
+  // Pagination
+  const itemsPerPage = 5;
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleEdit = (maintenance) => {
+    toast({
+      title: "แก้ไขข้อมูล",
+      description: `แก้ไขข้อมูลการบำรุงรักษา ${maintenance.transformerName}`,
     });
   };
 
-  const handleVisualInspectionSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success("กำลังค้นหาข้อมูล Visual Inspection", {
-      description: "กำลังประมวลผลการค้นหา",
-    });
-  };
-
-  const handleDoneClick = () => {
-    toast.success("บันทึกข้อมูลสำเร็จ", {
-      description: "ข้อมูลการตรวจสอบได้รับการบันทึกเรียบร้อยแล้ว",
-    });
+  const getStatusColor = (status) => {
+    switch(status) {
+      case "Completed": return "bg-green-100 text-green-800";
+      case "In Progress": return "bg-yellow-100 text-yellow-800";
+      case "Scheduled": return "bg-blue-100 text-blue-800";
+      default: return "bg-gray-100 text-gray-800";
+    }
   };
 
   return (
-    <DashboardLayout>
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold text-blue-700 mb-6">ค้นหาข้อมูลบำรุงรักษาหม้อแปลง</h1>
-        
-        <Card className="mb-6">
-          <CardHeader className="bg-blue-50">
-            <CardTitle className="text-lg text-blue-700">ค้นหาข้อมูลหม้อแปลงไฟฟ้า</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div>
-                <Label htmlFor="keyword" className="text-base font-medium">คำสำคัญ :</Label>
-                <Input 
-                  id="keyword" 
-                  className="mt-1 w-full md:w-1/2"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
+    <DashboardLayout
+      pageTitle="ค้นหาข้อมูลบำรุงรักษาหม้อแปลง"
+      pageDescription="Search Transformer Maintenance Data"
+    >
+      <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
+        {/* Header with black text */}
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-black mb-2">ค้นหาข้อมูลบำรุงรักษาหม้อแปลง</h1>
+          <p className="text-lg text-gray-600">Search Transformer Maintenance Data</p>
+        </div>
+
+        {/* Search and Filter Section */}
+        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="ค้นหา Equipment No., ชื่อหม้อแปลง, ช่างเทคนิค..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 focus-visible:ring-0"
                 />
               </div>
-              
-              <div className="space-y-2">
-                <Label className="text-base font-medium">ค้นหาโดย :</Label>
-                <RadioGroup 
-                  value={searchType}
-                  onValueChange={setSearchType}
-                  className="flex flex-row gap-6"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="equipment" id="equipment" />
-                    <Label htmlFor="equipment">Equipment No.</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="name" id="name" />
-                    <Label htmlFor="name">ชื่อหม้อแปลง</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="station" id="station" />
-                    <Label htmlFor="station">สถานีไฟฟ้า</Label>
-                  </div>
-                </RadioGroup>
+
+              <div className="space-y-1">
+                <Label className="text-sm text-gray-600">ปี</Label>
+                <Select value={selectedYear} onValueChange={setSelectedYear}>
+                  <SelectTrigger className="focus:ring-0 border border-gray-300">
+                    <SelectValue placeholder="เลือกปี" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-md">
+                    <SelectItem value="all">ทั้งหมด</SelectItem>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2023">2023</SelectItem>
+                    <SelectItem value="2022">2022</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              
-              <div className="flex justify-start mt-4">
-                <Button type="submit" className="px-8 bg-blue-600 hover:bg-blue-700">
-                  Search
+
+              <div className="space-y-1">
+                <Label className="text-sm text-gray-600">ประเภทการบำรุงรักษา</Label>
+                <Select value={selectedType} onValueChange={setSelectedType}>
+                  <SelectTrigger className="focus:ring-0 border border-gray-300">
+                    <SelectValue placeholder="เลือกประเภท" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-md">
+                    <SelectItem value="all">ทั้งหมด</SelectItem>
+                    <SelectItem value="Preventive">Preventive</SelectItem>
+                    <SelectItem value="Corrective">Corrective</SelectItem>
+                    <SelectItem value="Emergency">Emergency</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-end">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  ค้นหา
                 </Button>
               </div>
-            </form>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="mb-6">
-          <CardHeader className="bg-blue-50">
-            <CardTitle className="text-lg text-blue-700">ค้นหาข้อมูลการทดสอบหม้อแปลงไฟฟ้า</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="testType" className="text-base font-medium">ชนิดการทดสอบ :</Label>
-                <Select
-                  value={testType}
-                  onValueChange={setTestType}
-                >
-                  <SelectTrigger className="w-full md:w-1/2">
-                    <SelectValue placeholder="Please Select..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {testTypes.map((type) => (
-                      <SelectItem key={type} value={type.toLowerCase().replace(/\s+/g, "-")}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="transformerName" className="text-base font-medium">ชื่อหม้อแปลงไฟฟ้า :</Label>
-                <Select
-                  value={transformerName}
-                  onValueChange={setTransformerName}
-                >
-                  <SelectTrigger className="w-full md:w-1/2">
-                    <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {transformers.map((transformer) => (
-                      <SelectItem key={transformer} value={transformer}>
-                        {transformer}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="flex justify-start mt-4">
-                <Button type="submit" className="px-8 bg-blue-600 hover:bg-blue-700">
-                  Search
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+        {/* Results Table */}
+        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
+          <CardContent className="p-4 md:p-6">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-center">Equipment No.</TableHead>
+                    <TableHead className="text-center">ชื่อหม้อแปลง</TableHead>
+                    <TableHead className="text-center">ประเภทการบำรุงรักษา</TableHead>
+                    <TableHead className="text-center">วันที่</TableHead>
+                    <TableHead className="text-center">ช่างเทคนิค</TableHead>
+                    <TableHead className="text-center">สถานะ</TableHead>
+                    <TableHead className="text-center">กำหนดครั้งถัดไป</TableHead>
+                    <TableHead className="text-center">แก้ไข</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentData.length > 0 ? (
+                    currentData.map((item) => (
+                      <TableRow key={item.id} className="hover:bg-blue-50/30">
+                        <TableCell className="text-center">{item.equipmentNo}</TableCell>
+                        <TableCell className="text-center">{item.transformerName}</TableCell>
+                        <TableCell className="text-center">{item.maintenanceType}</TableCell>
+                        <TableCell className="text-center">{new Date(item.date).toLocaleDateString('th-TH')}</TableCell>
+                        <TableCell className="text-center">{item.technician}</TableCell>
+                        <TableCell className="text-center">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                            {item.status}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-center">{new Date(item.nextDue).toLocaleDateString('th-TH')}</TableCell>
+                        <TableCell className="text-center">
+                          <Button 
+                            variant="ghost" 
+                            className="text-blue-600 hover:text-blue-800" 
+                            onClick={() => handleEdit(item)}
+                          >
+                            แก้ไข
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={8} className="h-24 text-center">
+                        ไม่พบข้อมูลการบำรุงรักษา
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
 
-        <Card>
-          <CardHeader className="bg-blue-50">
-            <CardTitle className="text-lg text-blue-700">
-              เลือกหม้อแปลงไฟฟ้าเพื่อกรอกข้อมูลการทดสอบ Visual Inspection
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <form onSubmit={handleVisualInspectionSearch} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="inspectionTransformer" className="text-base font-medium">ชื่อหม้อแปลงไฟฟ้า :</Label>
-                <Select
-                  value={transformerName}
-                  onValueChange={setTransformerName}
-                >
-                  <SelectTrigger className="w-full md:w-1/2">
-                    <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {transformers.map((transformer) => (
-                      <SelectItem key={transformer} value={transformer}>
-                        {transformer}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="inspectionType" className="text-base font-medium">รูปแบบการทดสอบ :</Label>
-                <Select
-                  value={inspectionType}
-                  onValueChange={setInspectionType}
-                >
-                  <SelectTrigger className="w-full md:w-1/2">
-                    <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {inspectionTypes.map((type) => (
-                      <SelectItem key={type} value={type.toLowerCase().replace(/\s+/g, "-")}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="inspectionDate" className="text-base font-medium">วันที่ตรวจสอบ :</Label>
-                <Input 
-                  id="inspectionDate" 
-                  type="date"
-                  className="mt-1 w-full md:w-1/2"
-                  value={inspectionDate}
-                  onChange={(e) => setInspectionDate(e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="inspector" className="text-base font-medium">ผู้ตรวจสอบ :</Label>
-                <Input 
-                  id="inspector" 
-                  className="mt-1 w-full md:w-1/2"
-                  value={inspector}
-                  onChange={(e) => setInspector(e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="operationId" className="text-base font-medium">เลขที่สั่งปฏิบัติงาน :</Label>
-                <Input 
-                  id="operationId" 
-                  className="mt-1 w-full md:w-1/2"
-                  value={operationId}
-                  onChange={(e) => setOperationId(e.target.value)}
-                />
-              </div>
-              
-              <div className="flex justify-start mt-4">
+            {filteredData.length > 0 && (
+              <div className="flex justify-center items-center mt-6 space-x-2">
                 <Button 
-                  onClick={handleDoneClick} 
-                  className="px-8 bg-blue-600 hover:bg-blue-700"
+                  variant="outline" 
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 >
-                  Done
+                  ก่อนหน้า
+                </Button>
+                
+                {Array.from({ length: Math.min(3, totalPages) }).map((_, idx) => {
+                  const page = idx + 1;
+                  return (
+                    <Button 
+                      key={page} 
+                      variant={page === currentPage ? "default" : "outline"} 
+                      className={page === currentPage ? "bg-blue-600 text-white" : ""}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </Button>
+                  );
+                })}
+                
+                <Button 
+                  variant="outline" 
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                >
+                  ถัดไป
                 </Button>
               </div>
-            </form>
+            )}
           </CardContent>
         </Card>
       </div>
