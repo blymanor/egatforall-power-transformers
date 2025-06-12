@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,7 +30,7 @@ const TransformerRelocationInfo = () => {
   const itemsPerPage = 10;
 
   // Mock data for transformers - updated to show different statuses
-  const transformers = [
+  const [transformers, setTransformers] = useState([
     // เป็น spare status (5 items)
     { id: 1, deviceNo: "70000016201", equipmentNo: "Electro Busang", location: "Bangkok", status: "เป็น spare" },
     { id: 2, deviceNo: "70000016202", equipmentNo: "Meiden", location: "Chiang Mai", status: "เป็น spare" },
@@ -50,7 +51,7 @@ const TransformerRelocationInfo = () => {
     { id: 13, deviceNo: "70000016213", equipmentNo: "ABB", location: "Bangkok", status: "อยู่ในระหว่างซ่อม" },
     { id: 14, deviceNo: "70000016214", equipmentNo: "Siemens", location: "Chiang Mai", status: "อยู่ในระหว่างซ่อม" },
     { id: 15, deviceNo: "70000016215", equipmentNo: "Hitachi", location: "Phuket", status: "อยู่ในระหว่างซ่อม" },
-  ];
+  ]);
 
   // Filter transformers based on search and status
   const filteredTransformers = transformers.filter(transformer => {
@@ -78,6 +79,11 @@ const TransformerRelocationInfo = () => {
   };
 
   const updateStatus = (transformerId, newStatus) => {
+    setTransformers(prev => 
+      prev.map(t => 
+        t.id === transformerId ? { ...t, status: newStatus } : t
+      )
+    );
     toast({
       title: "อัปเดตสถานะ",
       description: `เปลี่ยนสถานะเป็น ${newStatus}`,
@@ -134,33 +140,35 @@ const TransformerRelocationInfo = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center text-base">Equipment No.</TableHead>
-                    <TableHead className="text-center text-base">บริษัทผู้ผลิต</TableHead>
-                    <TableHead className="text-center text-base">สถานะ</TableHead>
-                    <TableHead className="text-center text-base">แก้ไข</TableHead>
-                    <TableHead className="text-center text-base">ย้ายเข้า</TableHead>
+                    <TableHead className="text-center text-lg">Equipment No.</TableHead>
+                    <TableHead className="text-center text-lg">บริษัทผู้ผลิต</TableHead>
+                    <TableHead className="text-center text-lg">สถานะ</TableHead>
+                    <TableHead className="text-center text-lg">แก้ไข</TableHead>
+                    <TableHead className="text-center text-lg">ย้ายเข้า</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {currentData.length > 0 ? (
                     currentData.map((transformer) => (
                       <TableRow key={transformer.id} className="hover:bg-blue-50/30">
-                        <TableCell className="text-center text-base">{transformer.deviceNo}</TableCell>
-                        <TableCell className="text-center text-base">{transformer.equipmentNo}</TableCell>
+                        <TableCell className="text-center text-lg">{transformer.deviceNo}</TableCell>
+                        <TableCell className="text-center text-lg">{transformer.equipmentNo}</TableCell>
                         <TableCell className="text-center">
-                          <Select 
-                            value={transformer.status} 
-                            onValueChange={(newStatus) => updateStatus(transformer.id, newStatus)}
-                          >
-                            <SelectTrigger className="w-auto min-w-40 h-8 text-sm">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white border shadow-md">
-                              <SelectItem value="เป็น spare">เป็น spare</SelectItem>
-                              <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
-                              <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <div className="flex justify-center">
+                            <Select 
+                              value={transformer.status} 
+                              onValueChange={(newStatus) => updateStatus(transformer.id, newStatus)}
+                            >
+                              <SelectTrigger className="w-48 h-10 text-base">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white border shadow-md">
+                                <SelectItem value="เป็น spare">เป็น spare</SelectItem>
+                                <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
+                                <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </TableCell>
                         <TableCell className="text-center">
                           <Button 
@@ -186,7 +194,7 @@ const TransformerRelocationInfo = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-base">
+                      <TableCell colSpan={5} className="h-24 text-center text-lg">
                         ไม่พบข้อมูลหม้อแปลงไฟฟ้า
                       </TableCell>
                     </TableRow>
@@ -194,17 +202,17 @@ const TransformerRelocationInfo = () => {
                 </TableBody>
               </Table>
             </div>
+            
+            {/* Pagination inside the card */}
+            <div className="flex justify-center p-4 border-t">
+              <CustomPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </CardContent>
         </Card>
-
-        {/* Pagination */}
-        <div className="flex justify-center">
-          <CustomPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
       </div>
 
       {/* Modals */}
