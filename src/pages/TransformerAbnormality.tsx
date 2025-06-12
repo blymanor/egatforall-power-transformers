@@ -71,125 +71,148 @@ const TransformerAbnormality = () => {
     }));
   };
 
+  const handleEditReport = () => {
+    setShowReport(false);
+    setShowForm(true);
+  };
+
   if (showReport) {
     return (
       <DashboardLayout>
-        <div className="p-4 md:p-8 space-y-8 bg-[#f0f4fa]">
-          <div className="mb-8">
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h1 className="text-xl font-bold text-gray-800">ผลลัพธ์</h1>
-            </div>
+        <div className="p-6 space-y-6 bg-[#f0f4fa]">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">ผลลัพธ์รายงานความผิดปกติ</h1>
+            <p className="text-sm text-gray-600">Transformer Abnormality Report Results</p>
           </div>
 
-          <Card className="mx-auto shadow-lg rounded-xl overflow-hidden border-0 max-w-4xl">
+          <Card className="shadow-md rounded-xl overflow-hidden border-0 max-w-5xl mx-auto">
             <CardContent className="p-8">
-              <h2 className="text-lg font-bold mb-6">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</h2>
+              <h2 className="text-xl font-bold mb-8 text-center border-b pb-4">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</h2>
               
-              <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
-                <div className="flex">
-                  <span className="font-medium w-48">เขต</span>
-                  <span>ภาคตะวันออกเฉียงเหนือ</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">หม้อแปลงไฟฟ้า</span>
-                  <span>AN-472C</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">Equipment No.</span>
-                  <span>กกก</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">วันที่เกิดเหตุการณ์</span>
-                  <span>-</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">จำนวนครั้งในการทำงานของ OLTC</span>
-                  <span>กก</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">สภาพแวดล้อม</span>
-                  <span>กลางแจ้ง</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">สภาวะการใช้งานขณะพบความผิดปกติ</span>
-                  <span>โอเวอร์โหลด</span>
-                </div>
-                
-                <div className="col-span-2">
+              {/* Basic Information Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4 text-blue-700 border-l-4 border-blue-500 pl-3">ข้อมูลพื้นฐาน</h3>
+                <div className="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-lg">
                   <div className="flex">
-                    <span className="font-medium w-48">รายละเอียดความผิดปกติ</span>
-                    <span>กก</span>
+                    <span className="font-medium w-40 text-gray-700">เขต:</span>
+                    <span className="text-gray-900">ภาคตะวันออกเฉียงเหนือ</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">หม้อแปลงไฟฟ้า:</span>
+                    <span className="text-gray-900">AN-472C</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">Equipment No.:</span>
+                    <span className="text-gray-900">{formData.equipmentNo || '-'}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">วันที่เกิดเหตุการณ์:</span>
+                    <span className="text-gray-900">{formData.discoveryDate}</span>
                   </div>
                 </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">วันที่ปลดออกจากระบบ</span>
-                  <span>-</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">เวลาที่ปลดออกจากระบบ</span>
-                  <span>-</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">วันที่นำเข้าระบบ</span>
-                  <span>-</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">เวลาที่นำเข้าระบบ</span>
-                  <span>-</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">เลขคำสั่งปฏิบัติงาน</span>
-                  <span>กก</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">กลุ่มชิ้นส่วนที่เสียหายหรือผิดปกติ</span>
-                  <span>OLTC</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">ชิ้นส่วนที่เสียหายหรือผิดปกติ</span>
-                  <span>บุชชิ่ง</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">ระดับความเสียหาย</span>
-                  <span>Moderate</span>
-                </div>
-                
-                <div className="flex">
-                  <span className="font-medium w-48">สาเหตุที่แท้จริง</span>
-                  <span>ความผิดพลาดในการติดตั้ง</span>
-                </div>
-                <div className="flex">
-                  <span className="font-medium w-48">การจัดการ</span>
-                  <span>Replace</span>
-                </div>
-                
-                <div className="col-span-2">
+              </div>
+
+              {/* Operating Conditions Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4 text-green-700 border-l-4 border-green-500 pl-3">สภาวะการทำงาน</h3>
+                <div className="grid grid-cols-2 gap-4 bg-green-50 p-4 rounded-lg">
                   <div className="flex">
-                    <span className="font-medium w-48">รายละเอียดเพิ่มเติม (Remark)</span>
-                    <span>กก</span>
+                    <span className="font-medium w-40 text-gray-700">จำนวนครั้งในการทำงานของ OLTC:</span>
+                    <span className="text-gray-900">{formData.oltcPosition || '-'}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">สภาพแวดล้อม:</span>
+                    <span className="text-gray-900">{formData.condition || '-'}</span>
+                  </div>
+                  <div className="col-span-2">
+                    <div className="flex">
+                      <span className="font-medium w-40 text-gray-700">สภาวะการใช้งาน:</span>
+                      <span className="text-gray-900">{formData.serviceUsage || '-'}</span>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="col-span-2">
+              </div>
+
+              {/* Abnormality Details Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4 text-red-700 border-l-4 border-red-500 pl-3">รายละเอียดความผิดปกติ</h3>
+                <div className="bg-red-50 p-4 rounded-lg space-y-4">
+                  <div>
+                    <span className="font-medium text-gray-700 block mb-2">รายละเอียดความผิดปกติ:</span>
+                    <p className="text-gray-900 bg-white p-3 rounded border">{formData.abnormalityDetails || '-'}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex">
+                      <span className="font-medium w-40 text-gray-700">กลุ่มชิ้นส่วน:</span>
+                      <span className="text-gray-900">{formData.relatedGroup || '-'}</span>
+                    </div>
+                    <div className="flex">
+                      <span className="font-medium w-40 text-gray-700">ชิ้นส่วนที่เสียหาย:</span>
+                      <span className="text-gray-900">{formData.relatedPart || '-'}</span>
+                    </div>
+                    <div className="flex">
+                      <span className="font-medium w-40 text-gray-700">ระดับความเสียหาย:</span>
+                      <span className="text-gray-900">{formData.damageLevel || '-'}</span>
+                    </div>
+                    <div className="flex">
+                      <span className="font-medium w-40 text-gray-700">สาเหตุที่แท้จริง:</span>
+                      <span className="text-gray-900">{formData.cause || '-'}</span>
+                    </div>
+                    <div className="flex">
+                      <span className="font-medium w-40 text-gray-700">การจัดการ:</span>
+                      <span className="text-gray-900">{formData.management || '-'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Time Information Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4 text-purple-700 border-l-4 border-purple-500 pl-3">ข้อมูลเวลา</h3>
+                <div className="grid grid-cols-2 gap-4 bg-purple-50 p-4 rounded-lg">
                   <div className="flex">
-                    <span className="font-medium w-48">ผู้รายงาน</span>
-                    <span>พท</span>
+                    <span className="font-medium w-40 text-gray-700">วันที่ปลดออกจากระบบ:</span>
+                    <span className="text-gray-900">{formData.discoveryStartDate}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">เวลาที่ปลดออกจากระบบ:</span>
+                    <span className="text-gray-900">{formData.discoveryStartTime}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">วันที่นำเข้าระบบ:</span>
+                    <span className="text-gray-900">{formData.discoveryEndDate}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">เวลาที่นำเข้าระบบ:</span>
+                    <span className="text-gray-900">{formData.discoveryEndTime}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Information Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4 text-orange-700 border-l-4 border-orange-500 pl-3">ข้อมูลเพิ่มเติม</h3>
+                <div className="bg-orange-50 p-4 rounded-lg space-y-4">
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">เลขคำสั่งปฏิบัติงาน:</span>
+                    <span className="text-gray-900">{formData.operatorName || '-'}</span>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700 block mb-2">รายละเอียดเพิ่มเติม (Remark):</span>
+                    <p className="text-gray-900 bg-white p-3 rounded border">{formData.additionalRemarks || '-'}</p>
+                  </div>
+                  <div className="flex">
+                    <span className="font-medium w-40 text-gray-700">ผู้รายงาน:</span>
+                    <span className="text-gray-900">{formData.reporter || '-'}</span>
                   </div>
                 </div>
               </div>
               
-              <div className="flex justify-end gap-4 mt-8">
+              <div className="flex justify-center gap-4 mt-8 pt-6 border-t">
                 <Button 
-                  onClick={() => setShowReport(false)}
+                  onClick={handleEditReport}
                   variant="outline"
-                  className="px-6 py-2 text-sm"
+                  className="px-8 py-2 text-sm border-blue-500 text-blue-600 hover:bg-blue-50"
                 >
                   แก้ไขข้อมูล
                 </Button>
@@ -204,7 +227,7 @@ const TransformerAbnormality = () => {
                     setSelectedRegion("");
                     setSelectedTransformer("");
                   }}
-                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-sm"
+                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-2 text-sm"
                 >
                   ลบรายงาน
                 </Button>
@@ -219,27 +242,26 @@ const TransformerAbnormality = () => {
   if (showForm) {
     return (
       <DashboardLayout>
-        <div className="p-4 md:p-8 space-y-8 bg-[#f0f4fa]">
-          <div className="mb-8">
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h1 className="text-xl font-bold text-gray-800">การรายงานข้อมูลความผิดปกติ</h1>
-            </div>
+        <div className="p-6 space-y-6 bg-[#f0f4fa]">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">การรายงานข้อมูลความผิดปกติ</h1>
+            <p className="text-sm text-gray-600">Transformer Abnormality Report Form</p>
           </div>
 
-          <Card className="mx-auto shadow-lg rounded-xl overflow-hidden border-0 max-w-6xl">
+          <Card className="shadow-md rounded-xl overflow-hidden border-0 max-w-6xl mx-auto">
             <CardContent className="p-8">
               <div className="space-y-8">
                 {/* Basic Information Section */}
-                <div className="bg-gray-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800">ข้อมูลพื้นฐาน</h3>
+                <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                  <h3 className="text-lg font-semibold mb-4 text-blue-800">ข้อมูลพื้นฐาน</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">เขต</Label>
-                      <div className="text-sm text-gray-600 p-2 bg-white rounded border">ภาคตะวันออกเฉียงเหนือ</div>
+                      <div className="text-sm text-gray-600 p-3 bg-white rounded border">ภาคตะวันออกเฉียงเหนือ</div>
                     </div>
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">หม้อแปลงไฟฟ้า</Label>
-                      <div className="text-sm text-gray-600 p-2 bg-white rounded border">{formData.transformerCode}</div>
+                      <div className="text-sm text-gray-600 p-3 bg-white rounded border">{formData.transformerCode}</div>
                     </div>
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">Equipment No.</Label>
@@ -263,8 +285,8 @@ const TransformerAbnormality = () => {
                 </div>
 
                 {/* Operating Conditions Section */}
-                <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800">สภาวะการทำงาน</h3>
+                <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                  <h3 className="text-lg font-semibold mb-4 text-green-800">สภาวะการทำงาน</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">จำนวนครั้งในการทำงานของ OLTC</Label>
@@ -304,8 +326,8 @@ const TransformerAbnormality = () => {
                 </div>
 
                 {/* Abnormality Details Section */}
-                <div className="bg-yellow-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800">รายละเอียดความผิดปกติ</h3>
+                <div className="bg-red-50 p-6 rounded-lg border-l-4 border-red-500">
+                  <h3 className="text-lg font-semibold mb-4 text-red-800">รายละเอียดความผิดปกติ</h3>
                   <div className="space-y-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">รายละเอียดความผิดปกติ</Label>
@@ -394,8 +416,8 @@ const TransformerAbnormality = () => {
                 </div>
 
                 {/* Time Information Section */}
-                <div className="bg-green-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800">ข้อมูลเวลา</h3>
+                <div className="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
+                  <h3 className="text-lg font-semibold mb-4 text-purple-800">ข้อมูลเวลา</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">วันที่ปลดออกจากระบบ</Label>
@@ -437,8 +459,8 @@ const TransformerAbnormality = () => {
                 </div>
 
                 {/* Additional Information Section */}
-                <div className="bg-purple-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800">ข้อมูลเพิ่มเติม</h3>
+                <div className="bg-orange-50 p-6 rounded-lg border-l-4 border-orange-500">
+                  <h3 className="text-lg font-semibold mb-4 text-orange-800">ข้อมูลเพิ่มเติม</h3>
                   <div className="space-y-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">เลขคำสั่งปฏิบัติงาน</Label>
@@ -473,7 +495,7 @@ const TransformerAbnormality = () => {
                 <div className="flex justify-center mt-8">
                   <Button 
                     onClick={handleSaveReport}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 text-sm font-medium rounded-lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-3 text-base font-medium rounded-lg"
                   >
                     บันทึกรายงาน
                   </Button>
@@ -488,21 +510,20 @@ const TransformerAbnormality = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-4 md:p-8 space-y-8 bg-[#f0f4fa]">
-        <div className="mb-8">
-          <div className="border-l-4 border-blue-500 pl-4">
-            <h1 className="text-xl font-bold text-gray-800">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</h1>
-          </div>
+      <div className="p-6 space-y-6 bg-[#f0f4fa]">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">รายงานความผิดปกติของหม้อแปลงไฟฟ้า</h1>
+          <p className="text-sm text-gray-600">Transformer Abnormality Report</p>
         </div>
 
-        <Card className="mx-auto shadow-lg rounded-xl overflow-hidden border-0 max-w-4xl">
+        <Card className="shadow-md rounded-xl overflow-hidden border-0 max-w-4xl mx-auto">
           <CardContent className="p-8">
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-700">เขต</label>
+                <div className="space-y-3">
+                  <label className="text-base font-medium text-gray-700">เขต</label>
                   <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                    <SelectTrigger className="focus:ring-0 focus-visible:ring-0 text-xs p-2 h-8">
+                    <SelectTrigger className="focus:ring-0 focus-visible:ring-0 text-base p-4 h-12">
                       <SelectValue placeholder="เลือกเขต" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border shadow-md">
@@ -514,10 +535,10 @@ const TransformerAbnormality = () => {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-700">หม้อแปลงไฟฟ้า</label>
+                <div className="space-y-3">
+                  <label className="text-base font-medium text-gray-700">หม้อแปลงไฟฟ้า</label>
                   <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
-                    <SelectTrigger className="focus:ring-0 focus-visible:ring-0 text-xs p-2 h-8">
+                    <SelectTrigger className="focus:ring-0 focus-visible:ring-0 text-base p-4 h-12">
                       <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border shadow-md">
@@ -535,7 +556,7 @@ const TransformerAbnormality = () => {
               <div className="flex justify-center mt-8">
                 <Button 
                   onClick={handleGenerateReport}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-1 text-xs font-medium rounded-lg"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 text-base font-medium rounded-lg"
                 >
                   สร้างรายงาน
                 </Button>
