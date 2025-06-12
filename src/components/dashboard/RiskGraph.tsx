@@ -1,32 +1,31 @@
 
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 const RiskGraph: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showOriginalGraph, setShowOriginalGraph] = useState(true);
 
-  const handleSeeRiskGraphClick = () => {
-    setIsModalOpen(true);
+  const toggleGraph = () => {
+    setShowOriginalGraph(!showOriginalGraph);
   };
 
   return (
-    <>
-      <Card className="bg-white shadow-sm border border-gray-100">
-        <CardContent className="p-6">
-          <h2 className="text-xl font-bold text-black mb-4">กราฟวิเคราะห์ความเสี่ยง</h2>
-          
+    <Card className="bg-white shadow-sm border border-gray-100">
+      <CardContent className="p-6">
+        <h2 className="text-xl font-bold text-black mb-4">กราฟวิเคราะห์ความเสี่ยง</h2>
+        
+        {showOriginalGraph ? (
           <div className="flex justify-center">
             <div className="relative" style={{ width: '700px', height: '580px', paddingTop: '60px', paddingLeft: '120px', paddingRight: '60px', paddingBottom: '80px' }}>
               
               {/* Chart title - now clickable */}
               <Button
                 variant="ghost"
-                onClick={handleSeeRiskGraphClick}
+                onClick={toggleGraph}
                 className="absolute top-4 right-12 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors"
               >
-                See Risk Graph
+                ดูกราฟความเสี่ยง
               </Button>
               
               {/* Main graph area */}
@@ -178,27 +177,24 @@ const RiskGraph: React.FC = () => {
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Modal to show the full risk graph image */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-3xl">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-gray-800">
-              กราฟวิเคราะห์ความเสี่ยง
-            </DialogTitle>
-          </DialogHeader>
-          <div className="flex justify-center p-4">
+        ) : (
+          <div className="flex flex-col items-center">
+            <Button
+              variant="ghost"
+              onClick={toggleGraph}
+              className="self-end mb-4 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+            >
+              กราฟความเสี่ยง
+            </Button>
             <img 
               src="/lovable-uploads/3dc108be-f974-419b-9add-9051576e8033.png" 
               alt="Risk Analysis Graph"
               className="max-w-full h-auto rounded-lg shadow-lg"
             />
           </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
