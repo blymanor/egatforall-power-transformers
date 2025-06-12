@@ -37,82 +37,70 @@ const MaintenanceDetailModal: React.FC<MaintenanceDetailModalProps> = ({
   const getStatusIcon = () => {
     switch (maintenanceData.status) {
       case "เสร็จสิ้น":
-        return <CheckCircle className="h-5 w-5 text-green-600" />;
+        return <CheckCircle className="h-4 w-4 text-green-600" />;
       case "รอดำเนินการ":
-        return <Clock className="h-5 w-5 text-amber-600" />;
+        return <Clock className="h-4 w-4 text-amber-600" />;
       case "ฉุกเฉิน":
-        return <AlertCircle className="h-5 w-5 text-red-600" />;
+        return <AlertCircle className="h-4 w-4 text-red-600" />;
       default:
-        return <Wrench className="h-5 w-5 text-gray-600" />;
+        return <Wrench className="h-4 w-4 text-gray-600" />;
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[450px]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-800 flex items-center space-x-2">
-            <Wrench className="h-6 w-6 text-blue-600" />
+          <DialogTitle className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+            <Wrench className="h-5 w-5 text-gray-600" />
             <span>ข้อมูลการบำรุงรักษา</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="space-y-4 py-4">
           {/* รหัสหม้อแปลง */}
-          <div className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg">
-            <div className="p-2 bg-blue-100 rounded-full">
-              <Wrench className="h-5 w-5 text-blue-600" />
-            </div>
+          <div className="flex items-center space-x-3 py-2">
+            <Wrench className="h-4 w-4 text-gray-500" />
             <div>
-              <p className="text-sm text-gray-600">รหัสหม้อแปลง</p>
-              <p className="text-lg font-semibold text-gray-800">{maintenanceData.group}</p>
+              <p className="text-sm text-gray-500">รหัสหม้อแปลง</p>
+              <p className="font-medium text-gray-900">{maintenanceData.group}</p>
             </div>
           </div>
 
           {/* ประเภท */}
-          <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-            <div className="p-2 bg-gray-100 rounded-full">
-              <Wrench className="h-5 w-5 text-gray-600" />
-            </div>
+          <div className="flex items-center space-x-3 py-2">
+            <Wrench className="h-4 w-4 text-gray-500" />
             <div>
-              <p className="text-sm text-gray-600">ประเภท</p>
-              <p className="text-lg font-semibold text-gray-800">{maintenanceData.type}</p>
-              <p className="text-sm text-gray-500">{maintenanceData.description}</p>
+              <p className="text-sm text-gray-500">ประเภท</p>
+              <p className="font-medium text-gray-900">{maintenanceData.type}</p>
+              <p className="text-sm text-gray-600">{maintenanceData.description}</p>
             </div>
           </div>
 
           {/* วันที่ */}
-          <div className="flex items-center space-x-3 p-4 bg-purple-50 rounded-lg">
-            <div className="p-2 bg-purple-100 rounded-full">
-              <Calendar className="h-5 w-5 text-purple-600" />
-            </div>
+          <div className="flex items-center space-x-3 py-2">
+            <Calendar className="h-4 w-4 text-gray-500" />
             <div>
-              <p className="text-sm text-gray-600">วันที่</p>
-              <p className="text-lg font-semibold text-gray-800">{maintenanceData.date}</p>
+              <p className="text-sm text-gray-500">วันที่</p>
+              <p className="font-medium text-gray-900">{maintenanceData.date}</p>
             </div>
           </div>
 
           {/* สถานะ */}
-          <div className="flex items-center space-x-3 p-4 bg-green-50 rounded-lg">
-            <div className="p-2 bg-green-100 rounded-full">
-              {getStatusIcon()}
-            </div>
+          <div className="flex items-center space-x-3 py-2">
+            {getStatusIcon()}
             <div>
-              <p className="text-sm text-gray-600">สถานะ</p>
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${maintenanceData.statusColor} ${maintenanceData.bgColor}`}>
-                {maintenanceData.status}
-              </span>
+              <p className="text-sm text-gray-500">สถานะ</p>
+              <p className="font-medium text-gray-900">{maintenanceData.status}</p>
             </div>
           </div>
 
           {/* ผู้ดำเนินการ */}
-          <div className="flex items-center space-x-3 p-4 bg-orange-50 rounded-lg">
-            <div className="p-2 bg-orange-100 rounded-full">
-              <User className="h-5 w-5 text-orange-600" />
-            </div>
+          <div className="flex items-center space-x-3 py-2">
+            <User className="h-4 w-4 text-gray-500" />
             <div>
-              <p className="text-sm text-gray-600">ผู้ดำเนินการ</p>
-              <p className="text-lg font-semibold text-gray-800">{maintenanceData.operator}</p>
+              <p className="text-sm text-gray-500">ผู้ดำเนินการ</p>
+              <p className="font-medium text-gray-900">{maintenanceData.operator}</p>
             </div>
           </div>
         </div>
