@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,11 @@ import { useToast } from "@/hooks/use-toast";
 interface TransformerRelocateModalProps {
   isOpen: boolean;
   onClose: () => void;
+  transformer?: {
+    id: number;
+    equipmentNo: string;
+    location: string;
+  } | null;
 }
 
 const provinces = [
@@ -25,14 +30,21 @@ const provinces = [
   "SURAT THANI"
 ];
 
-const TransformerRelocateModal: React.FC<TransformerRelocateModalProps> = ({ isOpen, onClose }) => {
+const TransformerRelocateModal: React.FC<TransformerRelocateModalProps> = ({ isOpen, onClose, transformer }) => {
   const { toast } = useToast();
   const [equipmentNo, setEquipmentNo] = useState("");
-  const [oldStation] = useState("PHITSANULOK 2"); // Pre-filled value
+  const [oldStation, setOldStation] = useState("PHITSANULOK 2");
   const [newProvince, setNewProvince] = useState("");
   const [newTransformerName, setNewTransformerName] = useState("");
   const [relocateDate, setRelocateDate] = useState("");
   const [recorder, setRecorder] = useState("");
+
+  useEffect(() => {
+    if (transformer) {
+      setEquipmentNo(transformer.equipmentNo);
+      setOldStation(transformer.location || "PHITSANULOK 2");
+    }
+  }, [transformer]);
 
   const handleSave = () => {
     toast({
@@ -55,8 +67,8 @@ const TransformerRelocateModal: React.FC<TransformerRelocateModalProps> = ({ isO
             <Input
               id="equipmentNo"
               value={equipmentNo}
-              onChange={(e) => setEquipmentNo(e.target.value)}
-              placeholder="กรอก Equipment No."
+              readOnly
+              className="bg-gray-100"
             />
           </div>
 

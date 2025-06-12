@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Edit, ArrowRight } from "lucide-react";
 import TransformerRelocateModal from "@/components/modals/TransformerRelocateModal";
+import TransformerEditInfoModal from "@/components/modals/TransformerEditInfoModal";
 
 const TransformerRelocationInfo = () => {
   const { toast } = useToast();
@@ -16,14 +16,16 @@ const TransformerRelocationInfo = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [relocateModalOpen, setRelocateModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTransformer, setSelectedTransformer] = useState<any>(null);
   const itemsPerPage = 10;
 
-  const mockTransformers = [
+  const [mockTransformers, setMockTransformers] = useState([
     {
       id: 1,
       equipmentNo: "7000016001",
       manufacturer: "Elektro Roxurg",
-      status: "เป็น Spare",
+      status: "เป็นตัว Spare",
       name: "หม้อแปลง T1",
       location: "สถานี A",
       region: "เหนือ",
@@ -33,7 +35,7 @@ const TransformerRelocationInfo = () => {
       id: 2,
       equipmentNo: "7000016003",
       manufacturer: "OSAKA",
-      status: "เป็น Spare",
+      status: "เป็นตัว Spare",
       name: "หม้อแปลง T2",
       location: "สถานี B",
       region: "ตะวันออกเฉียงเหนือ",
@@ -43,7 +45,7 @@ const TransformerRelocationInfo = () => {
       id: 3,
       equipmentNo: "7000016201",
       manufacturer: "Meiden",
-      status: "เป็น Spare",
+      status: "เป็นตัว Spare",
       name: "หม้อแปลง T3",
       location: "สถานี C",
       region: "กลาง",
@@ -53,7 +55,7 @@ const TransformerRelocationInfo = () => {
       id: 4,
       equipmentNo: "7000016202",
       manufacturer: "Mitsubishi",
-      status: "เป็น Spare",
+      status: "เป็นตัว Spare",
       name: "หม้อแปลง T4",
       location: "สถานี D",
       region: "ใต้",
@@ -63,7 +65,7 @@ const TransformerRelocationInfo = () => {
       id: 5,
       equipmentNo: "7000016203",
       manufacturer: "Elektro Roxurg",
-      status: "เป็น Spare",
+      status: "เป็นตัว Spare",
       name: "หม้อแปลง T5",
       location: "สถานี E",
       region: "เหนือ",
@@ -73,7 +75,7 @@ const TransformerRelocationInfo = () => {
       id: 6,
       equipmentNo: "7000016204",
       manufacturer: "OSAKA",
-      status: "ถูกเลือกจากการเรียน",
+      status: "ถูกปลดออกจากระบบ",
       name: "หม้อแปลง T6",
       location: "สถานี F",
       region: "ตะวันออกเฉียงเหนือ",
@@ -93,7 +95,7 @@ const TransformerRelocationInfo = () => {
       id: 8,
       equipmentNo: "7000016206",
       manufacturer: "Mitsubishi",
-      status: "เป็น Spare",
+      status: "เป็นตัว Spare",
       name: "หม้อแปลง T8",
       location: "สถานี H",
       region: "ใต้",
@@ -103,7 +105,7 @@ const TransformerRelocationInfo = () => {
       id: 9,
       equipmentNo: "7000016207",
       manufacturer: "Elektro Roxurg",
-      status: "ถูกเลือกจากการเรียน",
+      status: "ถูกปลดออกจากระบบ",
       name: "หม้อแปลง T9",
       location: "สถานี I",
       region: "เหนือ",
@@ -119,7 +121,7 @@ const TransformerRelocationInfo = () => {
       region: "ตะวันออกเฉียงเหนือ",
       capacity: "230/115 kV"
     }
-  ];
+  ]);
 
   const filteredTransformers = mockTransformers.filter(transformer => {
     const matchesSearch = transformer.equipmentNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -131,6 +133,26 @@ const TransformerRelocationInfo = () => {
   const totalPages = Math.ceil(filteredTransformers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentTransformers = filteredTransformers.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleStatusChange = (transformerId: number, newStatus: string) => {
+    setMockTransformers(prevTransformers =>
+      prevTransformers.map(transformer =>
+        transformer.id === transformerId
+          ? { ...transformer, status: newStatus }
+          : transformer
+      )
+    );
+  };
+
+  const handleEditClick = (transformer: any) => {
+    setSelectedTransformer(transformer);
+    setEditModalOpen(true);
+  };
+
+  const handleRelocateClick = (transformer: any) => {
+    setSelectedTransformer(transformer);
+    setRelocateModalOpen(true);
+  };
 
   return (
     <DashboardLayout>
@@ -158,8 +180,8 @@ const TransformerRelocationInfo = () => {
                 </SelectTrigger>
                 <SelectContent className="bg-white">
                   <SelectItem value="all">สถานะทั้งหมด</SelectItem>
-                  <SelectItem value="เป็น Spare">เป็น Spare</SelectItem>
-                  <SelectItem value="ถูกเลือกจากการเรียน">ถูกเลือกจากการเรียน</SelectItem>
+                  <SelectItem value="เป็นตัว Spare">เป็นตัว Spare</SelectItem>
+                  <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
                   <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
                 </SelectContent>
               </Select>
@@ -173,48 +195,51 @@ const TransformerRelocationInfo = () => {
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Equipment No.</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">บริษัทผู้ผลิต</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">สถานะ</th>
-                  <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">แก้ไขข้อมูลมส</th>
+                  <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">Equipment No.</th>
+                  <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">บริษัทผู้ผลิต</th>
+                  <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">สถานะ</th>
+                  <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">แก้ไขหม้อแปลง</th>
                   <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">ย้ายเข้าหม้อแปลง</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {currentTransformers.map((transformer) => (
                   <tr key={transformer.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">{transformer.equipmentNo}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{transformer.manufacturer}</td>
-                    <td className="px-6 py-4 text-sm">
-                      <Select value={transformer.status} onValueChange={(value) => console.log('Status changed:', value)}>
+                    <td className="px-6 py-4 text-sm text-gray-900 text-center">{transformer.equipmentNo}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 text-center">{transformer.manufacturer}</td>
+                    <td className="px-6 py-4 text-sm text-center">
+                      <Select 
+                        value={transformer.status} 
+                        onValueChange={(value) => handleStatusChange(transformer.id, value)}
+                      >
                         <SelectTrigger className="w-full text-sm">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-white">
-                          <SelectItem value="เป็น Spare">เป็น Spare</SelectItem>
-                          <SelectItem value="ถูกเลือกจากการเรียน">ถูกเลือกจากการเรียน</SelectItem>
+                          <SelectItem value="เป็นตัว Spare">เป็นตัว Spare</SelectItem>
+                          <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
                           <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
                         </SelectContent>
                       </Select>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
-                        className="bg-gray-600 hover:bg-gray-700 text-white border-gray-600"
+                        className="p-2 h-8 w-8"
+                        onClick={() => handleEditClick(transformer)}
                       >
-                        <Edit className="h-4 w-4 mr-1" />
-                        แก้ไขข้อมูลมส
+                        <Edit className="h-4 w-4" />
                       </Button>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <Button
+                        variant="ghost"
                         size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                        onClick={() => setRelocateModalOpen(true)}
+                        className="p-2 h-8 w-8"
+                        onClick={() => handleRelocateClick(transformer)}
                       >
-                        <ArrowRight className="h-4 w-4 mr-1" />
-                        ย้ายเข้าหม้อแปลง
+                        <ArrowRight className="h-4 w-4" />
                       </Button>
                     </td>
                   </tr>
@@ -225,38 +250,45 @@ const TransformerRelocationInfo = () => {
           
           {/* Pagination */}
           <div className="px-6 py-4 border-t border-gray-200 bg-white">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-700">
-                แสดง {startIndex + 1} ถึง {Math.min(startIndex + itemsPerPage, filteredTransformers.length)} จาก {filteredTransformers.length} รายการ
-              </div>
-              <div className="flex space-x-2">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center space-x-2">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
-                  className="text-sm"
+                  className="text-sm px-2"
                 >
                   ก่อนหน้า
                 </Button>
-                <span className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded">
-                  {currentPage}
-                </span>
+                
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    const pageNum = i + 1;
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPage === pageNum ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`w-8 h-8 ${
+                          currentPage === pageNum 
+                            ? "bg-blue-600 text-white hover:bg-blue-700" 
+                            : "text-gray-600 hover:text-gray-900"
+                        }`}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+                </div>
+
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
-                  className="text-sm"
-                >
-                  ถัดไป
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage(totalPages)}
-                  disabled={currentPage === totalPages}
-                  className="text-sm"
+                  className="text-sm px-2"
                 >
                   ถัดไป
                 </Button>
@@ -269,6 +301,13 @@ const TransformerRelocationInfo = () => {
       <TransformerRelocateModal
         isOpen={relocateModalOpen}
         onClose={() => setRelocateModalOpen(false)}
+        transformer={selectedTransformer}
+      />
+
+      <TransformerEditInfoModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        transformer={selectedTransformer}
       />
     </DashboardLayout>
   );
