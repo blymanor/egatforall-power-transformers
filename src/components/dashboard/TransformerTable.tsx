@@ -117,7 +117,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
   return (
     <Card className="bg-white shadow-md border border-gray-100">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle className="text-xl font-bold text-black">Transformer Importance</CardTitle>
+        <CardTitle className="text-xl font-bold text-black">ความสำคัญของหม้อแปลง</CardTitle>
         <FilterDropdown 
           value={statusFilter} 
           onValueChange={setStatusFilter} 
@@ -130,13 +130,13 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
           <Table>
             <TableHeader className="bg-gradient-to-r from-blue-50 to-white">
               <TableRow>
-                <TableHead className="w-[180px] text-center whitespace-nowrap">Device No.</TableHead>
-                <TableHead className="w-[200px] text-center whitespace-nowrap">Equipment No.</TableHead>
-                <TableHead className="w-[220px] text-center whitespace-nowrap">Overall Condition(%)</TableHead>
-                <TableHead className="w-[220px] text-center whitespace-nowrap">Importance Index(%)</TableHead>
-                <TableHead className="w-[120px] text-center">Risk</TableHead>
-                <TableHead className="w-[120px] text-center">Status</TableHead>
-                <TableHead className="w-[120px] text-center">Action</TableHead>
+                <TableHead className="w-[180px] text-center whitespace-nowrap">รหัสอุปกรณ์</TableHead>
+                <TableHead className="w-[200px] text-center whitespace-nowrap">รหัสครุภัณฑ์</TableHead>
+                <TableHead className="w-[220px] text-center whitespace-nowrap">สภาพโดยรวม(%)</TableHead>
+                <TableHead className="w-[220px] text-center whitespace-nowrap">ดัชนีความสำคัญ(%)</TableHead>
+                <TableHead className="w-[120px] text-center">ความเสี่ยง</TableHead>
+                <TableHead className="w-[120px] text-center">สถานะ</TableHead>
+                <TableHead className="w-[120px] text-center">การดำเนินการ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

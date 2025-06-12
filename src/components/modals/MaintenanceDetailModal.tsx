@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Calendar, User, Wrench, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { Wrench, CheckCircle, Clock, AlertCircle } from "lucide-react";
 
 interface MaintenanceData {
   id: number;
@@ -59,31 +59,22 @@ const MaintenanceDetailModal: React.FC<MaintenanceDetailModalProps> = ({
 
         <div className="space-y-4 py-4">
           {/* รหัสหม้อแปลง */}
-          <div className="flex items-center space-x-3 py-2">
-            <Wrench className="h-4 w-4 text-gray-500" />
-            <div>
-              <p className="text-sm text-gray-500">รหัสหม้อแปลง</p>
-              <p className="font-medium text-gray-900">{maintenanceData.group}</p>
-            </div>
+          <div className="py-2">
+            <p className="text-sm text-gray-500">รหัสหม้อแปลง</p>
+            <p className="font-medium text-gray-900">{maintenanceData.group}</p>
           </div>
 
           {/* ประเภท */}
-          <div className="flex items-center space-x-3 py-2">
-            <Wrench className="h-4 w-4 text-gray-500" />
-            <div>
-              <p className="text-sm text-gray-500">ประเภท</p>
-              <p className="font-medium text-gray-900">{maintenanceData.type}</p>
-              <p className="text-sm text-gray-600">{maintenanceData.description}</p>
-            </div>
+          <div className="py-2">
+            <p className="text-sm text-gray-500">ประเภท</p>
+            <p className="font-medium text-gray-900">{maintenanceData.type}</p>
+            <p className="text-sm text-gray-600">{maintenanceData.description}</p>
           </div>
 
           {/* วันที่ */}
-          <div className="flex items-center space-x-3 py-2">
-            <Calendar className="h-4 w-4 text-gray-500" />
-            <div>
-              <p className="text-sm text-gray-500">วันที่</p>
-              <p className="font-medium text-gray-900">{maintenanceData.date}</p>
-            </div>
+          <div className="py-2">
+            <p className="text-sm text-gray-500">วันที่</p>
+            <p className="font-medium text-gray-900">{maintenanceData.date}</p>
           </div>
 
           {/* สถานะ */}
@@ -96,12 +87,9 @@ const MaintenanceDetailModal: React.FC<MaintenanceDetailModalProps> = ({
           </div>
 
           {/* ผู้ดำเนินการ */}
-          <div className="flex items-center space-x-3 py-2">
-            <User className="h-4 w-4 text-gray-500" />
-            <div>
-              <p className="text-sm text-gray-500">ผู้ดำเนินการ</p>
-              <p className="font-medium text-gray-900">{maintenanceData.operator}</p>
-            </div>
+          <div className="py-2">
+            <p className="text-sm text-gray-500">ผู้ดำเนินการ</p>
+            <p className="font-medium text-gray-900">{maintenanceData.operator}</p>
           </div>
         </div>
 
