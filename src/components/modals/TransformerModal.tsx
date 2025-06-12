@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Dialog,
@@ -80,17 +81,6 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
           {/* First column */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
-              <Input 
-                id="imageFileName" 
-                placeholder="ชื่อไฟล์รูปภาพ" 
-                value={imageFileName}
-                onChange={(e) => setImageFileName(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            
-            <div className="space-y-2">
               <Label htmlFor="deviceNo">Device No. *</Label>
               <Input 
                 id="deviceNo" 
@@ -172,6 +162,18 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="manufactureYear">Manufacture Year *</Label>
+              <Input 
+                id="manufactureYear" 
+                placeholder="ปีที่ผลิต" 
+                type="number" 
+                value={manufactureYear}
+                onChange={(e) => setManufactureYear(e.target.value)}
+                className="w-full"
+              />
+            </div>
           </div>
 
           {/* Second column */}
@@ -190,13 +192,12 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="manufactureYear">Manufacture Year *</Label>
+              <Label htmlFor="imageFileName">ชื่อไฟล์รูปภาพที่ต้องการเก็บ</Label>
               <Input 
-                id="manufactureYear" 
-                placeholder="ปีที่ผลิต" 
-                type="number" 
-                value={manufactureYear}
-                onChange={(e) => setManufactureYear(e.target.value)}
+                id="imageFileName" 
+                placeholder="ชื่อไฟล์รูปภาพ" 
+                value={imageFileName}
+                onChange={(e) => setImageFileName(e.target.value)}
                 className="w-full"
               />
             </div>
@@ -262,19 +263,20 @@ const TransformerModal: React.FC<TransformerModalProps> = ({ isOpen, onClose, is
                 onChange={(e) => setTertiaryVoltage(e.target.value)}
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
-              <Textarea 
-                id="remark" 
-                placeholder="ข้อมูลเพิ่มเติม" 
-                rows={4} 
-                value={remark}
-                onChange={(e) => setRemark(e.target.value)}
-                className="w-full"
-              />
-            </div>
           </div>
+        </div>
+
+        {/* Remark field below transformer type */}
+        <div className="space-y-2 mt-4">
+          <Label htmlFor="remark">รายละเอียดเพิ่มเติม (Remark)</Label>
+          <Textarea 
+            id="remark" 
+            placeholder="ข้อมูลเพิ่มเติม" 
+            rows={4} 
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
+            className="w-full"
+          />
         </div>
 
         <DialogFooter className="flex justify-end space-x-2 border-t pt-4 mt-2">

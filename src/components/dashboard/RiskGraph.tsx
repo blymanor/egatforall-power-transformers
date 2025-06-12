@@ -235,95 +235,93 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Risk zones background - different color scheme */}
+                {/* Risk zones background - different gradient style based on reference image */}
                 <div className="absolute inset-0">
-                  {/* Low-Low (Light Green) */}
-                  <div className="absolute bg-green-300" style={{ left: '0%', bottom: '0%', width: '31%', height: '42%' }}></div>
+                  {/* Green triangle (Low-Low) */}
+                  <div style={{
+                    position: 'absolute',
+                    left: '0%',
+                    bottom: '0%',
+                    width: '0',
+                    height: '0',
+                    borderLeft: '150px solid #22c55e',
+                    borderTop: '150px solid transparent'
+                  }}></div>
                   
-                  {/* Moderate-Low (Light Blue) */}
-                  <div className="absolute bg-blue-300" style={{ left: '31%', bottom: '0%', width: '25%', height: '42%' }}></div>
+                  {/* Blue triangle */}
+                  <div style={{
+                    position: 'absolute',
+                    left: '31%',
+                    bottom: '0%',
+                    width: '0',
+                    height: '0',
+                    borderLeft: '120px solid #3b82f6',
+                    borderTop: '240px solid transparent'
+                  }}></div>
                   
-                  {/* High-Low (Light Orange) */}
-                  <div className="absolute bg-orange-300" style={{ left: '56%', bottom: '0%', width: '44%', height: '42%' }}></div>
+                  {/* Yellow gradient area */}
+                  <div className="absolute bg-gradient-to-br from-yellow-300 to-yellow-500" 
+                    style={{ left: '15%', bottom: '15%', width: '50%', height: '50%' }}></div>
                   
-                  {/* Low-Moderate (Light Blue) */}
-                  <div className="absolute bg-blue-300" style={{ left: '0%', bottom: '42%', width: '31%', height: '25%' }}></div>
+                  {/* Orange gradient area */}
+                  <div className="absolute bg-gradient-to-br from-orange-400 to-orange-600" 
+                    style={{ left: '40%', bottom: '30%', width: '45%', height: '55%' }}></div>
                   
-                  {/* Moderate-Moderate (Light Yellow) */}
-                  <div className="absolute bg-yellow-300" style={{ left: '31%', bottom: '42%', width: '25%', height: '25%' }}></div>
-                  
-                  {/* High-Moderate (Light Orange) */}
-                  <div className="absolute bg-orange-300" style={{ left: '56%', bottom: '42%', width: '44%', height: '25%' }}></div>
-                  
-                  {/* Low-High (Light Orange) */}
-                  <div className="absolute bg-orange-300" style={{ left: '0%', bottom: '67%', width: '31%', height: '33%' }}></div>
-                  
-                  {/* Moderate-High (Light Red) */}
-                  <div className="absolute bg-red-300" style={{ left: '31%', bottom: '67%', width: '25%', height: '33%' }}></div>
-                  
-                  {/* High-High (Dark Red) */}
-                  <div className="absolute bg-red-500" style={{ left: '56%', bottom: '67%', width: '44%', height: '33%' }}></div>
+                  {/* Red gradient area */}
+                  <div className="absolute bg-gradient-to-br from-red-500 to-red-700" 
+                    style={{ left: '60%', bottom: '60%', width: '40%', height: '40%' }}></div>
                 </div>
                 
-                {/* Grid lines */}
+                {/* Diagonal grid lines - creating triangular pattern like in reference */}
                 <div className="absolute inset-0">
-                  {/* Horizontal lines at 42% and 67% (corresponding to 15 and 30 on Y-axis) */}
-                  <div className="absolute left-0 right-0 border-t-2 border-gray-800" style={{ bottom: '42%' }}></div>
-                  <div className="absolute left-0 right-0 border-t-2 border-gray-800" style={{ bottom: '67%' }}></div>
-                  
-                  {/* Vertical lines at 31% and 56% (corresponding to 40 and 60 on X-axis) */}
-                  <div className="absolute top-0 bottom-0 border-l-2 border-gray-800" style={{ left: '31%' }}></div>
-                  <div className="absolute top-0 bottom-0 border-l-2 border-gray-800" style={{ left: '56%' }}></div>
+                  {/* Main diagonal lines */}
+                  <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+                    {/* Diagonal line from bottom-left to top-right */}
+                    <line x1="0%" y1="100%" x2="31%" y2="58%" stroke="black" strokeWidth="2"/>
+                    <line x1="31%" y1="100%" x2="56%" y2="33%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="58%" x2="100%" y2="0%" stroke="black" strokeWidth="2"/>
+                    
+                    {/* Horizontal lines */}
+                    <line x1="0%" y1="42%" x2="100%" y2="42%" stroke="black" strokeWidth="2"/>
+                    <line x1="0%" y1="67%" x2="100%" y2="67%" stroke="black" strokeWidth="2"/>
+                    
+                    {/* Vertical lines */}
+                    <line x1="31%" y1="0%" x2="31%" y2="100%" stroke="black" strokeWidth="2"/>
+                    <line x1="56%" y1="0%" x2="56%" y2="100%" stroke="black" strokeWidth="2"/>
+                  </svg>
                 </div>
                 
-                {/* Data points - different distribution for second graph */}
-                {/* More scattered points across all zones */}
-                {Array.from({ length: 50 }).map((_, i) => (
-                  <div
-                    key={`alt-cluster1-${i}`}
-                    className="absolute rounded-full bg-purple-600 w-1 h-1"
-                    style={{
-                      left: `${5 + Math.random() * 25}%`,
-                      bottom: `${5 + Math.random() * 35}%`,
-                    }}
-                  ></div>
-                ))}
-                
-                {/* Cluster in moderate zones */}
-                {Array.from({ length: 120 }).map((_, i) => (
-                  <div
-                    key={`alt-cluster2-${i}`}
-                    className="absolute rounded-full bg-purple-600 w-1 h-1"
-                    style={{
-                      left: `${20 + Math.random() * 40}%`,
-                      bottom: `${30 + Math.random() * 40}%`,
-                    }}
-                  ></div>
-                ))}
-                
-                {/* High risk cluster */}
-                {Array.from({ length: 80 }).map((_, i) => (
-                  <div
-                    key={`alt-cluster3-${i}`}
-                    className="absolute rounded-full bg-purple-600 w-1 h-1"
-                    style={{
-                      left: `${50 + Math.random() * 45}%`,
-                      bottom: `${50 + Math.random() * 45}%`,
-                    }}
-                  ></div>
-                ))}
-                
-                {/* Extreme high risk points */}
-                {Array.from({ length: 30 }).map((_, i) => (
-                  <div
-                    key={`alt-cluster4-${i}`}
-                    className="absolute rounded-full bg-purple-600 w-1 h-1"
-                    style={{
-                      left: `${65 + Math.random() * 30}%`,
-                      bottom: `${70 + Math.random() * 25}%`,
-                    }}
-                  ></div>
-                ))}
+                {/* Data points - same yellow dots but distributed across triangular zones */}
+                {Array.from({ length: 300 }).map((_, i) => {
+                  // Create distribution that follows triangular pattern
+                  let x, y;
+                  const rand = Math.random();
+                  
+                  if (rand < 0.6) {
+                    // Most points in lower triangle area
+                    x = 10 + Math.random() * 60;
+                    y = 10 + Math.random() * 50;
+                  } else if (rand < 0.85) {
+                    // Some points in middle area
+                    x = 30 + Math.random() * 50;
+                    y = 30 + Math.random() * 40;
+                  } else {
+                    // Few points in high risk area
+                    x = 60 + Math.random() * 35;
+                    y = 60 + Math.random() * 35;
+                  }
+                  
+                  return (
+                    <div
+                      key={`alt-cluster-${i}`}
+                      className="absolute rounded-full bg-yellow-600 w-1 h-1"
+                      style={{
+                        left: `${x}%`,
+                        bottom: `${y}%`,
+                      }}
+                    ></div>
+                  );
+                })}
               </div>
             </div>
           </div>
