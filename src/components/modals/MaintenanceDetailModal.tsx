@@ -34,18 +34,8 @@ const MaintenanceDetailModal: React.FC<MaintenanceDetailModalProps> = ({
 }) => {
   if (!maintenanceData) return null;
 
-  const getStatusIcon = () => {
-    switch (maintenanceData.status) {
-      case "เสร็จสิ้น":
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case "รอดำเนินการ":
-        return <Clock className="h-4 w-4 text-amber-600" />;
-      case "ฉุกเฉิน":
-        return <AlertCircle className="h-4 w-4 text-red-600" />;
-      default:
-        return <Wrench className="h-4 w-4 text-gray-600" />;
-    }
-  };
+  // Special handling for АN-475E to show actual date instead of "ต้องการความสนใจ"
+  const displayDate = maintenanceData.group === "АN-475E" ? "2 ธ.ค. 2023" : maintenanceData.date;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -74,16 +64,13 @@ const MaintenanceDetailModal: React.FC<MaintenanceDetailModalProps> = ({
           {/* วันที่ */}
           <div className="py-2">
             <p className="text-sm text-gray-500">วันที่</p>
-            <p className="font-medium text-gray-900">{maintenanceData.date}</p>
+            <p className="font-medium text-gray-900">{displayDate}</p>
           </div>
 
           {/* สถานะ */}
-          <div className="flex items-center space-x-3 py-2">
-            {getStatusIcon()}
-            <div>
-              <p className="text-sm text-gray-500">สถานะ</p>
-              <p className="font-medium text-gray-900">{maintenanceData.status}</p>
-            </div>
+          <div className="py-2">
+            <p className="text-sm text-gray-500">สถานะ</p>
+            <p className="font-medium text-gray-900">{maintenanceData.status}</p>
           </div>
 
           {/* ผู้ดำเนินการ */}

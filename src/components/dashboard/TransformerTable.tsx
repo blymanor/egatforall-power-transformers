@@ -18,7 +18,6 @@ interface TransformerData {
   region: string;
 }
 
-// Extended dataset with more transformers to ensure at least 6 per region
 const allTransformers: TransformerData[] = [
   // Original data with transformer type added
   { deviceNo: "АN-472A", equipmentNo: "TGPOS68020", transformerType: "Power", condition: 80.23, importance: 34.36, risk: "Moderate", status: "Good", action: "Investigation", region: "north" },
@@ -117,7 +116,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
   return (
     <Card className="bg-white shadow-md border border-gray-100">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle className="text-xl font-bold text-black">ความสำคัญของหม้อแปลง</CardTitle>
+        <CardTitle className="text-2xl font-bold text-black">ความสำคัญของหม้อแปลง</CardTitle>
         <FilterDropdown 
           value={statusFilter} 
           onValueChange={setStatusFilter} 
@@ -189,7 +188,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Previous
+          ก่อนหน้า
         </Button>
         <div className="flex items-center gap-1">
           {Array.from({ length: Math.min(4, totalPages) }).map((_, idx) => {
@@ -216,7 +215,7 @@ const TransformerTable: React.FC<TransformerTableProps> = ({
           disabled={currentPage === totalPages || displayData.length === 0}
           onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
         >
-          Next
+          ถัดไป
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </CardFooter>

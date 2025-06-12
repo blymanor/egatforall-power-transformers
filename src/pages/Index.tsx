@@ -53,7 +53,7 @@ const Index = () => {
               <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 rounded-2xl overflow-hidden">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-800 flex items-center space-x-2">
+                    <h2 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
                       <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
                       <span>เลือกเขต</span>
                     </h2>

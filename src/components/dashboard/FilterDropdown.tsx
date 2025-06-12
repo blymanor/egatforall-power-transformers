@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FilterDropdownProps {
@@ -43,7 +42,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           )}
         >
           <div className="flex items-center">
-            <Filter className="mr-2 h-4 w-4" />
             <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>

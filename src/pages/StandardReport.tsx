@@ -38,8 +38,8 @@ const StandardReport = () => {
     <DashboardLayout>
       <div className="bg-[#f0f4fa] p-4 md:p-6">
         <div className="mb-2">
-          <h2 className="text-xl font-semibold text-gray-800">รายงานมาตรฐาน</h2>
-          <p className="text-gray-600">แสดงความสัมพันธ์ทางสถิติเกี่ยวกับหม้อแปลงและข้อมูลความเสียหาย</p>
+          <h2 className="text-2xl font-semibold text-gray-800">รายงานมาตรฐาน</h2>
+          <p className="text-lg text-gray-600">แสดงความสัมพันธ์ทางสถิติเกี่ยวกับหม้อแปลงและข้อมูลความเสียหาย</p>
         </div>
       </div>
 
