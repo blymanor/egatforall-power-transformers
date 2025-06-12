@@ -2,23 +2,16 @@
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
-import { Search, Download, FileText, BarChart3 } from "lucide-react";
+import { BarChart3, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ReportResults from "@/components/reports/transformer/ReportResults";
 
 const DamageReport = () => {
   const { toast } = useToast();
   const [showResults, setShowResults] = useState(false);
-  
-  // Single filter state
   const [selectedFilter, setSelectedFilter] = useState("");
-  
   const [groupBy, setGroupBy] = useState("");
 
   const handleGenerateReport = () => {
@@ -43,7 +36,6 @@ const DamageReport = () => {
     });
   };
 
-  // Mock data for the report
   const mockReportData = [
     { name: "เหนือ", value: 25, color: "#3b82f6" },
     { name: "ตะวันออกเฉียงเหนือ", value: 30, color: "#10b981" },
@@ -87,23 +79,20 @@ const DamageReport = () => {
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">รายงานข้อมูลความเสียหาย</h1>
           <p className="text-sm text-gray-600">Damage Information Report</p>
         </div>
 
-        {/* Filter Form */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b">
+          <CardHeader className="bg-white border-b">
             <CardTitle className="text-xl font-semibold text-gray-800">เงื่อนไขการค้นหา</CardTitle>
             <p className="text-sm text-gray-600 mt-1">เลือกเงื่อนไขในการสร้างรายงานได้เพียงหนึ่งเงื่อนไข</p>
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 gap-6">
-              {/* เลือกประเภทเงื่อนไข */}
               <div className="space-y-2">
-                <Label htmlFor="filterType">ประเภทเงื่อนไข :</Label>
+                <label htmlFor="filterType">ประเภทเงื่อนไข :</label>
                 <Select value={selectedFilter} onValueChange={setSelectedFilter}>
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกประเภทเงื่อนไข" />
@@ -121,15 +110,14 @@ const DamageReport = () => {
           </CardContent>
         </Card>
 
-        {/* Report Configuration */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b">
+          <CardHeader className="bg-white border-b">
             <CardTitle className="text-xl font-semibold text-gray-800">การตั้งค่ารายงาน</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="groupBy">เลือกการแบ่งกลุ่ม(แบ่งตาม) :</Label>
+                <label htmlFor="groupBy">เลือกการแบ่งกลุ่ม(แบ่งตาม) :</label>
                 <Select value={groupBy} onValueChange={setGroupBy}>
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกการแบ่งกลุ่ม" />
@@ -154,7 +142,6 @@ const DamageReport = () => {
           </CardContent>
         </Card>
 
-        {/* Action Buttons */}
         <div className="flex justify-center gap-4">
           <Button 
             onClick={handleGenerateReport}
@@ -173,7 +160,6 @@ const DamageReport = () => {
           </Button>
         </div>
 
-        {/* Report Results */}
         <ReportResults 
           data={mockReportData} 
           groupByLabel={getGroupByLabel()} 

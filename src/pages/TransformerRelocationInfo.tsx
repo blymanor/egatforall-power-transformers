@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Edit, ArrowRight } from "lucide-react";
 
 const TransformerRelocationInfo = () => {
   const { toast } = useToast();
@@ -14,7 +16,6 @@ const TransformerRelocationInfo = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Mock data for transformers
   const mockTransformers = [
     {
       id: 1,
@@ -164,7 +165,6 @@ const TransformerRelocationInfo = () => {
   };
 
   const handleStatusChange = (transformerId: number, newStatus: string) => {
-    // Update the status immediately (in real app, this would be an API call)
     console.log(`Updating transformer ${transformerId} status to ${newStatus}`);
     
     toast({
@@ -176,13 +176,11 @@ const TransformerRelocationInfo = () => {
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6 bg-[#f0f4fa] text-lg">
-        {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">การย้ายหม้อแปลงไฟฟ้า</h1>
           <p className="text-lg text-gray-600">Transformer Relocation Management</p>
         </div>
 
-        {/* Search and Filter */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b">
             <CardTitle className="text-2xl font-semibold text-gray-800">ค้นหาและกรองข้อมูล</CardTitle>
@@ -217,7 +215,6 @@ const TransformerRelocationInfo = () => {
           </CardContent>
         </Card>
 
-        {/* Transformer Table */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
           <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b">
             <CardTitle className="text-2xl font-semibold text-gray-800">รายการหม้อแปลงไฟฟ้า</CardTitle>
@@ -233,7 +230,8 @@ const TransformerRelocationInfo = () => {
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ระดับแรงดัน</th>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ผู้ผลิต</th>
                     <th className="px-6 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">สถานะ</th>
-                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">การดำเนินการ</th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">แก้ไข</th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">ย้ายเข้า</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -268,9 +266,19 @@ const TransformerRelocationInfo = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <Button
                           size="sm"
-                          className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                          variant="ghost"
+                          className="h-8 w-8 p-0"
                         >
-                          ย้าย
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 w-8 p-0"
+                        >
+                          <ArrowRight className="h-4 w-4" />
                         </Button>
                       </td>
                     </tr>
@@ -279,7 +287,6 @@ const TransformerRelocationInfo = () => {
               </table>
             </div>
             
-            {/* Pagination */}
             <div className="px-6 py-4 border-t border-gray-200 bg-white">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-gray-700">
