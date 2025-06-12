@@ -16,9 +16,8 @@ const DamageReport = () => {
   const { toast } = useToast();
   const [showResults, setShowResults] = useState(false);
   
-  // Single filter state instead of multiple
+  // Single filter state
   const [selectedFilter, setSelectedFilter] = useState("");
-  const [filterValue, setFilterValue] = useState("");
   
   const [groupBy, setGroupBy] = useState("");
 
@@ -85,32 +84,6 @@ const DamageReport = () => {
     { value: "management", label: "การจัดการ" }
   ];
 
-  const getFilterValueOptions = () => {
-    switch (selectedFilter) {
-      case "region":
-        return [
-          { value: "north", label: "เหนือ" },
-          { value: "northeast", label: "ตะวันออกเฉียงเหนือ" },
-          { value: "central", label: "กลาง" },
-          { value: "south", label: "ใต้" }
-        ];
-      case "station":
-        return [
-          { value: "station1", label: "สถานี 1" },
-          { value: "station2", label: "สถานี 2" },
-          { value: "station3", label: "สถานี 3" }
-        ];
-      case "manufacturer":
-        return [
-          { value: "abb", label: "ABB" },
-          { value: "siemens", label: "Siemens" },
-          { value: "mitsubishi", label: "Mitsubishi" }
-        ];
-      default:
-        return [];
-    }
-  };
-
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6 bg-[#f0f4fa]">
@@ -127,14 +100,11 @@ const DamageReport = () => {
             <p className="text-sm text-gray-600 mt-1">เลือกเงื่อนไขในการสร้างรายงานได้เพียงหนึ่งเงื่อนไข</p>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {/* เลือกประเภทเงื่อนไข */}
               <div className="space-y-2">
                 <Label htmlFor="filterType">ประเภทเงื่อนไข :</Label>
-                <Select value={selectedFilter} onValueChange={(value) => {
-                  setSelectedFilter(value);
-                  setFilterValue("");
-                }}>
+                <Select value={selectedFilter} onValueChange={setSelectedFilter}>
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกประเภทเงื่อนไข" />
                   </SelectTrigger>
@@ -147,25 +117,6 @@ const DamageReport = () => {
                   </SelectContent>
                 </Select>
               </div>
-
-              {/* ค่าเงื่อนไข */}
-              {selectedFilter && (
-                <div className="space-y-2">
-                  <Label htmlFor="filterValue">ค่าเงื่อนไข :</Label>
-                  <Select value={filterValue} onValueChange={setFilterValue}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="เลือกค่าเงื่อนไข" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      {getFilterValueOptions().map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
             </div>
           </CardContent>
         </Card>

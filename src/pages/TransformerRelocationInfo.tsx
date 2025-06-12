@@ -1,229 +1,318 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Search, Edit, ArrowRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import TransformerEditModal from "@/components/modals/TransformerEditModal";
-import TransformerRelocateModal from "@/components/modals/TransformerRelocateModal";
-import CustomPagination from "@/components/ui/custom-pagination";
 
 const TransformerRelocationInfo = () => {
   const { toast } = useToast();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isRelocateModalOpen, setIsRelocateModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Mock data for transformers - updated to show different statuses
-  const [transformers, setTransformers] = useState([
-    // เป็น spare status (5 items)
-    { id: 1, deviceNo: "70000016201", equipmentNo: "Electro Busang", location: "Bangkok", status: "เป็น spare" },
-    { id: 2, deviceNo: "70000016202", equipmentNo: "Meiden", location: "Chiang Mai", status: "เป็น spare" },
-    { id: 3, deviceNo: "70000016203", equipmentNo: "Meiden", location: "Phuket", status: "เป็น spare" },
-    { id: 4, deviceNo: "70000016204", equipmentNo: "Mitsubishi", location: "Bangkok", status: "เป็น spare" },
-    { id: 5, deviceNo: "70000016205", equipmentNo: "Electro Busang", location: "Chiang Mai", status: "เป็น spare" },
-    
-    // ถูกปลดออกจากระบบ status (5 items)
-    { id: 6, deviceNo: "70000016206", equipmentNo: "OSAKA", location: "Phuket", status: "ถูกปลดออกจากระบบ" },
-    { id: 7, deviceNo: "70000016207", equipmentNo: "Meiden", location: "Bangkok", status: "ถูกปลดออกจากระบบ" },
-    { id: 8, deviceNo: "70000016208", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "ถูกปลดออกจากระบบ" },
-    { id: 9, deviceNo: "70000016209", equipmentNo: "Electro Busang", location: "Phuket", status: "ถูกปลดออกจากระบบ" },
-    { id: 10, deviceNo: "70000016210", equipmentNo: "OSAKA", location: "Bangkok", status: "ถูกปลดออกจากระบบ" },
-    
-    // อยู่ในระหว่างซ่อม status (5 items)
-    { id: 11, deviceNo: "70000016211", equipmentNo: "Mitsubishi", location: "Chiang Mai", status: "อยู่ในระหว่างซ่อม" },
-    { id: 12, deviceNo: "70000016212", equipmentNo: "Mitsubishi", location: "Phuket", status: "อยู่ในระหว่างซ่อม" },
-    { id: 13, deviceNo: "70000016213", equipmentNo: "ABB", location: "Bangkok", status: "อยู่ในระหว่างซ่อม" },
-    { id: 14, deviceNo: "70000016214", equipmentNo: "Siemens", location: "Chiang Mai", status: "อยู่ในระหว่างซ่อม" },
-    { id: 15, deviceNo: "70000016215", equipmentNo: "Hitachi", location: "Phuket", status: "อยู่ในระหว่างซ่อม" },
-  ]);
+  // Mock data for transformers
+  const mockTransformers = [
+    {
+      id: 1,
+      name: "หม้อแปลง T1",
+      location: "สถานี A",
+      region: "เหนือ",
+      status: "operational",
+      capacity: "115/22 kV",
+      manufacturer: "ABB"
+    },
+    {
+      id: 2,
+      name: "หม้อแปลง T2",
+      location: "สถานี B",
+      region: "ตะวันออกเฉียงเหนือ",
+      status: "maintenance",
+      capacity: "230/115 kV",
+      manufacturer: "Siemens"
+    },
+    {
+      id: 3,
+      name: "หม้อแปลง T3",
+      location: "สถานี C",
+      region: "กลาง",
+      status: "damaged",
+      capacity: "69/12 kV",
+      manufacturer: "Mitsubishi"
+    },
+    {
+      id: 4,
+      name: "หม้อแปลง T4",
+      location: "สถานี D",
+      region: "ใต้",
+      status: "operational",
+      capacity: "33/11 kV",
+      manufacturer: "Hitachi"
+    },
+    {
+      id: 5,
+      name: "หม้อแปลง T5",
+      location: "สถานี E",
+      region: "เหนือ",
+      status: "maintenance",
+      capacity: "115/22 kV",
+      manufacturer: "ABB"
+    },
+    {
+      id: 6,
+      name: "หม้อแปลง T6",
+      location: "สถานี F",
+      region: "ตะวันออกเฉียงเหนือ",
+      status: "operational",
+      capacity: "230/115 kV",
+      manufacturer: "Siemens"
+    },
+    {
+      id: 7,
+      name: "หม้อแปลง T7",
+      location: "สถานี G",
+      region: "กลาง",
+      status: "damaged",
+      capacity: "69/12 kV",
+      manufacturer: "Mitsubishi"
+    },
+    {
+      id: 8,
+      name: "หม้อแปลง T8",
+      location: "สถานี H",
+      region: "ใต้",
+      status: "operational",
+      capacity: "33/11 kV",
+      manufacturer: "Hitachi"
+    },
+    {
+      id: 9,
+      name: "หม้อแปลง T9",
+      location: "สถานี I",
+      region: "เหนือ",
+      status: "maintenance",
+      capacity: "115/22 kV",
+      manufacturer: "ABB"
+    },
+    {
+      id: 10,
+      name: "หม้อแปลง T10",
+      location: "สถานี J",
+      region: "ตะวันออกเฉียงเหนือ",
+      status: "operational",
+      capacity: "230/115 kV",
+      manufacturer: "Siemens"
+    },
+    {
+      id: 11,
+      name: "หม้อแปลง T11",
+      location: "สถานี K",
+      region: "กลาง",
+      status: "damaged",
+      capacity: "69/12 kV",
+      manufacturer: "Mitsubishi"
+    },
+    {
+      id: 12,
+      name: "หม้อแปลง T12",
+      location: "สถานี L",
+      region: "ใต้",
+      status: "operational",
+      capacity: "33/11 kV",
+      manufacturer: "Hitachi"
+    }
+  ];
 
-  // Filter transformers based on search and status
-  const filteredTransformers = transformers.filter(transformer => {
-    const matchesSearch = searchQuery === "" || 
-      transformer.deviceNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transformer.equipmentNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transformer.location.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = selectedStatus === "all" || transformer.status === selectedStatus;
-    
+  const filteredTransformers = mockTransformers.filter(transformer => {
+    const matchesSearch = transformer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         transformer.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "all" || transformer.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  // Calculate pagination
   const totalPages = Math.ceil(filteredTransformers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = filteredTransformers.slice(startIndex, startIndex + itemsPerPage);
+  const currentTransformers = filteredTransformers.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleEdit = (transformer) => {
-    setIsEditModalOpen(true);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "operational":
+        return "text-green-600 bg-green-100";
+      case "maintenance":
+        return "text-yellow-600 bg-yellow-100";
+      case "damaged":
+        return "text-red-600 bg-red-100";
+      default:
+        return "text-gray-600 bg-gray-100";
+    }
   };
 
-  const handleRelocate = (transformer) => {
-    setIsRelocateModalOpen(true);
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "operational":
+        return "ปกติ";
+      case "maintenance":
+        return "ซ่อมบำรุง";
+      case "damaged":
+        return "ชำรุด";
+      default:
+        return status;
+    }
   };
 
-  const updateStatus = (transformerId, newStatus) => {
-    setTransformers(prev => 
-      prev.map(t => 
-        t.id === transformerId ? { ...t, status: newStatus } : t
-      )
-    );
+  const handleStatusChange = (transformerId: number, newStatus: string) => {
+    // Update the status immediately (in real app, this would be an API call)
+    console.log(`Updating transformer ${transformerId} status to ${newStatus}`);
+    
     toast({
-      title: "อัปเดตสถานะ",
-      description: `เปลี่ยนสถานะเป็น ${newStatus}`,
+      title: "อัปเดตสถานะสำเร็จ",
+      description: `สถานะของหม้อแปลงได้ถูกเปลี่ยนเป็น ${getStatusText(newStatus)}`,
     });
   };
 
   return (
     <DashboardLayout>
-      <div className="p-6 space-y-6 bg-[#f0f4fa]">
+      <div className="p-6 space-y-6 bg-[#f0f4fa] text-lg">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">การย้ายหม้อแปลงไฟฟ้า</h1>
-          <p className="text-sm text-gray-600">transformer relocation information</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">การย้ายหม้อแปลงไฟฟ้า</h1>
+          <p className="text-lg text-gray-600">Transformer Relocation Management</p>
         </div>
 
-        {/* Search and Filter Section */}
+        {/* Search and Filter */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b">
+            <CardTitle className="text-2xl font-semibold text-gray-800">ค้นหาและกรองข้อมูล</CardTitle>
+          </CardHeader>
           <CardContent className="p-6">
-            <div className="flex justify-between items-center gap-4">
-              {/* Left side - Status Filter */}
-              <div className="flex items-center gap-2">
-                <Label className="text-base text-gray-600 whitespace-nowrap">สถานะ:</Label>
-                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                  <SelectTrigger className="w-72 focus:ring-0 border border-gray-300 text-base">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="search" className="text-lg">ค้นหาหม้อแปลง</Label>
+                <Input
+                  id="search"
+                  placeholder="ป้อนชื่อหม้อแปลงหรือสถานที่"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="text-lg p-4 h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status" className="text-lg">กรองตามสถานะ</Label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="text-lg p-4 h-12">
                     <SelectValue placeholder="เลือกสถานะ" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border shadow-md">
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="เป็น spare">เป็น spare</SelectItem>
-                    <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
-                    <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
+                    <SelectItem value="operational">ปกติ</SelectItem>
+                    <SelectItem value="maintenance">ซ่อมบำรุง</SelectItem>
+                    <SelectItem value="damaged">ชำรุด</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-
-              {/* Right side - Search */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="ค้นหาหม้อแปลง..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 focus-visible:ring-0 text-base"
-                />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Table */}
+        {/* Transformer Table */}
         <Card className="shadow-md rounded-xl overflow-hidden border-0">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b">
+            <CardTitle className="text-2xl font-semibold text-gray-800">รายการหม้อแปลงไฟฟ้า</CardTitle>
+          </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="text-center text-lg">Equipment No.</TableHead>
-                    <TableHead className="text-center text-lg">บริษัทผู้ผลิต</TableHead>
-                    <TableHead className="text-center text-lg">สถานะ</TableHead>
-                    <TableHead className="text-center text-lg">แก้ไข</TableHead>
-                    <TableHead className="text-center text-lg">ย้ายเข้า</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentData.length > 0 ? (
-                    currentData.map((transformer) => (
-                      <TableRow key={transformer.id} className="hover:bg-blue-50/30">
-                        <TableCell className="text-center text-lg">{transformer.deviceNo}</TableCell>
-                        <TableCell className="text-center text-lg">{transformer.equipmentNo}</TableCell>
-                        <TableCell className="text-center">
-                          <div className="flex justify-center">
-                            <Select 
-                              value={transformer.status} 
-                              onValueChange={(newStatus) => updateStatus(transformer.id, newStatus)}
-                            >
-                              <SelectTrigger className="w-48 h-10 text-base">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent className="bg-white border shadow-md">
-                                <SelectItem value="เป็น spare">เป็น spare</SelectItem>
-                                <SelectItem value="ถูกปลดออกจากระบบ">ถูกปลดออกจากระบบ</SelectItem>
-                                <SelectItem value="อยู่ในระหว่างซ่อม">อยู่ในระหว่างซ่อม</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleEdit(transformer)}
-                            className="text-blue-600 hover:text-blue-800"
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ชื่อหม้อแปลง</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">สถานที่ตั้ง</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">เขต</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ระดับแรงดัน</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ผู้ผลิต</th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">สถานะ</th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">การดำเนินการ</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {currentTransformers.map((transformer) => (
+                    <tr key={transformer.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-900">{transformer.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-900">{transformer.location}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-900">{transformer.region}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-900">{transformer.capacity}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-900">{transformer.manufacturer}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <div className="flex justify-center">
+                          <Select 
+                            value={transformer.status} 
+                            onValueChange={(value) => handleStatusChange(transformer.id, value)}
                           >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleRelocate(transformer)}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-lg">
-                        ไม่พบข้อมูลหม้อแปลงไฟฟ้า
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                            <SelectTrigger className="w-32 text-sm justify-center">
+                              <SelectValue>
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(transformer.status)}`}>
+                                  {getStatusText(transformer.status)}
+                                </span>
+                              </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent className="bg-white">
+                              <SelectItem value="operational">ปกติ</SelectItem>
+                              <SelectItem value="maintenance">ซ่อมบำรุง</SelectItem>
+                              <SelectItem value="damaged">ชำรุด</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <Button
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                        >
+                          ย้าย
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             
-            {/* Pagination inside the card */}
-            <div className="flex justify-center p-4 border-t">
-              <CustomPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
+            {/* Pagination */}
+            <div className="px-6 py-4 border-t border-gray-200 bg-white">
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-700">
+                  แสดง {startIndex + 1} ถึง {Math.min(startIndex + itemsPerPage, filteredTransformers.length)} จาก {filteredTransformers.length} รายการ
+                </div>
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="text-sm"
+                  >
+                    ก่อนหน้า
+                  </Button>
+                  <span className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded">
+                    หน้า {currentPage} จาก {totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="text-sm"
+                  >
+                    ถัดไป
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
-
-      {/* Modals */}
-      <TransformerEditModal 
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-      />
-      <TransformerRelocateModal 
-        isOpen={isRelocateModalOpen}
-        onClose={() => setIsRelocateModalOpen(false)}
-      />
     </DashboardLayout>
   );
 };
