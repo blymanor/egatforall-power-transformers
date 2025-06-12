@@ -1,322 +1,322 @@
 
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import { Search, Download, FileText, BarChart3 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import ReportResults from "@/components/reports/transformer/ReportResults";
 
 const DamageReport = () => {
-  const [conditions, setConditions] = useState({
-    startAge: "",
-    endAge: "",
-    region: false,
-    regionValue: "",
-    station: false,
-    stationValue: "",
-    manufacturer: false,
-    manufacturerValue: "",
-    transformer: false,
-    transformerValue: "",
-    waterContent: false,
-    waterContentValue: "",
-    usage: false,
-    usageValue: "",
-    ageGroup: "",
-    damageLevel: false,
-    damageLevelValue: "",
-    groupBy: ""
-  });
+  const { toast } = useToast();
+  const [showResults, setShowResults] = useState(false);
+  
+  // Filter states
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedStation, setSelectedStation] = useState("");
+  const [selectedManufacturer, setSelectedManufacturer] = useState("");
+  const [selectedTransformer, setSelectedTransformer] = useState("");
+  const [selectedEnvironment, setSelectedEnvironment] = useState("");
+  const [selectedOperatingCondition, setSelectedOperatingCondition] = useState("");
+  const [selectedAbnormalityDetails, setSelectedAbnormalityDetails] = useState("");
+  const [selectedEquipmentGroup, setSelectedEquipmentGroup] = useState("");
+  const [selectedDamagedParts, setSelectedDamagedParts] = useState("");
+  const [selectedDamageLevel, setSelectedDamageLevel] = useState("");
+  const [selectedRootCause, setSelectedRootCause] = useState("");
+  const [selectedManagement, setSelectedManagement] = useState("");
+  
+  const [groupBy, setGroupBy] = useState("");
 
-  const [showReport, setShowReport] = useState(false);
-
-  const chartData = [
-    { region: "เหนือ", count: 12 },
-    { region: "ตะวันออกเฉียงเหนือ", count: 8 },
-    { region: "กลาง", count: 15 },
-    { region: "ใต้", count: 6 },
-  ];
-
-  const handleShowReport = () => {
-    setShowReport(true);
+  const handleGenerateReport = () => {
+    toast({
+      title: "กำลังสร้างรายงาน",
+      description: "กรุณารอสักครู่...",
+    });
+    
+    setTimeout(() => {
+      setShowResults(true);
+      toast({
+        title: "สร้างรายงานสำเร็จ",
+        description: "รายงานได้ถูกสร้างเรียบร้อยแล้ว",
+      });
+    }, 1500);
   };
 
-  // Generate age options from 0-20
-  const ageOptions = Array.from({ length: 21 }, (_, i) => i);
+  const handleExportReport = () => {
+    toast({
+      title: "กำลังส่งออกรายงาน",
+      description: "รายงานกำลังถูกดาวน์โหลด...",
+    });
+  };
+
+  if (showResults) {
+    return (
+      <DashboardLayout>
+        <ReportResults 
+          onBack={() => setShowResults(false)}
+          reportType="damage"
+          groupBy={groupBy}
+        />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
-      <div className="bg-[#f0f4fa] p-6">
-        <div className="border-l-4 border-blue-500 pl-4 mb-4">
-          <h2 className="text-2xl font-semibold text-gray-800">รายงานข้อมูลความเสียหาย</h2>
-          <p className="text-lg text-gray-600">Damage Report</p>
-        </div>
-      </div>
-
       <div className="p-6 space-y-6 bg-[#f0f4fa]">
-        <Card className="mx-auto shadow-md rounded-xl overflow-hidden border-0">
-          <CardContent className="p-8">
-            <div className="space-y-8">
-              {/* Header */}
-              <div className="text-center space-y-2">
-                <h1 className="text-2xl font-bold text-gray-800">รายงานตามผู้ใช้งานสำหรับข้อมูลความเสียหาย</h1>
-                <p className="text-gray-600">สามารถเลือกได้เพียงแค่หนึ่งเงื่อนไขในการสร้างรายงาน</p>
-              </div>
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">รายงานข้อมูลความเสียหาย</h1>
+          <p className="text-sm text-gray-600">Damage Information Report</p>
+        </div>
 
-              {/* Form Section */}
-              <div className="grid grid-cols-2 gap-8">
-                {/* Left Column */}
-                <div className="space-y-6">
-                  <div>
-                    <Label className="text-base font-medium text-gray-700 mb-2 block">อายุเริ่มต้น:</Label>
-                    <Select value={conditions.startAge} onValueChange={(value) => setConditions({...conditions, startAge: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="เลือกอายุเริ่มต้น" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ageOptions.map(age => (
-                          <SelectItem key={age} value={age.toString()}>{age} ปี</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.region} 
-                        onCheckedChange={(checked) => setConditions({...conditions, region: !!checked})}
-                        id="region-use" 
-                      />
-                      <Label htmlFor="region-use" className="text-base font-medium text-gray-700 cursor-pointer">เขต : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.regionValue} onValueChange={(value) => setConditions({...conditions, regionValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกเขต" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="north">เหนือ</SelectItem>
-                          <SelectItem value="northeast">ตะวันออกเฉียงเหนือ</SelectItem>
-                          <SelectItem value="central">กลาง</SelectItem>
-                          <SelectItem value="south">ใต้</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.manufacturer} 
-                        onCheckedChange={(checked) => setConditions({...conditions, manufacturer: !!checked})}
-                        id="manufacturer-use" 
-                      />
-                      <Label htmlFor="manufacturer-use" className="text-base font-medium text-gray-700 cursor-pointer">บริษัทผู้ผลิต : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.manufacturerValue} onValueChange={(value) => setConditions({...conditions, manufacturerValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="abb">ABB</SelectItem>
-                          <SelectItem value="siemens">Siemens</SelectItem>
-                          <SelectItem value="hitachi">Hitachi</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.waterContent} 
-                        onCheckedChange={(checked) => setConditions({...conditions, waterContent: !!checked})}
-                        id="water-use" 
-                      />
-                      <Label htmlFor="water-use" className="text-base font-medium text-gray-700 cursor-pointer">สภาพแวดล้อม : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.waterContentValue} onValueChange={(value) => setConditions({...conditions, waterContentValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกสภาพแวดล้อม" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="dry">แห้ง</SelectItem>
-                          <SelectItem value="humid">ชื้น</SelectItem>
-                          <SelectItem value="wet">เปียก</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.damageLevel} 
-                        onCheckedChange={(checked) => setConditions({...conditions, damageLevel: !!checked})}
-                        id="damage-use" 
-                      />
-                      <Label htmlFor="damage-use" className="text-base font-medium text-gray-700 cursor-pointer">รายละเอียดความผิดปกติ : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.damageLevelValue} onValueChange={(value) => setConditions({...conditions, damageLevelValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกรายละเอียดความผิดปกติ" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="minor">เล็กน้อย</SelectItem>
-                          <SelectItem value="moderate">ปานกลาง</SelectItem>
-                          <SelectItem value="severe">รุนแรง</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column */}
-                <div className="space-y-6">
-                  <div>
-                    <Label className="text-base font-medium text-gray-700 mb-2 block">อายุสิ้นสุด:</Label>
-                    <Select value={conditions.endAge} onValueChange={(value) => setConditions({...conditions, endAge: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="เลือกอายุสิ้นสุด" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ageOptions.map(age => (
-                          <SelectItem key={age} value={age.toString()}>{age} ปี</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.station} 
-                        onCheckedChange={(checked) => setConditions({...conditions, station: !!checked})}
-                        id="station-use" 
-                      />
-                      <Label htmlFor="station-use" className="text-base font-medium text-gray-700 cursor-pointer">สถานีไฟฟ้า : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.stationValue} onValueChange={(value) => setConditions({...conditions, stationValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="station1">สถานี 1</SelectItem>
-                          <SelectItem value="station2">สถานี 2</SelectItem>
-                          <SelectItem value="station3">สถานี 3</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.transformer} 
-                        onCheckedChange={(checked) => setConditions({...conditions, transformer: !!checked})}
-                        id="transformer-use" 
-                      />
-                      <Label htmlFor="transformer-use" className="text-base font-medium text-gray-700 cursor-pointer">หม่อมฟองไฟฟ้า : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.transformerValue} onValueChange={(value) => setConditions({...conditions, transformerValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกหม่อมฟองไฟฟ้า" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="type1">ชนิด 1</SelectItem>
-                          <SelectItem value="type2">ชนิด 2</SelectItem>
-                          <SelectItem value="type3">ชนิด 3</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        checked={conditions.usage} 
-                        onCheckedChange={(checked) => setConditions({...conditions, usage: !!checked})}
-                        id="usage-use" 
-                      />
-                      <Label htmlFor="usage-use" className="text-base font-medium text-gray-700 cursor-pointer">สถานะการใช้งาน : ใช้เงื่อนไข</Label>
-                    </div>
-
-                    <div>
-                      <Select value={conditions.usageValue} onValueChange={(value) => setConditions({...conditions, usageValue: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกสถานะการใช้งาน" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="active">ใช้งาน</SelectItem>
-                          <SelectItem value="standby">สำรอง</SelectItem>
-                          <SelectItem value="maintenance">ซ่อมบำรุง</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Group By Section */}
-              <div className="border-t pt-6">
-                <Label className="text-lg font-medium text-gray-700 mb-4 block">เลือกการแบ่งกลุ่ม (แบ่งตาม)</Label>
-                <Select value={conditions.groupBy} onValueChange={(value) => setConditions({...conditions, groupBy: value})}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="เขต" />
+        {/* Filter Form */}
+        <Card className="shadow-md rounded-xl overflow-hidden border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b">
+            <CardTitle className="text-xl font-semibold text-gray-800">เงื่อนไขการค้นหา</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* เขต */}
+              <div className="space-y-2">
+                <Label htmlFor="region">เขต :</Label>
+                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกเขต" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="region">เขต</SelectItem>
-                    <SelectItem value="manufacturer">บริษัทผู้ผลิต</SelectItem>
-                    <SelectItem value="age">อายุ</SelectItem>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="north">เหนือ</SelectItem>
+                    <SelectItem value="northeast">ตะวันออกเฉียงเหนือ</SelectItem>
+                    <SelectItem value="central">กลาง</SelectItem>
+                    <SelectItem value="south">ใต้</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Generate Report Button */}
-              <div className="flex justify-center pt-6">
-                <Button 
-                  onClick={handleShowReport}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-3 text-lg rounded-lg"
-                >
-                  แสดงรายงาน
-                </Button>
+              {/* สถานีไฟฟ้า */}
+              <div className="space-y-2">
+                <Label htmlFor="station">สถานีไฟฟ้า :</Label>
+                <Select value={selectedStation} onValueChange={setSelectedStation}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกสถานีไฟฟ้า" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="station1">สถานี 1</SelectItem>
+                    <SelectItem value="station2">สถานี 2</SelectItem>
+                    <SelectItem value="station3">สถานี 3</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
-              {/* Chart Section */}
-              {showReport && (
-                <div className="mt-8">
-                  <h3 className="text-xl font-bold text-black mb-6">ผลลัพธ์รายงาน</h3>
-                  <div className="bg-white p-6 rounded-lg shadow-sm border">
-                    <ResponsiveContainer width="100%" height={400}>
-                      <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="region" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="count" fill="#dc2626" name="จำนวนหม้อแปลงชำรุด" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              )}
+              {/* ชื่อบริษัทผู้ผลิต */}
+              <div className="space-y-2">
+                <Label htmlFor="manufacturer">ชื่อบริษัทผู้ผลิต :</Label>
+                <Select value={selectedManufacturer} onValueChange={setSelectedManufacturer}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกบริษัทผู้ผลิต" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="abb">ABB</SelectItem>
+                    <SelectItem value="siemens">Siemens</SelectItem>
+                    <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* หม้อแปลงไฟฟ้า */}
+              <div className="space-y-2">
+                <Label htmlFor="transformer">หม้อแปลงไฟฟ้า :</Label>
+                <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="transformer1">หม้อแปลง 1</SelectItem>
+                    <SelectItem value="transformer2">หม้อแปลง 2</SelectItem>
+                    <SelectItem value="transformer3">หม้อแปลง 3</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* สภาพแวดล้อม */}
+              <div className="space-y-2">
+                <Label htmlFor="environment">สภาพแวดล้อม :</Label>
+                <Select value={selectedEnvironment} onValueChange={setSelectedEnvironment}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกสภาพแวดล้อม" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="indoor">ในอาคาร</SelectItem>
+                    <SelectItem value="outdoor">กลางแจ้ง</SelectItem>
+                    <SelectItem value="coastal">ชายฝั่งทะเล</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* สภาวะการใช้งานขณะพบความผิดปกติ */}
+              <div className="space-y-2">
+                <Label htmlFor="operatingCondition">สภาวะการใช้งานขณะพบความผิดปกติ :</Label>
+                <Select value={selectedOperatingCondition} onValueChange={setSelectedOperatingCondition}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกสภาวะการใช้งาน" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="normal">ปกติ</SelectItem>
+                    <SelectItem value="overload">โอเวอร์โหลด</SelectItem>
+                    <SelectItem value="maintenance">ระหว่างบำรุงรักษา</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* รายละเอียดความผิดปกติหรือเสียหาย */}
+              <div className="space-y-2">
+                <Label htmlFor="abnormalityDetails">รายละเอียดความผิดปกติหรือเสียหาย :</Label>
+                <Select value={selectedAbnormalityDetails} onValueChange={setSelectedAbnormalityDetails}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกรายละเอียด" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="electrical">ไฟฟ้า</SelectItem>
+                    <SelectItem value="mechanical">เครื่องกล</SelectItem>
+                    <SelectItem value="thermal">ความร้อน</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* กลุ่มอุปกรณ์ */}
+              <div className="space-y-2">
+                <Label htmlFor="equipmentGroup">กลุ่มอุปกรณ์ :</Label>
+                <Select value={selectedEquipmentGroup} onValueChange={setSelectedEquipmentGroup}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกกลุ่มอุปกรณ์" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="primary">อุปกรณ์หลัก</SelectItem>
+                    <SelectItem value="secondary">อุปกรณ์รอง</SelectItem>
+                    <SelectItem value="control">ระบบควบคุม</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* ชิ้นส่วนที่เสียหายหรือผิดปกติ */}
+              <div className="space-y-2">
+                <Label htmlFor="damagedParts">ชิ้นส่วนที่เสียหายหรือผิดปกติ :</Label>
+                <Select value={selectedDamagedParts} onValueChange={setSelectedDamagedParts}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกชิ้นส่วน" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="winding">คอยล์</SelectItem>
+                    <SelectItem value="core">แกนเหล็ก</SelectItem>
+                    <SelectItem value="tank">ถังน้ำมัน</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* ระดับความเสียหาย */}
+              <div className="space-y-2">
+                <Label htmlFor="damageLevel">ระดับความเสียหาย :</Label>
+                <Select value={selectedDamageLevel} onValueChange={setSelectedDamageLevel}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกระดับความเสียหาย" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="minor">เล็กน้อย</SelectItem>
+                    <SelectItem value="moderate">ปานกลาง</SelectItem>
+                    <SelectItem value="severe">รุนแรง</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* สาเหตุที่แท้จริง */}
+              <div className="space-y-2">
+                <Label htmlFor="rootCause">สาเหตุที่แท้จริง :</Label>
+                <Select value={selectedRootCause} onValueChange={setSelectedRootCause}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกสาเหตุ" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="aging">อายุการใช้งาน</SelectItem>
+                    <SelectItem value="maintenance">การบำรุงรักษา</SelectItem>
+                    <SelectItem value="environment">สภาพแวดล้อม</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* การจัดการ */}
+              <div className="space-y-2">
+                <Label htmlFor="management">การจัดการ :</Label>
+                <Select value={selectedManagement} onValueChange={setSelectedManagement}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกการจัดการ" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="repair">ซ่อมแซม</SelectItem>
+                    <SelectItem value="replace">เปลี่ยนใหม่</SelectItem>
+                    <SelectItem value="monitor">ติดตาม</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
+
+        {/* Report Configuration */}
+        <Card className="shadow-md rounded-xl overflow-hidden border-0">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b">
+            <CardTitle className="text-xl font-semibold text-gray-800">การตั้งค่ารายงาน</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="groupBy">เลือกการแบ่งกลุ่ม :</Label>
+                <Select value={groupBy} onValueChange={setGroupBy}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกการแบ่งกลุ่ม" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="region">เขต</SelectItem>
+                    <SelectItem value="station">สถานีไฟฟ้า</SelectItem>
+                    <SelectItem value="manufacturer">ชื่อบริษัทผู้ผลิต</SelectItem>
+                    <SelectItem value="transformer">หม้อแปลงไฟฟ้า</SelectItem>
+                    <SelectItem value="environment">สภาพแวดล้อม</SelectItem>
+                    <SelectItem value="operatingCondition">สภาวะการใช้งานขณะพบความผิดปกติ</SelectItem>
+                    <SelectItem value="abnormalityDetails">รายละเอียดความผิดปกติหรือเสียหาย</SelectItem>
+                    <SelectItem value="equipmentGroup">กลุ่มอุปกรณ์</SelectItem>
+                    <SelectItem value="damagedParts">ชิ้นส่วนที่เสียหายหรือผิดปกติ</SelectItem>
+                    <SelectItem value="damageLevel">ระดับความเสียหาย</SelectItem>
+                    <SelectItem value="rootCause">สาเหตุที่แท้จริง</SelectItem>
+                    <SelectItem value="management">การจัดการ</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4">
+          <Button 
+            onClick={handleGenerateReport}
+            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg flex items-center gap-2"
+          >
+            <BarChart3 className="h-5 w-5" />
+            สร้างรายงาน
+          </Button>
+          <Button 
+            onClick={handleExportReport}
+            variant="outline"
+            className="px-8 py-3 border-blue-600 text-blue-600 hover:bg-blue-50 font-medium rounded-lg flex items-center gap-2"
+          >
+            <Download className="h-5 w-5" />
+            ส่งออกรายงาน
+          </Button>
+        </div>
       </div>
     </DashboardLayout>
   );

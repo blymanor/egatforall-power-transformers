@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Search, Edit, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Edit, ArrowRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Table,
@@ -18,6 +17,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import TransformerEditModal from "@/components/modals/TransformerEditModal";
 import TransformerRelocateModal from "@/components/modals/TransformerRelocateModal";
+import CustomPagination from "@/components/ui/custom-pagination";
 
 const TransformerRelocationInfo = () => {
   const { toast } = useToast();
@@ -90,7 +90,7 @@ const TransformerRelocationInfo = () => {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">การย้ายหม้อแปลงไฟฟ้า</h1>
-          <p className="text-sm text-gray-600">Transformer Relocation Information</p>
+          <p className="text-sm text-gray-600">transformer relocation information</p>
         </div>
 
         {/* Search and Filter Section */}
@@ -99,9 +99,9 @@ const TransformerRelocationInfo = () => {
             <div className="flex justify-between items-center gap-4">
               {/* Left side - Status Filter */}
               <div className="flex items-center gap-2">
-                <Label className="text-sm text-gray-600 whitespace-nowrap">สถานะ:</Label>
+                <Label className="text-base text-gray-600 whitespace-nowrap">สถานะ:</Label>
                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                  <SelectTrigger className="w-60 focus:ring-0 border border-gray-300">
+                  <SelectTrigger className="w-72 focus:ring-0 border border-gray-300 text-base">
                     <SelectValue placeholder="เลือกสถานะ" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border shadow-md">
@@ -120,7 +120,7 @@ const TransformerRelocationInfo = () => {
                   placeholder="ค้นหาหม้อแปลง..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 focus-visible:ring-0"
+                  className="pl-10 focus-visible:ring-0 text-base"
                 />
               </div>
             </div>
@@ -134,25 +134,25 @@ const TransformerRelocationInfo = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center">Equipment No.</TableHead>
-                    <TableHead className="text-center">บริษัทผู้ผลิต</TableHead>
-                    <TableHead className="text-center">สถานะ</TableHead>
-                    <TableHead className="text-center">แก้ไข</TableHead>
-                    <TableHead className="text-center">ย้ายเข้า</TableHead>
+                    <TableHead className="text-center text-base">Equipment No.</TableHead>
+                    <TableHead className="text-center text-base">บริษัทผู้ผลิต</TableHead>
+                    <TableHead className="text-center text-base">สถานะ</TableHead>
+                    <TableHead className="text-center text-base">แก้ไข</TableHead>
+                    <TableHead className="text-center text-base">ย้ายเข้า</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {currentData.length > 0 ? (
                     currentData.map((transformer) => (
                       <TableRow key={transformer.id} className="hover:bg-blue-50/30">
-                        <TableCell className="text-center">{transformer.deviceNo}</TableCell>
-                        <TableCell className="text-center">{transformer.equipmentNo}</TableCell>
+                        <TableCell className="text-center text-base">{transformer.deviceNo}</TableCell>
+                        <TableCell className="text-center text-base">{transformer.equipmentNo}</TableCell>
                         <TableCell className="text-center">
                           <Select 
                             value={transformer.status} 
                             onValueChange={(newStatus) => updateStatus(transformer.id, newStatus)}
                           >
-                            <SelectTrigger className="w-auto min-w-32 h-8 text-xs">
+                            <SelectTrigger className="w-auto min-w-40 h-8 text-sm">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-white border shadow-md">
@@ -186,7 +186,7 @@ const TransformerRelocationInfo = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center">
+                      <TableCell colSpan={5} className="h-24 text-center text-base">
                         ไม่พบข้อมูลหม้อแปลงไฟฟ้า
                       </TableCell>
                     </TableRow>
@@ -198,30 +198,12 @@ const TransformerRelocationInfo = () => {
         </Card>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            ก่อนหน้า
-          </Button>
-          
-          <span className="text-sm text-gray-600">
-            หน้า {currentPage} จาก {totalPages}
-          </span>
-          
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="flex items-center gap-2"
-          >
-            ถัดไป
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+        <div className="flex justify-center">
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
 
