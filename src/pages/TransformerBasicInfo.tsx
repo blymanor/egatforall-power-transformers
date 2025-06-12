@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,7 +23,7 @@ const TransformerBasicInfo = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTransformer, setSelectedTransformer] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -73,12 +72,12 @@ const TransformerBasicInfo = () => {
   const currentData = filteredTransformers.slice(startIndex, startIndex + itemsPerPage);
 
   const handleAddTransformer = () => {
-    setSelectedTransformer(null);
+    setIsEditing(false);
     setIsModalOpen(true);
   };
 
   const handleEdit = (transformer) => {
-    setSelectedTransformer(transformer);
+    setIsEditing(true);
     setIsModalOpen(true);
     toast({
       title: "แก้ไขข้อมูล",
@@ -92,20 +91,6 @@ const TransformerBasicInfo = () => {
       description: `ลบข้อมูลหม้อแปลง ${transformer.equipmentNo}`,
       variant: "destructive"
     });
-  };
-
-  const handleSave = (transformerData) => {
-    if (selectedTransformer) {
-      toast({
-        title: "บันทึกข้อมูลสำเร็จ",
-        description: "แก้ไขข้อมูลหม้อแปลงเรียบร้อยแล้ว",
-      });
-    } else {
-      toast({
-        title: "เพิ่มข้อมูลสำเร็จ",
-        description: "เพิ่มหม้อแปลงใหม่เรียบร้อยแล้ว",
-      });
-    }
   };
 
   return (
@@ -233,8 +218,7 @@ const TransformerBasicInfo = () => {
       <TransformerModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        transformer={selectedTransformer}
-        onSave={handleSave}
+        isEditing={isEditing}
       />
     </DashboardLayout>
   );
