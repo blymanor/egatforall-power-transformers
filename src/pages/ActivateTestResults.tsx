@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +9,6 @@ import { CheckCircle, ChevronDown } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-// Health data for the charts - different data for each transformer
 const transformerData: any = {
   "AT2-KT1A": {
     ghi: [
@@ -250,7 +248,7 @@ const ActivateTestResults = () => {
     setIsActivated(false);
   };
 
-  const currentData = transformer && isActivated ? transformerData[transformer] : null;
+  const currentData = transformer && isActivated && transformerData[transformer] ? transformerData[transformer] : null;
   
   console.log("Current transformer:", transformer);
   console.log("Is activated:", isActivated);
@@ -442,7 +440,6 @@ const ActivateTestResults = () => {
                   ) : (
                     currentData && (
                       <div className="space-y-6">
-                        {/* Header Information */}
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div className="bg-green-100 p-3 rounded">
@@ -460,14 +457,12 @@ const ActivateTestResults = () => {
                           </div>
                         </div>
 
-                        {/* Charts Section */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                           <CustomPieChart data={currentData.ghi} title="%GHI" centerValue={currentData.ghiValue} />
                           <CustomPieChart data={currentData.chi} title="%CHI" centerValue={currentData.chiValue} />
                           <CustomPieChart data={currentData.ohi} title="%OHI" centerValue={currentData.ohiValue} />
                         </div>
 
-                        {/* Health Index Summary */}
                         <div className="grid grid-cols-3 gap-4">
                           <div className="bg-green-100 border border-green-200 rounded p-4 text-center">
                             <div className="font-medium text-green-800">General Health Index (%GHI):</div>
@@ -483,7 +478,6 @@ const ActivateTestResults = () => {
                           </div>
                         </div>
 
-                        {/* Groups Sections */}
                         <div className="space-y-6">
                           <GroupSection title="กลุ่ม Active Part" data={currentData.activeParts} />
                           <GroupSection title="กลุ่ม น้ำมันของหม้อแปลง" data={currentData.oilAnalysis} />

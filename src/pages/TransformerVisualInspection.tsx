@@ -8,6 +8,12 @@ import { ChevronDown, Eye, Pencil, Search, Trash2, Shield, CloudLightning, Box, 
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import GeneralConditionModal from "@/components/modals/GeneralConditionModal";
+import BushingModal from "@/components/modals/BushingModal";
+import LightningArresterModal from "@/components/modals/LightningArresterModal";
+import ConservatorTankModal from "@/components/modals/ConservatorTankModal";
+import MainTankModal from "@/components/modals/MainTankModal";
+import HotLineOilFilterModal from "@/components/modals/HotLineOilFilterModal";
 
 interface InspectionRecord {
   id: number;
@@ -23,8 +29,14 @@ const TransformerVisualInspection = () => {
   const [selectedCategory, setSelectedCategory] = useState("general-condition");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Modal states
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    mode: "add" as "add" | "view" | "edit",
+    data: null as any
+  });
 
-  // Mock data for the dropdown options with added icon info
   const categories = [
     { value: "general-condition", label: "List all General Condition", icon: "Shield" },
     { value: "bushing", label: "List all Bushing", icon: "CloudLightning" },
@@ -41,11 +53,9 @@ const TransformerVisualInspection = () => {
     { value: "thermo-scan", label: "List all Thermo Scan", icon: "Thermometer" }
   ];
 
-  // Dynamic mock data based on selected category
   const getMockRecords = (category: string): InspectionRecord[] => {
     return Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,
-      // Change data based on selected category
       transformerName: category.includes("oltc") ? `OLTC-${i+1}` : 
                       category === "bushing" ? `BSH-${i+1}` : 
                       category === "lightning-arrester" ? `LA-${i+1}` : `AN-KT1A`,
@@ -59,10 +69,7 @@ const TransformerVisualInspection = () => {
     }));
   };
 
-  // Get records based on selected category
   const records = getMockRecords(selectedCategory);
-
-  // Filter records based on search query
   const filteredRecords = records.filter(record => 
     record.transformerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     record.egatSn.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -84,16 +91,22 @@ const TransformerVisualInspection = () => {
     });
   };
 
+  const openModal = (mode: "add" | "view" | "edit", data?: any) => {
+    setModalState({ isOpen: true, mode, data });
+  };
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, mode: "add", data: null });
+  };
+
   const handleView = (id: number) => {
-    toast.info(`ดูข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+    const record = filteredRecords.find(r => r.id === id);
+    openModal("view", record);
   };
 
   const handleEdit = (id: number) => {
-    toast.info(`แก้ไขข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+    const record = filteredRecords.find(r => r.id === id);
+    openModal("edit", record);
   };
 
   const handleDelete = (id: number) => {
@@ -103,12 +116,9 @@ const TransformerVisualInspection = () => {
   };
 
   const handleCreate = () => {
-    toast.success("สร้างรายการใหม่", {
-      description: "กำลังเปิดฟอร์มสำหรับสร้างรายการใหม่",
-    });
+    openModal("add");
   };
 
-  // Function to render the appropriate icon based on category
   const renderCategoryIcon = () => {
     const iconName = categories.find(c => c.value === selectedCategory)?.icon || "Shield";
     
@@ -126,6 +136,27 @@ const TransformerVisualInspection = () => {
       case "Wrench": return <Wrench className="h-5 w-5 text-blue-500" />;
       case "BarChart": return <BarChart className="h-5 w-5 text-blue-500" />;
       default: return <Shield className="h-5 w-5 text-blue-500" />;
+    }
+  };
+
+  const renderModal = () => {
+    const { isOpen, mode, data } = modalState;
+    
+    switch (selectedCategory) {
+      case "general-condition":
+        return <GeneralConditionModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "bushing":
+        return <BushingModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "lightning-arrester":
+        return <LightningArresterModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "conservator-tank":
+        return <ConservatorTankModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "main-tank":
+        return <MainTankModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "hot-line-oil-filter":
+        return <HotLineOilFilterModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      default:
+        return null;
     }
   };
 
@@ -265,6 +296,8 @@ const TransformerVisualInspection = () => {
             </div>
           </CardContent>
         </Card>
+        
+        {renderModal()}
       </div>
     </DashboardLayout>
   );
