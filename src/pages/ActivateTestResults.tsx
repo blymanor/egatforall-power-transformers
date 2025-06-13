@@ -1,8 +1,9 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, ChevronDown } from "lucide-react";
@@ -137,14 +138,90 @@ const transformerData: any = {
     ghiValue: "99.896",
     chiValue: "82.306",
     ohiValue: "91.526"
+  },
+  "AN-473A": {
+    ghi: [
+      { name: 'Very Good', value: 40, color: '#22c55e' },
+      { name: 'Good', value: 30, color: '#3b82f6' },
+      { name: 'Fair', value: 15, color: '#eab308' },
+      { name: 'Poor', value: 10, color: '#f97316' },
+      { name: 'Very Poor', value: 5, color: '#ef4444' }
+    ],
+    chi: [
+      { name: 'Very Good', value: 35, color: '#22c55e' },
+      { name: 'Good', value: 25, color: '#3b82f6' },
+      { name: 'Fair', value: 20, color: '#eab308' },
+      { name: 'Poor', value: 15, color: '#f97316' },
+      { name: 'Very Poor', value: 5, color: '#ef4444' }
+    ],
+    ohi: [
+      { name: 'Very Good', value: 38, color: '#22c55e' },
+      { name: 'Good', value: 27, color: '#3b82f6' },
+      { name: 'Fair', value: 18, color: '#eab308' },
+      { name: 'Poor', value: 12, color: '#f97316' },
+      { name: 'Very Poor', value: 5, color: '#ef4444' }
+    ],
+    activeParts: {
+      healthIndex: "48.75",
+      factor: "ดี",
+      details: [
+        { name: 'Core Insulation Resistance:', value: '95.0', color: '#22c55e' },
+        { name: 'HV Winding:', value: '48.75', color: '#eab308' },
+        { name: 'LV Winding:', value: '46.20', color: '#eab308' }
+      ]
+    },
+    oilAnalysis: {
+      healthIndex: "80.0",
+      factor: "ดี",
+      details: [
+        { name: 'Oil Aging:', value: '30.0', color: '#22c55e' },
+        { name: 'Oil Contamination:', value: '20.0', color: '#3b82f6' },
+        { name: 'Oil DGA:', value: '5.0', color: '#22c55e' },
+        { name: 'Oil Furan:', value: '3.0', color: '#22c55e' }
+      ]
+    },
+    oltc: {
+      healthIndex: "88.0",
+      factor: "ดี",
+      details: [
+        { name: 'OLTC Contact:', value: '0.0', color: '#6b7280' },
+        { name: 'OLTC-DGA:', value: '3.0', color: '#22c55e' },
+        { name: 'OLTC Oil Contamination:', value: '35.0', color: '#3b82f6' }
+      ]
+    },
+    arrester: {
+      healthIndex: "60.0",
+      factor: "ดี",
+      details: [
+        { name: 'Arrester HV:', value: '25.0', color: '#22c55e' },
+        { name: 'Arrester LV:', value: '35.0', color: '#3b82f6' }
+      ]
+    },
+    bushing: {
+      healthIndex: "0.0",
+      factor: "ดี",
+      details: [
+        { name: 'Bushing HV:', value: '', icon: true },
+        { name: 'Bushing LV:', value: '', icon: true }
+      ]
+    },
+    visualInspection: {
+      factor: "ดี",
+      details: [
+        { name: 'General Condition:', value: '4', color: '#22c55e' },
+        { name: 'Main Tank:', value: '4', color: '#22c55e' },
+        { name: 'Radiator Cooling:', value: '3', color: '#3b82f6' }
+      ]
+    },
+    ghiValue: "89.234",
+    chiValue: "76.892",
+    ohiValue: "83.563"
   }
-  // ... other transformer data would be similar structure
 };
 
 const ActivateTestResults = () => {
   const [transformer, setTransformer] = useState("");
   const [isActivated, setIsActivated] = useState(false);
-  const [activePartOpen, setActivePartOpen] = useState(false);
   const { toast } = useToast();
 
   const handleActivate = () => {
@@ -157,6 +234,9 @@ const ActivateTestResults = () => {
       return;
     }
 
+    console.log("Activating transformer:", transformer);
+    console.log("Available data:", transformerData[transformer]);
+    
     setIsActivated(true);
     toast({
       title: "Test Results Activated",
@@ -165,11 +245,16 @@ const ActivateTestResults = () => {
   };
 
   const handleTransformerChange = (value: string) => {
+    console.log("Transformer changed to:", value);
     setTransformer(value);
     setIsActivated(false);
   };
 
-  const currentData = transformer ? transformerData[transformer] : null;
+  const currentData = transformer && isActivated ? transformerData[transformer] : null;
+  
+  console.log("Current transformer:", transformer);
+  console.log("Is activated:", isActivated);
+  console.log("Current data:", currentData);
 
   const CustomPieChart = ({ data, title, centerValue }: { data: any[], title: string, centerValue: string }) => (
     <div className="bg-white border rounded-lg p-4">

@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -45,18 +45,18 @@ const ChangePassword = () => {
   return (
     <DashboardLayout>
       <div className="min-h-[calc(100vh-4rem)] p-6 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          {/* Header Section - moved to top left */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">เปลี่ยนรหัสผ่าน</h1>
-            <p className="text-gray-600">กรุณาระบุรหัสผ่านใหม่ของคุณ</p>
-          </div>
-          
-          <div className="max-w-lg">
+        {/* Header Section - moved to top left */}
+        <div className="mb-8">
+          <h1 className="text-xl font-bold text-gray-900 mb-1">เปลี่ยนรหัสผ่าน</h1>
+          <p className="text-sm text-gray-600">กรุณาระบุรหัสผ่านใหม่ของคุณ</p>
+        </div>
+        
+        {/* Centered form container */}
+        <div className="flex justify-center items-start min-h-[60vh]">
+          <div className="w-full max-w-lg">
             <Card className="shadow-lg border-0">
               <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
-                <CardTitle className="text-center text-xl flex items-center justify-center gap-2">
-                  <Lock className="h-5 w-5" />
+                <CardTitle className="text-center text-xl">
                   เปลี่ยนรหัสผ่าน
                 </CardTitle>
               </CardHeader>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { UserPlus, Edit, Trash2, Check, X } from "lucide-react";
+import { Edit, Trash2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { 
   Pagination, 
@@ -229,14 +228,14 @@ const UserManagement = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Login</TableHead>
-                  <TableHead>FirstName</TableHead>
-                  <TableHead>LastName</TableHead>
+                  <TableHead>ชื่อผู้ใช้</TableHead>
+                  <TableHead>ชื่อจริง</TableHead>
+                  <TableHead>นามสกุล</TableHead>
                   {privilegeTitles.map((title, index) => (
                     <TableHead key={index}>{title}</TableHead>
                   ))}
-                  <TableHead>Edit</TableHead>
-                  <TableHead>Delete</TableHead>
+                  <TableHead>แก้ไข</TableHead>
+                  <TableHead>ลบ</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
@@ -281,9 +280,8 @@ const UserManagement = () => {
           <div className="p-4 flex justify-between items-center bg-white">
             <Button 
               onClick={handleAddUser} 
-              className="flex items-center gap-2 bg-[#1E5CFF] hover:bg-blue-600 text-white"
+              className="bg-[#1E5CFF] hover:bg-blue-600 text-white"
             >
-              <UserPlus className="h-4 w-4" />
               เพิ่มผู้ใช้งาน
             </Button>
             
