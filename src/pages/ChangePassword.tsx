@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -44,16 +44,17 @@ const ChangePassword = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 bg-gray-50">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">เปลี่ยนรหัสผ่าน</h1>
-          <p className="text-gray-600">กรุณาระบุรหัสผ่านใหม่ของคุณ</p>
-        </div>
-        
-        <div className="max-w-2xl">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-gray-50">
+        <div className="w-full max-w-lg">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">เปลี่ยนรหัสผ่าน</h1>
+            <p className="text-gray-600">กรุณาระบุรหัสผ่านใหม่ของคุณ</p>
+          </div>
+          
           <Card className="shadow-lg border-0">
             <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
-              <CardTitle className="text-center text-xl">
+              <CardTitle className="text-center text-xl flex items-center justify-center gap-2">
+                <Lock className="h-5 w-5" />
                 เปลี่ยนรหัสผ่าน
               </CardTitle>
             </CardHeader>
@@ -153,6 +154,7 @@ const ChangePassword = () => {
                   type="submit" 
                   className="w-full h-12 text-base bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 >
+                  <Lock className="mr-2 h-5 w-5" />
                   เปลี่ยนรหัสผ่าน
                 </Button>
               </CardFooter>

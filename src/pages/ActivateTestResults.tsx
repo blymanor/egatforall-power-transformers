@@ -6,68 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Lock } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-
-// Health data for different transformers
-const transformerData = {
-  "AT2-KT1A": {
-    year: "2024",
-    quarter: "3",
-    ghi: "99.896",
-    chi: "82.306",
-    ohi: "91.526",
-    activePartHealth: "78.18",
-    activeParts: [
-      { name: 'Core Insulation', value: 20.0, color: '#22c55e', value2: 85.5 },
-      { name: 'HV Winding', value: 34.22, color: '#3b82f6', value2: 78.2 },
-      { name: 'LV Winding', value: 31.58, color: '#3b82f6', value2: 82.1 },
-      { name: 'TV Winding', value: 24.0, color: '#3b82f6', value2: 76.8 }
-    ]
-  },
-  "AN-473A": {
-    year: "2024",
-    quarter: "2",
-    ghi: "88.742",
-    chi: "75.123",
-    ohi: "84.315",
-    activePartHealth: "72.45",
-    activeParts: [
-      { name: 'Core Insulation', value: 18.5, color: '#22c55e', value2: 79.2 },
-      { name: 'HV Winding', value: 29.88, color: '#3b82f6', value2: 71.8 },
-      { name: 'LV Winding', value: 27.32, color: '#3b82f6', value2: 75.6 },
-      { name: 'TV Winding', value: 21.75, color: '#3b82f6', value2: 68.9 }
-    ]
-  },
-  "AN-474A": {
-    year: "2024",
-    quarter: "3",
-    ghi: "95.234",
-    chi: "79.456",
-    ohi: "89.123",
-    activePartHealth: "81.32",
-    activeParts: [
-      { name: 'Core Insulation', value: 22.1, color: '#22c55e', value2: 88.7 },
-      { name: 'HV Winding', value: 31.67, color: '#3b82f6', value2: 80.5 },
-      { name: 'LV Winding', value: 28.94, color: '#3b82f6', value2: 84.3 },
-      { name: 'TV Winding', value: 23.61, color: '#3b82f6', value2: 77.1 }
-    ]
-  },
-  "AN-475A": {
-    year: "2024",
-    quarter: "1",
-    ghi: "92.567",
-    chi: "77.890",
-    ohi: "87.234",
-    activePartHealth: "75.89",
-    activeParts: [
-      { name: 'Core Insulation', value: 19.8, color: '#22c55e', value2: 83.4 },
-      { name: 'HV Winding', value: 30.45, color: '#3b82f6', value2: 76.9 },
-      { name: 'LV Winding', value: 28.12, color: '#3b82f6', value2: 79.2 },
-      { name: 'TV Winding', value: 22.52, color: '#3b82f6', value2: 74.6 }
-    ]
-  }
-};
 
 // Health data for the charts
 const ghiData = [
@@ -94,12 +34,17 @@ const ohiData = [
   { name: 'Very Poor', value: 5, color: '#ef4444' }
 ];
 
+const activeParts = [
+  { name: 'Core Insulation', value: 20.0, color: '#22c55e', value2: 85.5 },
+  { name: 'HV Winding', value: 34.22, color: '#3b82f6', value2: 78.2 },
+  { name: 'LV Winding', value: 31.58, color: '#3b82f6', value2: 82.1 },
+  { name: 'TV Winding', value: 24.0, color: '#3b82f6', value2: 76.8 }
+];
+
 const ActivateTestResults = () => {
   const [transformer, setTransformer] = useState("");
   const [isActivated, setIsActivated] = useState(false);
   const { toast } = useToast();
-
-  const currentData = transformer ? transformerData[transformer as keyof typeof transformerData] : null;
 
   const handleActivate = () => {
     if (!transformer) {
@@ -116,11 +61,6 @@ const ActivateTestResults = () => {
       title: "Test Results Activated",
       description: `Successfully activated test results for transformer ${transformer}.`,
     });
-  };
-
-  const handleTransformerChange = (value: string) => {
-    setTransformer(value);
-    setIsActivated(false); // Reset activation when changing transformer
   };
 
   const CustomPieChart = ({ data, title, centerValue }: { data: any[], title: string, centerValue: string }) => (
@@ -183,7 +123,7 @@ const ActivateTestResults = () => {
                 <label htmlFor="transformer" className="text-lg font-medium text-gray-700 block mb-3">
                   หม้อแปลงไฟฟ้า:
                 </label>
-                <Select value={transformer} onValueChange={handleTransformerChange}>
+                <Select value={transformer} onValueChange={setTransformer}>
                   <SelectTrigger id="transformer" className="w-full h-14 text-lg">
                     <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                   </SelectTrigger>
@@ -221,35 +161,35 @@ const ActivateTestResults = () => {
                           </div>
                           <div className="bg-green-100 p-3 rounded">
                             <div className="font-medium text-green-800">ปีที่บันทึก:</div>
-                            <div className="text-green-700">{currentData?.year}</div>
+                            <div className="text-green-700">2024</div>
                           </div>
                           <div className="bg-green-100 p-3 rounded">
                             <div className="font-medium text-green-800">ไตรมาส:</div>
-                            <div className="text-green-700">{currentData?.quarter}</div>
+                            <div className="text-green-700">3</div>
                           </div>
                         </div>
                       </div>
 
                       {/* Charts Section */}
                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <CustomPieChart data={ghiData} title="%GHI" centerValue={currentData?.ghi || "0"} />
-                        <CustomPieChart data={chiData} title="%CHI" centerValue={currentData?.chi || "0"} />
-                        <CustomPieChart data={ohiData} title="%OHI" centerValue={currentData?.ohi || "0"} />
+                        <CustomPieChart data={ghiData} title="%GHI" centerValue="99.896" />
+                        <CustomPieChart data={chiData} title="%CHI" centerValue="82.306" />
+                        <CustomPieChart data={ohiData} title="%OHI" centerValue="91.526" />
                       </div>
 
                       {/* Health Index Summary */}
                       <div className="grid grid-cols-3 gap-4">
                         <div className="bg-green-100 border border-green-200 rounded p-4 text-center">
                           <div className="font-medium text-green-800">General Health Index (%GHI):</div>
-                          <div className="text-2xl font-bold text-green-700">{currentData?.ghi}</div>
+                          <div className="text-2xl font-bold text-green-700">99.896</div>
                         </div>
                         <div className="bg-blue-100 border border-blue-200 rounded p-4 text-center">
                           <div className="font-medium text-blue-800">Component Health Index (%CHI):</div>
-                          <div className="text-2xl font-bold text-blue-700">{currentData?.chi}</div>
+                          <div className="text-2xl font-bold text-blue-700">82.306</div>
                         </div>
                         <div className="bg-green-100 border border-green-200 rounded p-4 text-center">
                           <div className="font-medium text-green-800">Overall Health Index (%OHI):</div>
-                          <div className="text-2xl font-bold text-green-700">{currentData?.ohi}</div>
+                          <div className="text-2xl font-bold text-green-700">91.526</div>
                         </div>
                       </div>
 
@@ -260,12 +200,12 @@ const ActivateTestResults = () => {
                           <div className="flex justify-between items-center p-3 bg-blue-50 rounded">
                             <span className="font-medium">%Health Index:</span>
                             <div className="flex items-center gap-2">
-                              <span className="text-xl font-bold">{currentData?.activePartHealth}</span>
+                              <span className="text-xl font-bold">78.18</span>
                               <div className="w-20 h-4 bg-blue-600 rounded"></div>
                             </div>
                           </div>
                           
-                          {currentData?.activeParts.map((part, index) => (
+                          {activeParts.map((part, index) => (
                             <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded">
                               <span>{part.name}:</span>
                               <div className="flex items-center gap-2">
@@ -283,6 +223,7 @@ const ActivateTestResults = () => {
                                   ></div>
                                 </div>
                                 <span className="text-sm text-gray-600">{part.value2}%</span>
+                                <Lock size={16} className="text-gray-500" />
                               </div>
                             </div>
                           ))}
