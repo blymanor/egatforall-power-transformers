@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -102,15 +103,42 @@ const transformerData: any = {
       ]
     },
     bushing: {
-      healthIndex: "0.0",
+      healthIndex: "85.0",
       factor: "ดี",
       details: [
-        { name: 'Bushing HV:', value: '', icon: true },
-        { name: 'Bushing LV:', value: '', icon: true },
-        { name: 'Bushing TV:', value: '', icon: true }
+        { name: 'Bushing HV:', value: '85.0', color: '#22c55e' },
+        { name: 'Bushing LV:', value: '90.0', color: '#22c55e' },
+        { name: 'Bushing TV:', value: '80.0', color: '#3b82f6' }
+      ]
+    },
+    generalCondition: {
+      healthIndex: "92.5",
+      factor: "ดี",
+      details: [
+        { name: 'DGA:', value: '4', color: '#22c55e' },
+        { name: 'Load History:', value: '4', color: '#22c55e' },
+        { name: 'Power Factor:', value: '4', color: '#22c55e' },
+        { name: 'Thermo Scan:', value: '2', color: '#3b82f6' },
+        { name: 'Oil Quality:', value: '1', color: '#f97316' },
+        { name: 'Furan:', value: '4', color: '#22c55e' },
+        { name: 'General Condition:', value: '4', color: '#22c55e' },
+        { name: 'Bushing:', value: '2', color: '#eab308' },
+        { name: 'Lightning Arrester:', value: '4', color: '#22c55e' },
+        { name: 'Conservator Tank:', value: '4', color: '#22c55e' },
+        { name: 'Main Tank:', value: '4', color: '#22c55e' },
+        { name: 'Hot Line Oil Filter:', value: '4', color: '#22c55e' },
+        { name: 'Radiator Cooling:', value: '4', color: '#22c55e' },
+        { name: 'Transformer Control Cabinet:', value: '4', color: '#22c55e' },
+        { name: 'NGR:', value: '3', color: '#3b82f6' },
+        { name: 'Regulating PT:', value: '4', color: '#22c55e' },
+        { name: 'OLTC Compartment:', value: '4', color: '#22c55e' },
+        { name: 'OLTC Control Cabinet:', value: '4', color: '#22c55e' },
+        { name: 'OLTC DGA:', value: '4', color: '#22c55e' },
+        { name: 'OLTC Oil Quality:', value: '2', color: '#eab308' }
       ]
     },
     visualInspection: {
+      healthIndex: "88.2",
       factor: "ดี",
       details: [
         { name: 'Conservator Tank:', value: '4', color: '#22c55e' },
@@ -196,14 +224,24 @@ const transformerData: any = {
       ]
     },
     bushing: {
-      healthIndex: "0.0",
+      healthIndex: "75.0",
       factor: "ดี",
       details: [
-        { name: 'Bushing HV:', value: '', icon: true },
-        { name: 'Bushing LV:', value: '', icon: true }
+        { name: 'Bushing HV:', value: '80.0', color: '#3b82f6' },
+        { name: 'Bushing LV:', value: '70.0', color: '#eab308' }
+      ]
+    },
+    generalCondition: {
+      healthIndex: "90.0",
+      factor: "ดี",
+      details: [
+        { name: 'General Condition:', value: '4', color: '#22c55e' },
+        { name: 'Main Tank:', value: '4', color: '#22c55e' },
+        { name: 'Radiator Cooling:', value: '3', color: '#3b82f6' }
       ]
     },
     visualInspection: {
+      healthIndex: "85.0",
       factor: "ดี",
       details: [
         { name: 'General Condition:', value: '4', color: '#22c55e' },
@@ -484,7 +522,8 @@ const ActivateTestResults = () => {
                           <GroupSection title="กลุ่ม OLTC" data={currentData.oltc} />
                           <GroupSection title="กลุ่ม Arrester" data={currentData.arrester} />
                           <GroupSection title="กลุ่ม Bushing" data={currentData.bushing} />
-                          <GroupSection title="กลุ่ม Visual Inspection" data={currentData.visualInspection} hasHealthIndex={false} />
+                          <GroupSection title="กลุ่ม General Condition" data={currentData.generalCondition} />
+                          <GroupSection title="กลุ่ม Visual Inspection" data={currentData.visualInspection} />
                         </div>
                       </div>
                     )
