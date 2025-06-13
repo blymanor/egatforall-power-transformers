@@ -1,279 +1,484 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import DashboardLayout from "@/components/layout/DashboardLayout";
-import { 
-  ChevronDown, 
-  Eye, 
-  Pencil, 
-  Search, 
-  Trash2,
-  Filter
-} from "lucide-react";
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
 
-interface TestRecord {
-  id: number;
-  transformerName: string;
-  egatSn: string;
-  testType: string;
-  inspectionDate: string;
-  operationId: string;
-  inspector: string;
-}
+import React, { useState } from "react";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, Edit, Plus } from "lucide-react";
+import CoreInsulationResistanceModal from "@/components/modals/CoreInsulationResistanceModal";
+import ExcitingCurrentMeasurementModal from "@/components/modals/ExcitingCurrentMeasurementModal";
+import DCResistanceMeasurementModal from "@/components/modals/DCResistanceMeasurementModal";
+import SinglePhaseImpedanceMeasurementModal from "@/components/modals/SinglePhaseImpedanceMeasurementModal";
+import ThreePhaseImpedanceMeasurementModal from "@/components/modals/ThreePhaseImpedanceMeasurementModal";
 
 const ElectricalTestResults = () => {
-  const [selectedCategory, setSelectedCategory] = useState("core-insulation-resistance");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [transformer, setTransformer] = useState("");
+  const [quarter, setQuarter] = useState("");
+  const [year, setYear] = useState("");
+  
+  // Modal states
+  const [coreInsulationModal, setCoreInsulationModal] = useState({ isOpen: false, mode: "add" as "add" | "view" | "edit", data: null });
+  const [excitingCurrentModal, setExcitingCurrentModal] = useState({ isOpen: false, mode: "add" as "add" | "view" | "edit", data: null });
+  const [dcResistanceModal, setDcResistanceModal] = useState({ isOpen: false, mode: "add" as "add" | "view" | "edit", data: null });
+  const [singlePhaseModal, setSinglePhaseModal] = useState({ isOpen: false, mode: "add" as "add" | "view" | "edit", data: null });
+  const [threePhaseModal, setThreePhaseModal] = useState({ isOpen: false, mode: "add" as "add" | "view" | "edit", data: null });
 
-  // Mock data for the dropdown options with added icon info
-  const categories = [
-    { value: "core-insulation-resistance", label: "List all Core Insulation Resistance", icon: "core-insulation-resistance" },
-    { value: "exciting-current", label: "List all Exciting Current Measurement", icon: "exciting-current" },
-    { value: "dc-resistance-measurement", label: "List all DC Resistance Measurement", icon: "dc-resistance-measurement" },
-    { value: "single-phase-impedance-measurement", label: "List all Single Phase Impedance Measurement", icon: "single-phase-impedance-measurement" },
-    { value: "three-phase-impedance-measurement", label: "List all Three Phase Impedance Measurement", icon: "three-phase-impedance-measurement" },
-    { value: "auto-transformer-insulation-measurement", label: "List all Auto Transformer Insulation Measurement", icon: "auto-transformer-insulation-measurement" },
-    { value: "two-winding-insulation-measurement", label: "List all Two Winding Insulation Measurement", icon: "two-winding-insulation-measurement" },
-    { value: "three-winding-insulation-measurement", label: "List all Three Winding Insulation Measurement", icon: "three-winding-insulation-measurement" },
-    { value: "ratio-measurement", label: "List all Ratio Measurement", icon: "ratio-measurement" },
-    { value: "insulating-oil", label: "List all Insulating Oil", icon: "insulating-oil" },
-    { value: "arrester", label: "List all Arrester", icon: "arrester" },
-    { value: "bushing", label: "List all Bushing", icon: "bushing" }
+  // Sample data
+  const coreInsulationData = [
+    { id: 1, date: "2024-01-15", value: "2500", status: "ผ่าน", tester: "นาย ก" },
+    { id: 2, date: "2024-02-15", value: "2600", status: "ผ่าน", tester: "นาย ข" },
   ];
 
-  // Dynamic mock data based on selected category
-  const getMockRecords = (category: string): TestRecord[] => {
-    const categoryNameMap: {[key: string]: string} = {
-      "core-insulation-resistance": "Core",
-      "exciting-current": "Exciting",
-      "dc-resistance-measurement": "DC",
-      "single-phase-impedance-measurement": "1Ph",
-      "three-phase-impedance-measurement": "3Ph",
-      "auto-transformer-insulation-measurement": "AutoTR",
-      "two-winding-insulation-measurement": "2Wind",
-      "three-winding-insulation-measurement": "3Wind",
-      "ratio-measurement": "Ratio",
-      "insulating-oil": "Oil",
-      "arrester": "Arrest",
-      "bushing": "Bush"
-    };
-    
-    const prefix = categoryNameMap[category] || "Test";
-    
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      transformerName: `AN-KT2A`,
-      egatSn: `700000${i}200`,
-      testType: i % 2 === 0 ? "Commissioning" : (i % 3 === 0 ? "Special test" : "6 year test"),
-      inspectionDate: `30/11/2022`,
-      operationId: i % 2 === 0 ? (i % 3 === 0 ? "10123456" : (i === 0 ? "9999" : "11")) : (i % 4 === 0 ? "1111111" : (i % 5 === 0 ? "11111" : "111")),
-      inspector: "จุมพล"
-    }));
+  const excitingCurrentData = [
+    { id: 1, date: "2024-01-15", hvWinding: "150", lvWinding: "25", tvWinding: "8", tester: "นาย ก" },
+    { id: 2, date: "2024-02-15", hvWinding: "148", lvWinding: "24", tvWinding: "7", tester: "นาย ข" },
+  ];
+
+  const dcResistanceData = [
+    { id: 1, date: "2024-01-15", hvWinding: "0.0", lvWinding: "0.0", tvWinding: "0.0", calculated: "45.2", tester: "นาย ก" },
+    { id: 2, date: "2024-02-15", hvWinding: "0.0", lvWinding: "0.0", tvWinding: "0.0", calculated: "46.1", tester: "นาย ข" },
+  ];
+
+  const singlePhaseData = [
+    { id: 1, date: "2024-01-15", hl: "8.5", ht: "15.2", lt: "6.8", calculated: "78.3", tester: "นาย ก" },
+    { id: 2, date: "2024-02-15", hl: "8.3", ht: "15.0", lt: "6.9", calculated: "79.1", tester: "นาย ข" },
+  ];
+
+  const threePhaseData = [
+    { id: 1, date: "2024-01-15", hl: "8.2", ht: "15.1", lt: "6.7", calculated: "77.8", tester: "นาย ก" },
+    { id: 2, date: "2024-02-15", hl: "8.4", ht: "14.9", lt: "6.8", calculated: "78.5", tester: "นาย ข" },
+  ];
+
+  const handleOpenModal = (modalType: string, mode: "add" | "view" | "edit", data?: any) => {
+    switch (modalType) {
+      case 'coreInsulation':
+        setCoreInsulationModal({ isOpen: true, mode, data });
+        break;
+      case 'excitingCurrent':
+        setExcitingCurrentModal({ isOpen: true, mode, data });
+        break;
+      case 'dcResistance':
+        setDcResistanceModal({ isOpen: true, mode, data });
+        break;
+      case 'singlePhase':
+        setSinglePhaseModal({ isOpen: true, mode, data });
+        break;
+      case 'threePhase':
+        setThreePhaseModal({ isOpen: true, mode, data });
+        break;
+    }
   };
 
-  // Get records based on selected category
-  const records = getMockRecords(selectedCategory);
-
-  // Filter records based on search query
-  const filteredRecords = records.filter(record => 
-    record.transformerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    record.egatSn.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    record.operationId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    record.inspector.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value);
-    toast.info(`เลือกแสดงข้อมูล ${categories.find(c => c.value === value)?.label}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.info("กำลังค้นหาข้อมูล", {
-      description: `ค้นหา "${searchQuery}"`,
-    });
-  };
-
-  const handleView = (id: number) => {
-    toast.info(`ดูข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
-  };
-
-  const handleEdit = (id: number) => {
-    toast.info(`แก้ไขข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
-  };
-
-  const handleDelete = (id: number) => {
-    toast.info(`ลบข้อมูล ID: ${id}`, {
-      description: "คุณต้องการลบข้อมูลนี้หรือไม่?",
-    });
-  };
-
-  const handleCreate = () => {
-    toast.success("สร้างรายการใหม่", {
-      description: "กำลังเปิดฟอร์มสำหรับสร้างรายการใหม่",
-    });
-  };
-
-  // Function to render the appropriate icon based on category
-  const renderCategoryIcon = () => {
-    const iconName = categories.find(c => c.value === selectedCategory)?.icon || "core-insulation-resistance";
-    
-    // Using imported icons directly - in a real implementation, you'd use dynamic imports or component mapping
-    return (
-      <div className="h-5 w-5 text-blue-500">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2v8M12 22v-8M4.93 12H2m20 0h-2.93M7 12a5 5 0 1 0 10 0 5 5 0 1 0-10 0z" />
-        </svg>
-      </div>
-    );
+  const handleCloseModal = (modalType: string) => {
+    switch (modalType) {
+      case 'coreInsulation':
+        setCoreInsulationModal({ isOpen: false, mode: "add", data: null });
+        break;
+      case 'excitingCurrent':
+        setExcitingCurrentModal({ isOpen: false, mode: "add", data: null });
+        break;
+      case 'dcResistance':
+        setDcResistanceModal({ isOpen: false, mode: "add", data: null });
+        break;
+      case 'singlePhase':
+        setSinglePhaseModal({ isOpen: false, mode: "add", data: null });
+        break;
+      case 'threePhase':
+        setThreePhaseModal({ isOpen: false, mode: "add", data: null });
+        break;
+    }
   };
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <Card className="max-w-full overflow-hidden">
-          <CardHeader className="bg-gray-50 flex flex-row items-center justify-between p-4">
-            <div className="flex items-center space-x-2">
-              {renderCategoryIcon()}
-              <CardTitle className="text-lg font-medium">
-                {categories.find(c => c.value === selectedCategory)?.label}
-              </CardTitle>
-              <div className="flex items-center space-x-3 ml-4">
-                <span className="text-sm font-medium text-gray-700">หัวข้อตารางที่ต้องการดู:</span>
-                <Select
-                  value={selectedCategory}
-                  onValueChange={handleCategoryChange}
-                >
-                  <SelectTrigger className="w-full md:w-72">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.value} value={category.value}>
-                        {category.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <form onSubmit={handleSearch} className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-                <Input
-                  placeholder="ค้นหา"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 w-64 h-9"
-                />
-              </form>
-            </div>
+      <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800">การทดสอบทางไฟฟ้า</h2>
+          <p className="text-lg text-gray-600">ผลการทดสอบและวิเคราะห์ทางไฟฟ้าของหม้อแปลงไฟฟ้า</p>
+        </div>
+
+        {/* Filter Section */}
+        <Card className="bg-white shadow-lg rounded-lg border-0">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold text-gray-800">เลือกข้อมูลที่ต้องการดู</CardTitle>
           </CardHeader>
-          <CardContent className="p-0">
-            <div className="overflow-auto">
-              <Table className="w-full">
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="text-center w-16">No.</TableHead>
-                    <TableHead className="text-center">หม้อแปลงไฟฟ้า</TableHead>
-                    <TableHead className="text-center">EGAT S/N</TableHead>
-                    <TableHead className="text-center">รูปแบบการทดสอบ</TableHead>
-                    <TableHead className="text-center">วันที่ตรวจสอบ</TableHead>
-                    <TableHead className="text-center">เลขที่สั่งปฏิบัติงาน</TableHead>
-                    <TableHead className="text-center">ผู้ตรวจสอบ</TableHead>
-                    <TableHead className="text-center">แสดง</TableHead>
-                    <TableHead className="text-center">แก้ไข</TableHead>
-                    <TableHead className="text-center">ลบ</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredRecords.map((record) => (
-                    <TableRow key={record.id} className="even:bg-gray-50">
-                      <TableCell className="text-center">{record.id}</TableCell>
-                      <TableCell className="text-center">{record.transformerName}</TableCell>
-                      <TableCell className="text-center">{record.egatSn}</TableCell>
-                      <TableCell className="text-center">{record.testType}</TableCell>
-                      <TableCell className="text-center">{record.inspectionDate}</TableCell>
-                      <TableCell className="text-center">{record.operationId}</TableCell>
-                      <TableCell className="text-center">{record.inspector}</TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          onClick={() => handleView(record.id)}
-                          variant="ghost"
-                          size="icon"
-                          className="hover:bg-blue-100"
-                        >
-                          <Eye className="h-4 w-4 text-blue-600" />
-                        </Button>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          onClick={() => handleEdit(record.id)}
-                          variant="ghost"
-                          size="icon"
-                          className="hover:bg-blue-100"
-                        >
-                          <Pencil className="h-4 w-4 text-blue-600" />
-                        </Button>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          onClick={() => handleDelete(record.id)}
-                          variant="ghost"
-                          size="icon"
-                          className="hover:bg-red-100"
-                        >
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+          <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="transformer">หม้อแปลงไฟฟ้า</Label>
+              <Select value={transformer} onValueChange={setTransformer}>
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="AT2-KT1A">AT2-KT1A</SelectItem>
+                  <SelectItem value="AN-473A">AN-473A</SelectItem>
+                  <SelectItem value="AN-474A">AN-474A</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            
-            <div className="p-4 flex items-center justify-between">
-              <Button onClick={handleCreate} className="bg-blue-600 hover:bg-blue-700 text-white">
-                เพิ่มข้อมูล
-              </Button>
-              
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">206</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+
+            <div className="space-y-2">
+              <Label htmlFor="quarter">ไตรมาส</Label>
+              <Select value={quarter} onValueChange={setQuarter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกไตรมาส" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">ไตรมาส 1</SelectItem>
+                  <SelectItem value="2">ไตรมาส 2</SelectItem>
+                  <SelectItem value="3">ไตรมาส 3</SelectItem>
+                  <SelectItem value="4">ไตรมาส 4</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="year">ปี</Label>
+              <Input 
+                id="year"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                placeholder="ระบุปี (พ.ศ.)"
+              />
+            </div>
+
+            <div className="flex items-end">
+              <Button className="w-full">ค้นหา</Button>
             </div>
           </CardContent>
         </Card>
+
+        {/* Core Insulation Resistance Table */}
+        <Card className="bg-white shadow-lg rounded-lg border-0">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl font-semibold text-gray-800">Core Insulation Resistance</CardTitle>
+            <Button 
+              onClick={() => handleOpenModal('coreInsulation', 'add')}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              เพิ่มข้อมูล
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>วันที่ทดสอบ</TableHead>
+                  <TableHead>ค่าความต้านทาน (MΩ)</TableHead>
+                  <TableHead>สถานะ</TableHead>
+                  <TableHead>ผู้ทดสอบ</TableHead>
+                  <TableHead>การจัดการ</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {coreInsulationData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>{item.value}</TableCell>
+                    <TableCell>
+                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                        {item.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>{item.tester}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('coreInsulation', 'view', item)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('coreInsulation', 'edit', item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Exciting Current Measurement Table */}
+        <Card className="bg-white shadow-lg rounded-lg border-0">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl font-semibold text-gray-800">Exciting Current Measurement</CardTitle>
+            <Button 
+              onClick={() => handleOpenModal('excitingCurrent', 'add')}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              เพิ่มข้อมูล
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>วันที่ทดสอบ</TableHead>
+                  <TableHead>HV Winding (mA)</TableHead>
+                  <TableHead>LV Winding (mA)</TableHead>
+                  <TableHead>TV Winding (mA)</TableHead>
+                  <TableHead>ผู้ทดสอบ</TableHead>
+                  <TableHead>การจัดการ</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {excitingCurrentData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>{item.hvWinding}</TableCell>
+                    <TableCell>{item.lvWinding}</TableCell>
+                    <TableCell>{item.tvWinding}</TableCell>
+                    <TableCell>{item.tester}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('excitingCurrent', 'view', item)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('excitingCurrent', 'edit', item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* DC Resistance Measurement Table */}
+        <Card className="bg-white shadow-lg rounded-lg border-0">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl font-semibold text-gray-800">DC Resistance Measurement</CardTitle>
+            <Button 
+              onClick={() => handleOpenModal('dcResistance', 'add')}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              เพิ่มข้อมูล
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>วันที่ทดสอบ</TableHead>
+                  <TableHead>HV Winding</TableHead>
+                  <TableHead>LV Winding</TableHead>
+                  <TableHead>TV Winding</TableHead>
+                  <TableHead>ค่าคำนวณ</TableHead>
+                  <TableHead>ผู้ทดสอบ</TableHead>
+                  <TableHead>การจัดการ</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {dcResistanceData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>{item.hvWinding}</TableCell>
+                    <TableCell>{item.lvWinding}</TableCell>
+                    <TableCell>{item.tvWinding}</TableCell>
+                    <TableCell className="font-semibold text-blue-600">{item.calculated}</TableCell>
+                    <TableCell>{item.tester}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('dcResistance', 'view', item)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('dcResistance', 'edit', item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Single Phase Impedance Measurement Table */}
+        <Card className="bg-white shadow-lg rounded-lg border-0">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl font-semibold text-gray-800">Single Phase Impedance Measurement</CardTitle>
+            <Button 
+              onClick={() => handleOpenModal('singlePhase', 'add')}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              เพิ่มข้อมูล
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>วันที่ทดสอบ</TableHead>
+                  <TableHead>H-L (%)</TableHead>
+                  <TableHead>H-T (%)</TableHead>
+                  <TableHead>L-T (%)</TableHead>
+                  <TableHead>ค่าคำนวณ</TableHead>
+                  <TableHead>ผู้ทดสอบ</TableHead>
+                  <TableHead>การจัดการ</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {singlePhaseData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>{item.hl}</TableCell>
+                    <TableCell>{item.ht}</TableCell>
+                    <TableCell>{item.lt}</TableCell>
+                    <TableCell className="font-semibold text-blue-600">{item.calculated}</TableCell>
+                    <TableCell>{item.tester}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('singlePhase', 'view', item)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('singlePhase', 'edit', item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Three Phase Impedance Measurement Table */}
+        <Card className="bg-white shadow-lg rounded-lg border-0">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl font-semibold text-gray-800">Three Phase Impedance Measurement</CardTitle>
+            <Button 
+              onClick={() => handleOpenModal('threePhase', 'add')}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              เพิ่มข้อมูล
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>วันที่ทดสอบ</TableHead>
+                  <TableHead>H-L (%)</TableHead>
+                  <TableHead>H-T (%)</TableHead>
+                  <TableHead>L-T (%)</TableHead>
+                  <TableHead>ค่าคำนวณ</TableHead>
+                  <TableHead>ผู้ทดสอบ</TableHead>
+                  <TableHead>การจัดการ</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {threePhaseData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>{item.hl}</TableCell>
+                    <TableCell>{item.ht}</TableCell>
+                    <TableCell>{item.lt}</TableCell>
+                    <TableCell className="font-semibold text-blue-600">{item.calculated}</TableCell>
+                    <TableCell>{item.tester}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('threePhase', 'view', item)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleOpenModal('threePhase', 'edit', item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Modals */}
+        <CoreInsulationResistanceModal
+          isOpen={coreInsulationModal.isOpen}
+          onClose={() => handleCloseModal('coreInsulation')}
+          mode={coreInsulationModal.mode}
+          data={coreInsulationModal.data}
+        />
+
+        <ExcitingCurrentMeasurementModal
+          isOpen={excitingCurrentModal.isOpen}
+          onClose={() => handleCloseModal('excitingCurrent')}
+          mode={excitingCurrentModal.mode}
+          data={excitingCurrentModal.data}
+        />
+
+        <DCResistanceMeasurementModal
+          isOpen={dcResistanceModal.isOpen}
+          onClose={() => handleCloseModal('dcResistance')}
+          mode={dcResistanceModal.mode}
+          data={dcResistanceModal.data}
+        />
+
+        <SinglePhaseImpedanceMeasurementModal
+          isOpen={singlePhaseModal.isOpen}
+          onClose={() => handleCloseModal('singlePhase')}
+          mode={singlePhaseModal.mode}
+          data={singlePhaseModal.data}
+        />
+
+        <ThreePhaseImpedanceMeasurementModal
+          isOpen={threePhaseModal.isOpen}
+          onClose={() => handleCloseModal('threePhase')}
+          mode={threePhaseModal.mode}
+          data={threePhaseModal.data}
+        />
       </div>
     </DashboardLayout>
   );
