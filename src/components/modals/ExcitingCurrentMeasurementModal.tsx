@@ -264,16 +264,16 @@ const ExcitingCurrentMeasurementModal = ({
                         </div>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.h1h0h1h2} onChange={(e) => setFormData({ ...formData, h1h0h1h2: e.target.value })} readOnly={isReadonly} placeholder={!isAdd ? "150" : ""} />
+                        <Input className="w-16 h-8" value={formData.h1h0h1h2} onChange={(e) => setFormData({ ...formData, h1h0h1h2: e.target.value })} readOnly={isReadonly} placeholder={!isAdd ? "150" : ""} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.h2h0h2h3} onChange={(e) => setFormData({ ...formData, h2h0h2h3: e.target.value })} readOnly={isReadonly} placeholder={!isAdd ? "145" : ""} />
+                        <Input className="w-16 h-8" value={formData.h2h0h2h3} onChange={(e) => setFormData({ ...formData, h2h0h2h3: e.target.value })} readOnly={isReadonly} placeholder={!isAdd ? "145" : ""} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.h2h0h2h3_2} onChange={(e) => setFormData({ ...formData, h2h0h2h3_2: e.target.value })} readOnly={isReadonly} placeholder={!isAdd ? "148" : ""} />
+                        <Input className="w-16 h-8" value={formData.h2h0h2h3_2} onChange={(e) => setFormData({ ...formData, h2h0h2h3_2: e.target.value })} readOnly={isReadonly} placeholder={!isAdd ? "148" : ""} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.remarkHv} onChange={(e) => setFormData({ ...formData, remarkHv: e.target.value })} readOnly={isReadonly} />
+                        <Input className="w-20 h-8" value={formData.remarkHv} onChange={(e) => setFormData({ ...formData, remarkHv: e.target.value })} readOnly={isReadonly} />
                       </td>
                     </tr>
                     <tr>
@@ -281,16 +281,16 @@ const ExcitingCurrentMeasurementModal = ({
                         <span className="text-red-500 font-semibold">N</span>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "140" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "140" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "138" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "138" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "142" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "142" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} />
+                        <Input className="w-20 h-8" readOnly={isReadonly} />
                       </td>
                     </tr>
                     <tr>
@@ -298,16 +298,16 @@ const ExcitingCurrentMeasurementModal = ({
                         <span className="text-red-500 font-semibold">2R</span>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "142" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "142" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "140" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "140" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "145" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "145" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} />
+                        <Input className="w-20 h-8" readOnly={isReadonly} />
                       </td>
                     </tr>
                     <tr>
@@ -322,16 +322,16 @@ const ExcitingCurrentMeasurementModal = ({
                         </div>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "135" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "135" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "132" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "132" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "138" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "138" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} />
+                        <Input className="w-20 h-8" readOnly={isReadonly} />
                       </td>
                     </tr>
                   </tbody>
@@ -366,16 +366,16 @@ const ExcitingCurrentMeasurementModal = ({
                         <span className="text-red-500 font-semibold">N</span>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "25" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "25" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "24" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "24" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "26" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "26" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.remarkLv} onChange={(e) => setFormData({ ...formData, remarkLv: e.target.value })} readOnly={isReadonly} />
+                        <Input className="w-20 h-8" value={formData.remarkLv} onChange={(e) => setFormData({ ...formData, remarkLv: e.target.value })} readOnly={isReadonly} />
                       </td>
                     </tr>
                   </tbody>
@@ -410,16 +410,16 @@ const ExcitingCurrentMeasurementModal = ({
                         <span className="text-red-500 font-semibold">N</span>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "8" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "8" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "7" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "7" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "9" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "9" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.remarkTv} onChange={(e) => setFormData({ ...formData, remarkTv: e.target.value })} readOnly={isReadonly} />
+                        <Input className="w-20 h-8" value={formData.remarkTv} onChange={(e) => setFormData({ ...formData, remarkTv: e.target.value })} readOnly={isReadonly} />
                       </td>
                     </tr>
                   </tbody>
@@ -454,16 +454,16 @@ const ExcitingCurrentMeasurementModal = ({
                         <span className="text-red-500 font-semibold">N</span>
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "15" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "15" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "14" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "14" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" placeholder={!isAdd ? "16" : ""} readOnly={isReadonly} />
+                        <Input className="w-16 h-8" placeholder={!isAdd ? "16" : ""} readOnly={isReadonly} />
                       </td>
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" value={formData.remarkHv2} onChange={(e) => setFormData({ ...formData, remarkHv2: e.target.value })} readOnly={isReadonly} />
+                        <Input className="w-20 h-8" value={formData.remarkHv2} onChange={(e) => setFormData({ ...formData, remarkHv2: e.target.value })} readOnly={isReadonly} />
                       </td>
                     </tr>
                   </tbody>
