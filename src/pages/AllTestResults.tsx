@@ -1,10 +1,7 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import {
   Accordion,
@@ -208,69 +205,68 @@ const AllTestResults = () => {
               ผลการทดสอบของหม้อแปลงไฟฟ้า
             </h1>
           </div>
-          <div className="p-6">
-            <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-              {/* Selection area */}
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200 mb-8">
-                <div className="flex items-center gap-3">
-                  <span className="text-base font-medium text-gray-700">หม้อแปลงไฟฟ้า:</span>
-                  <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
-                    <SelectTrigger className="w-48 border-gray-300">
-                      <SelectValue placeholder="เลือกหม้อแปลง" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {transformers.map(transformer => (
-                        <SelectItem key={transformer.value} value={transformer.value}>
-                          {transformer.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <Button 
-                  onClick={handleGenerateResults}
-                  className="bg-[#1E5CFF] hover:bg-blue-700 text-white px-6 py-2 rounded font-medium"
-                >
-                  แสดงผล
-                </Button>
+          
+          {/* Selection area - full width */}
+          <div className="w-full bg-white rounded-lg shadow-sm p-6 border border-gray-100 mb-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-3">
+                <span className="text-base font-medium text-gray-700">หม้อแปลงไฟฟ้า:</span>
+                <Select value={selectedTransformer} onValueChange={setSelectedTransformer}>
+                  <SelectTrigger className="w-48 border-gray-300">
+                    <SelectValue placeholder="เลือกหม้อแปลง" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {transformers.map(transformer => (
+                      <SelectItem key={transformer.value} value={transformer.value}>
+                        {transformer.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               
-              {/* Results area - new accordion-based design */}
-              {resultsGenerated && (
-                <div className="mt-8 grid grid-cols-1 gap-4">
-                  {testCategories.map((category, index) => (
-                    <Accordion 
-                      key={index} 
-                      type="single" 
-                      collapsible 
-                      className="border rounded-md overflow-hidden bg-white"
-                    >
-                      <AccordionItem value={`item-${index}`} className="border-0">
-                        <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 font-medium text-blue-800">
-                          {category.title}
-                        </AccordionTrigger>
-                        <AccordionContent className="px-6 pt-2 pb-4">
-                          <ul className="space-y-2">
-                            {category.items.length > 0 ? (
-                              category.items.map((item, idx) => (
-                                <li key={idx} className="text-sm text-gray-700 flex items-baseline gap-2">
-                                  <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></span>
-                                  {item}
-                                </li>
-                              ))
-                            ) : (
-                              <li className="text-sm text-gray-500">ไม่มีข้อมูล</li>
-                            )}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  ))}
-                </div>
-              )}
+              <Button 
+                onClick={handleGenerateResults}
+                className="bg-[#1E5CFF] hover:bg-blue-700 text-white px-6 py-2 rounded font-medium"
+              >
+                แสดงผล
+              </Button>
             </div>
           </div>
+          
+          {/* Results area - full width */}
+          {resultsGenerated && (
+            <div className="w-full grid grid-cols-1 gap-4">
+              {testCategories.map((category, index) => (
+                <Accordion 
+                  key={index} 
+                  type="single" 
+                  collapsible 
+                  className="border rounded-md overflow-hidden bg-white"
+                >
+                  <AccordionItem value={`item-${index}`} className="border-0">
+                    <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 font-medium text-blue-800">
+                      {category.title}
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pt-2 pb-4">
+                      <ul className="space-y-2">
+                        {category.items.length > 0 ? (
+                          category.items.map((item, idx) => (
+                            <li key={idx} className="text-sm text-gray-700 flex items-baseline gap-2">
+                              <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></span>
+                              {item}
+                            </li>
+                          ))
+                        ) : (
+                          <li className="text-sm text-gray-500">ไม่มีข้อมูล</li>
+                        )}
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

@@ -125,21 +125,21 @@ const EconomicAnalysisPriceLoss = () => {
   return (
     <DashboardLayout>
       <div className="p-6">
-        <Card className="max-w-3xl mx-auto">
+        <Card className="max-w-4xl mx-auto">
           <CardHeader className="bg-gray-100">
-            <CardTitle className="text-xl text-[#0442AF]">ราคาและ Loss ของหม้อแปลง</CardTitle>
-            <p className="text-sm text-gray-500">กรุณากรอกข้อมูลราคาและค่า Loss ของหม้อแปลงเพื่อใช้ในการวิเคราะห์</p>
+            <CardTitle className="text-2xl text-[#0442AF]">ราคาและ Loss ของหม้อแปลง</CardTitle>
+            <p className="text-lg text-gray-500">กรุณากรอกข้อมูลราคาและค่า Loss ของหม้อแปลงเพื่อใช้ในการวิเคราะห์</p>
           </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-6">
+          <CardContent className="pt-8">
+            <div className="space-y-8">
               {/* Transformer Selection */}
-              <div className="space-y-2">
-                <Label htmlFor="transformer">หม้อแปลงไฟฟ้า</Label>
+              <div className="space-y-3">
+                <Label htmlFor="transformer" className="text-lg font-medium">หม้อแปลงไฟฟ้า</Label>
                 <Select 
                   value={selectedTransformer} 
                   onValueChange={handleTransformerSelect}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 text-lg">
                     <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                   </SelectTrigger>
                   <SelectContent>
@@ -155,11 +155,11 @@ const EconomicAnalysisPriceLoss = () => {
               {/* Transformer Details Section */}
               {showDetails && (
                 <Card className="border border-gray-200">
-                  <CardHeader className="bg-blue-50 pb-2">
-                    <CardTitle className="text-lg">ข้อมูลหม้อแปลงไฟฟ้า</CardTitle>
+                  <CardHeader className="bg-blue-50 pb-3">
+                    <CardTitle className="text-xl">ข้อมูลหม้อแปลงไฟฟ้า</CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                  <CardContent className="pt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-base">
                       <div className="flex justify-between">
                         <span className="font-medium">Transformer Name:</span>
                         <span>{currentTransformer.name}</span>
@@ -208,13 +208,13 @@ const EconomicAnalysisPriceLoss = () => {
               {/* Price and Loss Section */}
               {showDetails && (
                 <Card className="border border-gray-200">
-                  <CardHeader className="bg-blue-50 pb-2">
-                    <CardTitle className="text-lg">ราคาและค่า Loss</CardTitle>
+                  <CardHeader className="bg-blue-50 pb-3">
+                    <CardTitle className="text-xl">ราคาและค่า Loss</CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-4">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="price" className="flex justify-between">
+                  <CardContent className="pt-6">
+                    <div className="space-y-6">
+                      <div className="space-y-3">
+                        <Label htmlFor="price" className="text-lg font-medium flex justify-between">
                           <span>ราคาหม้อแปลง</span>
                           <span className="text-gray-500">[บาท]</span>
                         </Label>
@@ -223,12 +223,12 @@ const EconomicAnalysisPriceLoss = () => {
                           onChange={(value) => handleInputChange("price", value)}
                           min={0}
                           step={1000}
-                          className="w-full"
+                          className="w-full h-12 text-lg"
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="noLoadLoss" className="flex justify-between">
+                      <div className="space-y-3">
+                        <Label htmlFor="noLoadLoss" className="text-lg font-medium flex justify-between">
                           <span>No-Load Loss</span>
                           <span className="text-gray-500">[KW]</span>
                         </Label>
@@ -237,12 +237,12 @@ const EconomicAnalysisPriceLoss = () => {
                           onChange={(value) => handleInputChange("noLoadLoss", value)}
                           min={0}
                           step={1}
-                          className="w-full"
+                          className="w-full h-12 text-lg"
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="loadLoss" className="flex justify-between">
+                      <div className="space-y-3">
+                        <Label htmlFor="loadLoss" className="text-lg font-medium flex justify-between">
                           <span>Load Loss</span>
                           <span className="text-gray-500">[KW]</span>
                         </Label>
@@ -251,7 +251,7 @@ const EconomicAnalysisPriceLoss = () => {
                           onChange={(value) => handleInputChange("loadLoss", value)}
                           min={0}
                           step={1}
-                          className="w-full"
+                          className="w-full h-12 text-lg"
                         />
                       </div>
                     </div>
@@ -261,12 +261,12 @@ const EconomicAnalysisPriceLoss = () => {
 
               {/* Analysis Button */}
               {showDetails && (
-                <div className="flex justify-end pt-2">
+                <div className="flex justify-end pt-3">
                   <Button 
                     onClick={handleAnalyze}
-                    className="bg-[#0442AF] hover:bg-[#03369c]"
+                    className="bg-[#0442AF] hover:bg-[#03369c] text-lg px-8 py-3"
                   >
-                    <Calculator className="mr-1 h-4 w-4" />
+                    <Calculator className="mr-2 h-5 w-5" />
                     <span>วิเคราะห์ข้อมูล</span>
                   </Button>
                 </div>
@@ -274,22 +274,22 @@ const EconomicAnalysisPriceLoss = () => {
 
               {/* Analysis Results */}
               {analysisResult && (
-                <Card className="bg-green-50 border-green-200 mt-4">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg text-green-800">ผลการวิเคราะห์</CardTitle>
+                <Card className="bg-green-50 border-green-200 mt-6">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-xl text-green-800">ผลการวิเคราะห์</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
-                      <div className="p-4 bg-white rounded-lg shadow border border-green-100">
-                        <p className="text-sm font-medium text-gray-500">ต้นทุนรวม</p>
-                        <p className="text-3xl font-bold text-green-700 my-2">
-                          {analysisResult.totalCost.toLocaleString()} <span className="text-sm">บาท</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                      <div className="p-6 bg-white rounded-lg shadow border border-green-100">
+                        <p className="text-lg font-medium text-gray-500">ต้นทุนรวม</p>
+                        <p className="text-4xl font-bold text-green-700 my-3">
+                          {analysisResult.totalCost.toLocaleString()} <span className="text-lg">บาท</span>
                         </p>
                       </div>
-                      <div className="p-4 bg-white rounded-lg shadow border border-green-100">
-                        <p className="text-sm font-medium text-gray-500">Loss ต่อปี</p>
-                        <p className="text-3xl font-bold text-green-700 my-2">
-                          {analysisResult.annualLoss.toLocaleString()} <span className="text-sm">kWh</span>
+                      <div className="p-6 bg-white rounded-lg shadow border border-green-100">
+                        <p className="text-lg font-medium text-gray-500">Loss ต่อปี</p>
+                        <p className="text-4xl font-bold text-green-700 my-3">
+                          {analysisResult.annualLoss.toLocaleString()} <span className="text-lg">kWh</span>
                         </p>
                       </div>
                     </div>
