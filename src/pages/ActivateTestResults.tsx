@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, ChevronDown } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 // Health data for the charts - different data for each transformer
 const transformerData: any = {
@@ -33,121 +33,118 @@ const transformerData: any = {
       { name: 'Poor', value: 13, color: '#f97316' },
       { name: 'Very Poor', value: 5, color: '#ef4444' }
     ],
-    activeParts: [
-      { name: 'Core Insulation', value: 20.0, color: '#22c55e', value2: 85.5 },
-      { name: 'HV Winding', value: 34.22, color: '#3b82f6', value2: 78.2 },
-      { name: 'LV Winding', value: 31.58, color: '#3b82f6', value2: 82.1 },
-      { name: 'TV Winding', value: 24.0, color: '#3b82f6', value2: 76.8 }
-    ],
+    activeParts: {
+      healthIndex: "43.65",
+      factor: "ดี",
+      details: [
+        { name: 'Core Insulation Resistance:', value: '100.0', color: '#ef4444' },
+        { name: 'HV Winding:', value: '45.76', color: '#eab308', details: [
+          { name: 'DC Resistance Measurement:%Maximum Error Between Phase:', value: '', icon: true },
+          { name: 'DC Resistance Measurement:%Maximum Error:', value: '', icon: true },
+          { name: 'Exciting Current Measurement:Idiff HV(200V):', value: '0.0', color: '#6b7280' },
+          { name: 'Exciting Current Measurement:Idiff HV(10kV):', value: '0.0', color: '#6b7280' },
+          { name: 'Single Phase Leakage Impedance:HV to LV %Deviation:', value: '2.0', color: '#3b82f6' },
+          { name: 'Single Phase Leakage Impedance:HV to TV %Deviation:', value: '2.0', color: '#3b82f6' },
+          { name: 'Three Phase Equivalent:%Error(HV-LV):', value: '5.0', color: '#ef4444' },
+          { name: 'Three Phase Equivalent:%Error(HV-TV):', value: '5.0', color: '#ef4444' },
+          { name: 'Insulation Test of Auto Transformer HV:', value: '2.0', color: '#3b82f6' },
+          { name: 'Insulation Test of Three Winding Transformer HV:', value: '1.0', color: '#22c55e' },
+          { name: 'Insulation Test of Two Winding Transformer HV:', value: '1.0', color: '#22c55e' },
+          { name: 'Ratio and Polarity Test:HV to LV %Error:', value: '5.0', color: '#ef4444' },
+          { name: 'Ratio and Polarity Test:HV to TV %Error:', value: '5.0', color: '#ef4444' }
+        ]},
+        { name: 'LV Winding:', value: '43.53', color: '#eab308', details: [
+          { name: 'DC Resistance Measurement:%Maximum Error Between Phase:', value: '', icon: true },
+          { name: 'DC Resistance Measurement:%Maximum Error:', value: '', icon: true },
+          { name: 'Exciting Current Measurement:Idiff LV(200V):', value: '0.0', color: '#6b7280' },
+          { name: 'Exciting Current Measurement:Idiff LV(10kV):', value: '0.0', color: '#6b7280' },
+          { name: 'Single Phase Leakage Impedance:LV to TV %Deviation:', value: '3.0', color: '#eab308' },
+          { name: 'Three Phase Equivalent:%Error(LV-TV):', value: '5.0', color: '#ef4444' },
+          { name: 'Insulation Test of Three Winding Transformer LV:', value: '1.0', color: '#22c55e' },
+          { name: 'Insulation Test of Two Winding Transformer LV:', value: '1.0', color: '#22c55e' },
+          { name: 'Ratio and Polarity Test:LV to TV %Error:', value: '5.0', color: '#ef4444' }
+        ]},
+        { name: 'TV Winding:', value: '35.38', color: '#eab308', details: [
+          { name: 'DC Resistance Measurement:%Maximum Error Between Phase:', value: '', icon: true },
+          { name: 'DC Resistance Measurement:%Maximum Error:', value: '', icon: true },
+          { name: 'Exciting Current Measurement:Idiff TV(200V):', value: '0.0', color: '#6b7280' },
+          { name: 'Insulation Test of Auto Transformer TV:', value: '4.0', color: '#f97316' },
+          { name: 'Insulation Test of Three Winding Transformer TV:', value: '2.0', color: '#3b82f6' }
+        ]}
+      ]
+    },
+    oilAnalysis: {
+      healthIndex: "75.0",
+      factor: "ดี",
+      details: [
+        { name: 'Oil Aging:', value: '25.0', color: '#22c55e' },
+        { name: 'Oil Contamination:', value: '34.52', color: '#3b82f6' },
+        { name: 'Oil DGA:', value: '4.0', color: '#22c55e' },
+        { name: 'Oil Furan:', value: '4.0', color: '#22c55e' }
+      ]
+    },
+    oltc: {
+      healthIndex: "84.48",
+      factor: "ดี",
+      details: [
+        { name: 'OLTC Contact:', value: '0.0', color: '#6b7280' },
+        { name: 'OLTC-DGA:', value: '4.0', color: '#22c55e' },
+        { name: 'OLTC Oil Contamination:', value: '40.0', color: '#3b82f6' },
+        { name: 'OLTC Dielectric:', value: '34.38', color: '#3b82f6' }
+      ]
+    },
+    arrester: {
+      healthIndex: "53.33",
+      factor: "ดี",
+      details: [
+        { name: 'Arrester HV:', value: '20.0', color: '#22c55e' },
+        { name: 'Arrester LV:', value: '40.0', color: '#3b82f6' },
+        { name: 'Arrester TV:', value: '80.0', color: '#f97316' }
+      ]
+    },
+    bushing: {
+      healthIndex: "0.0",
+      factor: "ดี",
+      details: [
+        { name: 'Bushing HV:', value: '', icon: true },
+        { name: 'Bushing LV:', value: '', icon: true },
+        { name: 'Bushing TV:', value: '', icon: true }
+      ]
+    },
+    visualInspection: {
+      factor: "ดี",
+      details: [
+        { name: 'Conservator Tank:', value: '4', color: '#22c55e' },
+        { name: 'General Condition:', value: '4', color: '#22c55e' },
+        { name: 'Hot Line Oil Filter:', value: '4', color: '#22c55e' },
+        { name: 'Lightning Arrester:', value: '4', color: '#22c55e' },
+        { name: 'Load History:', value: '4', color: '#22c55e' },
+        { name: 'Main Tank:', value: '4', color: '#22c55e' },
+        { name: 'NGR:', value: '3', color: '#3b82f6' },
+        { name: 'OLTC Compartment:', value: '4', color: '#22c55e' },
+        { name: 'OLTC Control Cabinet:', value: '4', color: '#22c55e' },
+        { name: 'Radiator Cooling:', value: '4', color: '#22c55e' },
+        { name: 'Regulating PT:', value: '4', color: '#22c55e' },
+        { name: 'Thermo Scan:', value: '2', color: '#3b82f6' },
+        { name: 'Transformer Control Cabinet:', value: '4', color: '#22c55e' },
+        { name: 'Power Factor:', value: '4', color: '#22c55e' },
+        { name: 'Oil Quality:', value: '1', color: '#f97316' },
+        { name: 'OLTC DGA:', value: '4', color: '#22c55e' },
+        { name: 'Bushing:', value: '2', color: '#eab308' },
+        { name: 'OLTC Oil Quality:', value: '2', color: '#eab308' }
+      ]
+    },
     ghiValue: "99.896",
     chiValue: "82.306",
-    ohiValue: "91.526",
-    activePartValue: "78.18"
-  },
-  "AN-473A": {
-    ghi: [
-      { name: 'Very Good', value: 40, color: '#22c55e' },
-      { name: 'Good', value: 30, color: '#3b82f6' },
-      { name: 'Fair', value: 15, color: '#eab308' },
-      { name: 'Poor', value: 10, color: '#f97316' },
-      { name: 'Very Poor', value: 5, color: '#ef4444' }
-    ],
-    chi: [
-      { name: 'Very Good', value: 35, color: '#22c55e' },
-      { name: 'Good', value: 32, color: '#3b82f6' },
-      { name: 'Fair', value: 20, color: '#eab308' },
-      { name: 'Poor', value: 8, color: '#f97316' },
-      { name: 'Very Poor', value: 5, color: '#ef4444' }
-    ],
-    ohi: [
-      { name: 'Very Good', value: 38, color: '#22c55e' },
-      { name: 'Good', value: 29, color: '#3b82f6' },
-      { name: 'Fair', value: 18, color: '#eab308' },
-      { name: 'Poor', value: 10, color: '#f97316' },
-      { name: 'Very Poor', value: 5, color: '#ef4444' }
-    ],
-    activeParts: [
-      { name: 'Core Insulation', value: 18.5, color: '#22c55e', value2: 88.2 },
-      { name: 'HV Winding', value: 32.15, color: '#3b82f6', value2: 80.5 },
-      { name: 'LV Winding', value: 29.87, color: '#3b82f6', value2: 84.3 },
-      { name: 'TV Winding', value: 22.1, color: '#3b82f6', value2: 78.9 }
-    ],
-    ghiValue: "94.523",
-    chiValue: "85.742",
-    ohiValue: "89.825",
-    activePartValue: "80.64"
-  },
-  "AN-474A": {
-    ghi: [
-      { name: 'Very Good', value: 28, color: '#22c55e' },
-      { name: 'Good', value: 22, color: '#3b82f6' },
-      { name: 'Fair', value: 25, color: '#eab308' },
-      { name: 'Poor', value: 18, color: '#f97316' },
-      { name: 'Very Poor', value: 7, color: '#ef4444' }
-    ],
-    chi: [
-      { name: 'Very Good', value: 25, color: '#22c55e' },
-      { name: 'Good', value: 24, color: '#3b82f6' },
-      { name: 'Fair', value: 28, color: '#eab308' },
-      { name: 'Poor', value: 15, color: '#f97316' },
-      { name: 'Very Poor', value: 8, color: '#ef4444' }
-    ],
-    ohi: [
-      { name: 'Very Good', value: 26, color: '#22c55e' },
-      { name: 'Good', value: 23, color: '#3b82f6' },
-      { name: 'Fair', value: 26, color: '#eab308' },
-      { name: 'Poor', value: 17, color: '#f97316' },
-      { name: 'Very Poor', value: 8, color: '#ef4444' }
-    ],
-    activeParts: [
-      { name: 'Core Insulation', value: 22.8, color: '#22c55e', value2: 82.1 },
-      { name: 'HV Winding', value: 36.45, color: '#3b82f6', value2: 75.8 },
-      { name: 'LV Winding', value: 33.21, color: '#3b82f6', value2: 79.5 },
-      { name: 'TV Winding', value: 26.3, color: '#3b82f6', value2: 74.2 }
-    ],
-    ghiValue: "87.234",
-    chiValue: "79.158",
-    ohiValue: "83.456",
-    activePartValue: "75.92"
-  },
-  "AN-475A": {
-    ghi: [
-      { name: 'Very Good', value: 45, color: '#22c55e' },
-      { name: 'Good', value: 28, color: '#3b82f6' },
-      { name: 'Fair', value: 12, color: '#eab308' },
-      { name: 'Poor', value: 10, color: '#f97316' },
-      { name: 'Very Poor', value: 5, color: '#ef4444' }
-    ],
-    chi: [
-      { name: 'Very Good', value: 42, color: '#22c55e' },
-      { name: 'Good', value: 30, color: '#3b82f6' },
-      { name: 'Fair', value: 15, color: '#eab308' },
-      { name: 'Poor', value: 8, color: '#f97316' },
-      { name: 'Very Poor', value: 5, color: '#ef4444' }
-    ],
-    ohi: [
-      { name: 'Very Good', value: 43, color: '#22c55e' },
-      { name: 'Good', value: 29, color: '#3b82f6' },
-      { name: 'Fair', value: 13, color: '#eab308' },
-      { name: 'Poor', value: 10, color: '#f97316' },
-      { name: 'Very Poor', value: 5, color: '#ef4444' }
-    ],
-    activeParts: [
-      { name: 'Core Insulation', value: 16.2, color: '#22c55e', value2: 91.3 },
-      { name: 'HV Winding', value: 30.85, color: '#3b82f6', value2: 83.7 },
-      { name: 'LV Winding', value: 28.45, color: '#3b82f6', value2: 86.9 },
-      { name: 'TV Winding', value: 20.5, color: '#3b82f6', value2: 80.1 }
-    ],
-    ghiValue: "96.754",
-    chiValue: "88.925",
-    ohiValue: "92.840",
-    activePartValue: "83.25"
+    ohiValue: "91.526"
   }
+  // ... other transformer data would be similar structure
 };
 
 const ActivateTestResults = () => {
   const [transformer, setTransformer] = useState("");
   const [isActivated, setIsActivated] = useState(false);
+  const [activePartOpen, setActivePartOpen] = useState(false);
   const { toast } = useToast();
 
   const handleActivate = () => {
@@ -169,7 +166,7 @@ const ActivateTestResults = () => {
 
   const handleTransformerChange = (value: string) => {
     setTransformer(value);
-    setIsActivated(false); // Reset activation when changing transformer
+    setIsActivated(false);
   };
 
   const currentData = transformer ? transformerData[transformer] : null;
@@ -214,6 +211,102 @@ const ActivateTestResults = () => {
       </div>
     </div>
   );
+
+  const GroupSection = ({ title, data, hasHealthIndex = true }: { 
+    title: string, 
+    data: any, 
+    hasHealthIndex?: boolean 
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <div className="bg-white border rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-blue-700">{title}</h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2"
+          >
+            <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          </Button>
+        </div>
+        
+        <div className="space-y-3">
+          {hasHealthIndex && (
+            <div className="flex justify-between items-center p-3 bg-green-100 border border-green-200 rounded">
+              <span className="font-medium">%Health Index:</span>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-bold">{data.healthIndex}</span>
+                <div className="w-20 h-4 bg-red-500 rounded"></div>
+              </div>
+            </div>
+          )}
+          
+          <div className="flex justify-between items-center p-3 bg-green-100 border border-green-200 rounded">
+            <span className="font-medium">%Factor:</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold">{data.factor}</span>
+              <div className="w-20 h-4 bg-blue-600 rounded"></div>
+            </div>
+          </div>
+
+          <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+            <CollapsibleContent className="space-y-2">
+              {data.details?.map((item: any, index: number) => (
+                <div key={index}>
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                    <span className="font-medium">{item.name}</span>
+                    <div className="flex items-center gap-2">
+                      {item.icon ? (
+                        <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                      ) : (
+                        <>
+                          <span className="font-medium">{item.value}</span>
+                          {item.color && (
+                            <div 
+                              className="w-16 h-4 rounded"
+                              style={{ backgroundColor: item.color }}
+                            ></div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {item.details && (
+                    <div className="ml-4 space-y-1 mt-2">
+                      {item.details.map((subItem: any, subIndex: number) => (
+                        <div key={subIndex} className="flex justify-between items-center p-2 bg-gray-100 rounded text-sm">
+                          <span>{subItem.name}</span>
+                          <div className="flex items-center gap-2">
+                            {subItem.icon ? (
+                              <div className="w-3 h-3 bg-gray-300 rounded"></div>
+                            ) : (
+                              <>
+                                <span>{subItem.value}</span>
+                                {subItem.color && (
+                                  <div 
+                                    className="w-12 h-3 rounded"
+                                    style={{ backgroundColor: subItem.color }}
+                                  ></div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <DashboardLayout>
@@ -305,40 +398,14 @@ const ActivateTestResults = () => {
                           </div>
                         </div>
 
-                        {/* Active Parts Section */}
-                        <div className="bg-white border rounded-lg p-6">
-                          <h3 className="text-lg font-semibold mb-4 text-blue-700">กลุ่ม Active Part</h3>
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center p-3 bg-blue-50 rounded">
-                              <span className="font-medium">%Health Index:</span>
-                              <div className="flex items-center gap-2">
-                                <span className="text-xl font-bold">{currentData.activePartValue}</span>
-                                <div className="w-20 h-4 bg-blue-600 rounded"></div>
-                              </div>
-                            </div>
-                            
-                            {currentData.activeParts.map((part: any, index: number) => (
-                              <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                                <span>{part.name}:</span>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-medium">{part.value}</span>
-                                  <div className="flex gap-1">
-                                    <div 
-                                      className="w-16 h-4 rounded"
-                                      style={{ backgroundColor: part.color }}
-                                    ></div>
-                                    <div 
-                                      className="w-16 h-4 rounded bg-gray-300"
-                                      style={{ 
-                                        background: `linear-gradient(to right, ${part.color} ${part.value2}%, #e5e7eb ${part.value2}%)` 
-                                      }}
-                                    ></div>
-                                  </div>
-                                  <span className="text-sm text-gray-600">{part.value2}%</span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                        {/* Groups Sections */}
+                        <div className="space-y-6">
+                          <GroupSection title="กลุ่ม Active Part" data={currentData.activeParts} />
+                          <GroupSection title="กลุ่ม น้ำมันของหม้อแปลง" data={currentData.oilAnalysis} />
+                          <GroupSection title="กลุ่ม OLTC" data={currentData.oltc} />
+                          <GroupSection title="กลุ่ม Arrester" data={currentData.arrester} />
+                          <GroupSection title="กลุ่ม Bushing" data={currentData.bushing} />
+                          <GroupSection title="กลุ่ม Visual Inspection" data={currentData.visualInspection} hasHealthIndex={false} />
                         </div>
                       </div>
                     )
