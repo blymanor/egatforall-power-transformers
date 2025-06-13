@@ -314,15 +314,14 @@ const SinglePhaseImpedanceMeasurementModal = ({
                       {Array.from({ length: 9 }, (_, i) => (
                         <td key={i} className="border border-gray-300 p-2">
                           <Input 
-                            size="sm" 
                             placeholder={!isAdd ? "0.0" : ""} 
                             readOnly={isReadonly}
-                            className="w-16" 
+                            className="w-16 h-8" 
                           />
                         </td>
                       ))}
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} className="w-20" />
+                        <Input readOnly={isReadonly} className="w-20 h-8" />
                       </td>
                     </tr>
                     <tr>
@@ -335,15 +334,14 @@ const SinglePhaseImpedanceMeasurementModal = ({
                       {Array.from({ length: 9 }, (_, i) => (
                         <td key={i} className="border border-gray-300 p-2">
                           <Input 
-                            size="sm" 
                             placeholder={!isAdd ? "0.0" : ""} 
                             readOnly={isReadonly}
-                            className="w-16" 
+                            className="w-16 h-8" 
                           />
                         </td>
                       ))}
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} className="w-20" />
+                        <Input readOnly={isReadonly} className="w-20 h-8" />
                       </td>
                     </tr>
                     <tr>
@@ -361,15 +359,14 @@ const SinglePhaseImpedanceMeasurementModal = ({
                       {Array.from({ length: 9 }, (_, i) => (
                         <td key={i} className="border border-gray-300 p-2">
                           <Input 
-                            size="sm" 
                             placeholder={!isAdd ? "0.0" : ""} 
                             readOnly={isReadonly}
-                            className="w-16" 
+                            className="w-16 h-8" 
                           />
                         </td>
                       ))}
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} className="w-20" />
+                        <Input readOnly={isReadonly} className="w-20 h-8" />
                       </td>
                     </tr>
                   </tbody>

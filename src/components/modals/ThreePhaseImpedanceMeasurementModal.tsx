@@ -314,15 +314,14 @@ const ThreePhaseImpedanceMeasurementModal = ({
                       {Array.from({ length: 9 }, (_, i) => (
                         <td key={i} className="border border-gray-300 p-2">
                           <Input 
-                            size="sm" 
                             placeholder={!isAdd ? "0.0" : ""} 
                             readOnly={isReadonly}
-                            className="w-16" 
+                            className="w-16 h-8" 
                           />
                         </td>
                       ))}
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} className="w-20" />
+                        <Input readOnly={isReadonly} className="w-20 h-8" />
                       </td>
                     </tr>
                     <tr>
@@ -334,15 +333,14 @@ const ThreePhaseImpedanceMeasurementModal = ({
                       {Array.from({ length: 9 }, (_, i) => (
                         <td key={i} className="border border-gray-300 p-2">
                           <Input 
-                            size="sm" 
                             placeholder={!isAdd ? "0.0" : ""} 
                             readOnly={isReadonly}
-                            className="w-16" 
+                            className="w-16 h-8" 
                           />
                         </td>
                       ))}
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} className="w-20" />
+                        <Input readOnly={isReadonly} className="w-20 h-8" />
                       </td>
                     </tr>
                     <tr>
@@ -359,27 +357,26 @@ const ThreePhaseImpedanceMeasurementModal = ({
                       <td className="border border-gray-300 p-2">
                         <div className="flex flex-col gap-1">
                           <span className="text-blue-600 font-semibold text-xs">%IMPEDANCE MEASUREMENT</span>
-                          <Input size="sm" placeholder={!isAdd ? "0.0" : ""} readOnly={isReadonly} className="w-16" />
+                          <Input placeholder={!isAdd ? "0.0" : ""} readOnly={isReadonly} className="w-16 h-8" />
                         </div>
                       </td>
                       <td className="border border-gray-300 p-2">
                         <div className="flex flex-col gap-1">
                           <span className="text-blue-600 font-semibold text-xs">%ERROR</span>
-                          <Input size="sm" placeholder={!isAdd ? "0.0" : ""} readOnly={isReadonly} className="w-16" />
+                          <Input placeholder={!isAdd ? "0.0" : ""} readOnly={isReadonly} className="w-16 h-8" />
                         </div>
                       </td>
                       {Array.from({ length: 6 }, (_, i) => (
                         <td key={i} className="border border-gray-300 p-2">
                           <Input 
-                            size="sm" 
                             placeholder={!isAdd ? "0.0" : ""} 
                             readOnly={isReadonly}
-                            className="w-16" 
+                            className="w-16 h-8" 
                           />
                         </td>
                       ))}
                       <td className="border border-gray-300 p-2">
-                        <Input size="sm" readOnly={isReadonly} className="w-20" />
+                        <Input readOnly={isReadonly} className="w-20 h-8" />
                       </td>
                     </tr>
                   </tbody>
