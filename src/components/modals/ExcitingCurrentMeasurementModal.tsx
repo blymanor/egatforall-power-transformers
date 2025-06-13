@@ -12,14 +12,14 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-interface AutoTransformerInsulationModalProps {
+interface ExcitingCurrentMeasurementModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: 'create' | 'view' | 'edit';
   data?: any;
 }
 
-const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTransformerInsulationModalProps) => {
+const ExcitingCurrentMeasurementModal = ({ isOpen, onClose, mode, data }: ExcitingCurrentMeasurementModalProps) => {
   const [formData, setFormData] = useState({
     transformer: data?.transformer || '',
     testType: data?.testType || '',
@@ -30,22 +30,21 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
     oilTemp: data?.oilTemp || '',
     wdgTemp: data?.wdgTemp || '',
     weather: data?.weather || '',
-    // HV-G Insulation Test Data
-    hvGVoltage: data?.hvGVoltage || '0.0',
-    hvGCurrent: data?.hvGCurrent || '0.0',
-    hvGPower: data?.hvGPower || '0.0',
-    hvGImpedance: data?.hvGImpedance || '0.0',
-    hvGPowerFactor: data?.hvGPowerFactor || '0.0',
-    hvGCapacitance: data?.hvGCapacitance || '0.0',
-    hvGPI: data?.hvGPI || '0.0',
-    // TV-G Insulation Test Data
-    tvGVoltage: data?.tvGVoltage || '0.0',
-    tvGCurrent: data?.tvGCurrent || '0.0',
-    tvGPower: data?.tvGPower || '0.0',
-    tvGImpedance: data?.tvGImpedance || '0.0',
-    tvGPowerFactor: data?.tvGPowerFactor || '0.0',
-    tvGCapacitance: data?.tvGCapacitance || '0.0',
-    tvGPI: data?.tvGPI || '0.0',
+    // HV Winding data
+    hvVoltage: data?.hvVoltage || '0.0',
+    hvCurrent: data?.hvCurrent || '0.0',
+    hvPower: data?.hvPower || '0.0',
+    hvExcitingCurrent: data?.hvExcitingCurrent || '0.0',
+    // LV Winding data
+    lvVoltage: data?.lvVoltage || '0.0',
+    lvCurrent: data?.lvCurrent || '0.0',
+    lvPower: data?.lvPower || '0.0',
+    lvExcitingCurrent: data?.lvExcitingCurrent || '0.0',
+    // TV Winding data
+    tvVoltage: data?.tvVoltage || '0.0',
+    tvCurrent: data?.tvCurrent || '0.0',
+    tvPower: data?.tvPower || '0.0',
+    tvExcitingCurrent: data?.tvExcitingCurrent || '0.0',
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -54,13 +53,13 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
 
   const handleCalculate = () => {
     toast.success("คำนวณเสร็จสิ้น", {
-      description: "ระบบได้คำนวณค่า Auto Transformer Insulation แล้ว",
+      description: "ระบบได้คำนวณค่า Exciting Current แล้ว",
     });
   };
 
   const handleSave = () => {
     toast.success("บันทึกข้อมูลสำเร็จ", {
-      description: "ข้อมูล Auto Transformer Insulation Measurement ถูกบันทึกแล้ว",
+      description: "ข้อมูล Exciting Current Measurement ถูกบันทึกแล้ว",
     });
     onClose();
   };
@@ -72,7 +71,7 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
-            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Auto Transformer Insulation Measurement
+            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Exciting Current Measurement
           </DialogTitle>
         </DialogHeader>
 
@@ -225,128 +224,119 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
             </div>
           </div>
 
-          {/* Auto Transformer Insulation Measurement Data */}
+          {/* Measurement Data */}
           <div className="space-y-6">
-            {/* HV-G Insulation */}
+            {/* HV WINDING */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV-G Insulation Measurement</h3>
-              <div className="grid grid-cols-7 gap-4">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV WINDING</h3>
+              <div className="grid grid-cols-4 gap-4">
                 <div className="space-y-2">
                   <Label>Voltage (V)</Label>
                   <Input
-                    value={formData.hvGVoltage}
-                    onChange={(e) => handleInputChange('hvGVoltage', e.target.value)}
+                    value={formData.hvVoltage}
+                    onChange={(e) => handleInputChange('hvVoltage', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Current (A)</Label>
                   <Input
-                    value={formData.hvGCurrent}
-                    onChange={(e) => handleInputChange('hvGCurrent', e.target.value)}
+                    value={formData.hvCurrent}
+                    onChange={(e) => handleInputChange('hvCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Power (W)</Label>
                   <Input
-                    value={formData.hvGPower}
-                    onChange={(e) => handleInputChange('hvGPower', e.target.value)}
+                    value={formData.hvPower}
+                    onChange={(e) => handleInputChange('hvPower', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Impedance (MΩ)</Label>
+                  <Label>Exciting Current (%)</Label>
                   <Input
-                    value={formData.hvGImpedance}
-                    onChange={(e) => handleInputChange('hvGImpedance', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power Factor (%)</Label>
-                  <Input
-                    value={formData.hvGPowerFactor}
-                    onChange={(e) => handleInputChange('hvGPowerFactor', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Capacitance (pF)</Label>
-                  <Input
-                    value={formData.hvGCapacitance}
-                    onChange={(e) => handleInputChange('hvGCapacitance', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>PI</Label>
-                  <Input
-                    value={formData.hvGPI}
-                    onChange={(e) => handleInputChange('hvGPI', e.target.value)}
+                    value={formData.hvExcitingCurrent}
+                    onChange={(e) => handleInputChange('hvExcitingCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
               </div>
             </div>
 
-            {/* TV-G Insulation */}
+            {/* LV WINDING */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">TV-G Insulation Measurement</h3>
-              <div className="grid grid-cols-7 gap-4">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">LV WINDING</h3>
+              <div className="grid grid-cols-4 gap-4">
                 <div className="space-y-2">
                   <Label>Voltage (V)</Label>
                   <Input
-                    value={formData.tvGVoltage}
-                    onChange={(e) => handleInputChange('tvGVoltage', e.target.value)}
+                    value={formData.lvVoltage}
+                    onChange={(e) => handleInputChange('lvVoltage', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Current (A)</Label>
                   <Input
-                    value={formData.tvGCurrent}
-                    onChange={(e) => handleInputChange('tvGCurrent', e.target.value)}
+                    value={formData.lvCurrent}
+                    onChange={(e) => handleInputChange('lvCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Power (W)</Label>
                   <Input
-                    value={formData.tvGPower}
-                    onChange={(e) => handleInputChange('tvGPower', e.target.value)}
+                    value={formData.lvPower}
+                    onChange={(e) => handleInputChange('lvPower', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Impedance (MΩ)</Label>
+                  <Label>Exciting Current (%)</Label>
                   <Input
-                    value={formData.tvGImpedance}
-                    onChange={(e) => handleInputChange('tvGImpedance', e.target.value)}
+                    value={formData.lvExcitingCurrent}
+                    onChange={(e) => handleInputChange('lvExcitingCurrent', e.target.value)}
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* TV WINDING */}
+            <div className="border rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">TV WINDING</h3>
+              <div className="grid grid-cols-4 gap-4">
+                <div className="space-y-2">
+                  <Label>Voltage (V)</Label>
+                  <Input
+                    value={formData.tvVoltage}
+                    onChange={(e) => handleInputChange('tvVoltage', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Power Factor (%)</Label>
+                  <Label>Current (A)</Label>
                   <Input
-                    value={formData.tvGPowerFactor}
-                    onChange={(e) => handleInputChange('tvGPowerFactor', e.target.value)}
+                    value={formData.tvCurrent}
+                    onChange={(e) => handleInputChange('tvCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Capacitance (pF)</Label>
+                  <Label>Power (W)</Label>
                   <Input
-                    value={formData.tvGCapacitance}
-                    onChange={(e) => handleInputChange('tvGCapacitance', e.target.value)}
+                    value={formData.tvPower}
+                    onChange={(e) => handleInputChange('tvPower', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>PI</Label>
+                  <Label>Exciting Current (%)</Label>
                   <Input
-                    value={formData.tvGPI}
-                    onChange={(e) => handleInputChange('tvGPI', e.target.value)}
+                    value={formData.tvExcitingCurrent}
+                    onChange={(e) => handleInputChange('tvExcitingCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
@@ -371,4 +361,4 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
   );
 };
 
-export default AutoTransformerInsulationModal;
+export default ExcitingCurrentMeasurementModal;

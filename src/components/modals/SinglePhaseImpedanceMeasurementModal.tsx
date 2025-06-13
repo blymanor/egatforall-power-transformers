@@ -12,14 +12,14 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-interface AutoTransformerInsulationModalProps {
+interface SinglePhaseImpedanceMeasurementModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: 'create' | 'view' | 'edit';
   data?: any;
 }
 
-const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTransformerInsulationModalProps) => {
+const SinglePhaseImpedanceMeasurementModal = ({ isOpen, onClose, mode, data }: SinglePhaseImpedanceMeasurementModalProps) => {
   const [formData, setFormData] = useState({
     transformer: data?.transformer || '',
     testType: data?.testType || '',
@@ -30,22 +30,24 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
     oilTemp: data?.oilTemp || '',
     wdgTemp: data?.wdgTemp || '',
     weather: data?.weather || '',
-    // HV-G Insulation Test Data
-    hvGVoltage: data?.hvGVoltage || '0.0',
-    hvGCurrent: data?.hvGCurrent || '0.0',
-    hvGPower: data?.hvGPower || '0.0',
-    hvGImpedance: data?.hvGImpedance || '0.0',
-    hvGPowerFactor: data?.hvGPowerFactor || '0.0',
-    hvGCapacitance: data?.hvGCapacitance || '0.0',
-    hvGPI: data?.hvGPI || '0.0',
-    // TV-G Insulation Test Data
-    tvGVoltage: data?.tvGVoltage || '0.0',
-    tvGCurrent: data?.tvGCurrent || '0.0',
-    tvGPower: data?.tvGPower || '0.0',
-    tvGImpedance: data?.tvGImpedance || '0.0',
-    tvGPowerFactor: data?.tvGPowerFactor || '0.0',
-    tvGCapacitance: data?.tvGCapacitance || '0.0',
-    tvGPI: data?.tvGPI || '0.0',
+    // HV-LV Impedance
+    hvLvVoltage: data?.hvLvVoltage || '0.0',
+    hvLvCurrent: data?.hvLvCurrent || '0.0',
+    hvLvPower: data?.hvLvPower || '0.0',
+    hvLvImpedance: data?.hvLvImpedance || '0.0',
+    hvLvDeviation: data?.hvLvDeviation || '0.0',
+    // HV-TV Impedance
+    hvTvVoltage: data?.hvTvVoltage || '0.0',
+    hvTvCurrent: data?.hvTvCurrent || '0.0',
+    hvTvPower: data?.hvTvPower || '0.0',
+    hvTvImpedance: data?.hvTvImpedance || '0.0',
+    hvTvDeviation: data?.hvTvDeviation || '0.0',
+    // LV-TV Impedance
+    lvTvVoltage: data?.lvTvVoltage || '0.0',
+    lvTvCurrent: data?.lvTvCurrent || '0.0',
+    lvTvPower: data?.lvTvPower || '0.0',
+    lvTvImpedance: data?.lvTvImpedance || '0.0',
+    lvTvDeviation: data?.lvTvDeviation || '0.0',
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -54,13 +56,13 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
 
   const handleCalculate = () => {
     toast.success("คำนวณเสร็จสิ้น", {
-      description: "ระบบได้คำนวณค่า Auto Transformer Insulation แล้ว",
+      description: "ระบบได้คำนวณค่า Single Phase Impedance แล้ว",
     });
   };
 
   const handleSave = () => {
     toast.success("บันทึกข้อมูลสำเร็จ", {
-      description: "ข้อมูล Auto Transformer Insulation Measurement ถูกบันทึกแล้ว",
+      description: "ข้อมูล Single Phase Impedance Measurement ถูกบันทึกแล้ว",
     });
     onClose();
   };
@@ -72,7 +74,7 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
-            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Auto Transformer Insulation Measurement
+            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Single Phase Impedance Measurement
           </DialogTitle>
         </DialogHeader>
 
@@ -225,128 +227,143 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
             </div>
           </div>
 
-          {/* Auto Transformer Insulation Measurement Data */}
+          {/* Single Phase Impedance Measurement Data */}
           <div className="space-y-6">
-            {/* HV-G Insulation */}
+            {/* HV-LV Impedance */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV-G Insulation Measurement</h3>
-              <div className="grid grid-cols-7 gap-4">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV-LV Single Phase Impedance</h3>
+              <div className="grid grid-cols-5 gap-4">
                 <div className="space-y-2">
                   <Label>Voltage (V)</Label>
                   <Input
-                    value={formData.hvGVoltage}
-                    onChange={(e) => handleInputChange('hvGVoltage', e.target.value)}
+                    value={formData.hvLvVoltage}
+                    onChange={(e) => handleInputChange('hvLvVoltage', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Current (A)</Label>
                   <Input
-                    value={formData.hvGCurrent}
-                    onChange={(e) => handleInputChange('hvGCurrent', e.target.value)}
+                    value={formData.hvLvCurrent}
+                    onChange={(e) => handleInputChange('hvLvCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Power (W)</Label>
                   <Input
-                    value={formData.hvGPower}
-                    onChange={(e) => handleInputChange('hvGPower', e.target.value)}
+                    value={formData.hvLvPower}
+                    onChange={(e) => handleInputChange('hvLvPower', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Impedance (MΩ)</Label>
+                  <Label>Impedance (%)</Label>
                   <Input
-                    value={formData.hvGImpedance}
-                    onChange={(e) => handleInputChange('hvGImpedance', e.target.value)}
+                    value={formData.hvLvImpedance}
+                    onChange={(e) => handleInputChange('hvLvImpedance', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Power Factor (%)</Label>
+                  <Label>Deviation (%)</Label>
                   <Input
-                    value={formData.hvGPowerFactor}
-                    onChange={(e) => handleInputChange('hvGPowerFactor', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Capacitance (pF)</Label>
-                  <Input
-                    value={formData.hvGCapacitance}
-                    onChange={(e) => handleInputChange('hvGCapacitance', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>PI</Label>
-                  <Input
-                    value={formData.hvGPI}
-                    onChange={(e) => handleInputChange('hvGPI', e.target.value)}
+                    value={formData.hvLvDeviation}
+                    onChange={(e) => handleInputChange('hvLvDeviation', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
               </div>
             </div>
 
-            {/* TV-G Insulation */}
+            {/* HV-TV Impedance */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">TV-G Insulation Measurement</h3>
-              <div className="grid grid-cols-7 gap-4">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV-TV Single Phase Impedance</h3>
+              <div className="grid grid-cols-5 gap-4">
                 <div className="space-y-2">
                   <Label>Voltage (V)</Label>
                   <Input
-                    value={formData.tvGVoltage}
-                    onChange={(e) => handleInputChange('tvGVoltage', e.target.value)}
+                    value={formData.hvTvVoltage}
+                    onChange={(e) => handleInputChange('hvTvVoltage', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Current (A)</Label>
                   <Input
-                    value={formData.tvGCurrent}
-                    onChange={(e) => handleInputChange('tvGCurrent', e.target.value)}
+                    value={formData.hvTvCurrent}
+                    onChange={(e) => handleInputChange('hvTvCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Power (W)</Label>
                   <Input
-                    value={formData.tvGPower}
-                    onChange={(e) => handleInputChange('tvGPower', e.target.value)}
+                    value={formData.hvTvPower}
+                    onChange={(e) => handleInputChange('hvTvPower', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Impedance (MΩ)</Label>
+                  <Label>Impedance (%)</Label>
                   <Input
-                    value={formData.tvGImpedance}
-                    onChange={(e) => handleInputChange('tvGImpedance', e.target.value)}
+                    value={formData.hvTvImpedance}
+                    onChange={(e) => handleInputChange('hvTvImpedance', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Power Factor (%)</Label>
+                  <Label>Deviation (%)</Label>
                   <Input
-                    value={formData.tvGPowerFactor}
-                    onChange={(e) => handleInputChange('tvGPowerFactor', e.target.value)}
+                    value={formData.hvTvDeviation}
+                    onChange={(e) => handleInputChange('hvTvDeviation', e.target.value)}
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* LV-TV Impedance */}
+            <div className="border rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">LV-TV Single Phase Impedance</h3>
+              <div className="grid grid-cols-5 gap-4">
+                <div className="space-y-2">
+                  <Label>Voltage (V)</Label>
+                  <Input
+                    value={formData.lvTvVoltage}
+                    onChange={(e) => handleInputChange('lvTvVoltage', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Capacitance (pF)</Label>
+                  <Label>Current (A)</Label>
                   <Input
-                    value={formData.tvGCapacitance}
-                    onChange={(e) => handleInputChange('tvGCapacitance', e.target.value)}
+                    value={formData.lvTvCurrent}
+                    onChange={(e) => handleInputChange('lvTvCurrent', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>PI</Label>
+                  <Label>Power (W)</Label>
                   <Input
-                    value={formData.tvGPI}
-                    onChange={(e) => handleInputChange('tvGPI', e.target.value)}
+                    value={formData.lvTvPower}
+                    onChange={(e) => handleInputChange('lvTvPower', e.target.value)}
+                    readOnly={isReadOnly}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Impedance (%)</Label>
+                  <Input
+                    value={formData.lvTvImpedance}
+                    onChange={(e) => handleInputChange('lvTvImpedance', e.target.value)}
+                    readOnly={isReadOnly}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Deviation (%)</Label>
+                  <Input
+                    value={formData.lvTvDeviation}
+                    onChange={(e) => handleInputChange('lvTvDeviation', e.target.value)}
                     readOnly={isReadOnly}
                   />
                 </div>
@@ -371,4 +388,4 @@ const AutoTransformerInsulationModal = ({ isOpen, onClose, mode, data }: AutoTra
   );
 };
 
-export default AutoTransformerInsulationModal;
+export default SinglePhaseImpedanceMeasurementModal;
