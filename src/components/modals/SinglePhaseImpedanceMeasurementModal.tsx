@@ -21,43 +21,15 @@ interface SinglePhaseImpedanceMeasurementModalProps {
 
 const SinglePhaseImpedanceMeasurementModal = ({ isOpen, onClose, mode, data }: SinglePhaseImpedanceMeasurementModalProps) => {
   const [formData, setFormData] = useState({
-    transformer: data?.transformer || '',
-    testType: data?.testType || '',
-    testDate: data?.testDate || undefined,
-    inspector: data?.inspector || '',
-    ambientTemp: data?.ambientTemp || '',
-    humidity: data?.humidity || '',
-    oilTemp: data?.oilTemp || '',
-    wdgTemp: data?.wdgTemp || '',
-    weather: data?.weather || '',
-    // HV-LV Impedance
-    hvLvVoltage: data?.hvLvVoltage || '0.0',
-    hvLvCurrent: data?.hvLvCurrent || '0.0',
-    hvLvPower: data?.hvLvPower || '0.0',
-    hvLvImpedance: data?.hvLvImpedance || '0.0',
-    hvLvDeviation: data?.hvLvDeviation || '0.0',
-    // HV-TV Impedance
-    hvTvVoltage: data?.hvTvVoltage || '0.0',
-    hvTvCurrent: data?.hvTvCurrent || '0.0',
-    hvTvPower: data?.hvTvPower || '0.0',
-    hvTvImpedance: data?.hvTvImpedance || '0.0',
-    hvTvDeviation: data?.hvTvDeviation || '0.0',
-    // LV-TV Impedance
-    lvTvVoltage: data?.lvTvVoltage || '0.0',
-    lvTvCurrent: data?.lvTvCurrent || '0.0',
-    lvTvPower: data?.lvTvPower || '0.0',
-    lvTvImpedance: data?.lvTvImpedance || '0.0',
-    lvTvDeviation: data?.lvTvDeviation || '0.0',
+    transformer: mode === 'create' ? '' : (data?.transformer || ''),
+    testType: mode === 'create' ? '' : (data?.testType || ''),
+    testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    inspector: mode === 'create' ? '' : (data?.inspector || ''),
+    impedance: mode === 'create' ? '' : (data?.impedance || '')
   });
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleCalculate = () => {
-    toast.success("คำนวณเสร็จสิ้น", {
-      description: "ระบบได้คำนวณค่า Single Phase Impedance แล้ว",
-    });
   };
 
   const handleSave = () => {
@@ -71,7 +43,7 @@ const SinglePhaseImpedanceMeasurementModal = ({ isOpen, onClose, mode, data }: S
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
             {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Single Phase Impedance Measurement
@@ -79,7 +51,6 @@ const SinglePhaseImpedanceMeasurementModal = ({ isOpen, onClose, mode, data }: S
         </DialogHeader>
 
         <div className="space-y-6 p-4">
-          {/* Basic Information */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>หม้อแปลงไฟฟ้า :</Label>
@@ -155,228 +126,21 @@ const SinglePhaseImpedanceMeasurementModal = ({ isOpen, onClose, mode, data }: S
             </div>
 
             <div className="space-y-2">
-              <Label>เลขที่คำสั่งปฏิบัติงาน :</Label>
-              <Select disabled={isReadOnly}>
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกเลขที่คำสั่งปฏิบัติงาน" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="12345">12345</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Environmental Conditions */}
-          <div className="grid grid-cols-5 gap-4">
-            <div className="space-y-2">
-              <Label>Ambient Temp. :</Label>
+              <Label>Impedance :</Label>
               <div className="flex items-center space-x-2">
                 <Input
-                  value={formData.ambientTemp}
-                  onChange={(e) => handleInputChange('ambientTemp', e.target.value)}
-                  readOnly={isReadOnly}
-                />
-                <span className="text-sm">°C</span>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Humidity :</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  value={formData.humidity}
-                  onChange={(e) => handleInputChange('humidity', e.target.value)}
+                  value={formData.impedance}
+                  onChange={(e) => handleInputChange('impedance', e.target.value)}
+                  placeholder="กรอกค่า Impedance"
                   readOnly={isReadOnly}
                 />
                 <span className="text-sm">%</span>
               </div>
             </div>
-
-            <div className="space-y-2">
-              <Label>Oil Temp. :</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  value={formData.oilTemp}
-                  onChange={(e) => handleInputChange('oilTemp', e.target.value)}
-                  readOnly={isReadOnly}
-                />
-                <span className="text-sm">°C</span>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Wdg Temp. :</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  value={formData.wdgTemp}
-                  onChange={(e) => handleInputChange('wdgTemp', e.target.value)}
-                  readOnly={isReadOnly}
-                />
-                <span className="text-sm">°C</span>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Weather :</Label>
-              <Input
-                value={formData.weather}
-                onChange={(e) => handleInputChange('weather', e.target.value)}
-                readOnly={isReadOnly}
-              />
-            </div>
           </div>
 
-          {/* Single Phase Impedance Measurement Data */}
-          <div className="space-y-6">
-            {/* HV-LV Impedance */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV-LV Single Phase Impedance</h3>
-              <div className="grid grid-cols-5 gap-4">
-                <div className="space-y-2">
-                  <Label>Voltage (V)</Label>
-                  <Input
-                    value={formData.hvLvVoltage}
-                    onChange={(e) => handleInputChange('hvLvVoltage', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Current (A)</Label>
-                  <Input
-                    value={formData.hvLvCurrent}
-                    onChange={(e) => handleInputChange('hvLvCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power (W)</Label>
-                  <Input
-                    value={formData.hvLvPower}
-                    onChange={(e) => handleInputChange('hvLvPower', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Impedance (%)</Label>
-                  <Input
-                    value={formData.hvLvImpedance}
-                    onChange={(e) => handleInputChange('hvLvImpedance', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Deviation (%)</Label>
-                  <Input
-                    value={formData.hvLvDeviation}
-                    onChange={(e) => handleInputChange('hvLvDeviation', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* HV-TV Impedance */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV-TV Single Phase Impedance</h3>
-              <div className="grid grid-cols-5 gap-4">
-                <div className="space-y-2">
-                  <Label>Voltage (V)</Label>
-                  <Input
-                    value={formData.hvTvVoltage}
-                    onChange={(e) => handleInputChange('hvTvVoltage', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Current (A)</Label>
-                  <Input
-                    value={formData.hvTvCurrent}
-                    onChange={(e) => handleInputChange('hvTvCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power (W)</Label>
-                  <Input
-                    value={formData.hvTvPower}
-                    onChange={(e) => handleInputChange('hvTvPower', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Impedance (%)</Label>
-                  <Input
-                    value={formData.hvTvImpedance}
-                    onChange={(e) => handleInputChange('hvTvImpedance', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Deviation (%)</Label>
-                  <Input
-                    value={formData.hvTvDeviation}
-                    onChange={(e) => handleInputChange('hvTvDeviation', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* LV-TV Impedance */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">LV-TV Single Phase Impedance</h3>
-              <div className="grid grid-cols-5 gap-4">
-                <div className="space-y-2">
-                  <Label>Voltage (V)</Label>
-                  <Input
-                    value={formData.lvTvVoltage}
-                    onChange={(e) => handleInputChange('lvTvVoltage', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Current (A)</Label>
-                  <Input
-                    value={formData.lvTvCurrent}
-                    onChange={(e) => handleInputChange('lvTvCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power (W)</Label>
-                  <Input
-                    value={formData.lvTvPower}
-                    onChange={(e) => handleInputChange('lvTvPower', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Impedance (%)</Label>
-                  <Input
-                    value={formData.lvTvImpedance}
-                    onChange={(e) => handleInputChange('lvTvImpedance', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Deviation (%)</Label>
-                  <Input
-                    value={formData.lvTvDeviation}
-                    onChange={(e) => handleInputChange('lvTvDeviation', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
           {!isReadOnly && (
             <div className="flex justify-center space-x-4 pt-4">
-              <Button onClick={handleCalculate} variant="outline" className="px-8">
-                คำนวณ
-              </Button>
               <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
                 บันทึก
               </Button>

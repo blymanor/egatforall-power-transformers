@@ -12,20 +12,20 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-interface RatioMeasurementModalProps {
+interface AutoTransformerInsulationMeasurementModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: 'create' | 'view' | 'edit';
   data?: any;
 }
 
-const RatioMeasurementModal = ({ isOpen, onClose, mode, data }: RatioMeasurementModalProps) => {
+const AutoTransformerInsulationMeasurementModal = ({ isOpen, onClose, mode, data }: AutoTransformerInsulationMeasurementModalProps) => {
   const [formData, setFormData] = useState({
     transformer: mode === 'create' ? '' : (data?.transformer || ''),
     testType: mode === 'create' ? '' : (data?.testType || ''),
     testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
     inspector: mode === 'create' ? '' : (data?.inspector || ''),
-    ratio: mode === 'create' ? '' : (data?.ratio || '')
+    insulationResistance: mode === 'create' ? '' : (data?.insulationResistance || '')
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -34,7 +34,7 @@ const RatioMeasurementModal = ({ isOpen, onClose, mode, data }: RatioMeasurement
 
   const handleSave = () => {
     toast.success("บันทึกข้อมูลสำเร็จ", {
-      description: "ข้อมูล Ratio Measurement ถูกบันทึกแล้ว",
+      description: "ข้อมูล Auto Transformer Insulation Measurement ถูกบันทึกแล้ว",
     });
     onClose();
   };
@@ -46,7 +46,7 @@ const RatioMeasurementModal = ({ isOpen, onClose, mode, data }: RatioMeasurement
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
-            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Ratio Measurement
+            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Auto Transformer Insulation Measurement
           </DialogTitle>
         </DialogHeader>
 
@@ -126,13 +126,16 @@ const RatioMeasurementModal = ({ isOpen, onClose, mode, data }: RatioMeasurement
             </div>
 
             <div className="space-y-2">
-              <Label>อัตราส่วน :</Label>
-              <Input
-                value={formData.ratio}
-                onChange={(e) => handleInputChange('ratio', e.target.value)}
-                placeholder="กรอกอัตราส่วน"
-                readOnly={isReadOnly}
-              />
+              <Label>ความต้านทานฉนวน :</Label>
+              <div className="flex items-center space-x-2">
+                <Input
+                  value={formData.insulationResistance}
+                  onChange={(e) => handleInputChange('insulationResistance', e.target.value)}
+                  placeholder="กรอกค่าความต้านทานฉนวน"
+                  readOnly={isReadOnly}
+                />
+                <span className="text-sm">MΩ</span>
+              </div>
             </div>
           </div>
 
@@ -149,4 +152,4 @@ const RatioMeasurementModal = ({ isOpen, onClose, mode, data }: RatioMeasurement
   );
 };
 
-export default RatioMeasurementModal;
+export default AutoTransformerInsulationMeasurementModal;

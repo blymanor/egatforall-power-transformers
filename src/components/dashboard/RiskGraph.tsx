@@ -28,8 +28,8 @@ const RiskGraph: React.FC = () => {
                 ดูกราฟความเสี่ยง
               </Button>
               
-              {/* Main graph area */}
-              <div className="relative bg-white border-2 border-gray-400" style={{ width: '480px', height: '360px' }}>
+              {/* Main graph area - removed border and background */}
+              <div className="relative" style={{ width: '480px', height: '360px' }}>
                 
                 {/* Y-axis label (rotated) */}
                 <div className="absolute -left-20 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -73,7 +73,7 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Risk zones background - using medium-toned colors */}
+                {/* Risk zones background - using medium-toned colors without borders */}
                 <div className="absolute inset-0">
                   {/* Low-Low (Green) */}
                   <div className="absolute bg-green-500" style={{ left: '0%', bottom: '0%', width: '31%', height: '42%' }}></div>
@@ -103,8 +103,7 @@ const RiskGraph: React.FC = () => {
                   <div className="absolute bg-red-600" style={{ left: '56%', bottom: '67%', width: '44%', height: '33%' }}></div>
                 </div>
                 
-                {/* Data points - all yellow with medium tone */}
-                {/* Dense cluster in Low-Low zone */}
+                {/* Data points */}
                 {Array.from({ length: 40 }).map((_, i) => (
                   <div
                     key={`cluster1-${i}`}
@@ -116,7 +115,6 @@ const RiskGraph: React.FC = () => {
                   ></div>
                 ))}
                 
-                {/* Main dense cluster in Low-Moderate to Moderate-Moderate zone */}
                 {Array.from({ length: 180 }).map((_, i) => (
                   <div
                     key={`cluster2-${i}`}
@@ -128,7 +126,6 @@ const RiskGraph: React.FC = () => {
                   ></div>
                 ))}
                 
-                {/* Scattered points in moderate zones */}
                 {Array.from({ length: 60 }).map((_, i) => (
                   <div
                     key={`cluster3-${i}`}
@@ -140,7 +137,6 @@ const RiskGraph: React.FC = () => {
                   ></div>
                 ))}
                 
-                {/* Sparse points in high risk zones */}
                 {Array.from({ length: 25 }).map((_, i) => (
                   <div
                     key={`cluster4-${i}`}
@@ -152,7 +148,6 @@ const RiskGraph: React.FC = () => {
                   ></div>
                 ))}
                 
-                {/* Very sparse points in extreme high risk */}
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
                     key={`cluster5-${i}`}
@@ -179,8 +174,8 @@ const RiskGraph: React.FC = () => {
                 กราฟความเสี่ยง
               </Button>
               
-              {/* Main graph area */}
-              <div className="relative bg-white border-2 border-gray-400" style={{ width: '480px', height: '360px' }}>
+              {/* Main graph area - removed border and background */}
+              <div className="relative" style={{ width: '480px', height: '360px' }}>
                 
                 {/* Y-axis label (rotated) */}
                 <div className="absolute -left-20 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -224,46 +219,41 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Perfect diagonal zones - sharp triangular divisions */}
+                {/* Perfect diagonal zones - corrected positioning */}
                 <div className="absolute inset-0">
                   <svg className="w-full h-full" viewBox="0 0 480 360" preserveAspectRatio="none">
                     {/* Green zone (bottom-left triangle) */}
-                    <polygon points="0,360 150,360 0,210" fill="#22c55e" />
+                    <polygon points="0,360 144,360 0,216" fill="#22c55e" />
                     
-                    {/* Blue zones */}
-                    <polygon points="0,210 150,360 300,360 0,60" fill="#3b82f6" />
+                    {/* Blue zones - adjusted for better fit */}
+                    <polygon points="0,216 144,360 288,360 0,72" fill="#3b82f6" />
                     
-                    {/* Yellow zones */}
-                    <polygon points="0,60 300,360 450,360 0,0 75,0" fill="#eab308" />
+                    {/* Yellow zones - corrected diagonal */}
+                    <polygon points="0,72 288,360 432,360 0,0 72,0" fill="#eab308" />
                     
-                    {/* Orange zones */}
-                    <polygon points="75,0 450,360 480,360 480,180 150,0" fill="#f97316" />
+                    {/* Orange zones - fixed positioning */}
+                    <polygon points="72,0 432,360 480,360 480,144 216,0" fill="#f97316" />
                     
-                    {/* Red zone (top-right) */}
-                    <polygon points="150,0 480,180 480,0" fill="#dc2626" />
+                    {/* Red zone (top-right) - corrected */}
+                    <polygon points="216,0 480,144 480,0" fill="#dc2626" />
                   </svg>
                 </div>
                 
                 {/* Data points distributed across diagonal zones */}
                 {Array.from({ length: 300 }).map((_, i) => {
-                  // Create distribution that follows diagonal pattern
                   let x, y;
                   const rand = Math.random();
                   
                   if (rand < 0.4) {
-                    // Most points in lower diagonal area (green-blue zone)
                     x = 5 + Math.random() * 35;
                     y = 5 + Math.random() * 40;
                   } else if (rand < 0.7) {
-                    // Medium cluster in middle diagonal (yellow zone)
                     x = 20 + Math.random() * 40;
                     y = 15 + Math.random() * 45;
                   } else if (rand < 0.9) {
-                    // Some points in orange zone
                     x = 40 + Math.random() * 40;
                     y = 25 + Math.random() * 50;
                   } else {
-                    // Few points in red zone
                     x = 60 + Math.random() * 35;
                     y = 60 + Math.random() * 35;
                   }

@@ -21,20 +21,15 @@ interface InsulatingOilModalProps {
 
 const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalProps) => {
   const [formData, setFormData] = useState({
-    transformer: data?.transformer || '',
-    testType: data?.testType || '',
-    testDate: data?.testDate || undefined,
-    inspector: data?.inspector || '',
+    transformer: mode === 'create' ? '' : (data?.transformer || ''),
+    testType: mode === 'create' ? '' : (data?.testType || ''),
+    testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    inspector: mode === 'create' ? '' : (data?.inspector || ''),
+    oilCondition: mode === 'create' ? '' : (data?.oilCondition || '')
   });
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleCalculate = () => {
-    toast.success("คำนวณเสร็จสิ้น", {
-      description: "ระบบได้คำนวณค่า Insulating Oil แล้ว",
-    });
   };
 
   const handleSave = () => {
@@ -48,7 +43,7 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
             {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Insulating Oil
@@ -73,22 +68,84 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
                 </SelectContent>
               </Select>
             </div>
-          </div>
 
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-blue-600">Oil Analysis Data</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <Input placeholder="Oil Property 1" readOnly={isReadOnly} />
-              <Input placeholder="Oil Property 2" readOnly={isReadOnly} />
-              <Input placeholder="Oil Property 3" readOnly={isReadOnly} />
+            <div className="space-y-2">
+              <Label>รูปแบบการทดสอบ :</Label>
+              <Select 
+                value={formData.testType} 
+                onValueChange={(value) => handleInputChange('testType', value)}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Commissioning">Commissioning</SelectItem>
+                  <SelectItem value="Special test">Special test</SelectItem>
+                  <SelectItem value="6 year test">6 year test</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>วันที่ตรวจสอบ :</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.testDate && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.testDate ? format(formData.testDate, "dd/MM/yyyy") : "เลือกวันที่"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.testDate}
+                    onSelect={(date) => handleInputChange('testDate', date)}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-2">
+              <Label>ผู้ตรวจสอบ :</Label>
+              <Input
+                value={formData.inspector}
+                onChange={(e) => handleInputChange('inspector', e.target.value)}
+                placeholder="กรอกชื่อผู้ตรวจสอบ"
+                readOnly={isReadOnly}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>สภาพน้ำมันฉนวน :</Label>
+              <Select 
+                value={formData.oilCondition} 
+                onValueChange={(value) => handleInputChange('oilCondition', value)}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกสภาพน้ำมันฉนวน" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ดี">ดี</SelectItem>
+                  <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
+                  <SelectItem value="ต้องเปลี่ยน">ต้องเปลี่ยน</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
           {!isReadOnly && (
             <div className="flex justify-center space-x-4 pt-4">
-              <Button onClick={handleCalculate} variant="outline" className="px-8">
-                คำนวณ
-              </Button>
               <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
                 บันทึก
               </Button>

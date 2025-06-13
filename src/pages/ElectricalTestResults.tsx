@@ -15,6 +15,18 @@ import {
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import CoreInsulationResistanceModal from "@/components/modals/CoreInsulationResistanceModal";
+import ExcitingCurrentMeasurementModal from "@/components/modals/ExcitingCurrentMeasurementModal";
+import DCResistanceMeasurementModal from "@/components/modals/DCResistanceMeasurementModal";
+import SinglePhaseImpedanceMeasurementModal from "@/components/modals/SinglePhaseImpedanceMeasurementModal";
+import ThreePhaseImpedanceMeasurementModal from "@/components/modals/ThreePhaseImpedanceMeasurementModal";
+import AutoTransformerInsulationMeasurementModal from "@/components/modals/AutoTransformerInsulationMeasurementModal";
+import TwoWindingInsulationMeasurementModal from "@/components/modals/TwoWindingInsulationMeasurementModal";
+import ThreeWindingInsulationMeasurementModal from "@/components/modals/ThreeWindingInsulationMeasurementModal";
+import RatioMeasurementModal from "@/components/modals/RatioMeasurementModal";
+import InsulatingOilModal from "@/components/modals/InsulatingOilModal";
+import ArresterModal from "@/components/modals/ArresterModal";
+import BushingModal from "@/components/modals/BushingModal";
 
 interface TestRecord {
   id: number;
@@ -30,8 +42,14 @@ const ElectricalTestResults = () => {
   const [selectedCategory, setSelectedCategory] = useState("core-insulation-resistance");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Modal states
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    mode: "create" as "create" | "view" | "edit",
+    data: null as any
+  });
 
-  // Mock data for the dropdown options with added icon info
   const categories = [
     { value: "core-insulation-resistance", label: "List all Core Insulation Resistance", icon: "core-insulation-resistance" },
     { value: "exciting-current", label: "List all Exciting Current Measurement", icon: "exciting-current" },
@@ -47,7 +65,6 @@ const ElectricalTestResults = () => {
     { value: "bushing", label: "List all Bushing", icon: "bushing" }
   ];
 
-  // Dynamic mock data based on selected category
   const getMockRecords = (category: string): TestRecord[] => {
     const categoryNameMap: {[key: string]: string} = {
       "core-insulation-resistance": "Core",
@@ -77,10 +94,7 @@ const ElectricalTestResults = () => {
     }));
   };
 
-  // Get records based on selected category
   const records = getMockRecords(selectedCategory);
-
-  // Filter records based on search query
   const filteredRecords = records.filter(record => 
     record.transformerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     record.egatSn.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -102,16 +116,22 @@ const ElectricalTestResults = () => {
     });
   };
 
+  const openModal = (mode: "create" | "view" | "edit", data?: any) => {
+    setModalState({ isOpen: true, mode, data });
+  };
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, mode: "create", data: null });
+  };
+
   const handleView = (id: number) => {
-    toast.info(`ดูข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+    const record = filteredRecords.find(r => r.id === id);
+    openModal("view", record);
   };
 
   const handleEdit = (id: number) => {
-    toast.info(`แก้ไขข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+    const record = filteredRecords.find(r => r.id === id);
+    openModal("edit", record);
   };
 
   const handleDelete = (id: number) => {
@@ -121,16 +141,12 @@ const ElectricalTestResults = () => {
   };
 
   const handleCreate = () => {
-    toast.success("สร้างรายการใหม่", {
-      description: "กำลังเปิดฟอร์มสำหรับสร้างรายการใหม่",
-    });
+    openModal("create");
   };
 
-  // Function to render the appropriate icon based on category
   const renderCategoryIcon = () => {
     const iconName = categories.find(c => c.value === selectedCategory)?.icon || "core-insulation-resistance";
     
-    // Using imported icons directly - in a real implementation, you'd use dynamic imports or component mapping
     return (
       <div className="h-5 w-5 text-blue-500">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -138,6 +154,39 @@ const ElectricalTestResults = () => {
         </svg>
       </div>
     );
+  };
+
+  const renderModal = () => {
+    const { isOpen, mode, data } = modalState;
+    
+    switch (selectedCategory) {
+      case "core-insulation-resistance":
+        return <CoreInsulationResistanceModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "exciting-current":
+        return <ExcitingCurrentMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "dc-resistance-measurement":
+        return <DCResistanceMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "single-phase-impedance-measurement":
+        return <SinglePhaseImpedanceMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "three-phase-impedance-measurement":
+        return <ThreePhaseImpedanceMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "auto-transformer-insulation-measurement":
+        return <AutoTransformerInsulationMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "two-winding-insulation-measurement":
+        return <TwoWindingInsulationMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "three-winding-insulation-measurement":
+        return <ThreeWindingInsulationMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "ratio-measurement":
+        return <RatioMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "insulating-oil":
+        return <InsulatingOilModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "arrester":
+        return <ArresterModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "bushing":
+        return <BushingModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -274,6 +323,8 @@ const ElectricalTestResults = () => {
             </div>
           </CardContent>
         </Card>
+        
+        {renderModal()}
       </div>
     </DashboardLayout>
   );
