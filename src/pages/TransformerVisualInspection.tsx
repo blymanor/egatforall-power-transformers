@@ -22,6 +22,8 @@ import OLTCCompartmentModal from "@/components/modals/OLTCCompartmentModal";
 import OLTCControlCabinetModal from "@/components/modals/OLTCControlCabinetModal";
 import ThermoScanModal from "@/components/modals/ThermoScanModal";
 import CoreInsulationResistanceModal from "@/components/modals/CoreInsulationResistanceModal";
+import ExcitingCurrentMeasurementModal from "@/components/modals/ExcitingCurrentMeasurementModal";
+import DCResistanceMeasurementModal from "@/components/modals/DCResistanceMeasurementModal";
 
 interface InspectionRecord {
   id: number;
@@ -59,7 +61,9 @@ const TransformerVisualInspection = () => {
     { value: "oltc-compartment", label: "List all OLTC Compartment", icon: "Wrench" },
     { value: "oltc-control-cabinet", label: "List all OLTC Control Cabinet", icon: "BarChart" },
     { value: "thermo-scan", label: "List all Thermo Scan", icon: "Thermometer" },
-    { value: "core-insulation-resistance", label: "List all Core Insulation Resistance", icon: "Zap" }
+    { value: "core-insulation-resistance", label: "List all Core Insulation Resistance", icon: "Zap" },
+    { value: "exciting-current-measurement", label: "List all Exciting Current Measurement", icon: "Zap" },
+    { value: "dc-resistance-measurement", label: "List all DC Resistance Measurement", icon: "Zap" }
   ];
 
   const getMockRecords = (category: string): InspectionRecord[] => {
@@ -180,6 +184,10 @@ const TransformerVisualInspection = () => {
         return <ThermoScanModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
       case "core-insulation-resistance":
         return <CoreInsulationResistanceModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "exciting-current-measurement":
+        return <ExcitingCurrentMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "dc-resistance-measurement":
+        return <DCResistanceMeasurementModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
       default:
         return null;
     }

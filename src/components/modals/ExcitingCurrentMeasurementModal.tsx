@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -21,30 +20,30 @@ interface ExcitingCurrentMeasurementModalProps {
 
 const ExcitingCurrentMeasurementModal = ({ isOpen, onClose, mode, data }: ExcitingCurrentMeasurementModalProps) => {
   const [formData, setFormData] = useState({
-    transformer: data?.transformer || '',
-    testType: data?.testType || '',
-    testDate: data?.testDate || undefined,
-    inspector: data?.inspector || '',
-    ambientTemp: data?.ambientTemp || '',
-    humidity: data?.humidity || '',
-    oilTemp: data?.oilTemp || '',
-    wdgTemp: data?.wdgTemp || '',
-    weather: data?.weather || '',
+    transformer: mode === 'create' ? '' : (data?.transformer || ''),
+    testType: mode === 'create' ? '' : (data?.testType || ''),
+    testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    inspector: mode === 'create' ? '' : (data?.inspector || ''),
+    ambientTemp: mode === 'create' ? '' : (data?.ambientTemp || ''),
+    humidity: mode === 'create' ? '' : (data?.humidity || ''),
+    oilTemp: mode === 'create' ? '' : (data?.oilTemp || ''),
+    wdgTemp: mode === 'create' ? '' : (data?.wdgTemp || ''),
+    weather: mode === 'create' ? '' : (data?.weather || ''),
     // HV Winding data
-    hvVoltage: data?.hvVoltage || '0.0',
-    hvCurrent: data?.hvCurrent || '0.0',
-    hvPower: data?.hvPower || '0.0',
-    hvExcitingCurrent: data?.hvExcitingCurrent || '0.0',
+    hvVoltage: mode === 'create' ? '0.0' : (data?.hvVoltage || '0.0'),
+    hvCurrent: mode === 'create' ? '0.0' : (data?.hvCurrent || '0.0'),
+    hvPower: mode === 'create' ? '0.0' : (data?.hvPower || '0.0'),
+    hvExcitingCurrent: mode === 'create' ? '0.0' : (data?.hvExcitingCurrent || '0.0'),
     // LV Winding data
-    lvVoltage: data?.lvVoltage || '0.0',
-    lvCurrent: data?.lvCurrent || '0.0',
-    lvPower: data?.lvPower || '0.0',
-    lvExcitingCurrent: data?.lvExcitingCurrent || '0.0',
+    lvVoltage: mode === 'create' ? '0.0' : (data?.lvVoltage || '0.0'),
+    lvCurrent: mode === 'create' ? '0.0' : (data?.lvCurrent || '0.0'),
+    lvPower: mode === 'create' ? '0.0' : (data?.lvPower || '0.0'),
+    lvExcitingCurrent: mode === 'create' ? '0.0' : (data?.lvExcitingCurrent || '0.0'),
     // TV Winding data
-    tvVoltage: data?.tvVoltage || '0.0',
-    tvCurrent: data?.tvCurrent || '0.0',
-    tvPower: data?.tvPower || '0.0',
-    tvExcitingCurrent: data?.tvExcitingCurrent || '0.0',
+    tvVoltage: mode === 'create' ? '0.0' : (data?.tvVoltage || '0.0'),
+    tvCurrent: mode === 'create' ? '0.0' : (data?.tvCurrent || '0.0'),
+    tvPower: mode === 'create' ? '0.0' : (data?.tvPower || '0.0'),
+    tvExcitingCurrent: mode === 'create' ? '0.0' : (data?.tvExcitingCurrent || '0.0'),
   });
 
   const handleInputChange = (field: string, value: any) => {
