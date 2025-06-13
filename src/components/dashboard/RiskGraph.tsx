@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -90,7 +91,7 @@ const RiskGraph: React.FC = () => {
                   <div className="absolute bg-yellow-500" style={{ left: '31%', bottom: '42%', width: '25%', height: '25%' }}></div>
                   
                   {/* High-Moderate (Orange) */}
-                  <div className="absolute bg-orange-500" style={{ left: '56%', bottom: '42%', width: '44%', height: '25%' }}></div>
+                  <div className="absolute bg-orange-500" style={{ left: '56%', bottom: '42%', width: '25%', height: '25%' }}></div>
                   
                   {/* Low-High (Orange) */}
                   <div className="absolute bg-orange-500" style={{ left: '0%', bottom: '67%', width: '31%', height: '33%' }}></div>
@@ -223,30 +224,23 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Clear diagonal risk zones - no grid lines */}
+                {/* Perfect diagonal zones - sharp triangular divisions */}
                 <div className="absolute inset-0">
-                  <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-                    <defs>
-                      <linearGradient id="greenToBlue" x1="0%" y1="100%" x2="50%" y2="0%">
-                        <stop offset="0%" style={{stopColor:"#22c55e", stopOpacity:1}} />
-                        <stop offset="100%" style={{stopColor:"#3b82f6", stopOpacity:1}} />
-                      </linearGradient>
-                    </defs>
+                  <svg className="w-full h-full" viewBox="0 0 480 360" preserveAspectRatio="none">
+                    {/* Green zone (bottom-left triangle) */}
+                    <polygon points="0,360 150,360 0,210" fill="#22c55e" />
                     
-                    {/* Green zone (lowest risk - bottom-left) */}
-                    <polygon points="0,360 120,360 0,240" fill="#22c55e" />
+                    {/* Blue zones */}
+                    <polygon points="0,210 150,360 300,360 0,60" fill="#3b82f6" />
                     
-                    {/* Blue zones (low-moderate risk) */}
-                    <polygon points="0,240 120,360 240,360 0,120" fill="#3b82f6" />
+                    {/* Yellow zones */}
+                    <polygon points="0,60 300,360 450,360 0,0 75,0" fill="#eab308" />
                     
-                    {/* Yellow zones (moderate risk) */}
-                    <polygon points="0,120 240,360 360,360 0,60" fill="#eab308" />
+                    {/* Orange zones */}
+                    <polygon points="75,0 450,360 480,360 480,180 150,0" fill="#f97316" />
                     
-                    {/* Orange zones (high risk) */}
-                    <polygon points="0,60 360,360 480,360 0,0 150,0" fill="#f97316" />
-                    
-                    {/* Red zone (highest risk - top-right) */}
-                    <polygon points="150,0 480,0 480,360 360,360" fill="#dc2626" />
+                    {/* Red zone (top-right) */}
+                    <polygon points="150,0 480,180 480,0" fill="#dc2626" />
                   </svg>
                 </div>
                 

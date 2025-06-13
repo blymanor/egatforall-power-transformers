@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import OLTCMaintenanceModal from "@/components/modals/OLTCMaintenanceModal";
 import { 
-  ChevronDown, 
   Eye, 
   Pencil, 
   Search, 
@@ -29,6 +29,9 @@ interface TestRecord {
 const OLTCMaintenance = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'add' | 'view' | 'edit'>('add');
+  const [selectedRecord, setSelectedRecord] = useState<TestRecord | null>(null);
 
   // Mock data
   const records: TestRecord[] = Array.from({ length: 10 }, (_, i) => ({
@@ -56,16 +59,16 @@ const OLTCMaintenance = () => {
     });
   };
 
-  const handleView = (id: number) => {
-    toast.info(`ดูข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+  const handleView = (record: TestRecord) => {
+    setSelectedRecord(record);
+    setModalMode('view');
+    setModalOpen(true);
   };
 
-  const handleEdit = (id: number) => {
-    toast.info(`แก้ไขข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+  const handleEdit = (record: TestRecord) => {
+    setSelectedRecord(record);
+    setModalMode('edit');
+    setModalOpen(true);
   };
 
   const handleDelete = (id: number) => {
@@ -75,9 +78,14 @@ const OLTCMaintenance = () => {
   };
 
   const handleCreate = () => {
-    toast.success("สร้างรายการใหม่", {
-      description: "กำลังเปิดฟอร์มสำหรับสร้างรายการใหม่",
-    });
+    setSelectedRecord(null);
+    setModalMode('add');
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedRecord(null);
   };
 
   return (
@@ -132,7 +140,7 @@ const OLTCMaintenance = () => {
                       <TableCell className="text-center">{record.inspector}</TableCell>
                       <TableCell className="text-center">
                         <Button
-                          onClick={() => handleView(record.id)}
+                          onClick={() => handleView(record)}
                           variant="ghost"
                           size="icon"
                           className="hover:bg-blue-100"
@@ -142,7 +150,7 @@ const OLTCMaintenance = () => {
                       </TableCell>
                       <TableCell className="text-center">
                         <Button
-                          onClick={() => handleEdit(record.id)}
+                          onClick={() => handleEdit(record)}
                           variant="ghost"
                           size="icon"
                           className="hover:bg-blue-100"
@@ -196,6 +204,13 @@ const OLTCMaintenance = () => {
             </div>
           </CardContent>
         </Card>
+
+        <OLTCMaintenanceModal
+          isOpen={modalOpen}
+          onClose={closeModal}
+          mode={modalMode}
+          data={selectedRecord}
+        />
       </div>
     </DashboardLayout>
   );
