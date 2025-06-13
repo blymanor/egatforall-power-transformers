@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TransformerAbnormality from "./pages/TransformerAbnormality";
@@ -33,75 +34,81 @@ import TransformerOilInventory from "./pages/TransformerOilInventory";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/transformer-abnormality" element={<TransformerAbnormality />} />
-          <Route path="/age-assessment" element={<AgeAssessment />} />
-          <Route path="/upload-data" element={<UploadData />} />
-          <Route path="/upload-data/oil-test" element={<OilTestUpload />} />
-          <Route path="/upload-data/electrical-test" element={<ElectricalTestUpload />} />
-          <Route path="/upload-data/activate" element={<ActivateTestResults />} />
-          
-          {/* Reports Routes */}
-          <Route path="/reports" element={<NotFound />} />
-          <Route path="/reports/standard" element={<StandardReport />} />
-          <Route path="/reports/transformers" element={<TransformerReport />} />
-          <Route path="/reports/damages" element={<DamageReport />} />
-          
-          {/* Transformer Info Routes */}
-          <Route path="/transformer-info" element={<TransformerBasicInfo />} />
-          <Route path="/transformer-info/details" element={<TransformerBasicInfo />} />
-          <Route path="/transformer-info/relocation" element={<TransformerRelocationInfo />} />
-          
-          {/* Transformer Importance Route */}
-          <Route path="/transformer-importance" element={<TransformerImportance />} />
-          
-          {/* Economic Analysis Routes */}
-          <Route path="/economic-analysis" element={<EconomicAnalysisFactorSetting />} />
-          <Route path="/economic-analysis/factor-setting" element={<EconomicAnalysisFactorSetting />} />
-          <Route path="/economic-analysis/price-loss" element={<EconomicAnalysisPriceLoss />} />
-          <Route path="/economic-analysis/info" element={<EconomicAnalysisInfo />} />
-          <Route path="/economic-analysis/consideration-data" element={<EconomicAnalysisInfo />} />
-          
-          {/* Transformer Maintenance Routes */}
-          <Route path="/transformer-maintenance" element={<TransformerMaintenanceSearch />} />
-          <Route path="/transformer-maintenance/search" element={<TransformerMaintenanceSearch />} />
-          <Route path="/transformer-maintenance/visual-inspection" element={<TransformerVisualInspection />} />
-          <Route path="/transformer-maintenance/oil-test" element={<OilTestResults />} />
-          <Route path="/transformer-maintenance/electrical-test" element={<ElectricalTestResults />} />
-          <Route path="/transformer-maintenance/oltc" element={<OLTCMaintenance />} />
-          <Route path="/transformer-maintenance/all-test-results" element={<AllTestResults />} />
-          <Route path="/transformer-maintenance/condition-check" element={<NotFound />} />
-          
-          {/* Inventory Routes */}
-          <Route path="/inventory" element={<NotFound />} />
-          <Route path="/inventory/oil" element={<TransformerOilInventory />} />
-          <Route path="/inventory/oil/stock" element={<TransformerOilInventory />} />
-          <Route path="/inventory/components" element={<NotFound />} />
-          
-          {/* User Management Routes */}
-          <Route path="/management" element={<UserManagement />} />
-          <Route path="/management/user" element={<UserManagement />} />
-          <Route path="/management/users" element={<UserManagement />} />
-          <Route path="/management/change-password" element={<ChangePassword />} />
-          
-          {/* Utility Routes */}
-          <Route path="/manual" element={<NotFound />} />
-          <Route path="/test-history" element={<NotFound />} />
-          <Route path="/logout" element={<NotFound />} />
-          
-          {/* Catch-all route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<Index />} />
+    <Route path="/transformer-abnormality" element={<TransformerAbnormality />} />
+    <Route path="/age-assessment" element={<AgeAssessment />} />
+    <Route path="/upload-data" element={<UploadData />} />
+    <Route path="/upload-data/oil-test" element={<OilTestUpload />} />
+    <Route path="/upload-data/electrical-test" element={<ElectricalTestUpload />} />
+    <Route path="/upload-data/activate" element={<ActivateTestResults />} />
+    
+    {/* Reports Routes */}
+    <Route path="/reports" element={<NotFound />} />
+    <Route path="/reports/standard" element={<StandardReport />} />
+    <Route path="/reports/transformers" element={<TransformerReport />} />
+    <Route path="/reports/damages" element={<DamageReport />} />
+    
+    {/* Transformer Info Routes */}
+    <Route path="/transformer-info" element={<TransformerBasicInfo />} />
+    <Route path="/transformer-info/details" element={<TransformerBasicInfo />} />
+    <Route path="/transformer-info/relocation" element={<TransformerRelocationInfo />} />
+    
+    {/* Transformer Importance Route */}
+    <Route path="/transformer-importance" element={<TransformerImportance />} />
+    
+    {/* Economic Analysis Routes */}
+    <Route path="/economic-analysis" element={<EconomicAnalysisFactorSetting />} />
+    <Route path="/economic-analysis/factor-setting" element={<EconomicAnalysisFactorSetting />} />
+    <Route path="/economic-analysis/price-loss" element={<EconomicAnalysisPriceLoss />} />
+    <Route path="/economic-analysis/info" element={<EconomicAnalysisInfo />} />
+    <Route path="/economic-analysis/consideration-data" element={<EconomicAnalysisInfo />} />
+    
+    {/* Transformer Maintenance Routes */}
+    <Route path="/transformer-maintenance" element={<TransformerMaintenanceSearch />} />
+    <Route path="/transformer-maintenance/search" element={<TransformerMaintenanceSearch />} />
+    <Route path="/transformer-maintenance/visual-inspection" element={<TransformerVisualInspection />} />
+    <Route path="/transformer-maintenance/oil-test" element={<OilTestResults />} />
+    <Route path="/transformer-maintenance/electrical-test" element={<ElectricalTestResults />} />
+    <Route path="/transformer-maintenance/oltc" element={<OLTCMaintenance />} />
+    <Route path="/transformer-maintenance/all-test-results" element={<AllTestResults />} />
+    <Route path="/transformer-maintenance/condition-check" element={<NotFound />} />
+    
+    {/* Inventory Routes */}
+    <Route path="/inventory" element={<NotFound />} />
+    <Route path="/inventory/oil" element={<TransformerOilInventory />} />
+    <Route path="/inventory/oil/stock" element={<TransformerOilInventory />} />
+    <Route path="/inventory/components" element={<NotFound />} />
+    
+    {/* User Management Routes */}
+    <Route path="/management" element={<UserManagement />} />
+    <Route path="/management/user" element={<UserManagement />} />
+    <Route path="/management/users" element={<UserManagement />} />
+    <Route path="/management/change-password" element={<ChangePassword />} />
+    
+    {/* Utility Routes */}
+    <Route path="/manual" element={<NotFound />} />
+    <Route path="/test-history" element={<NotFound />} />
+    <Route path="/logout" element={<NotFound />} />
+    
+    {/* Catch-all route */}
+    <Route path="*" element={<NotFound />} />
+  </Routes>
 );
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <TooltipProvider>
+          <AppRoutes />
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
