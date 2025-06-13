@@ -40,7 +40,7 @@ const TransformerVisualInspection = () => {
   // Modal states
   const [modalState, setModalState] = useState({
     isOpen: false,
-    mode: "add" as "add" | "view" | "edit",
+    mode: "create" as "create" | "view" | "edit",
     data: null as any
   });
 
@@ -98,12 +98,12 @@ const TransformerVisualInspection = () => {
     });
   };
 
-  const openModal = (mode: "add" | "view" | "edit", data?: any) => {
+  const openModal = (mode: "create" | "view" | "edit", data?: any) => {
     setModalState({ isOpen: true, mode, data });
   };
 
   const closeModal = () => {
-    setModalState({ isOpen: false, mode: "add", data: null });
+    setModalState({ isOpen: false, mode: "create", data: null });
   };
 
   const handleView = (id: number) => {
@@ -123,7 +123,7 @@ const TransformerVisualInspection = () => {
   };
 
   const handleCreate = () => {
-    openModal("add");
+    openModal("create");
   };
 
   const renderCategoryIcon = () => {
