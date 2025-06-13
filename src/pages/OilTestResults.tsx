@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,12 @@ import {
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import OilAgingModal from "@/components/modals/OilAgingModal";
+import OilDGAModal from "@/components/modals/OilDGAModal";
+import OilFuranModal from "@/components/modals/OilFuranModal";
+import OilContaminationModal from "@/components/modals/OilContaminationModal";
+import OLTCDGAModal from "@/components/modals/OLTCDGAModal";
+import OLTCOilContaminationModal from "@/components/modals/OLTCOilContaminationModal";
 
 interface TestRecord {
   id: number;
@@ -30,6 +37,13 @@ const OilTestResults = () => {
   const [selectedCategory, setSelectedCategory] = useState("oil-aging");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Modal states
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    mode: "add" as "add" | "view" | "edit",
+    data: null as any
+  });
 
   // Mock data for the dropdown options with added icon info
   const categories = [
@@ -86,16 +100,22 @@ const OilTestResults = () => {
     });
   };
 
+  const openModal = (mode: "add" | "view" | "edit", data?: any) => {
+    setModalState({ isOpen: true, mode, data });
+  };
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, mode: "add", data: null });
+  };
+
   const handleView = (id: number) => {
-    toast.info(`ดูข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+    const record = filteredRecords.find(r => r.id === id);
+    openModal("view", record);
   };
 
   const handleEdit = (id: number) => {
-    toast.info(`แก้ไขข้อมูล ID: ${id}`, {
-      description: "กำลังโหลดข้อมูล",
-    });
+    const record = filteredRecords.find(r => r.id === id);
+    openModal("edit", record);
   };
 
   const handleDelete = (id: number) => {
@@ -105,9 +125,7 @@ const OilTestResults = () => {
   };
 
   const handleCreate = () => {
-    toast.success("สร้างรายการใหม่", {
-      description: "กำลังเปิดฟอร์มสำหรับสร้างรายการใหม่",
-    });
+    openModal("add");
   };
 
   // Function to render the appropriate icon based on category
@@ -130,6 +148,27 @@ const OilTestResults = () => {
         </svg>
       </div>
     );
+  };
+
+  const renderModal = () => {
+    const { isOpen, mode, data } = modalState;
+    
+    switch (selectedCategory) {
+      case "oil-aging":
+        return <OilAgingModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oil-dga":
+        return <OilDGAModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oil-furan":
+        return <OilFuranModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oil-contamination":
+        return <OilContaminationModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oltc-dga":
+        return <OLTCDGAModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oltc-oil-contamination":
+        return <OLTCOilContaminationModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -266,6 +305,8 @@ const OilTestResults = () => {
             </div>
           </CardContent>
         </Card>
+        
+        {renderModal()}
       </div>
     </DashboardLayout>
   );
