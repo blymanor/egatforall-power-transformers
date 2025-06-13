@@ -1,240 +1,157 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface GeneralConditionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: "add" | "view" | "edit";
+  mode: 'create' | 'view' | 'edit';
   data?: any;
 }
 
-const GeneralConditionModal: React.FC<GeneralConditionModalProps> = ({
-  isOpen,
-  onClose,
-  mode,
-  data
-}) => {
+const GeneralConditionModal = ({ isOpen, onClose, mode, data }: GeneralConditionModalProps) => {
   const [formData, setFormData] = useState({
-    transformer: "",
-    testType: "",
-    inspector: "",
-    inspectionDate: "",
-    operationId: "",
-    maxLoad: "",
-    transformerSound: "",
-    vibration: "",
-    groundingConnector: "",
-    foundation: "",
-    animalProtection: ""
+    transformer: mode === 'create' ? '' : (data?.transformer || ''),
+    testType: mode === 'create' ? '' : (data?.testType || ''),
+    testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    inspector: mode === 'create' ? '' : (data?.inspector || ''),
+    generalCondition: mode === 'create' ? '' : (data?.generalCondition || '')
   });
 
-  useEffect(() => {
-    if (mode !== "add" && data) {
-      setFormData({
-        transformer: data.transformerName || "",
-        testType: data.testType || "",
-        inspector: data.inspector || "",
-        inspectionDate: data.inspectionDate || "",
-        operationId: data.operationId || "",
-        maxLoad: "<60%",
-        transformerSound: "ปกติ",
-        vibration: "ปกติ",
-        groundingConnector: "ปกติ",
-        foundation: "ปกติ",
-        animalProtection: "สภาพปกติ"
-      });
-    } else if (mode === "add") {
-      setFormData({
-        transformer: "",
-        testType: "",
-        inspector: "",
-        inspectionDate: "",
-        operationId: "",
-        maxLoad: "",
-        transformerSound: "",
-        vibration: "",
-        groundingConnector: "",
-        foundation: "",
-        animalProtection: ""
-      });
-    }
-  }, [mode, data]);
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success(mode === "add" ? "เพิ่มข้อมูลสำเร็จ" : "บันทึกข้อมูลสำเร็จ");
+  const handleSave = () => {
+    toast.success("บันทึกข้อมูลสำเร็จ", {
+      description: "ข้อมูล General Condition ถูกบันทึกแล้ว",
+    });
     onClose();
   };
 
-  const isReadOnly = mode === "view";
+  const isReadOnly = mode === 'view';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
-            {mode === "add" ? "เพิ่มข้อมูล General Condition" : 
-             mode === "view" ? "ดูข้อมูล General Condition" : 
-             "แก้ไขข้อมูล General Condition"}
+          <DialogTitle className="text-lg font-semibold text-center">
+            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} General Condition
           </DialogTitle>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="transformer">หม้อแปลงไฟฟ้า :</Label>
-            <Select value={formData.transformer} onValueChange={(value) => setFormData(prev => ({...prev, transformer: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="AN-KT1A">AN-KT1A</SelectItem>
-                <SelectItem value="AT2-KT1A">AT2-KT1A</SelectItem>
-                <SelectItem value="AN-473A">AN-473A</SelectItem>
-              </SelectContent>
-            </Select>
+
+        <div className="space-y-6 p-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>หม้อแปลงไฟฟ้า :</Label>
+              <Select 
+                value={formData.transformer} 
+                onValueChange={(value) => handleInputChange('transformer', value)}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="AN-KT1A">AN-KT1A</SelectItem>
+                  <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>รูปแบบการทดสอบ :</Label>
+              <Select 
+                value={formData.testType} 
+                onValueChange={(value) => handleInputChange('testType', value)}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Commissioning">Commissioning</SelectItem>
+                  <SelectItem value="Special test">Special test</SelectItem>
+                  <SelectItem value="6 year test">6 year test</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>วันที่ตรวจสอบ :</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.testDate && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.testDate ? format(formData.testDate, "dd/MM/yyyy") : "เลือกวันที่"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.testDate}
+                    onSelect={(date) => handleInputChange('testDate', date)}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-2">
+              <Label>ผู้ตรวจสอบ :</Label>
+              <Input
+                value={formData.inspector}
+                onChange={(e) => handleInputChange('inspector', e.target.value)}
+                placeholder="กรอกชื่อผู้ตรวจสอบ"
+                readOnly={isReadOnly}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>สภาพทั่วไป :</Label>
+              <Select 
+                value={formData.generalCondition} 
+                onValueChange={(value) => handleInputChange('generalCondition', value)}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกสภาพทั่วไป" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ดี">ดี</SelectItem>
+                  <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
+                  <SelectItem value="ต้องซ่อม">ต้องซ่อม</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div>
-            <Label htmlFor="testType">รูปแบบการทดสอบ :</Label>
-            <Select value={formData.testType} onValueChange={(value) => setFormData(prev => ({...prev, testType: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Weekly test">Weekly test</SelectItem>
-                <SelectItem value="Monthly test">Monthly test</SelectItem>
-                <SelectItem value="Quarterly test">Quarterly test</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="inspector">ผู้ตรวจสอบ :</Label>
-            <Input
-              id="inspector"
-              value={formData.inspector}
-              onChange={(e) => setFormData(prev => ({...prev, inspector: e.target.value}))}
-              readOnly={isReadOnly}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="inspectionDate">วันที่ตรวจสอบ :</Label>
-            <Input
-              id="inspectionDate"
-              type="date"
-              value={formData.inspectionDate}
-              onChange={(e) => setFormData(prev => ({...prev, inspectionDate: e.target.value}))}
-              readOnly={isReadOnly}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="operationId">เลขคำสั่งปฏิบัติงาน :</Label>
-            <Input
-              id="operationId"
-              value={formData.operationId}
-              onChange={(e) => setFormData(prev => ({...prev, operationId: e.target.value}))}
-              readOnly={isReadOnly}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="maxLoad">Max, Load ของหม้อแปลง :</Label>
-            <Select value={formData.maxLoad} onValueChange={(value) => setFormData(prev => ({...prev, maxLoad: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือก Max Load" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="<60%">&lt;60%</SelectItem>
-                <SelectItem value="60-80%">60-80%</SelectItem>
-                <SelectItem value=">80%">&gt;80%</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="transformerSound">เสียงของหม้อแปลง :</Label>
-            <Select value={formData.transformerSound} onValueChange={(value) => setFormData(prev => ({...prev, transformerSound: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกสถานะเสียง" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ปกติ">ปกติ</SelectItem>
-                <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="vibration">การสั่นสะเทือน :</Label>
-            <Select value={formData.vibration} onValueChange={(value) => setFormData(prev => ({...prev, vibration: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกสถานะการสั่นสะเทือน" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ปกติ">ปกติ</SelectItem>
-                <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="groundingConnector">Grounding Connector :</Label>
-            <Select value={formData.groundingConnector} onValueChange={(value) => setFormData(prev => ({...prev, groundingConnector: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกสถานะ Grounding Connector" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ปกติ">ปกติ</SelectItem>
-                <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="foundation">Foundation :</Label>
-            <Select value={formData.foundation} onValueChange={(value) => setFormData(prev => ({...prev, foundation: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกสถานะ Foundation" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ปกติ">ปกติ</SelectItem>
-                <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="animalProtection">Animal Protection :</Label>
-            <Select value={formData.animalProtection} onValueChange={(value) => setFormData(prev => ({...prev, animalProtection: value}))} disabled={isReadOnly}>
-              <SelectTrigger>
-                <SelectValue placeholder="เลือกสถานะ Animal Protection" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="สภาพปกติ">สภาพปกติ</SelectItem>
-                <SelectItem value="สภาพผิดปกติ">สภาพผิดปกติ</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              ยกเลิก
-            </Button>
-            {mode !== "view" && (
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                {mode === "add" ? "เพิ่มข้อมูล" : "บันทึกการแก้ไข"}
+          {!isReadOnly && (
+            <div className="flex justify-center space-x-4 pt-4">
+              <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
+                บันทึก
               </Button>
-            )}
-          </div>
-        </form>
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
