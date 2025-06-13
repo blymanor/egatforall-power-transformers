@@ -14,6 +14,13 @@ import LightningArresterModal from "@/components/modals/LightningArresterModal";
 import ConservatorTankModal from "@/components/modals/ConservatorTankModal";
 import MainTankModal from "@/components/modals/MainTankModal";
 import HotLineOilFilterModal from "@/components/modals/HotLineOilFilterModal";
+import RadiatorCoolingModal from "@/components/modals/RadiatorCoolingModal";
+import TransformerControlCabinetModal from "@/components/modals/TransformerControlCabinetModal";
+import NGRModal from "@/components/modals/NGRModal";
+import RegulatingPTModal from "@/components/modals/RegulatingPTModal";
+import OLTCCompartmentModal from "@/components/modals/OLTCCompartmentModal";
+import OLTCControlCabinetModal from "@/components/modals/OLTCControlCabinetModal";
+import ThermoScanModal from "@/components/modals/ThermoScanModal";
 
 interface InspectionRecord {
   id: number;
@@ -155,6 +162,20 @@ const TransformerVisualInspection = () => {
         return <MainTankModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
       case "hot-line-oil-filter":
         return <HotLineOilFilterModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "radiator-cooling":
+        return <RadiatorCoolingModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "control-cabinet":
+        return <TransformerControlCabinetModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "ngr":
+        return <NGRModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "regulating-pt":
+        return <RegulatingPTModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oltc-compartment":
+        return <OLTCCompartmentModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "oltc-control-cabinet":
+        return <OLTCControlCabinetModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "thermo-scan":
+        return <ThermoScanModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
       default:
         return null;
     }
