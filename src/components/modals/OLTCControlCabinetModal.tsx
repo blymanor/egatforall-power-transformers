@@ -1,208 +1,157 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface OLTCControlCabinetModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: "add" | "view" | "edit";
+  mode: 'create' | 'view' | 'edit';
   data?: any;
 }
 
-const OLTCControlCabinetModal: React.FC<OLTCControlCabinetModalProps> = ({
-  isOpen,
-  onClose,
-  mode,
-  data
-}) => {
+const OLTCControlCabinetModal = ({ isOpen, onClose, mode, data }: OLTCControlCabinetModalProps) => {
   const [formData, setFormData] = useState({
-    transformer: "",
-    testType: "",
-    inspector: "",
-    inspectionDate: "",
-    operationId: "",
-    corrosion: "",
-    fanCondition: "",
-    coolingSystemControl: "",
-    operationDevice: "",
-    wiringControl: ""
+    transformer: mode === 'create' ? '' : (data?.transformer || ''),
+    testType: mode === 'create' ? '' : (data?.testType || ''),
+    testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    inspector: mode === 'create' ? '' : (data?.inspector || ''),
+    cabinetCondition: mode === 'create' ? '' : (data?.cabinetCondition || '')
   });
 
-  useEffect(() => {
-    if (mode !== "add" && data) {
-      setFormData({
-        transformer: data.transformerName || "",
-        testType: data.testType || "",
-        inspector: data.inspector || "",
-        inspectionDate: data.inspectionDate || "",
-        operationId: data.operationId || "",
-        corrosion: "ปกติ",
-        fanCondition: "ไม่พบจังสิต",
-        coolingSystemControl: "ปกติ",
-        operationDevice: "ลากเลย",
-        wiringControl: "ลากเลย"
-      });
-    } else if (mode === "add") {
-      setFormData({
-        transformer: "",
-        testType: "",
-        inspector: "",
-        inspectionDate: "",
-        operationId: "",
-        corrosion: "",
-        fanCondition: "",
-        coolingSystemControl: "",
-        operationDevice: "",
-        wiringControl: ""
-      });
-    }
-  }, [mode, data]);
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success(mode === "add" ? "เพิ่มข้อมูลสำเร็จ" : "บันทึกข้อมูลสำเร็จ");
+  const handleSave = () => {
+    toast.success("บันทึกข้อมูลสำเร็จ", {
+      description: "ข้อมูล OLTC Control Cabinet ถูกบันทึกแล้ว",
+    });
     onClose();
   };
 
-  const isReadOnly = mode === "view";
+  const isReadOnly = mode === 'view';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
-            {mode === "add" ? "เพิ่มข้อมูล OLTC Control Cabinet" : 
-             mode === "view" ? "ดูข้อมูล OLTC Control Cabinet" : 
-             "แก้ไขข้อมูล OLTC Control Cabinet"}
+          <DialogTitle className="text-lg font-semibold text-center">
+            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} OLTC Control Cabinet
           </DialogTitle>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
+
+        <div className="space-y-6 p-4">
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label>หม้อแปลงไฟฟ้า :</Label>
-              <Select value={formData.transformer} onValueChange={(value) => setFormData(prev => ({...prev, transformer: value}))} disabled={isReadOnly}>
+              <Select 
+                value={formData.transformer} 
+                onValueChange={(value) => handleInputChange('transformer', value)}
+                disabled={isReadOnly}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="AN-KT1A">AN-KT1A</SelectItem>
-                  <SelectItem value="AT2-KT1A">AT2-KT1A</SelectItem>
+                  <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label>รูปแบบการทดสอบ :</Label>
-              <Select value={formData.testType} onValueChange={(value) => setFormData(prev => ({...prev, testType: value}))} disabled={isReadOnly}>
+              <Select 
+                value={formData.testType} 
+                onValueChange={(value) => handleInputChange('testType', value)}
+                disabled={isReadOnly}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Weekly Test">Weekly Test</SelectItem>
+                  <SelectItem value="Commissioning">Commissioning</SelectItem>
+                  <SelectItem value="Special test">Special test</SelectItem>
+                  <SelectItem value="6 year test">6 year test</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label>ผู้ตรวจสอบ :</Label>
-              <Input value={formData.inspector} onChange={(e) => setFormData(prev => ({...prev, inspector: e.target.value}))} readOnly={isReadOnly} />
-            </div>
-            <div>
+            <div className="space-y-2">
               <Label>วันที่ตรวจสอบ :</Label>
-              <Input type="date" value={formData.inspectionDate} onChange={(e) => setFormData(prev => ({...prev, inspectionDate: e.target.value}))} readOnly={isReadOnly} />
-            </div>
-            <div>
-              <Label>เลขคำสั่งปฏิบัติงาน :</Label>
-              <Input value={formData.operationId} onChange={(e) => setFormData(prev => ({...prev, operationId: e.target.value}))} readOnly={isReadOnly} />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <Label>ความผุกร่อน :</Label>
-              <Select value={formData.corrosion} onValueChange={(value) => setFormData(prev => ({...prev, corrosion: value}))} disabled={isReadOnly}>
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกสถานะ" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ปกติ">ปกติ</SelectItem>
-                  <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>สีที่กลีง :</Label>
-              <Select value={formData.fanCondition} onValueChange={(value) => setFormData(prev => ({...prev, fanCondition: value}))} disabled={isReadOnly}>
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกสถานะ" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ไม่พบจังสิต">ไม่พบจังสิต</SelectItem>
-                  <SelectItem value="พบจังสิต">พบจังสิต</SelectItem>
-                </SelectContent>
-              </Select>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.testDate && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.testDate ? format(formData.testDate, "dd/MM/yyyy") : "เลือกวันที่"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.testDate}
+                    onSelect={(date) => handleInputChange('testDate', date)}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
-            <div>
-              <Label>ความเดียวของ Control :</Label>
-              <Select value={formData.coolingSystemControl} onValueChange={(value) => setFormData(prev => ({...prev, coolingSystemControl: value}))} disabled={isReadOnly}>
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกสถานะ" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ปกติ">ปกติ</SelectItem>
-                  <SelectItem value="ผิดปกติ">ผิดปกติ</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="space-y-2">
+              <Label>ผู้ตรวจสอบ :</Label>
+              <Input
+                value={formData.inspector}
+                onChange={(e) => handleInputChange('inspector', e.target.value)}
+                placeholder="กรอกชื่อผู้ตรวจสอบ"
+                readOnly={isReadOnly}
+              />
             </div>
 
-            <div>
-              <Label>ปลากับมอยู่ :</Label>
-              <Select value={formData.operationDevice} onValueChange={(value) => setFormData(prev => ({...prev, operationDevice: value}))} disabled={isReadOnly}>
+            <div className="space-y-2">
+              <Label>สภาพตู้ควบคุม OLTC :</Label>
+              <Select 
+                value={formData.cabinetCondition} 
+                onValueChange={(value) => handleInputChange('cabinetCondition', value)}
+                disabled={isReadOnly}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="เลือกสถานะ" />
+                  <SelectValue placeholder="เลือกสภาพตู้ควบคุม OLTC" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ลากเลย">ลากเลย</SelectItem>
-                  <SelectItem value="มีปัญหา">มีปัญหา</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Wiring Control :</Label>
-              <Select value={formData.wiringControl} onValueChange={(value) => setFormData(prev => ({...prev, wiringControl: value}))} disabled={isReadOnly}>
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกสถานะ" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ลากเลย">ลากเลย</SelectItem>
-                  <SelectItem value="มีปัญหา">มีปัญหา</SelectItem>
+                  <SelectItem value="ดี">ดี</SelectItem>
+                  <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
+                  <SelectItem value="ต้องซ่อม">ต้องซ่อม</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              ยกเลิก
-            </Button>
-            {mode !== "view" && (
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                {mode === "add" ? "เพิ่มข้อมูล" : "บันทึกการแก้ไข"}
+          {!isReadOnly && (
+            <div className="flex justify-center space-x-4 pt-4">
+              <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
+                บันทึก
               </Button>
-            )}
-          </div>
-        </form>
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

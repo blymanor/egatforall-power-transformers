@@ -1,182 +1,152 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface ThermoScanModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: "add" | "view" | "edit";
+  mode: 'create' | 'view' | 'edit';
   data?: any;
 }
 
-const ThermoScanModal: React.FC<ThermoScanModalProps> = ({
-  isOpen,
-  onClose,
-  mode,
-  data
-}) => {
+const ThermoScanModal = ({ isOpen, onClose, mode, data }: ThermoScanModalProps) => {
   const [formData, setFormData] = useState({
-    transformer: "",
-    testType: "",
-    inspector: "",
-    inspectionDate: "",
-    operationId: "",
-    loadPercentage: "",
-    tempRiseAboveNormal: "",
-    tempDelta: "",
-    remark: ""
+    transformer: mode === 'create' ? '' : (data?.transformer || ''),
+    testType: mode === 'create' ? '' : (data?.testType || ''),
+    testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    inspector: mode === 'create' ? '' : (data?.inspector || ''),
+    temperature: mode === 'create' ? '' : (data?.temperature || '')
   });
 
-  useEffect(() => {
-    if (mode !== "add" && data) {
-      setFormData({
-        transformer: data.transformerName || "",
-        testType: data.testType || "",
-        inspector: data.inspector || "",
-        inspectionDate: data.inspectionDate || "",
-        operationId: data.operationId || "",
-        loadPercentage: "",
-        tempRiseAboveNormal: "",
-        tempDelta: "°C",
-        remark: ""
-      });
-    } else if (mode === "add") {
-      setFormData({
-        transformer: "",
-        testType: "",
-        inspector: "",
-        inspectionDate: "",
-        operationId: "",
-        loadPercentage: "",
-        tempRiseAboveNormal: "",
-        tempDelta: "",
-        remark: ""
-      });
-    }
-  }, [mode, data]);
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success(mode === "add" ? "เพิ่มข้อมูลสำเร็จ" : "บันทึกข้อมูลสำเร็จ");
+  const handleSave = () => {
+    toast.success("บันทึกข้อมูลสำเร็จ", {
+      description: "ข้อมูล Thermo Scan ถูกบันทึกแล้ว",
+    });
     onClose();
   };
 
-  const isReadOnly = mode === "view";
+  const isReadOnly = mode === 'view';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
-            {mode === "add" ? "เพิ่มข้อมูล Thermo Scan" : 
-             mode === "view" ? "ดูข้อมูล Thermo Scan" : 
-             "แก้ไขข้อมูล Thermo Scan"}
+          <DialogTitle className="text-lg font-semibold text-center">
+            {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Thermo Scan
           </DialogTitle>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
+
+        <div className="space-y-6 p-4">
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label>หม้อแปลงไฟฟ้า :</Label>
-              <Select value={formData.transformer} onValueChange={(value) => setFormData(prev => ({...prev, transformer: value}))} disabled={isReadOnly}>
+              <Select 
+                value={formData.transformer} 
+                onValueChange={(value) => handleInputChange('transformer', value)}
+                disabled={isReadOnly}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="เลือกหม้อแปลงไฟฟ้า" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="AN-KT1A">AN-KT1A</SelectItem>
-                  <SelectItem value="AT2-KT1A">AT2-KT1A</SelectItem>
+                  <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label>รูปแบบการทดสอบ :</Label>
-              <Select value={formData.testType} onValueChange={(value) => setFormData(prev => ({...prev, testType: value}))} disabled={isReadOnly}>
+              <Select 
+                value={formData.testType} 
+                onValueChange={(value) => handleInputChange('testType', value)}
+                disabled={isReadOnly}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Weekly Test">Weekly Test</SelectItem>
+                  <SelectItem value="Commissioning">Commissioning</SelectItem>
+                  <SelectItem value="Special test">Special test</SelectItem>
+                  <SelectItem value="6 year test">6 year test</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label>ผู้ตรวจสอบ :</Label>
-              <Input value={formData.inspector} onChange={(e) => setFormData(prev => ({...prev, inspector: e.target.value}))} readOnly={isReadOnly} />
-            </div>
-            <div>
+            <div className="space-y-2">
               <Label>วันที่ตรวจสอบ :</Label>
-              <Input type="date" value={formData.inspectionDate} onChange={(e) => setFormData(prev => ({...prev, inspectionDate: e.target.value}))} readOnly={isReadOnly} />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.testDate && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.testDate ? format(formData.testDate, "dd/MM/yyyy") : "เลือกวันที่"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.testDate}
+                    onSelect={(date) => handleInputChange('testDate', date)}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
-            <div>
-              <Label>เลขคำสั่งปฏิบัติงาน :</Label>
-              <Input value={formData.operationId} onChange={(e) => setFormData(prev => ({...prev, operationId: e.target.value}))} readOnly={isReadOnly} />
+
+            <div className="space-y-2">
+              <Label>ผู้ตรวจสอบ :</Label>
+              <Input
+                value={formData.inspector}
+                onChange={(e) => handleInputChange('inspector', e.target.value)}
+                placeholder="กรอกชื่อผู้ตรวจสอบ"
+                readOnly={isReadOnly}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>อุณหภูมิ :</Label>
+              <div className="flex items-center space-x-2">
+                <Input
+                  value={formData.temperature}
+                  onChange={(e) => handleInputChange('temperature', e.target.value)}
+                  placeholder="กรอกอุณหภูมิ"
+                  readOnly={isReadOnly}
+                />
+                <span className="text-sm">°C</span>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div>
-              <Label>%Load ขณะตรวจสอบ :</Label>
-              <Input 
-                value={formData.loadPercentage} 
-                onChange={(e) => setFormData(prev => ({...prev, loadPercentage: e.target.value}))} 
-                readOnly={isReadOnly}
-                placeholder="ระบุ %Load"
-              />
-            </div>
-
-            <div>
-              <Label>Temp. Rise Above Normal Temp. (Delta T) :</Label>
-              <Input 
-                value={formData.tempRiseAboveNormal} 
-                onChange={(e) => setFormData(prev => ({...prev, tempRiseAboveNormal: e.target.value}))} 
-                readOnly={isReadOnly}
-                placeholder="ระบุอุณหภูมิ"
-              />
-            </div>
-
-            <div>
-              <Label>°C</Label>
-              <Input 
-                value={formData.tempDelta} 
-                onChange={(e) => setFormData(prev => ({...prev, tempDelta: e.target.value}))} 
-                readOnly={isReadOnly}
-                placeholder="°C"
-              />
-            </div>
-
-            <div>
-              <Label>Remark :</Label>
-              <Textarea 
-                value={formData.remark} 
-                onChange={(e) => setFormData(prev => ({...prev, remark: e.target.value}))} 
-                readOnly={isReadOnly}
-                placeholder="ระบุหมายเหตุ"
-                rows={3}
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              ยกเลิก
-            </Button>
-            {mode !== "view" && (
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                {mode === "add" ? "เพิ่มข้อมูล" : "บันทึกการแก้ไข"}
+          {!isReadOnly && (
+            <div className="flex justify-center space-x-4 pt-4">
+              <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
+                บันทึก
               </Button>
-            )}
-          </div>
-        </form>
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
