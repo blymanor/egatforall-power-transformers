@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { edit, trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 // Mock data for the table
@@ -96,15 +96,15 @@ const TransformerImportance = () => {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[500px] bg-white">
                   <DialogHeader>
-                    <DialogTitle className="text-blue-700">
+                    <DialogTitle className="text-blue-700 text-lg font-medium">
                       {editingItem ? "แก้ไขรายการความสำคัญ" : "เพิ่มรายการความสำคัญ"}
                     </DialogTitle>
                   </DialogHeader>
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                     <div className="space-y-2">
-                      <Label htmlFor="transformer" className="text-gray-700">หม้อแปลงไฟฟ้า</Label>
+                      <Label htmlFor="transformer" className="text-sm font-medium text-gray-700">หม้อแปลงไฟฟ้า</Label>
                       <Select value={formData.transformer} onValueChange={(value) => setFormData({...formData, transformer: value})}>
-                        <SelectTrigger className="w-full border-gray-300">
+                        <SelectTrigger className="w-full border-gray-200 focus:border-blue-500">
                           <SelectValue placeholder="เลือกหม้อแปลง" />
                         </SelectTrigger>
                         <SelectContent className="bg-white">
@@ -116,9 +116,9 @@ const TransformerImportance = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="location" className="text-gray-700">ภูมิภาค</Label>
+                      <Label htmlFor="location" className="text-sm font-medium text-gray-700">ภูมิภาค</Label>
                       <Select value={formData.location} onValueChange={(value) => setFormData({...formData, location: value})}>
-                        <SelectTrigger className="w-full border-gray-300">
+                        <SelectTrigger className="w-full border-gray-200 focus:border-blue-500">
                           <SelectValue placeholder="เลือกภูมิภาค" />
                         </SelectTrigger>
                         <SelectContent className="bg-white">
@@ -131,9 +131,9 @@ const TransformerImportance = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="importance" className="text-gray-700">ระดับความสำคัญ</Label>
+                      <Label htmlFor="importance" className="text-sm font-medium text-gray-700">ระดับความสำคัญ</Label>
                       <Select value={formData.importance} onValueChange={(value) => setFormData({...formData, importance: value})}>
-                        <SelectTrigger className="w-full border-gray-300">
+                        <SelectTrigger className="w-full border-gray-200 focus:border-blue-500">
                           <SelectValue placeholder="เลือกระดับความสำคัญ" />
                         </SelectTrigger>
                         <SelectContent className="bg-white">
@@ -145,23 +145,23 @@ const TransformerImportance = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="description" className="text-gray-700">รายละเอียด</Label>
+                      <Label htmlFor="description" className="text-sm font-medium text-gray-700">รายละเอียด</Label>
                       <Textarea
                         id="description"
                         value={formData.description}
                         onChange={(e) => setFormData({...formData, description: e.target.value})}
                         placeholder="กรอกรายละเอียดเพิ่มเติม"
-                        className="w-full border-gray-300"
+                        className="w-full border-gray-200 focus:border-blue-500"
                         rows={3}
                       />
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4">
+                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
                       <Button 
                         type="button" 
                         variant="outline" 
                         onClick={() => setIsModalOpen(false)}
-                        className="border-gray-300 text-gray-700"
+                        className="border-gray-200 text-gray-600 hover:bg-gray-50"
                       >
                         ยกเลิก
                       </Button>
@@ -208,7 +208,7 @@ const TransformerImportance = () => {
                             onClick={() => handleEdit(item)}
                             className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                           >
-                            <edit className="h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
@@ -216,7 +216,7 @@ const TransformerImportance = () => {
                             onClick={() => handleDelete(item.id)}
                             className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
-                            <trash2 className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       </TableCell>
