@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -143,22 +142,7 @@ const OilTestResults = () => {
               <CardTitle className="text-lg font-medium">
                 {categories.find(c => c.value === selectedCategory)?.label}
               </CardTitle>
-            </div>
-            <div className="flex items-center">
-              <form onSubmit={handleSearch} className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-                <Input
-                  placeholder="ค้นหา"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 w-64 h-9"
-                />
-              </form>
-            </div>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="flex flex-row items-center justify-between p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 ml-4">
                 <span className="text-sm font-medium text-gray-700">หัวข้อตารางที่ต้องการดู:</span>
                 <Select
                   value={selectedCategory}
@@ -177,7 +161,19 @@ const OilTestResults = () => {
                 </Select>
               </div>
             </div>
-            
+            <div className="flex items-center">
+              <form onSubmit={handleSearch} className="relative">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Input
+                  placeholder="ค้นหา"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 w-64 h-9"
+                />
+              </form>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
             <div className="overflow-auto">
               <Table className="w-full">
                 <TableHeader>
@@ -189,9 +185,9 @@ const OilTestResults = () => {
                     <TableHead className="text-center">วันที่ตรวจสอบ</TableHead>
                     <TableHead className="text-center">เลขที่สั่งปฏิบัติงาน</TableHead>
                     <TableHead className="text-center">ผู้ตรวจสอบ</TableHead>
-                    <TableHead className="text-center">Show</TableHead>
-                    <TableHead className="text-center">Update</TableHead>
-                    <TableHead className="text-center">Delete</TableHead>
+                    <TableHead className="text-center">แสดง</TableHead>
+                    <TableHead className="text-center">แก้ไข</TableHead>
+                    <TableHead className="text-center">ลบ</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -241,8 +237,8 @@ const OilTestResults = () => {
             </div>
             
             <div className="p-4 flex items-center justify-between">
-              <Button onClick={handleCreate} variant="outline" size="sm" className="flex items-center gap-1 border-blue-600 text-blue-600">
-                <span className="text-lg font-bold">+</span> Create
+              <Button onClick={handleCreate} className="bg-blue-600 hover:bg-blue-700 text-white">
+                เพิ่มข้อมูล
               </Button>
               
               <Pagination>
