@@ -35,35 +35,10 @@ const transformerData: any = {
     ],
     activeParts: {
       healthIndex: "43.65",
-      factor: "ดี",
       details: [
         { name: 'Core Insulation Resistance:', value: '100.0', color: '#ef4444' },
-        { name: 'HV Winding:', value: '45.76', color: '#eab308', details: [
-          { name: 'DC Resistance Measurement:%Maximum Error Between Phase:', value: '', icon: true },
-          { name: 'DC Resistance Measurement:%Maximum Error:', value: '', icon: true },
-          { name: 'Exciting Current Measurement:Idiff HV(200V):', value: '0.0', color: '#6b7280' },
-          { name: 'Exciting Current Measurement:Idiff HV(10kV):', value: '0.0', color: '#6b7280' },
-          { name: 'Single Phase Leakage Impedance:HV to LV %Deviation:', value: '2.0', color: '#3b82f6' },
-          { name: 'Single Phase Leakage Impedance:HV to TV %Deviation:', value: '2.0', color: '#3b82f6' },
-          { name: 'Three Phase Equivalent:%Error(HV-LV):', value: '5.0', color: '#ef4444' },
-          { name: 'Three Phase Equivalent:%Error(HV-TV):', value: '5.0', color: '#ef4444' },
-          { name: 'Insulation Test of Auto Transformer HV:', value: '2.0', color: '#3b82f6' },
-          { name: 'Insulation Test of Three Winding Transformer HV:', value: '1.0', color: '#22c55e' },
-          { name: 'Insulation Test of Two Winding Transformer HV:', value: '1.0', color: '#22c55e' },
-          { name: 'Ratio and Polarity Test:HV to LV %Error:', value: '5.0', color: '#ef4444' },
-          { name: 'Ratio and Polarity Test:HV to TV %Error:', value: '5.0', color: '#ef4444' }
-        ]},
-        { name: 'LV Winding:', value: '43.53', color: '#eab308', details: [
-          { name: 'DC Resistance Measurement:%Maximum Error Between Phase:', value: '', icon: true },
-          { name: 'DC Resistance Measurement:%Maximum Error:', value: '', icon: true },
-          { name: 'Exciting Current Measurement:Idiff LV(200V):', value: '0.0', color: '#6b7280' },
-          { name: 'Exciting Current Measurement:Idiff LV(10kV):', value: '0.0', color: '#6b7280' },
-          { name: 'Single Phase Leakage Impedance:LV to TV %Deviation:', value: '3.0', color: '#eab308' },
-          { name: 'Three Phase Equivalent:%Error(LV-TV):', value: '5.0', color: '#ef4444' },
-          { name: 'Insulation Test of Three Winding Transformer LV:', value: '1.0', color: '#22c55e' },
-          { name: 'Insulation Test of Two Winding Transformer LV:', value: '1.0', color: '#22c55e' },
-          { name: 'Ratio and Polarity Test:LV to TV %Error:', value: '5.0', color: '#ef4444' }
-        ]},
+        { name: 'HV Winding:', value: '45.76', color: '#eab308' },
+        { name: 'LV Winding:', value: '43.53', color: '#eab308' },
         { name: 'TV Winding:', value: '35.38', color: '#eab308', details: [
           { name: 'DC Resistance Measurement:%Maximum Error Between Phase:', value: '', icon: true },
           { name: 'DC Resistance Measurement:%Maximum Error:', value: '', icon: true },
@@ -75,7 +50,6 @@ const transformerData: any = {
     },
     oilAnalysis: {
       healthIndex: "75.0",
-      factor: "ดี",
       details: [
         { name: 'Oil Aging:', value: '25.0', color: '#22c55e' },
         { name: 'Oil Contamination:', value: '34.52', color: '#3b82f6' },
@@ -85,7 +59,6 @@ const transformerData: any = {
     },
     oltc: {
       healthIndex: "84.48",
-      factor: "ดี",
       details: [
         { name: 'OLTC Contact:', value: '0.0', color: '#6b7280' },
         { name: 'OLTC-DGA:', value: '4.0', color: '#22c55e' },
@@ -95,7 +68,6 @@ const transformerData: any = {
     },
     arrester: {
       healthIndex: "53.33",
-      factor: "ดี",
       details: [
         { name: 'Arrester HV:', value: '20.0', color: '#22c55e' },
         { name: 'Arrester LV:', value: '40.0', color: '#3b82f6' },
@@ -104,7 +76,6 @@ const transformerData: any = {
     },
     bushing: {
       healthIndex: "85.0",
-      factor: "ดี",
       details: [
         { name: 'Bushing HV:', value: '85.0', color: '#22c55e' },
         { name: 'Bushing LV:', value: '90.0', color: '#22c55e' },
@@ -113,7 +84,6 @@ const transformerData: any = {
     },
     generalCondition: {
       healthIndex: "92.5",
-      factor: "ดี",
       details: [
         { name: 'DGA:', value: '4', color: '#22c55e' },
         { name: 'Load History:', value: '4', color: '#22c55e' },
@@ -139,7 +109,6 @@ const transformerData: any = {
     },
     visualInspection: {
       healthIndex: "88.2",
-      factor: "ดี",
       details: [
         { name: 'Conservator Tank:', value: '4', color: '#22c55e' },
         { name: 'General Condition:', value: '4', color: '#22c55e' },
@@ -189,7 +158,6 @@ const transformerData: any = {
     ],
     activeParts: {
       healthIndex: "48.75",
-      factor: "ดี",
       details: [
         { name: 'Core Insulation Resistance:', value: '95.0', color: '#22c55e' },
         { name: 'HV Winding:', value: '48.75', color: '#eab308' },
@@ -198,7 +166,6 @@ const transformerData: any = {
     },
     oilAnalysis: {
       healthIndex: "80.0",
-      factor: "ดี",
       details: [
         { name: 'Oil Aging:', value: '30.0', color: '#22c55e' },
         { name: 'Oil Contamination:', value: '20.0', color: '#3b82f6' },
@@ -208,7 +175,6 @@ const transformerData: any = {
     },
     oltc: {
       healthIndex: "88.0",
-      factor: "ดี",
       details: [
         { name: 'OLTC Contact:', value: '0.0', color: '#6b7280' },
         { name: 'OLTC-DGA:', value: '3.0', color: '#22c55e' },
@@ -217,7 +183,6 @@ const transformerData: any = {
     },
     arrester: {
       healthIndex: "60.0",
-      factor: "ดี",
       details: [
         { name: 'Arrester HV:', value: '25.0', color: '#22c55e' },
         { name: 'Arrester LV:', value: '35.0', color: '#3b82f6' }
@@ -225,7 +190,6 @@ const transformerData: any = {
     },
     bushing: {
       healthIndex: "75.0",
-      factor: "ดี",
       details: [
         { name: 'Bushing HV:', value: '80.0', color: '#3b82f6' },
         { name: 'Bushing LV:', value: '70.0', color: '#eab308' }
@@ -233,7 +197,6 @@ const transformerData: any = {
     },
     generalCondition: {
       healthIndex: "90.0",
-      factor: "ดี",
       details: [
         { name: 'General Condition:', value: '4', color: '#22c55e' },
         { name: 'Main Tank:', value: '4', color: '#22c55e' },
@@ -242,7 +205,6 @@ const transformerData: any = {
     },
     visualInspection: {
       healthIndex: "85.0",
-      factor: "ดี",
       details: [
         { name: 'General Condition:', value: '4', color: '#22c55e' },
         { name: 'Main Tank:', value: '4', color: '#22c55e' },
@@ -364,14 +326,6 @@ const ActivateTestResults = () => {
               </div>
             </div>
           )}
-          
-          <div className="flex justify-between items-center p-3 bg-green-100 border border-green-200 rounded">
-            <span className="font-medium">%Factor:</span>
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold">{data.factor}</span>
-              <div className="w-20 h-4 bg-blue-600 rounded"></div>
-            </div>
-          </div>
 
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleContent className="space-y-2">
