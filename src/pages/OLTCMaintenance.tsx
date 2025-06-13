@@ -115,9 +115,9 @@ const OLTCMaintenance = () => {
                     <TableHead className="text-center">วันที่ตรวจสอบ</TableHead>
                     <TableHead className="text-center">เลขที่สั่งปฏิบัติงาน</TableHead>
                     <TableHead className="text-center">ผู้ตรวจสอบ</TableHead>
-                    <TableHead className="text-center">Show</TableHead>
-                    <TableHead className="text-center">Update</TableHead>
-                    <TableHead className="text-center">Delete</TableHead>
+                    <TableHead className="text-center">แสดง</TableHead>
+                    <TableHead className="text-center">แก้ไข</TableHead>
+                    <TableHead className="text-center">ลบ</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -167,8 +167,8 @@ const OLTCMaintenance = () => {
             </div>
             
             <div className="p-4 flex items-center justify-between">
-              <Button onClick={handleCreate} variant="outline" size="sm" className="flex items-center gap-1 border-blue-600 text-blue-600">
-                <span className="text-lg font-bold">+</span> Create
+              <Button onClick={handleCreate} className="bg-blue-600 hover:bg-blue-700 text-white">
+                เพิ่มข้อมูล
               </Button>
               
               <Pagination>

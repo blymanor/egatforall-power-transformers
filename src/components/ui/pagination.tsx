@@ -68,7 +68,7 @@ const PaginationPrevious = React.forwardRef<HTMLAnchorElement, PaginationLinkPro
       {...props}
     >
       <ChevronLeft className="h-4 w-4" />
-      <span>Previous</span>
+      <span>ก่อนหน้า</span>
     </PaginationLink>
   )
 )
@@ -83,7 +83,7 @@ const PaginationNext = React.forwardRef<HTMLAnchorElement, PaginationLinkProps>(
       className={cn("gap-1 pr-2.5", className)}
       {...props}
     >
-      <span>Next</span>
+      <span>ถัดไป</span>
       <ChevronRight className="h-4 w-4" />
     </PaginationLink>
   )
