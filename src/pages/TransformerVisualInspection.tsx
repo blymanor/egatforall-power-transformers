@@ -21,6 +21,7 @@ import RegulatingPTModal from "@/components/modals/RegulatingPTModal";
 import OLTCCompartmentModal from "@/components/modals/OLTCCompartmentModal";
 import OLTCControlCabinetModal from "@/components/modals/OLTCControlCabinetModal";
 import ThermoScanModal from "@/components/modals/ThermoScanModal";
+import CoreInsulationResistanceModal from "@/components/modals/CoreInsulationResistanceModal";
 
 interface InspectionRecord {
   id: number;
@@ -57,7 +58,8 @@ const TransformerVisualInspection = () => {
     { value: "regulating-pt", label: "List all Regulating PT", icon: "Workflow" },
     { value: "oltc-compartment", label: "List all OLTC Compartment", icon: "Wrench" },
     { value: "oltc-control-cabinet", label: "List all OLTC Control Cabinet", icon: "BarChart" },
-    { value: "thermo-scan", label: "List all Thermo Scan", icon: "Thermometer" }
+    { value: "thermo-scan", label: "List all Thermo Scan", icon: "Thermometer" },
+    { value: "core-insulation-resistance", label: "List all Core Insulation Resistance", icon: "Zap" }
   ];
 
   const getMockRecords = (category: string): InspectionRecord[] => {
@@ -176,6 +178,8 @@ const TransformerVisualInspection = () => {
         return <OLTCControlCabinetModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
       case "thermo-scan":
         return <ThermoScanModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
+      case "core-insulation-resistance":
+        return <CoreInsulationResistanceModal isOpen={isOpen} onClose={closeModal} mode={mode} data={data} />;
       default:
         return null;
     }
