@@ -1,525 +1,487 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Edit, Trash2 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Edit, Trash2, Search } from "lucide-react";
 import { toast } from "sonner";
 
-// Mock data for the table matching image 1
-const importanceData = [
+interface TransformerData {
+  id: string;
+  transformerCode: string;
+  substation: string;
+  zone: string;
+  region: string;
+  province: string;
+  district: string;
+  voltageLevel: string;
+  capacity: string;
+  manufacturer: string;
+  year: string;
+  importance: 'สูงมาก' | 'สูง' | 'ปานกลาง' | 'ต่ำ';
+  installationDate: string;
+  lastMaintenance: string;
+  nextMaintenance: string;
+  operationHours: string;
+  loadFactor: string;
+  conditionIndex: string;
+  criticalityScore: string;
+  businessImpact: string;
+  riskLevel: string;
+}
+
+const initialData: TransformerData[] = [
   {
-    id: 1,
-    no: 1,
-    transformer: "AN-KT2A",
-    date: "15/08/2023"
+    id: "1",
+    transformerCode: "TR-001",
+    substation: "สถานีไฟฟ้าบางกรวย",
+    zone: "กรุงเทพและปริมณฑล",
+    region: "ภาคกลาง",
+    province: "นนทบุรี",
+    district: "บางกรวย",
+    voltageLevel: "115/22 kV",
+    capacity: "50 MVA",
+    manufacturer: "ABB",
+    year: "2018",
+    importance: 'สูงมาก',
+    installationDate: "15/03/2018",
+    lastMaintenance: "10/01/2024",
+    nextMaintenance: "10/01/2025",
+    operationHours: "52,800",
+    loadFactor: "85%",
+    conditionIndex: "92",
+    criticalityScore: "8.5",
+    businessImpact: "สูงมาก",
+    riskLevel: "ต่ำ"
   },
   {
-    id: 2,
-    no: 2,
-    transformer: "AN-KT2B",
-    date: "10/09/2023"
-  },
-  {
-    id: 3,
-    no: 3,
-    transformer: "AN-KT2C",
-    date: "05/10/2023"
-  },
-  {
-    id: 4,
-    no: 4,
-    transformer: "AN-KT2D",
-    date: "20/11/2023"
-  },
-  {
-    id: 5,
-    no: 5,
-    transformer: "AN-KT2E",
-    date: "15/12/2023"
-  },
-  {
-    id: 6,
-    no: 6,
-    transformer: "AN-KT2F",
-    date: "05/01/2024"
+    id: "2",
+    transformerCode: "TR-002",
+    substation: "สถานีไฟฟ้าลาดกระบัง",
+    zone: "กรุงเทพและปริมณฑล",
+    region: "ภาคกลาง",
+    province: "กรุงเทพ",
+    district: "ลาดกระบัง",
+    voltageLevel: "115/22 kV",
+    capacity: "30 MVA",
+    manufacturer: "Siemens",
+    year: "2020",
+    importance: 'สูง',
+    installationDate: "20/07/2020",
+    lastMaintenance: "15/02/2024",
+    nextMaintenance: "15/02/2025",
+    operationHours: "35,040",
+    loadFactor: "78%",
+    conditionIndex: "88",
+    criticalityScore: "7.2",
+    businessImpact: "สูง",
+    riskLevel: "ปานกลาง"
   }
 ];
 
 const TransformerImportance = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-  const [formData, setFormData] = useState({
-    transformer: "",
-    date: "",
-    busVoltageHV: "",
-    systemFaultHV: "",
-    busVoltageLV: "",
-    systemFaultLV: "",
-    probabilityForceOutage: "",
-    socialAspect: "",
-    loadShedding: "",
-    publicImage: "",
-    n1Criteria: "",
-    applicationUse: "",
-    systemStability: "",
-    pollution: "",
-    damageProperty: [] as string[],
-    loadFactor1: "",
-    loadFactor2: "",
-    loadFactor3: "",
-    loadFactor4: "",
-    loadFactor5: ""
-  });
+  const [data, setData] = useState<TransformerData[]>(initialData);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<TransformerData | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [formData, setFormData] = useState<Partial<TransformerData>>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (editingItem) {
-      toast.success("แก้ไขข้อมูลสำเร็จ");
-    } else {
-      toast.success("เพิ่มข้อมูลสำเร็จ");
+  const getImportanceBadgeColor = (importance: string) => {
+    switch (importance) {
+      case 'สูงมาก': return 'bg-red-100 text-red-800 border-red-200';
+      case 'สูง': return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'ปานกลาง': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'ต่ำ': return 'bg-green-100 text-green-800 border-green-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
-    
-    setIsModalOpen(false);
-    setEditingItem(null);
-    setFormData({
-      transformer: "",
-      date: "",
-      busVoltageHV: "",
-      systemFaultHV: "",
-      busVoltageLV: "",
-      systemFaultLV: "",
-      probabilityForceOutage: "",
-      socialAspect: "",
-      loadShedding: "",
-      publicImage: "",
-      n1Criteria: "",
-      applicationUse: "",
-      systemStability: "",
-      pollution: "",
-      damageProperty: [],
-      loadFactor1: "",
-      loadFactor2: "",
-      loadFactor3: "",
-      loadFactor4: "",
-      loadFactor5: ""
-    });
   };
 
-  const handleEdit = (item: any) => {
+  const filteredData = data.filter(item =>
+    item.transformerCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.substation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.zone.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleAdd = () => {
+    if (!formData.transformerCode || !formData.substation) {
+      toast.error("กรุณากรอกข้อมูลที่จำเป็น");
+      return;
+    }
+
+    const newItem: TransformerData = {
+      id: (data.length + 1).toString(),
+      transformerCode: formData.transformerCode || "",
+      substation: formData.substation || "",
+      zone: formData.zone || "",
+      region: formData.region || "",
+      province: formData.province || "",
+      district: formData.district || "",
+      voltageLevel: formData.voltageLevel || "",
+      capacity: formData.capacity || "",
+      manufacturer: formData.manufacturer || "",
+      year: formData.year || "",
+      importance: formData.importance || 'ปานกลาง',
+      installationDate: formData.installationDate || "",
+      lastMaintenance: formData.lastMaintenance || "",
+      nextMaintenance: formData.nextMaintenance || "",
+      operationHours: formData.operationHours || "",
+      loadFactor: formData.loadFactor || "",
+      conditionIndex: formData.conditionIndex || "",
+      criticalityScore: formData.criticalityScore || "",
+      businessImpact: formData.businessImpact || "",
+      riskLevel: formData.riskLevel || ""
+    };
+
+    setData([...data, newItem]);
+    setIsAddModalOpen(false);
+    resetForm();
+    toast.success("เพิ่มข้อมูลสำเร็จ");
+  };
+
+  const handleEdit = (item: TransformerData) => {
     setEditingItem(item);
-    setFormData({
-      transformer: item.transformer,
-      date: item.date,
-      busVoltageHV: "",
-      systemFaultHV: "",
-      busVoltageLV: "",
-      systemFaultLV: "",
-      probabilityForceOutage: "",
-      socialAspect: "",
-      loadShedding: "",
-      publicImage: "",
-      n1Criteria: "",
-      applicationUse: "",
-      systemStability: "",
-      pollution: "",
-      damageProperty: [],
-      loadFactor1: "",
-      loadFactor2: "",
-      loadFactor3: "",
-      loadFactor4: "",
-      loadFactor5: ""
-    });
-    setIsModalOpen(true);
+    setFormData(item);
+    setIsEditModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleUpdate = () => {
+    if (!editingItem || !formData.transformerCode || !formData.substation) {
+      toast.error("กรุณากรอกข้อมูลที่จำเป็น");
+      return;
+    }
+
+    const updatedData = data.map(item =>
+      item.id === editingItem.id ? { ...item, ...formData } : item
+    );
+
+    setData(updatedData);
+    setIsEditModalOpen(false);
+    setEditingItem(null);
+    resetForm();
+    toast.success("แก้ไขข้อมูลสำเร็จ");
+  };
+
+  const handleDelete = (id: string) => {
+    setData(data.filter(item => item.id !== id));
     toast.success("ลบข้อมูลสำเร็จ");
   };
 
-  const handleAddNew = () => {
-    setEditingItem(null);
-    setFormData({
-      transformer: "",
-      date: "",
-      busVoltageHV: "",
-      systemFaultHV: "",
-      busVoltageLV: "",
-      systemFaultLV: "",
-      probabilityForceOutage: "",
-      socialAspect: "",
-      loadShedding: "",
-      publicImage: "",
-      n1Criteria: "",
-      applicationUse: "",
-      systemStability: "",
-      pollution: "",
-      damageProperty: [],
-      loadFactor1: "",
-      loadFactor2: "",
-      loadFactor3: "",
-      loadFactor4: "",
-      loadFactor5: ""
-    });
-    setIsModalOpen(true);
+  const resetForm = () => {
+    setFormData({});
   };
 
-  const handleDamagePropertyChange = (value: string, checked: boolean) => {
-    if (checked) {
-      setFormData(prev => ({
-        ...prev,
-        damageProperty: [...prev.damageProperty, value]
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        damageProperty: prev.damageProperty.filter(item => item !== value)
-      }));
-    }
-  };
+  const FormFields = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-0">
+      <div className="space-y-2">
+        <Label htmlFor="transformerCode">รหัสหม้อแปลง *</Label>
+        <Input
+          id="transformerCode"
+          value={formData.transformerCode || ""}
+          onChange={(e) => setFormData({ ...formData, transformerCode: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="substation">สถานีไฟฟ้า *</Label>
+        <Input
+          id="substation"
+          value={formData.substation || ""}
+          onChange={(e) => setFormData({ ...formData, substation: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="zone">เขต</Label>
+        <Input
+          id="zone"
+          value={formData.zone || ""}
+          onChange={(e) => setFormData({ ...formData, zone: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="region">ภาค</Label>
+        <Input
+          id="region"
+          value={formData.region || ""}
+          onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="province">จังหวัด</Label>
+        <Input
+          id="province"
+          value={formData.province || ""}
+          onChange={(e) => setFormData({ ...formData, province: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="district">อำเภอ</Label>
+        <Input
+          id="district"
+          value={formData.district || ""}
+          onChange={(e) => setFormData({ ...formData, district: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="voltageLevel">ระดับแรงดัน</Label>
+        <Input
+          id="voltageLevel"
+          value={formData.voltageLevel || ""}
+          onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="capacity">ความจุ</Label>
+        <Input
+          id="capacity"
+          value={formData.capacity || ""}
+          onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="manufacturer">ผู้ผลิต</Label>
+        <Input
+          id="manufacturer"
+          value={formData.manufacturer || ""}
+          onChange={(e) => setFormData({ ...formData, manufacturer: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="year">ปีที่ผลิต</Label>
+        <Input
+          id="year"
+          value={formData.year || ""}
+          onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="importance">ระดับความสำคัญ</Label>
+        <Select
+          value={formData.importance || ""}
+          onValueChange={(value) => setFormData({ ...formData, importance: value as TransformerData['importance'] })}
+        >
+          <SelectTrigger className="border-gray-300">
+            <SelectValue placeholder="เลือกระดับความสำคัญ" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="สูงมาก">สูงมาก</SelectItem>
+            <SelectItem value="สูง">สูง</SelectItem>
+            <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
+            <SelectItem value="ต่ำ">ต่ำ</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="installationDate">วันที่ติดตั้ง</Label>
+        <Input
+          id="installationDate"
+          value={formData.installationDate || ""}
+          onChange={(e) => setFormData({ ...formData, installationDate: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="lastMaintenance">การบำรุงรักษาล่าสุด</Label>
+        <Input
+          id="lastMaintenance"
+          value={formData.lastMaintenance || ""}
+          onChange={(e) => setFormData({ ...formData, lastMaintenance: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="nextMaintenance">การบำรุงรักษาครั้งถัดไป</Label>
+        <Input
+          id="nextMaintenance"
+          value={formData.nextMaintenance || ""}
+          onChange={(e) => setFormData({ ...formData, nextMaintenance: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="operationHours">ชั่วโมงการทำงาน</Label>
+        <Input
+          id="operationHours"
+          value={formData.operationHours || ""}
+          onChange={(e) => setFormData({ ...formData, operationHours: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="loadFactor">ค่าตัวประกอบการใช้โหลด</Label>
+        <Input
+          id="loadFactor"
+          value={formData.loadFactor || ""}
+          onChange={(e) => setFormData({ ...formData, loadFactor: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="conditionIndex">ดัชนีสภาพ</Label>
+        <Input
+          id="conditionIndex"
+          value={formData.conditionIndex || ""}
+          onChange={(e) => setFormData({ ...formData, conditionIndex: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="criticalityScore">คะแนนความสำคัญ</Label>
+        <Input
+          id="criticalityScore"
+          value={formData.criticalityScore || ""}
+          onChange={(e) => setFormData({ ...formData, criticalityScore: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="businessImpact">ผลกระทบทางธุรกิจ</Label>
+        <Input
+          id="businessImpact"
+          value={formData.businessImpact || ""}
+          onChange={(e) => setFormData({ ...formData, businessImpact: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="riskLevel">ระดับความเสี่ยง</Label>
+        <Input
+          id="riskLevel"
+          value={formData.riskLevel || ""}
+          onChange={(e) => setFormData({ ...formData, riskLevel: e.target.value })}
+          className="border-gray-300"
+        />
+      </div>
+    </div>
+  );
 
   return (
     <DashboardLayout>
-      <div className="p-6">
-        <Card className="max-w-6xl mx-auto">
-          <CardHeader className="bg-blue-50 border-b">
-            <CardTitle className="text-xl text-blue-700">ความสำคัญหม้อแปลง</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Label className="text-sm">ชื่อหม้อแปลงไฟฟ้า :</Label>
-                  <Select>
-                    <SelectTrigger className="w-48">
-                      <SelectValue placeholder="ทั้งหมด" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      <SelectItem value="all">ทั้งหมด</SelectItem>
-                      <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
-                      <SelectItem value="AN-KT2B">AN-KT2B</SelectItem>
-                    </SelectContent>
-                  </Select>
+      <div className="p-4 md:p-6 space-y-6">
+        <Card>
+          <CardHeader className="bg-white border-b">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <CardTitle className="text-2xl font-bold text-blue-700">ความสำคัญหม้อแปลง</CardTitle>
+              <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                <div className="relative flex-1 md:w-80">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="ค้นหารหัสหม้อแปลง, สถานีไฟฟ้า, เขต..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 border-gray-300"
+                  />
                 </div>
-              </div>
-              
-              <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogTrigger asChild>
-                  <Button onClick={handleAddNew} className="bg-blue-600 hover:bg-blue-700 text-white">
-                    เพิ่มรายการความสำคัญของหม้อแปลง
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white">
-                  <DialogHeader className="bg-blue-600 text-white p-4 -m-6 mb-6">
-                    <DialogTitle className="text-xl font-medium text-center">
-                      เพิ่มรายการความสำคัญของหม้อแปลง
-                    </DialogTitle>
-                    <p className="text-center text-blue-100">กรุณากรอกข้อมูลให้ครบถ้วน</p>
-                  </DialogHeader>
-                  
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Basic Info */}
-                    <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded">
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium">ชื่อหม้อแปลง:</Label>
-                        <Select value={formData.transformer} onValueChange={(value) => setFormData({...formData, transformer: value})}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="เลือกหม้อแปลง" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white">
-                            <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
-                            <SelectItem value="AN-KT2B">AN-KT2B</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium">วันที่บันทึก:</Label>
-                        <Input
-                          type="date"
-                          value={formData.date}
-                          onChange={(e) => setFormData({...formData, date: e.target.value})}
-                        />
-                      </div>
+                <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button onClick={() => { resetForm(); setIsAddModalOpen(true); }} className="bg-blue-600 hover:bg-blue-700">
+                      <Plus className="w-4 h-4 mr-2" />
+                      เพิ่มข้อมูล
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+                    <DialogHeader className="border-b pb-4">
+                      <DialogTitle className="text-xl font-semibold text-blue-700">เพิ่มข้อมูลหม้อแปลง</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4">
+                      <FormFields />
                     </div>
-
-                    <div className="grid grid-cols-2 gap-6">
-                      {/* System Parameters */}
-                      <div className="p-4 bg-blue-50 rounded">
-                        <h3 className="text-blue-700 font-medium mb-4">System Parameters</h3>
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-3 gap-2 items-end">
-                            <div>
-                              <Label className="text-xs">Bus Voltage HV side [kV]:</Label>
-                              <Select value={formData.busVoltageHV} onValueChange={(value) => setFormData({...formData, busVoltageHV: value})}>
-                                <SelectTrigger className="h-8 text-xs">
-                                  <SelectValue placeholder="เลือก" />
-                                </SelectTrigger>
-                                <SelectContent className="bg-white">
-                                  <SelectItem value="115">115</SelectItem>
-                                  <SelectItem value="230">230</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div>
-                              <Label className="text-xs">System Fault Level: HV side</Label>
-                              <div className="grid grid-cols-2 gap-1">
-                                <Input placeholder="kA" className="h-8 text-xs" />
-                                <Input placeholder="MVA" className="h-8 text-xs" />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-3 gap-2 items-end">
-                            <div>
-                              <Label className="text-xs">Bus Voltage LV side [kV]:</Label>
-                              <Select value={formData.busVoltageLV} onValueChange={(value) => setFormData({...formData, busVoltageLV: value})}>
-                                <SelectTrigger className="h-8 text-xs">
-                                  <SelectValue placeholder="เลือก" />
-                                </SelectTrigger>
-                                <SelectContent className="bg-white">
-                                  <SelectItem value="22">22</SelectItem>
-                                  <SelectItem value="33">33</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div>
-                              <Label className="text-xs">System Fault Level: LV side</Label>
-                              <div className="grid grid-cols-2 gap-1">
-                                <Input placeholder="kA" className="h-8 text-xs" />
-                                <Input placeholder="MVA" className="h-8 text-xs" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Damage Of Property */}
-                      <div className="p-4 bg-purple-50 rounded">
-                        <h3 className="text-purple-700 font-medium mb-4">Damage Of Property</h3>
-                        <div className="space-y-2">
-                          {[
-                            "1. มีผนังกันไฟ (Fire Wall)",
-                            "2. มี Oil Pit",
-                            "3. มีระยะห่างระหว่างหม้อแปลง > 11 m สำหรับหม้อแปลง Loading และ > 15m สำหรับหม้อแปลง Tie หรือไม่มีหม้อแปลงรอบข้าง",
-                            "4. มีระบบดับเพลิง หรือสารดับเพลิงที่พร้อมใช้งาน",
-                            "5. ไม่มีถัง 4 ข้อข้างต้น"
-                          ].map((item) => (
-                            <div key={item} className="flex items-center space-x-2">
-                              <Checkbox 
-                                checked={formData.damageProperty.includes(item)}
-                                onCheckedChange={(checked) => handleDamagePropertyChange(item, checked as boolean)}
-                              />
-                              <Label className="text-xs">{item}</Label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Operational Parameters */}
-                    <div className="p-4 bg-blue-50 rounded">
-                      <h3 className="text-blue-700 font-medium mb-4">Operational Parameters</h3>
-                      <div className="grid grid-cols-4 gap-4">
-                        <div>
-                          <Label className="text-xs">Probability Of Force Outage:</Label>
-                          <Select value={formData.probabilityForceOutage} onValueChange={(value) => setFormData({...formData, probabilityForceOutage: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">Social Aspect:</Label>
-                          <Select value={formData.socialAspect} onValueChange={(value) => setFormData({...formData, socialAspect: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">Load Shedding:</Label>
-                          <Select value={formData.loadShedding} onValueChange={(value) => setFormData({...formData, loadShedding: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">Public Image:</Label>
-                          <Select value={formData.publicImage} onValueChange={(value) => setFormData({...formData, publicImage: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">N-1 Criteria:</Label>
-                          <Select value={formData.n1Criteria} onValueChange={(value) => setFormData({...formData, n1Criteria: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">Application Use:</Label>
-                          <Select value={formData.applicationUse} onValueChange={(value) => setFormData({...formData, applicationUse: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">System Stability:</Label>
-                          <Select value={formData.systemStability} onValueChange={(value) => setFormData({...formData, systemStability: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label className="text-xs">Pollution:</Label>
-                          <Select value={formData.pollution} onValueChange={(value) => setFormData({...formData, pollution: value})}>
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="เลือก" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value="low">ต่ำ</SelectItem>
-                              <SelectItem value="medium">ปานกลาง</SelectItem>
-                              <SelectItem value="high">สูง</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Load Factor */}
-                    <div className="p-4 bg-green-50 rounded">
-                      <h3 className="text-green-700 font-medium mb-4">Load Factor</h3>
-                      <div className="space-y-3">
-                        {[
-                          { label: "<= 0.6", value: "loadFactor1" },
-                          { label: "0.6 < LF <= 1", value: "loadFactor2" },
-                          { label: "1 < LF <= 1.2", value: "loadFactor3" },
-                          { label: "1.2 < LF <= 1.5", value: "loadFactor4" },
-                          { label: "< 1.5", value: "loadFactor5" }
-                        ].map((item) => (
-                          <div key={item.value} className="grid grid-cols-2 gap-4 items-center">
-                            <Label className="text-sm">{item.label}</Label>
-                            <Select 
-                              value={formData[item.value as keyof typeof formData] as string} 
-                              onValueChange={(value) => setFormData({...formData, [item.value]: value})}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="จำนวนเดือน" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-white">
-                                <SelectItem value="1">1 เดือน</SelectItem>
-                                <SelectItem value="3">3 เดือน</SelectItem>
-                                <SelectItem value="6">6 เดือน</SelectItem>
-                                <SelectItem value="12">12 เดือน</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        onClick={() => setIsModalOpen(false)}
-                        className="border-gray-200 text-gray-600 hover:bg-gray-50"
-                      >
+                    <div className="flex justify-end gap-2 pt-4 border-t">
+                      <Button variant="outline" onClick={() => setIsAddModalOpen(false)} className="border-gray-300">
                         ยกเลิก
                       </Button>
-                      <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
-                        บันทึกข้อมูล
+                      <Button onClick={handleAdd} className="bg-blue-600 hover:bg-blue-700">
+                        เพิ่มข้อมูล
                       </Button>
                     </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
-
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="bg-gray-50">
-                  <TableRow>
-                    <TableHead className="text-center text-gray-700 w-16">No.</TableHead>
-                    <TableHead className="text-center text-gray-700">ชื่อหม้อแปลงไฟฟ้า</TableHead>
-                    <TableHead className="text-center text-gray-700">วันที่บันทึก</TableHead>
-                    <TableHead className="text-center text-gray-700">แก้ไข</TableHead>
-                    <TableHead className="text-center text-gray-700">ลบ</TableHead>
+                <TableHeader>
+                  <TableRow className="bg-blue-50">
+                    <TableHead className="font-semibold text-blue-800 text-center">รหัสหม้อแปลง</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">สถานีไฟฟ้า</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">เขต</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">ภาค</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">จังหวัด</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">ระดับแรงดัน</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">ความจุ</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">ระดับความสำคัญ</TableHead>
+                    <TableHead className="font-semibold text-blue-800 text-center">การจัดการ</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {importanceData.map((item) => (
-                    <TableRow key={item.id} className="hover:bg-gray-50">
-                      <TableCell className="text-center font-medium">{item.no}</TableCell>
-                      <TableCell className="text-center">{item.transformer}</TableCell>
-                      <TableCell className="text-center">{item.date}</TableCell>
+                  {filteredData.map((item) => (
+                    <TableRow key={item.id} className="hover:bg-blue-50">
+                      <TableCell className="text-center font-medium">{item.transformerCode}</TableCell>
+                      <TableCell className="text-center">{item.substation}</TableCell>
+                      <TableCell className="text-center">{item.zone}</TableCell>
+                      <TableCell className="text-center">{item.region}</TableCell>
+                      <TableCell className="text-center">{item.province}</TableCell>
+                      <TableCell className="text-center">{item.voltageLevel}</TableCell>
+                      <TableCell className="text-center">{item.capacity}</TableCell>
                       <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEdit(item)}
-                          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
+                        <Badge className={getImportanceBadgeColor(item.importance)}>
+                          {item.importance}
+                        </Badge>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(item.id)}
-                          className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <div className="flex justify-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEdit(item)}
+                            className="border-blue-300 text-blue-600 hover:bg-blue-50"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDelete(item.id)}
+                            className="border-red-300 text-red-600 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -528,6 +490,26 @@ const TransformerImportance = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Edit Modal */}
+        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+            <DialogHeader className="border-b pb-4">
+              <DialogTitle className="text-xl font-semibold text-blue-700">แก้ไขข้อมูลหม้อแปลง</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <FormFields />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button variant="outline" onClick={() => setIsEditModalOpen(false)} className="border-gray-300">
+                ยกเลิก
+              </Button>
+              <Button onClick={handleUpdate} className="bg-blue-600 hover:bg-blue-700">
+                บันทึกการแก้ไข
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
