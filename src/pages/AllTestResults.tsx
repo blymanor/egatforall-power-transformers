@@ -202,13 +202,13 @@ const AllTestResults = () => {
   return (
     <DashboardLayout>
       <div className="p-6">
-        <Card className="max-w-full overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-white p-6 border-b">
-            <CardTitle className="text-xl font-bold text-blue-700">
+        <div className="max-w-full overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-50 to-white p-6 border-b mb-6">
+            <h1 className="text-xl font-bold text-blue-700">
               ผลการทดสอบของหม้อแปลงไฟฟ้า
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
+            </h1>
+          </div>
+          <div className="p-6">
             <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 border border-gray-100">
               {/* Selection area */}
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200 mb-8">
@@ -232,7 +232,7 @@ const AllTestResults = () => {
                   onClick={handleGenerateResults}
                   className="bg-[#1E5CFF] hover:bg-blue-700 text-white px-6 py-2 rounded font-medium"
                 >
-                  GENERATE
+                  แสดงผล
                 </Button>
               </div>
               
@@ -270,8 +270,8 @@ const AllTestResults = () => {
                 </div>
               )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );

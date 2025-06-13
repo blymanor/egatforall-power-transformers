@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -224,7 +223,7 @@ const RiskGraph: React.FC = () => {
                   <span>HIGH</span>
                 </div>
                 
-                {/* Risk zones with diagonal pattern - starting from left side properly */}
+                {/* Clear diagonal risk zones - no grid lines */}
                 <div className="absolute inset-0">
                   <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
                     <defs>
@@ -234,31 +233,20 @@ const RiskGraph: React.FC = () => {
                       </linearGradient>
                     </defs>
                     
-                    {/* Green zone (bottom-left triangle) */}
-                    <polygon points="0,360 150,360 0,150" fill="#22c55e" />
+                    {/* Green zone (lowest risk - bottom-left) */}
+                    <polygon points="0,360 120,360 0,240" fill="#22c55e" />
                     
-                    {/* Blue diagonal zone */}
-                    <polygon points="0,150 150,360 270,360 0,90" fill="#3b82f6" />
+                    {/* Blue zones (low-moderate risk) */}
+                    <polygon points="0,240 120,360 240,360 0,120" fill="#3b82f6" />
                     
-                    {/* Yellow diagonal zone */}
-                    <polygon points="0,90 270,360 390,360 0,30" fill="#eab308" />
+                    {/* Yellow zones (moderate risk) */}
+                    <polygon points="0,120 240,360 360,360 0,60" fill="#eab308" />
                     
-                    {/* Orange diagonal zone */}
-                    <polygon points="0,30 390,360 480,360 0,0 200,0" fill="#f97316" />
+                    {/* Orange zones (high risk) */}
+                    <polygon points="0,60 360,360 480,360 0,0 150,0" fill="#f97316" />
                     
-                    {/* Red zone (top-right area) */}
-                    <polygon points="200,0 480,0 480,360 390,360" fill="#dc2626" />
-                  </svg>
-                </div>
-                
-                {/* Diagonal grid lines - only the main diagonal separators */}
-                <div className="absolute inset-0">
-                  <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-                    {/* Main diagonal lines creating risk zones */}
-                    <line x1="0%" y1="58.3%" x2="31.25%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="0%" y1="25%" x2="56.25%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="0%" y1="8.3%" x2="81.25%" y2="100%" stroke="black" strokeWidth="2"/>
-                    <line x1="41.7%" y1="0%" x2="100%" y2="100%" stroke="black" strokeWidth="2"/>
+                    {/* Red zone (highest risk - top-right) */}
+                    <polygon points="150,0 480,0 480,360 360,360" fill="#dc2626" />
                   </svg>
                 </div>
                 
@@ -270,26 +258,26 @@ const RiskGraph: React.FC = () => {
                   
                   if (rand < 0.4) {
                     // Most points in lower diagonal area (green-blue zone)
-                    x = 5 + Math.random() * 40;
-                    y = 5 + Math.random() * 35;
+                    x = 5 + Math.random() * 35;
+                    y = 5 + Math.random() * 40;
                   } else if (rand < 0.7) {
                     // Medium cluster in middle diagonal (yellow zone)
-                    x = 25 + Math.random() * 40;
-                    y = 15 + Math.random() * 40;
+                    x = 20 + Math.random() * 40;
+                    y = 15 + Math.random() * 45;
                   } else if (rand < 0.9) {
                     // Some points in orange zone
-                    x = 45 + Math.random() * 40;
+                    x = 40 + Math.random() * 40;
                     y = 25 + Math.random() * 50;
                   } else {
                     // Few points in red zone
-                    x = 65 + Math.random() * 30;
+                    x = 60 + Math.random() * 35;
                     y = 60 + Math.random() * 35;
                   }
                   
                   return (
                     <div
                       key={`diagonal-cluster-${i}`}
-                      className="absolute rounded-full bg-white w-1.5 h-1.5 border border-gray-400"
+                      className="absolute rounded-full bg-white w-1.5 h-1.5 border border-gray-600"
                       style={{
                         left: `${x}%`,
                         bottom: `${y}%`,
