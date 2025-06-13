@@ -5,20 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
-import { AlertCircle, CheckCircle, Lock } from "lucide-react";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
-
-// Mock data for demonstration
-const testResults = [
-  { id: 1, type: "Oil Quality", date: "2025-04-12", status: "Pending" },
-  { id: 2, type: "DGA", date: "2025-04-10", status: "Pending" },
-  { id: 3, type: "Insulation Resistance", date: "2025-04-08", status: "Pending" },
-  { id: 4, type: "Winding Resistance", date: "2025-04-05", status: "Pending" },
-  { id: 5, type: "Power Factor", date: "2025-04-03", status: "Pending" }
-];
+import { CheckCircle, Lock } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 // Health data for the charts
 const ghiData = [
@@ -37,26 +26,25 @@ const chiData = [
   { name: 'Very Poor', value: 5, color: '#ef4444' }
 ];
 
+const ohiData = [
+  { name: 'Very Good', value: 32, color: '#22c55e' },
+  { name: 'Good', value: 27, color: '#3b82f6' },
+  { name: 'Fair', value: 23, color: '#eab308' },
+  { name: 'Poor', value: 13, color: '#f97316' },
+  { name: 'Very Poor', value: 5, color: '#ef4444' }
+];
+
 const activeParts = [
-  { name: 'Core Insulation', value: 20.0, color: '#22c55e' },
-  { name: 'HV Winding', value: 34.22, color: '#3b82f6' },
-  { name: 'LV Winding', value: 31.58, color: '#3b82f6' },
-  { name: 'TV Winding', value: 24.0, color: '#3b82f6' }
+  { name: 'Core Insulation', value: 20.0, color: '#22c55e', value2: 85.5 },
+  { name: 'HV Winding', value: 34.22, color: '#3b82f6', value2: 78.2 },
+  { name: 'LV Winding', value: 31.58, color: '#3b82f6', value2: 82.1 },
+  { name: 'TV Winding', value: 24.0, color: '#3b82f6', value2: 76.8 }
 ];
 
 const ActivateTestResults = () => {
   const [transformer, setTransformer] = useState("");
-  const [selectedTests, setSelectedTests] = useState<number[]>([]);
   const [isActivated, setIsActivated] = useState(false);
   const { toast } = useToast();
-
-  const handleTestSelect = (testId: number) => {
-    setSelectedTests(current => 
-      current.includes(testId)
-        ? current.filter(id => id !== testId)
-        : [...current, testId]
-    );
-  };
 
   const handleActivate = () => {
     if (!transformer) {
@@ -68,25 +56,14 @@ const ActivateTestResults = () => {
       return;
     }
 
-    if (selectedTests.length === 0) {
-      toast({
-        title: "No tests selected",
-        description: "Please select at least one test result to activate",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsActivated(true);
     toast({
       title: "Test Results Activated",
-      description: `Successfully activated ${selectedTests.length} test results for transformer ${transformer}.`,
+      description: `Successfully activated test results for transformer ${transformer}.`,
     });
-
-    setSelectedTests([]);
   };
 
-  const CustomPieChart = ({ data, title }: { data: any[], title: string }) => (
+  const CustomPieChart = ({ data, title, centerValue }: { data: any[], title: string, centerValue: string }) => (
     <div className="bg-white border rounded-lg p-4">
       <h3 className="text-lg font-semibold text-center mb-4">{title}</h3>
       <div className="relative w-64 h-64 mx-auto">
@@ -109,7 +86,7 @@ const ActivateTestResults = () => {
         </ResponsiveContainer>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-2xl font-bold">99.896</div>
+            <div className="text-2xl font-bold">{centerValue}</div>
           </div>
         </div>
       </div>
@@ -130,10 +107,9 @@ const ActivateTestResults = () => {
   return (
     <DashboardLayout>
       <div className="p-4 md:p-6 space-y-6 bg-[#f0f4fa]">
-        {/* Section title with larger font */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800">Activate ผลการทดสอบ</h2>
-          <p className="text-lg text-gray-600">เลือกหม้อแปลงไฟฟ้าและ Activate ผลการทดสอบที่ต้องการ</p>
+          <p className="text-lg text-gray-600">เลือกหม้อแปลงไฟฟ้าและ Activate ผลการทดสอบ</p>
         </div>
 
         <Card className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden border-0">
@@ -165,54 +141,15 @@ const ActivateTestResults = () => {
               {transformer ? (
                 <div className="space-y-6">
                   {!isActivated ? (
-                    <>
-                      <h3 className="text-lg font-medium text-gray-800">ผลการทดสอบที่รอการ Activate:</h3>
-                      
-                      <div className="border border-gray-200 rounded-lg overflow-hidden">
-                        <Table>
-                          <TableHeader className="bg-gray-50">
-                            <TableRow>
-                              <TableHead className="w-16 text-center">เลือก</TableHead>
-                              <TableHead>ประเภทการทดสอบ</TableHead>
-                              <TableHead>วันที่ทดสอบ</TableHead>
-                              <TableHead>สถานะ</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {testResults.map(test => (
-                              <TableRow key={test.id}>
-                                <TableCell className="text-center">
-                                  <Checkbox 
-                                    checked={selectedTests.includes(test.id)} 
-                                    onCheckedChange={() => handleTestSelect(test.id)}
-                                    className="w-5 h-5"
-                                  />
-                                </TableCell>
-                                <TableCell className="text-base">{test.type}</TableCell>
-                                <TableCell className="text-base">{test.date}</TableCell>
-                                <TableCell className="text-base">
-                                  <div className="flex items-center">
-                                    <AlertCircle size={16} className="mr-2 text-orange-500" />
-                                    <span>{test.status}</span>
-                                  </div>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </div>
-
-                      <div className="flex justify-center pt-6">
-                        <Button
-                          onClick={handleActivate}
-                          disabled={selectedTests.length === 0}
-                          className="px-10 py-6 text-lg bg-blue-600 hover:bg-blue-700 text-white"
-                        >
-                          <CheckCircle className="mr-2 h-5 w-5" />
-                          Activate ผลการทดสอบที่เลือก
-                        </Button>
-                      </div>
-                    </>
+                    <div className="flex justify-center pt-6">
+                      <Button
+                        onClick={handleActivate}
+                        className="px-10 py-6 text-lg bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <CheckCircle className="mr-2 h-5 w-5" />
+                        Activate ผลการทดสอบ
+                      </Button>
+                    </div>
                   ) : (
                     <div className="space-y-6">
                       {/* Header Information */}
@@ -234,9 +171,10 @@ const ActivateTestResults = () => {
                       </div>
 
                       {/* Charts Section */}
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <CustomPieChart data={ghiData} title="%GHI" />
-                        <CustomPieChart data={chiData} title="%CHI" />
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <CustomPieChart data={ghiData} title="%GHI" centerValue="99.896" />
+                        <CustomPieChart data={chiData} title="%CHI" centerValue="82.306" />
+                        <CustomPieChart data={ohiData} title="%OHI" centerValue="91.526" />
                       </div>
 
                       {/* Health Index Summary */}
@@ -272,10 +210,19 @@ const ActivateTestResults = () => {
                               <span>{part.name}:</span>
                               <div className="flex items-center gap-2">
                                 <span className="font-medium">{part.value}</span>
-                                <div 
-                                  className="w-16 h-4 rounded"
-                                  style={{ backgroundColor: part.color }}
-                                ></div>
+                                <div className="flex gap-1">
+                                  <div 
+                                    className="w-16 h-4 rounded"
+                                    style={{ backgroundColor: part.color }}
+                                  ></div>
+                                  <div 
+                                    className="w-16 h-4 rounded bg-gray-300"
+                                    style={{ 
+                                      background: `linear-gradient(to right, ${part.color} ${part.value2}%, #e5e7eb ${part.value2}%)` 
+                                    }}
+                                  ></div>
+                                </div>
+                                <span className="text-sm text-gray-600">{part.value2}%</span>
                                 <Lock size={16} className="text-gray-500" />
                               </div>
                             </div>
