@@ -158,7 +158,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapsedChange }) => {
                 { icon: "oil-receipt-time", label: "ระยะเวลาที่ได้รับน้ำมัน", path: "/inventory/oil/receipt-time" }
               ]
             },
-            { icon: "bushing-arrester", label: "Bushing, Arrester, OLTC", path: "/inventory/components" }
+            { icon: "bushing-arrester", label: "Bushing, Arrester, OLTC", path: "/inventory/Bushing-Arester-OLTC" }
           ]}
         />
         

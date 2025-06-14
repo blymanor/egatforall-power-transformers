@@ -39,6 +39,7 @@ import ExpenseListPage from "./pages/ExpenseListPage";
 import CalculationResultPage from "./pages/CalculationResultPage";
 import OilReceiptDurationPage from "./pages/OilReceiptDurationPage";
 import WeibullCalculationPage from "./pages/WeibullCalculationPage";
+import OilPurchasePage from "./pages/OilPurchasePage";
 
 const queryClient = new QueryClient();
 
@@ -53,14 +54,12 @@ const AppRoutes = () => (
     <Route path="/upload-data/activate" element={<ActivateTestResults />} />
     
     {/* Reports Routes */}
-    <Route path="/reports" element={<NotFound />} />
     <Route path="/reports/standard" element={<StandardReport />} />
     <Route path="/reports/transformers" element={<TransformerReport />} />
     <Route path="/reports/damages" element={<DamageReport />} />
     
     {/* Transformer Info Routes */}
     <Route path="/transformer-info" element={<TransformerBasicInfo />} />
-    <Route path="/transformer-info/details" element={<TransformerBasicInfo />} />
     <Route path="/transformer-info/relocation" element={<TransformerRelocationInfo />} />
     
     {/* Transformer Importance Route */}
@@ -70,7 +69,6 @@ const AppRoutes = () => (
     <Route path="/economic-analysis" element={<EconomicAnalysisFactorSetting />} />
     <Route path="/economic-analysis/factor-setting" element={<EconomicAnalysisFactorSetting />} />
     <Route path="/economic-analysis/price-loss" element={<EconomicAnalysisPriceLoss />} />
-    <Route path="/economic-analysis/info" element={<EconomicAnalysisInfo />} />
     <Route path="/economic-analysis/consideration-data" element={<EconomicAnalysisInfo />} />
     
     {/* Transformer Maintenance Routes */}
@@ -87,42 +85,17 @@ const AppRoutes = () => (
     <Route path="/inventory" element={<OilInventoryPage />} />
     <Route path="/inventory/oil" element={<TransformerOilInventory />} />
     <Route path="/inventory/oil/stock" element={<OilInventoryPage />} />
-    <Route path="/inventory/oil/disbursement" element={<DisbursementListPage />} />
-    <Route path="/inventory/oil/disbursement-list" element={<DisbursementListPage />} />
     <Route path="/inventory/oil/withdrawal" element={<DisbursementListPage />} />
+    <Route path="/inventory/oil/purchase" element={<OilPurchasePage />} />
     <Route path="/inventory/oil/orders" element={<OilOrderReceiveListPage />} />
-    <Route path="/inventory/oil/order-receive" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/oil/expense" element={<ExpenseListPage />} />
-    <Route path="/inventory/oil/expense-list" element={<ExpenseListPage />} />
     <Route path="/inventory/oil/calculation" element={<CalculationResultPage />} />
-    <Route path="/inventory/oil/calculation-result" element={<CalculationResultPage />} />
-    <Route path="/inventory/oil/duration" element={<OilReceiptDurationPage />} />
-    <Route path="/inventory/oil/receipt-duration" element={<OilReceiptDurationPage />} />
     <Route path="/inventory/oil/receipt-time" element={<OilReceiptDurationPage />} />
-    <Route path="/inventory/oil/weibull" element={<WeibullCalculationPage />} />
-    <Route path="/inventory/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
-    <Route path="/inventory/components" element={<NotFound />} />
-    
-    {/* Oil-related Routes with different path patterns */}
-    <Route path="/oil/disbursement" element={<DisbursementListPage />} />
-    <Route path="/oil/disbursement-list" element={<DisbursementListPage />} />
-    <Route path="/oil/receipt-duration" element={<OilReceiptDurationPage />} />
-    <Route path="/oil/duration" element={<OilReceiptDurationPage />} />
-    <Route path="/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
-    <Route path="/oil/weibull" element={<WeibullCalculationPage />} />
-    
-    {/* Additional Routes for Disbursement, Duration, and Weibull pages */}
-    <Route path="/disbursement" element={<DisbursementListPage />} />
-    <Route path="/disbursement-list" element={<DisbursementListPage />} />
-    <Route path="/oil-receipt-duration" element={<OilReceiptDurationPage />} />
-    <Route path="/receipt-duration" element={<OilReceiptDurationPage />} />
-    <Route path="/weibull" element={<WeibullCalculationPage />} />
-    <Route path="/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
+    <Route path="/inventory/Bushing-Arester-OLTC" element={<WeibullCalculationPage />} />
     
     {/* User Management Routes */}
     <Route path="/management" element={<UserManagement />} />
     <Route path="/management/user" element={<UserManagement />} />
-    <Route path="/management/users" element={<UserManagement />} />
     <Route path="/management/change-password" element={<ChangePassword />} />
     
     {/* Utility Routes */}
