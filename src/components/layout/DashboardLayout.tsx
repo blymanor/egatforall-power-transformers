@@ -41,10 +41,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         sidebarCollapsed ? "ml-[80px]" : "ml-[320px]", 
         className
       )}>
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
-          <div>
-            <h1 className="text-2xl font-bold text-[#0442AF]">Power Transformers</h1>
-            <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white px-6 py-4 shadow-sm sticky top-0 z-10 border-b border-gray-100">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-3xl font-bold text-[#0442AF]">EGATforALL</h1>
+            <div className="text-left">
+              <p className="text-xl font-semibold text-[#0442AF]">Power Transformers</p>
+              <p className="text-gray-500">ระบบหม้อแปลงไฟฟ้ากำลัง</p>
+            </div>
           </div>
         </header>
         

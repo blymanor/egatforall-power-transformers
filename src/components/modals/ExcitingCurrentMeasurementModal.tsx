@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -29,21 +30,35 @@ const ExcitingCurrentMeasurementModal = ({ isOpen, onClose, mode, data }: Exciti
     oilTemp: mode === 'create' ? '' : (data?.oilTemp || ''),
     wdgTemp: mode === 'create' ? '' : (data?.wdgTemp || ''),
     weather: mode === 'create' ? '' : (data?.weather || ''),
-    // HV Winding data
-    hvVoltage: mode === 'create' ? '0.0' : (data?.hvVoltage || '0.0'),
-    hvCurrent: mode === 'create' ? '0.0' : (data?.hvCurrent || '0.0'),
-    hvPower: mode === 'create' ? '0.0' : (data?.hvPower || '0.0'),
-    hvExcitingCurrent: mode === 'create' ? '0.0' : (data?.hvExcitingCurrent || '0.0'),
-    // LV Winding data
-    lvVoltage: mode === 'create' ? '0.0' : (data?.lvVoltage || '0.0'),
-    lvCurrent: mode === 'create' ? '0.0' : (data?.lvCurrent || '0.0'),
-    lvPower: mode === 'create' ? '0.0' : (data?.lvPower || '0.0'),
-    lvExcitingCurrent: mode === 'create' ? '0.0' : (data?.lvExcitingCurrent || '0.0'),
-    // TV Winding data
-    tvVoltage: mode === 'create' ? '0.0' : (data?.tvVoltage || '0.0'),
-    tvCurrent: mode === 'create' ? '0.0' : (data?.tvCurrent || '0.0'),
-    tvPower: mode === 'create' ? '0.0' : (data?.tvPower || '0.0'),
-    tvExcitingCurrent: mode === 'create' ? '0.0' : (data?.tvExcitingCurrent || '0.0'),
+    // HV Winding AC(VOLT) section
+    hvMinVoltage: mode === 'create' ? '0.0' : (data?.hvMinVoltage || '0.0'),
+    hvNVoltage: mode === 'create' ? '0.0' : (data?.hvNVoltage || '0.0'),
+    hv2RVoltage: mode === 'create' ? '0.0' : (data?.hv2RVoltage || '0.0'),
+    hvMaxVoltage: mode === 'create' ? '0.0' : (data?.hvMaxVoltage || '0.0'),
+    // HV Winding AC(mA) sections
+    hvMinCurrentH1H0: mode === 'create' ? '0.0' : (data?.hvMinCurrentH1H0 || '0.0'),
+    hvMinCurrentH2H0: mode === 'create' ? '0.0' : (data?.hvMinCurrentH2H0 || '0.0'),
+    hvMinCurrentH2H3: mode === 'create' ? '0.0' : (data?.hvMinCurrentH2H3 || '0.0'),
+    hvNCurrentH1H0: mode === 'create' ? '0.0' : (data?.hvNCurrentH1H0 || '0.0'),
+    hvNCurrentH2H0: mode === 'create' ? '0.0' : (data?.hvNCurrentH2H0 || '0.0'),
+    hvNCurrentH2H3: mode === 'create' ? '0.0' : (data?.hvNCurrentH2H3 || '0.0'),
+    hv2RCurrentH1H0: mode === 'create' ? '0.0' : (data?.hv2RCurrentH1H0 || '0.0'),
+    hv2RCurrentH2H0: mode === 'create' ? '0.0' : (data?.hv2RCurrentH2H0 || '0.0'),
+    hv2RCurrentH2H3: mode === 'create' ? '0.0' : (data?.hv2RCurrentH2H3 || '0.0'),
+    hvMaxCurrentH1H0: mode === 'create' ? '0.0' : (data?.hvMaxCurrentH1H0 || '0.0'),
+    hvMaxCurrentH2H0: mode === 'create' ? '0.0' : (data?.hvMaxCurrentH2H0 || '0.0'),
+    hvMaxCurrentH2H3: mode === 'create' ? '0.0' : (data?.hvMaxCurrentH2H3 || '0.0'),
+    // LV Winding sections
+    lvNCurrentX1X0: mode === 'create' ? '0.0' : (data?.lvNCurrentX1X0 || '0.0'),
+    lvNCurrentX2X0: mode === 'create' ? '0.0' : (data?.lvNCurrentX2X0 || '0.0'),
+    lvNCurrentX2X3: mode === 'create' ? '0.0' : (data?.lvNCurrentX2X3 || '0.0'),
+    // TV Winding sections  
+    tvNCurrentY1Y0: mode === 'create' ? '0.0' : (data?.tvNCurrentY1Y0 || '0.0'),
+    tvNCurrentY2Y3: mode === 'create' ? '0.0' : (data?.tvNCurrentY2Y3 || '0.0'),
+    // HV AC(kV) section
+    hvACkVCurrentH1H0: mode === 'create' ? '0.0' : (data?.hvACkVCurrentH1H0 || '0.0'),
+    hvACkVCurrentH2H0: mode === 'create' ? '0.0' : (data?.hvACkVCurrentH2H0 || '0.0'),
+    hvACkVCurrentH2H3: mode === 'create' ? '0.0' : (data?.hvACkVCurrentH2H3 || '0.0'),
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -67,7 +82,7 @@ const ExcitingCurrentMeasurementModal = ({ isOpen, onClose, mode, data }: Exciti
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
             {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Exciting Current Measurement
@@ -223,123 +238,294 @@ const ExcitingCurrentMeasurementModal = ({ isOpen, onClose, mode, data }: Exciti
             </div>
           </div>
 
-          {/* Measurement Data */}
-          <div className="space-y-6">
-            {/* HV WINDING */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">HV WINDING</h3>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="space-y-2">
-                  <Label>Voltage (V)</Label>
-                  <Input
-                    value={formData.hvVoltage}
-                    onChange={(e) => handleInputChange('hvVoltage', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Current (A)</Label>
-                  <Input
-                    value={formData.hvCurrent}
-                    onChange={(e) => handleInputChange('hvCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power (W)</Label>
-                  <Input
-                    value={formData.hvPower}
-                    onChange={(e) => handleInputChange('hvPower', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Exciting Current (%)</Label>
-                  <Input
-                    value={formData.hvExcitingCurrent}
-                    onChange={(e) => handleInputChange('hvExcitingCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
+          {/* HV WINDING Section */}
+          <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-blue-600 mb-4">HV...WDG.</h3>
+            
+            {/* Headers */}
+            <div className="grid grid-cols-5 gap-4 mb-4 text-center">
+              <div></div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : H1H0/H1H2</div>
+                <div>AC(mA)</div>
               </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : H2H0/H2H3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : H2H0/H2H3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">REMARK</div>
             </div>
 
-            {/* LV WINDING */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">LV WINDING</h3>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="space-y-2">
-                  <Label>Voltage (V)</Label>
-                  <Input
-                    value={formData.lvVoltage}
-                    onChange={(e) => handleInputChange('lvVoltage', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Current (A)</Label>
-                  <Input
-                    value={formData.lvCurrent}
-                    onChange={(e) => handleInputChange('lvCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power (W)</Label>
-                  <Input
-                    value={formData.lvPower}
-                    onChange={(e) => handleInputChange('lvPower', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Exciting Current (%)</Label>
-                  <Input
-                    value={formData.lvExcitingCurrent}
-                    onChange={(e) => handleInputChange('lvExcitingCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </div>
+            {/* AC(VOLT) row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-blue-600 font-semibold">AC(VOLT)</div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
             </div>
 
-            {/* TV WINDING */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-600 mb-4">TV WINDING</h3>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="space-y-2">
-                  <Label>Voltage (V)</Label>
-                  <Input
-                    value={formData.tvVoltage}
-                    onChange={(e) => handleInputChange('tvVoltage', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Current (A)</Label>
-                  <Input
-                    value={formData.tvCurrent}
-                    onChange={(e) => handleInputChange('tvCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Power (W)</Label>
-                  <Input
-                    value={formData.tvPower}
-                    onChange={(e) => handleInputChange('tvPower', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Exciting Current (%)</Label>
-                  <Input
-                    value={formData.tvExcitingCurrent}
-                    onChange={(e) => handleInputChange('tvExcitingCurrent', e.target.value)}
-                    readOnly={isReadOnly}
-                  />
-                </div>
+            {/* MIN row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-blue-600 font-semibold">MIN</div>
+              <Input
+                value={formData.hvMinCurrentH1H0}
+                onChange={(e) => handleInputChange('hvMinCurrentH1H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvMinCurrentH2H0}
+                onChange={(e) => handleInputChange('hvMinCurrentH2H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvMinCurrentH2H3}
+                onChange={(e) => handleInputChange('hvMinCurrentH2H3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
+            </div>
+
+            {/* N row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-red-600 font-semibold">N</div>
+              <Input
+                value={formData.hvNCurrentH1H0}
+                onChange={(e) => handleInputChange('hvNCurrentH1H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvNCurrentH2H0}
+                onChange={(e) => handleInputChange('hvNCurrentH2H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvNCurrentH2H3}
+                onChange={(e) => handleInputChange('hvNCurrentH2H3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
+            </div>
+
+            {/* 2R row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-blue-600 font-semibold">2R</div>
+              <Input
+                value={formData.hv2RCurrentH1H0}
+                onChange={(e) => handleInputChange('hv2RCurrentH1H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hv2RCurrentH2H0}
+                onChange={(e) => handleInputChange('hv2RCurrentH2H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hv2RCurrentH2H3}
+                onChange={(e) => handleInputChange('hv2RCurrentH2H3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
+            </div>
+
+            {/* MAX row */}
+            <div className="grid grid-cols-5 gap-4 mb-4 items-center">
+              <div className="text-blue-600 font-semibold">MAX</div>
+              <Input
+                value={formData.hvMaxCurrentH1H0}
+                onChange={(e) => handleInputChange('hvMaxCurrentH1H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvMaxCurrentH2H0}
+                onChange={(e) => handleInputChange('hvMaxCurrentH2H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvMaxCurrentH2H3}
+                onChange={(e) => handleInputChange('hvMaxCurrentH2H3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
+            </div>
+          </div>
+
+          {/* LV WINDING Section */}
+          <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-blue-600 mb-4">LV...WDG.</h3>
+            
+            {/* Headers */}
+            <div className="grid grid-cols-5 gap-4 mb-4 text-center">
+              <div></div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : X1X0/X1X2</div>
+                <div>AC(mA)</div>
               </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : X2X0/X2X3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : X2X0/X2X3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">REMARK</div>
+            </div>
+
+            {/* AC(VOLT) row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-blue-600 font-semibold">AC(VOLT)</div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+
+            {/* N row */}
+            <div className="grid grid-cols-5 gap-4 mb-4 items-center">
+              <div className="text-red-600 font-semibold">N</div>
+              <Input
+                value={formData.lvNCurrentX1X0}
+                onChange={(e) => handleInputChange('lvNCurrentX1X0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.lvNCurrentX2X0}
+                onChange={(e) => handleInputChange('lvNCurrentX2X0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.lvNCurrentX2X3}
+                onChange={(e) => handleInputChange('lvNCurrentX2X3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
+            </div>
+          </div>
+
+          {/* TV WINDING Section */}
+          <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-blue-600 mb-4">TV...WDG.</h3>
+            
+            {/* Headers */}
+            <div className="grid grid-cols-5 gap-4 mb-4 text-center">
+              <div></div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : Y1Y0/Y1Y2</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : Y2Y3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : Y2Y3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">REMARK</div>
+            </div>
+
+            {/* AC(VOLT) row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-blue-600 font-semibold">AC(VOLT)</div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+
+            {/* N row */}
+            <div className="grid grid-cols-5 gap-4 mb-4 items-center">
+              <div className="text-red-600 font-semibold">N</div>
+              <Input
+                value={formData.tvNCurrentY1Y0}
+                onChange={(e) => handleInputChange('tvNCurrentY1Y0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.tvNCurrentY2Y3}
+                onChange={(e) => handleInputChange('tvNCurrentY2Y3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+
+          {/* HV AC(kV) Section */}
+          <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-blue-600 mb-4">HV...WDG.</h3>
+            
+            {/* Headers */}
+            <div className="grid grid-cols-5 gap-4 mb-4 text-center">
+              <div></div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : H1H0/H1H2</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : H2H0/H2H3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">
+                <div>TERMINAL : H2H0/H2H3</div>
+                <div>AC(mA)</div>
+              </div>
+              <div className="text-blue-600 font-semibold">REMARK</div>
+            </div>
+
+            {/* AC(kV) row */}
+            <div className="grid grid-cols-5 gap-4 mb-2 items-center">
+              <div className="text-blue-600 font-semibold">AC(kV)</div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+
+            {/* N row */}
+            <div className="grid grid-cols-5 gap-4 mb-4 items-center">
+              <div className="text-red-600 font-semibold">N</div>
+              <Input
+                value={formData.hvACkVCurrentH1H0}
+                onChange={(e) => handleInputChange('hvACkVCurrentH1H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvACkVCurrentH2H0}
+                onChange={(e) => handleInputChange('hvACkVCurrentH2H0', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <Input
+                value={formData.hvACkVCurrentH2H3}
+                onChange={(e) => handleInputChange('hvACkVCurrentH2H3', e.target.value)}
+                readOnly={isReadOnly}
+                className="text-center"
+              />
+              <div></div>
             </div>
           </div>
 
