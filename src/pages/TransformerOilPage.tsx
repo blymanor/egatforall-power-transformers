@@ -11,26 +11,66 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
+interface OilRecord {
+  id: number;
+  year: string;
+  volume: string;
+  price: string;
+}
+
 const TransformerOilPage = () => {
   const [open, setOpen] = useState(false);
   const [year, setYear] = useState("");
   const [volume, setVolume] = useState("");
   const [price, setPrice] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  
+  const [oilRecords, setOilRecords] = useState<OilRecord[]>([
+    { id: 1, year: "2567", volume: "500", price: "59.00" },
+    { id: 2, year: "2566", volume: "360", price: "60.00" },
+  ]);
 
-  // reset form when close modal
   const handleOpenChange = (state: boolean) => {
     setOpen(state);
     if (!state) {
       setYear("");
       setVolume("");
       setPrice("");
+      setEditingId(null);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // ดำเนินการบันทึกข้อมูลที่นี่ (เช่น console.log)
+    
+    if (editingId) {
+      // แก้ไขข้อมูลเดิม
+      setOilRecords(prev => prev.map(record => 
+        record.id === editingId 
+          ? { ...record, year, volume, price }
+          : record
+      ));
+    } else {
+      // เพิ่มข้อมูลใหม่
+      const newRecord: OilRecord = {
+        id: Math.max(...oilRecords.map(r => r.id)) + 1,
+        year,
+        volume,
+        price
+      };
+      setOilRecords(prev => [...prev, newRecord]);
+    }
+    
+    console.log("บันทึกข้อมูล:", { year, volume, price });
     setOpen(false);
+  };
+
+  const handleEdit = (record: OilRecord) => {
+    setYear(record.year);
+    setVolume(record.volume);
+    setPrice(record.price);
+    setEditingId(record.id);
+    setOpen(true);
   };
 
   return (
@@ -52,7 +92,7 @@ const TransformerOilPage = () => {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle className="font-semibold text-lg mb-1">
-                  เพิ่ม/แก้ไขข้อมูลน้ำมันประจำปี
+                  {editingId ? "แก้ไขข้อมูลน้ำมันประจำปี" : "เพิ่มข้อมูลน้ำมันประจำปี"}
                 </DialogTitle>
               </DialogHeader>
               <form
@@ -116,30 +156,26 @@ const TransformerOilPage = () => {
                 <th className="py-3 px-4 rounded-tl-xl">ปีที่เบิกจ่ายน้ำมัน</th>
                 <th className="py-3 px-4">ปริมาณการเบิกน้ำมันของทั้งปี [ถัง]</th>
                 <th className="py-3 px-4">ราคา [บาทต่อลิตร]</th>
-                <th className="py-3 px-4 rounded-tr-xl"></th>
+                <th className="py-3 px-4 rounded-tr-xl">การดำเนินการ</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-gray-50 text-center">
-                <td className="py-2 px-4">2567</td>
-                <td className="py-2 px-4">500</td>
-                <td className="py-2 px-4">59.00</td>
-                <td className="py-2 px-4">
-                  <Button size="sm" variant="outline">
-                    แก้ไข
-                  </Button>
-                </td>
-              </tr>
-              <tr className="bg-white text-center">
-                <td className="py-2 px-4">2566</td>
-                <td className="py-2 px-4">360</td>
-                <td className="py-2 px-4">60.00</td>
-                <td className="py-2 px-4">
-                  <Button size="sm" variant="outline">
-                    แก้ไข
-                  </Button>
-                </td>
-              </tr>
+              {oilRecords.map((record, index) => (
+                <tr key={record.id} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                  <td className="py-2 px-4 text-center">{record.year}</td>
+                  <td className="py-2 px-4 text-center">{record.volume}</td>
+                  <td className="py-2 px-4 text-center">{record.price}</td>
+                  <td className="py-2 px-4 text-center">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEdit(record)}
+                    >
+                      แก้ไข
+                    </Button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
