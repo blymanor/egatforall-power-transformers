@@ -35,6 +35,10 @@ import TransformerConditionCheck from "./pages/TransformerConditionCheck";
 import OilInventoryPage from "./pages/OilInventoryPage";
 import DisbursementListPage from "./pages/DisbursementListPage";
 import OilOrderReceiveListPage from "./pages/OilOrderReceiveListPage";
+import ExpenseListPage from "./pages/ExpenseListPage";
+import CalculationResultPage from "./pages/CalculationResultPage";
+import OilReceiptDurationPage from "./pages/OilReceiptDurationPage";
+import WeibullCalculationPage from "./pages/WeibullCalculationPage";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +89,10 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/stock" element={<OilInventoryPage />} />
     <Route path="/inventory/oil/disbursement" element={<DisbursementListPage />} />
     <Route path="/inventory/oil/orders" element={<OilOrderReceiveListPage />} />
+    <Route path="/inventory/oil/expense" element={<ExpenseListPage />} />
+    <Route path="/inventory/oil/calculation" element={<CalculationResultPage />} />
+    <Route path="/inventory/oil/duration" element={<OilReceiptDurationPage />} />
+    <Route path="/inventory/oil/weibull" element={<WeibullCalculationPage />} />
     <Route path="/inventory/components" element={<NotFound />} />
     
     {/* User Management Routes */}
