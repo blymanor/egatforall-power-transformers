@@ -39,6 +39,7 @@ import ExpenseListPage from "./pages/ExpenseListPage";
 import CalculationResultPage from "./pages/CalculationResultPage";
 import OilReceiptDurationPage from "./pages/OilReceiptDurationPage";
 import WeibullCalculationPage from "./pages/WeibullCalculationPage";
+import DisbursementListPage from "./pages/DisbursementListPage";
 
 const queryClient = new QueryClient();
 
@@ -109,6 +110,7 @@ const AppRoutes = () => (
     <Route path="/oil-receipt-duration" element={<OilReceiptDurationPage />} />
     <Route path="/weibull-calculation" element={<WeibullCalculationPage />} />
     
+    <Route path="/inventory/oil/withdrawal" element={<DisbursementListPage />} />
     {/* Catch-all route */}
     <Route path="*" element={<NotFound />} />
   </Routes>
