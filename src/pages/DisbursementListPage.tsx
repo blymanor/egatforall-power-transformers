@@ -344,7 +344,7 @@ const DisbursementListPage = () => {
           <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle className="text-center">
-                {detailModalMode === 'edit' ? 'แก้ไข' : 'เพิ่ม'}รายการการเบิกจ่าย
+                แก้ไขปริมาณน้ำมันในคลังเริ่มต้น
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4 p-4">
@@ -397,7 +397,7 @@ const DisbursementListPage = () => {
           <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle className="text-center">
-                {yearlyModalMode === 'edit' ? 'แก้ไข' : 'เพิ่ม'}สรุปรายปี
+                แก้ไขปริมาณน้ำมันในคลังเริ่มต้น
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4 p-4">

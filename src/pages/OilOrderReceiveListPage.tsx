@@ -222,7 +222,7 @@ const OilOrderReceiveListPage = () => {
           <DialogContent className="max-w-lg">
             <DialogHeader>
               <DialogTitle className="text-center">
-                {modalMode === 'edit' ? 'แก้ไข' : 'เพิ่ม'}รายการสั่งซื้อ/รับน้ำมัน
+                แก้ไขปริมาณน้ำมันในคลังเริ่มต้น
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4 p-4">
