@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, FileDownload } from "lucide-react";
+import { Plus, Search, Download } from "lucide-react";
 import { toast } from "sonner";
 
 const OilPurchasePage = () => {
@@ -152,7 +151,7 @@ const OilPurchasePage = () => {
                 <Label className="invisible">Actions</Label>
                 <div className="flex gap-2">
                   <Button onClick={handleExport} variant="outline" className="flex-1">
-                    <FileDownload className="h-4 w-4 mr-2" />
+                    <Download className="h-4 w-4 mr-2" />
                     ส่งออก
                   </Button>
                 </div>
