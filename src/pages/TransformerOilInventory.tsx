@@ -8,7 +8,10 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Input } from "@/components/ui/input";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Droplet, ChartLine, AlertCircle, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
 const data = [
   { date: '01/2024', volume: 38.9, reorderLevel: 150, safetyStock: 100 },
@@ -38,6 +41,12 @@ const TransformerOilInventory = () => {
   const chartContainerRef = useRef(null);
   const [chartHeight, setChartHeight] = useState(400);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    year: '',
+    volume: '',
+    price: ''
+  });
   
   // Function to check if element is in fullscreen mode
   const checkFullscreen = () => {
@@ -76,6 +85,14 @@ const TransformerOilInventory = () => {
       document.removeEventListener('fullscreenchange', handleResize);
     };
   }, []);
+
+  const handleSaveModal = () => {
+    toast.success("บันทึกข้อมูลสำเร็จ", {
+      description: `บันทึกข้อมูลปี ${formData.year} เรียบร้อยแล้ว`,
+    });
+    setIsModalOpen(false);
+    setFormData({ year: '', volume: '', price: '' });
+  };
 
   return (
     <DashboardLayout>
@@ -123,17 +140,63 @@ const TransformerOilInventory = () => {
                   </div>
                   
                   <div className="space-y-5">
-                    {/* ย้ายข้อความและปุ่มกรอกข้อมูลมาอยู่ตรงนี้ */}
+                    {/* Modal trigger button */}
                     <div className="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition-all duration-300">
                       <div className="text-center relative overflow-hidden">
                         <div className="absolute inset-0 bg-blue-500/5 rounded-full blur-3xl transform -translate-x-1/2"></div>
                         <p className="text-sm font-medium mb-2 text-gray-700 relative z-10">กรุณากรอกราคาน้ำมันที่เบิกจ่ายของปีที่ผ่านมา</p>
                         <p className="text-xs text-gray-500 mb-3 relative z-10">(เพื่อคำนวณการเติมอัตโนมัติ ฯ)</p>
-                        <Button 
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all relative z-10"
-                        >
-                          คลิกเพื่อกรอกข้อมูล
-                        </Button>
+                        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                          <DialogTrigger asChild>
+                            <Button 
+                              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all relative z-10"
+                            >
+                              คลิกเพื่อกรอกข้อมูล
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-md">
+                            <DialogHeader>
+                              <DialogTitle className="text-center">กรอกข้อมูลการเบิกจ่ายน้ำมัน</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 p-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="year">ปีที่เบิกจ่ายน้ำมัน :</Label>
+                                <Input
+                                  id="year"
+                                  type="number"
+                                  placeholder="เช่น 2024"
+                                  value={formData.year}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="volume">ปริมาณการเบิกน้ำมันของทั้งปี [ถัง] :</Label>
+                                <Input
+                                  id="volume"
+                                  type="number"
+                                  placeholder="เช่น 50"
+                                  value={formData.volume}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, volume: e.target.value }))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="price">ราคา [บาทต่อลิตร] :</Label>
+                                <Input
+                                  id="price"
+                                  type="number"
+                                  placeholder="เช่น 25.50"
+                                  value={formData.price}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                                />
+                              </div>
+                              <div className="flex justify-center space-x-4 pt-4">
+                                <Button onClick={handleSaveModal} className="px-8 bg-blue-600 hover:bg-blue-700">
+                                  บันทึก
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                     
@@ -172,7 +235,7 @@ const TransformerOilInventory = () => {
             
             {/* Right column - Chart and table */}
             <div className="lg:col-span-9 space-y-8">
-              {/* Chart - ป้องกันการล้นออกนอกกรอบ */}
+              {/* Chart */}
               <Card className="border-none shadow-md hover:shadow-lg transition-all duration-300">
                 <CardHeader className="border-b border-blue-100 bg-gradient-to-r from-blue-50 to-white rounded-t-lg flex flex-row justify-between items-center">
                   <CardTitle className="text-lg font-semibold text-blue-700 flex items-center gap-2">
@@ -183,7 +246,6 @@ const TransformerOilInventory = () => {
                 <CardContent className="p-6 bg-white relative" style={{ 
                   minHeight: isFullscreen ? 'calc(100vh - 120px)' : '500px'
                 }}>
-                  {/* Chart container with improved overflow protection */}
                   <div 
                     ref={chartContainerRef}
                     className={`chart-container w-full ${isFullscreen ? 'fullscreen-chart' : ''}`}

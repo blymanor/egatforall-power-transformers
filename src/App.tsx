@@ -32,6 +32,9 @@ import ChangePassword from "./pages/ChangePassword";
 import UserManagement from "./pages/UserManagement";
 import TransformerOilInventory from "./pages/TransformerOilInventory";
 import TransformerConditionCheck from "./pages/TransformerConditionCheck";
+import OilInventoryPage from "./pages/OilInventoryPage";
+import DisbursementListPage from "./pages/DisbursementListPage";
+import OilOrderReceiveListPage from "./pages/OilOrderReceiveListPage";
 
 const queryClient = new QueryClient();
 
@@ -77,9 +80,11 @@ const AppRoutes = () => (
     <Route path="/transformer-maintenance/condition-check" element={<TransformerConditionCheck />} />
     
     {/* Inventory Routes */}
-    <Route path="/inventory" element={<NotFound />} />
+    <Route path="/inventory" element={<OilInventoryPage />} />
     <Route path="/inventory/oil" element={<TransformerOilInventory />} />
-    <Route path="/inventory/oil/stock" element={<TransformerOilInventory />} />
+    <Route path="/inventory/oil/stock" element={<OilInventoryPage />} />
+    <Route path="/inventory/oil/disbursement" element={<DisbursementListPage />} />
+    <Route path="/inventory/oil/orders" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/components" element={<NotFound />} />
     
     {/* User Management Routes */}
