@@ -28,7 +28,7 @@ const ComponentsInventoryPage = () => {
   const filteredComponents = mockComponents.filter(component => {
     const matchesSearch = component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          component.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || component.category === selectedCategory;
+    const matchesCategory = !selectedCategory || selectedCategory === "all" || component.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -73,7 +73,7 @@ const ComponentsInventoryPage = () => {
                     <SelectValue placeholder="เลือกประเภท" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">ทั้งหมด</SelectItem>
+                    <SelectItem value="all">ทั้งหมด</SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category} value={category}>
                         {category}
