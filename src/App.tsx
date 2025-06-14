@@ -89,6 +89,7 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/stock" element={<OilInventoryPage />} />
     <Route path="/inventory/oil/disbursement" element={<DisbursementListPage />} />
     <Route path="/inventory/oil/disbursement-list" element={<DisbursementListPage />} />
+    <Route path="/inventory/oil/withdrawal" element={<DisbursementListPage />} />
     <Route path="/inventory/oil/orders" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/oil/order-receive" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/oil/expense" element={<ExpenseListPage />} />
@@ -97,6 +98,7 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/calculation-result" element={<CalculationResultPage />} />
     <Route path="/inventory/oil/duration" element={<OilReceiptDurationPage />} />
     <Route path="/inventory/oil/receipt-duration" element={<OilReceiptDurationPage />} />
+    <Route path="/inventory/oil/receipt-time" element={<OilReceiptDurationPage />} />
     <Route path="/inventory/oil/weibull" element={<WeibullCalculationPage />} />
     <Route path="/inventory/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
     <Route path="/inventory/components" element={<NotFound />} />
