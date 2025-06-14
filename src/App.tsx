@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,6 +31,14 @@ import ChangePassword from "./pages/ChangePassword";
 import UserManagement from "./pages/UserManagement";
 import TransformerOilInventory from "./pages/TransformerOilInventory";
 import TransformerConditionCheck from "./pages/TransformerConditionCheck";
+import OilInventoryMain from "./pages/OilInventoryMain";
+import OilWarehouse from "./pages/OilWarehouse";
+import OilDistribution from "./pages/OilDistribution";
+import OilOrders from "./pages/OilOrders";
+import CostAnalysis from "./pages/CostAnalysis";
+import CalculationResults from "./pages/CalculationResults";
+import DeliveryTime from "./pages/DeliveryTime";
+import WeibullCalculation from "./pages/WeibullCalculation";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +99,16 @@ const AppRoutes = () => (
     <Route path="/manual" element={<NotFound />} />
     <Route path="/test-history" element={<NotFound />} />
     <Route path="/logout" element={<NotFound />} />
+    
+    {/* Oil Inventory Routes */}
+    <Route path="/inventory/oil/main" element={<OilInventoryMain />} />
+    <Route path="/inventory/oil/warehouse" element={<OilWarehouse />} />
+    <Route path="/inventory/oil/distribution" element={<OilDistribution />} />
+    <Route path="/inventory/oil/orders" element={<OilOrders />} />
+    <Route path="/inventory/oil/cost-analysis" element={<CostAnalysis />} />
+    <Route path="/inventory/oil/calculation-results" element={<CalculationResults />} />
+    <Route path="/inventory/oil/delivery-time" element={<DeliveryTime />} />
+    <Route path="/inventory/oil/weibull-calculation" element={<WeibullCalculation />} />
     
     {/* Catch-all route */}
     <Route path="*" element={<NotFound />} />
