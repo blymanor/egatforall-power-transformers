@@ -24,12 +24,34 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
     transformer: mode === 'create' ? '' : (data?.transformer || ''),
     testType: mode === 'create' ? '' : (data?.testType || ''),
     testDate: mode === 'create' ? undefined : (data?.testDate || undefined),
+    workOrderNo: mode === 'create' ? '' : (data?.workOrderNo || ''),
     inspector: mode === 'create' ? '' : (data?.inspector || ''),
-    oilCondition: mode === 'create' ? '' : (data?.oilCondition || '')
+    testKv: mode === 'create' ? '' : (data?.testKv || ''),
+    // Watt Loss Measurement
+    wattLossData: [
+      { phase: 'H1', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'H2', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'H3', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'X1', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'X2', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'X3', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'Y1', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'Y2', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' },
+      { phase: 'Y3', current: '0.0', watt: '0.0', commissioning: '0.0', percentFromFirst: '0.0', insulationResistance: '0.0', commissioningIns: '0.0', percentFromFirstIns: '0.0', leakageCurrent: '0.0', commissioningLeakage: '0.0', percentFromFirstLeakage: '0.0' }
+    ]
   });
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleWattLossDataChange = (index: number, field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      wattLossData: prev.wattLossData.map((item, i) => 
+        i === index ? { ...item, [field]: value } : item
+      )
+    }));
   };
 
   const handleSave = () => {
@@ -43,7 +65,7 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-center">
             {mode === 'create' ? 'เพิ่มข้อมูล' : mode === 'edit' ? 'แก้ไขข้อมูล' : 'แสดงข้อมูล'} Insulating Oil
@@ -51,6 +73,7 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
         </DialogHeader>
 
         <div className="space-y-6 p-4">
+          {/* Basic Information */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>หม้อแปลงไฟฟ้า :</Label>
@@ -65,24 +88,6 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
                 <SelectContent>
                   <SelectItem value="AN-KT1A">AN-KT1A</SelectItem>
                   <SelectItem value="AN-KT2A">AN-KT2A</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>รูปแบบการทดสอบ :</Label>
-              <Select 
-                value={formData.testType} 
-                onValueChange={(value) => handleInputChange('testType', value)}
-                disabled={isReadOnly}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Commissioning">Commissioning</SelectItem>
-                  <SelectItem value="Special test">Special test</SelectItem>
-                  <SelectItem value="6 year test">6 year test</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -116,6 +121,24 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
             </div>
 
             <div className="space-y-2">
+              <Label>รูปแบบการทดสอบ :</Label>
+              <Select 
+                value={formData.testType} 
+                onValueChange={(value) => handleInputChange('testType', value)}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="เลือกรูปแบบการทดสอบ" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Commissioning">Commissioning</SelectItem>
+                  <SelectItem value="Special test">Special test</SelectItem>
+                  <SelectItem value="6 year test">6 year test</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
               <Label>ผู้ตรวจสอบ :</Label>
               <Input
                 value={formData.inspector}
@@ -126,24 +149,126 @@ const InsulatingOilModal = ({ isOpen, onClose, mode, data }: InsulatingOilModalP
             </div>
 
             <div className="space-y-2">
-              <Label>สภาพน้ำมันฉนวน :</Label>
-              <Select 
-                value={formData.oilCondition} 
-                onValueChange={(value) => handleInputChange('oilCondition', value)}
-                disabled={isReadOnly}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="เลือกสภาพน้ำมันฉนวน" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ดี">ดี</SelectItem>
-                  <SelectItem value="ปานกลาง">ปานกลาง</SelectItem>
-                  <SelectItem value="ต้องเปลี่ยน">ต้องเปลี่ยน</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label>เลขที่คำสั่งปฏิบัติงาน :</Label>
+              <Input
+                value={formData.workOrderNo}
+                onChange={(e) => handleInputChange('workOrderNo', e.target.value)}
+                placeholder="เลขที่คำสั่งปฏิบัติงาน"
+                readOnly={isReadOnly}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Test (kV) :</Label>
+              <Input
+                value={formData.testKv}
+                onChange={(e) => handleInputChange('testKv', e.target.value)}
+                readOnly={isReadOnly}
+              />
             </div>
           </div>
 
+          {/* Measurement Table */}
+          <div className="border rounded-lg p-4">
+            <div className="grid grid-cols-12 gap-2 mb-4">
+              <div className="text-blue-600 font-semibold">ARESSTER S/N</div>
+              <div className="text-blue-600 font-semibold text-center">PHASE</div>
+              <div className="text-blue-600 font-semibold text-center">CURRENT (mA)</div>
+              <div className="text-blue-600 font-semibold text-center">WATT</div>
+              <div className="text-blue-600 font-semibold text-center">WATT LOSS MEASUREMENT</div>
+              <div className="text-blue-600 font-semibold text-center">INSULATION RESISTANCE MEASUREMENT</div>
+              <div className="text-blue-600 font-semibold text-center">I-Leakage (mA)</div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <div className="grid grid-cols-12 gap-2 mb-2 text-sm">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div className="text-blue-600 font-semibold text-center">COMMISSIONING (OR FIRST TEST)</div>
+              <div className="text-blue-600 font-semibold text-center">%FROM FIRST TEST</div>
+              <div className="text-blue-600 font-semibold text-center">INSULATION RESISTANCE 2500 Vdc 1 Min.</div>
+              <div className="text-blue-600 font-semibold text-center">COMMISSIONING (OR FIRST TEST)</div>
+              <div className="text-blue-600 font-semibold text-center">%FROM FIRST TEST</div>
+              <div className="text-blue-600 font-semibold text-center">LEAKAGE CURRENT (mA)</div>
+              <div className="text-blue-600 font-semibold text-center">COMMISSIONING (OR FIRST TEST)</div>
+              <div className="text-blue-600 font-semibold text-center">%FROM FIRST TEST</div>
+            </div>
+
+            {formData.wattLossData.map((data, index) => (
+              <div key={index} className="grid grid-cols-12 gap-2 mb-2 items-center">
+                <div></div>
+                <div className="text-blue-600 font-semibold">{data.phase}</div>
+                <Input
+                  value={data.current}
+                  onChange={(e) => handleWattLossDataChange(index, 'current', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.watt}
+                  onChange={(e) => handleWattLossDataChange(index, 'watt', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.commissioning}
+                  onChange={(e) => handleWattLossDataChange(index, 'commissioning', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.percentFromFirst}
+                  onChange={(e) => handleWattLossDataChange(index, 'percentFromFirst', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.insulationResistance}
+                  onChange={(e) => handleWattLossDataChange(index, 'insulationResistance', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.commissioningIns}
+                  onChange={(e) => handleWattLossDataChange(index, 'commissioningIns', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.percentFromFirstIns}
+                  onChange={(e) => handleWattLossDataChange(index, 'percentFromFirstIns', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.leakageCurrent}
+                  onChange={(e) => handleWattLossDataChange(index, 'leakageCurrent', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.commissioningLeakage}
+                  onChange={(e) => handleWattLossDataChange(index, 'commissioningLeakage', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+                <Input
+                  value={data.percentFromFirstLeakage}
+                  onChange={(e) => handleWattLossDataChange(index, 'percentFromFirstLeakage', e.target.value)}
+                  readOnly={isReadOnly}
+                  className="text-center h-8"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Action Buttons */}
           {!isReadOnly && (
             <div className="flex justify-center space-x-4 pt-4">
               <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
