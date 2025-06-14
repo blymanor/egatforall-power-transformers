@@ -20,11 +20,20 @@ const OilInventoryMain = () => {
   };
 
   const handleSave = () => {
+    if (!formData.year || !formData.amount || !formData.price) {
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+    
     toast.success("บันทึกข้อมูลสำเร็จ", {
       description: "ข้อมูลน้ำมันหม้อแปลงถูกบันทึกแล้ว",
     });
     setIsModalOpen(false);
     setFormData({ year: '', amount: '', price: '' });
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -39,6 +48,7 @@ const OilInventoryMain = () => {
                 <DialogTrigger asChild>
                   <Button 
                     className="px-12 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md"
+                    onClick={() => setIsModalOpen(true)}
                   >
                     คลิกเพื่อกรอกข้อมูล
                   </Button>
@@ -68,6 +78,7 @@ const OilInventoryMain = () => {
                         onChange={(e) => handleInputChange('amount', e.target.value)}
                         placeholder="กรอกปริมาณ"
                         className="border-gray-300"
+                        type="number"
                       />
                     </div>
 
@@ -78,15 +89,23 @@ const OilInventoryMain = () => {
                         onChange={(e) => handleInputChange('price', e.target.value)}
                         placeholder="กรอกราคา"
                         className="border-gray-300"
+                        type="number"
                       />
                     </div>
 
-                    <div className="flex justify-center pt-4">
+                    <div className="flex justify-center space-x-4 pt-4">
                       <Button 
                         onClick={handleSave} 
                         className="px-10 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                       >
                         บันทึก
+                      </Button>
+                      <Button 
+                        onClick={handleModalClose} 
+                        variant="outline"
+                        className="px-10 py-2 border-gray-300 text-gray-700 rounded-lg"
+                      >
+                        ยกเลิก
                       </Button>
                     </div>
                   </div>
