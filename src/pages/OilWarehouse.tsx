@@ -88,139 +88,156 @@ const OilWarehouse = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 bg-white">
+      <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold text-[#0442AF] mb-6">คลังรายการน้ำมัน</h1>
+          <h1 className="text-3xl font-bold text-[#0442AF] mb-8">คลังรายการน้ำมัน</h1>
           
-          <Tabs defaultValue="warehouse" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="warehouse">คลังน้ำมัน</TabsTrigger>
-              <TabsTrigger value="initial">ปริมาณน้ำมันเริ่มต้น</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="warehouse" className="p-4 border rounded-md mt-4">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-blue-600">คลังน้ำมัน</h2>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {searchDate ? format(searchDate, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={searchDate}
-                        onSelect={setSearchDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-center bg-gray-600 text-white">วันที่</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">เบิกจ่าย [ถัง]</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ซื้อเพิ่ม [ถัง]</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {warehouseData.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="text-center">{item.date}</TableCell>
-                        <TableCell className="text-center">{item.withdraw}</TableCell>
-                        <TableCell className="text-center">{item.purchase}</TableCell>
-                        <TableCell className="text-center">{item.total}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="initial" className="p-4 border rounded-md mt-4">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-blue-600">ปริมาณน้ำมันเริ่มต้น</h2>
-                  <div className="flex space-x-2">
-                    <Button 
-                      onClick={handleAdd}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      เพิ่มรายการใหม่
-                    </Button>
+          <div className="bg-white rounded-lg shadow-md">
+            <Tabs defaultValue="warehouse" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 rounded-t-lg bg-gray-100">
+                <TabsTrigger 
+                  value="warehouse" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg m-1"
+                >
+                  คลังน้ำมัน
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="initial"
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg m-1"
+                >
+                  ปริมาณน้ำมันเริ่มต้น
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="warehouse" className="p-6">
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-blue-600">คลังน้ำมัน</h2>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
+                        <Button variant="outline" className="w-[280px] justify-start text-left font-normal border-gray-300">
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {searchDate2 ? format(searchDate2, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
+                          {searchDate ? format(searchDate, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="w-auto p-0 bg-white border shadow-lg" align="start">
                         <Calendar
                           mode="single"
-                          selected={searchDate2}
-                          onSelect={setSearchDate2}
+                          selected={searchDate}
+                          onSelect={setSearchDate}
                           initialFocus
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
-                </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-center bg-gray-600 text-white">วันที่</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">แก้ไข</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {initialAmountData.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="text-center">{item.date}</TableCell>
-                        <TableCell className="text-center">{item.amount}</TableCell>
-                        <TableCell className="text-center">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit(item)}
-                          >
-                            <Edit className="h-4 w-4" />
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-600">
+                          <TableHead className="text-center text-white font-semibold">วันที่</TableHead>
+                          <TableHead className="text-center text-white font-semibold">เบิกจ่าย [ถัง]</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ซื้อเพิ่ม [ถัง]</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {warehouseData.map((item) => (
+                          <TableRow key={item.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center">{item.date}</TableCell>
+                            <TableCell className="text-center">{item.withdraw}</TableCell>
+                            <TableCell className="text-center">{item.purchase}</TableCell>
+                            <TableCell className="text-center font-semibold">{item.total}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="initial" className="p-6">
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-blue-600">ปริมาณน้ำมันเริ่มต้น</h2>
+                    <div className="flex space-x-3">
+                      <Button 
+                        onClick={handleAdd}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+                      >
+                        เพิ่มรายการใหม่
+                      </Button>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className="w-[280px] justify-start text-left font-normal border-gray-300">
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {searchDate2 ? format(searchDate2, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
                           </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-          </Tabs>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0 bg-white border shadow-lg" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={searchDate2}
+                            onSelect={setSearchDate2}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-600">
+                          <TableHead className="text-center text-white font-semibold">วันที่</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
+                          <TableHead className="text-center text-white font-semibold">แก้ไข</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {initialAmountData.map((item) => (
+                          <TableRow key={item.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center">{item.date}</TableCell>
+                            <TableCell className="text-center font-semibold">{item.amount}</TableCell>
+                            <TableCell className="text-center">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEdit(item)}
+                                className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
 
           {/* Modal */}
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md bg-white">
               <DialogHeader>
-                <DialogTitle className="text-lg font-semibold text-center">
+                <DialogTitle className="text-xl font-semibold text-center text-gray-800">
                   {editingItem ? 'แก้ไข' : 'เพิ่ม'}ปริมาณน้ำมันในคลังเริ่มต้น
                 </DialogTitle>
               </DialogHeader>
 
-              <div className="space-y-4 p-4">
+              <div className="space-y-6 p-4">
                 <div className="space-y-2">
-                  <Label>วันที่ :</Label>
+                  <Label className="text-gray-700 font-medium">วันที่ :</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "w-full justify-start text-left font-normal border-gray-300",
                           !formData.date && "text-muted-foreground"
                         )}
                       >
@@ -228,7 +245,7 @@ const OilWarehouse = () => {
                         {formData.date ? format(formData.date, "dd/MM/yyyy") : "เลือกวันที่"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-white border shadow-lg" align="start">
                       <Calendar
                         mode="single"
                         selected={formData.date}
@@ -240,16 +257,20 @@ const OilWarehouse = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>ปริมาณน้ำมันในคลัง [ถัง] :</Label>
+                  <Label className="text-gray-700 font-medium">ปริมาณน้ำมันในคลัง [ถัง] :</Label>
                   <Input
                     value={formData.amount}
                     onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
                     placeholder="กรอกปริมาณ"
+                    className="border-gray-300"
                   />
                 </div>
 
                 <div className="flex justify-center pt-4">
-                  <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
+                  <Button 
+                    onClick={handleSave} 
+                    className="px-10 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+                  >
                     บันทึก
                   </Button>
                 </div>

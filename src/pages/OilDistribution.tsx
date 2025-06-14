@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
@@ -145,167 +144,186 @@ const OilDistribution = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 bg-white">
+      <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold text-[#0442AF] mb-6">รายการการเบิกจ่าย</h1>
+          <h1 className="text-3xl font-bold text-[#0442AF] mb-8">รายการการเบิกจ่าย</h1>
           
-          <Tabs defaultValue="details" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="details">รายละเอียดแต่ละครั้ง</TabsTrigger>
-              <TabsTrigger value="yearly">สรุปรายปี</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="details" className="p-4 border rounded-md mt-4">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-blue-600">รายละเอียดแต่ละครั้ง</h2>
-                  <div className="flex space-x-2">
-                    <Button 
-                      onClick={handleAdd1}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      เพิ่มรายการใหม่
-                    </Button>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-[200px] justify-start text-left font-normal">
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {searchDate1 ? format(searchDate1, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={searchDate1}
-                          onSelect={setSearchDate1}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+          <div className="bg-white rounded-lg shadow-md">
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 rounded-t-lg bg-gray-100">
+                <TabsTrigger 
+                  value="details" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg m-1"
+                >
+                  รายละเอียดแต่ละครั้ง
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="yearly"
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg m-1"
+                >
+                  สรุปรายปี
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="details" className="p-6">
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-blue-600">รายละเอียดแต่ละครั้ง</h2>
+                    <div className="flex space-x-3">
+                      <Button 
+                        onClick={handleAdd1}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+                      >
+                        เพิ่มรายการใหม่
+                      </Button>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className="w-[240px] justify-start text-left font-normal border-gray-300">
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {searchDate1 ? format(searchDate1, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0 bg-white border shadow-lg" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={searchDate1}
+                            onSelect={setSearchDate1}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-600">
+                          <TableHead className="text-center text-white font-semibold">วันที่เบิกน้ำมันไปใช้งาน</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ปริมาณการเบิก [ถัง]</TableHead>
+                          <TableHead className="text-center text-white font-semibold">แก้ไข</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ลบ</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {distributionData.map((item) => (
+                          <TableRow key={item.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center">{item.date}</TableCell>
+                            <TableCell className="text-center font-semibold">{item.amount}</TableCell>
+                            <TableCell className="text-center">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEdit1(item)}
+                                className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDelete1(item.id)}
+                                className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
+              </TabsContent>
+              
+              <TabsContent value="yearly" className="p-6">
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-blue-600">สรุปรายปี [ถัง]</h2>
+                    <div className="flex space-x-3">
+                      <Button 
+                        onClick={handleAdd2}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+                      >
+                        เพิ่มรายการใหม่
+                      </Button>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className="w-[240px] justify-start text-left font-normal border-gray-300">
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {searchDate2 ? format(searchDate2, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0 bg-white border shadow-lg" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={searchDate2}
+                            onSelect={setSearchDate2}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-center bg-gray-600 text-white">วันที่เบิกน้ำมันไปใช้งาน</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ปริมาณการเบิก [ถัง]</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">แก้ไข</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ลบ</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {distributionData.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="text-center">{item.date}</TableCell>
-                        <TableCell className="text-center">{item.amount}</TableCell>
-                        <TableCell className="text-center">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit1(item)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete1(item.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="yearly" className="p-4 border rounded-md mt-4">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-blue-600">สรุปรายปี [ถัง]</h2>
-                  <div className="flex space-x-2">
-                    <Button 
-                      onClick={handleAdd2}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      เพิ่มรายการใหม่
-                    </Button>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-[200px] justify-start text-left font-normal">
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {searchDate2 ? format(searchDate2, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={searchDate2}
-                          onSelect={setSearchDate2}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-600">
+                          <TableHead className="text-center text-white font-semibold">รายการที่</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ปีที่เบิกจ่ายน้ำมัน</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ปริมาณการเบิก [ถัง/ปี]</TableHead>
+                          <TableHead className="text-center text-white font-semibold">ราคา [บาท/ลิตร]</TableHead>
+                          <TableHead className="text-center text-white font-semibold">แก้ไข</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {yearlyData.map((item, index) => (
+                          <TableRow key={item.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center">{index + 1}</TableCell>
+                            <TableCell className="text-center">{item.year}</TableCell>
+                            <TableCell className="text-center font-semibold">{item.amount}</TableCell>
+                            <TableCell className="text-center">{item.price}</TableCell>
+                            <TableCell className="text-center">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEdit2(item)}
+                                className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
-
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-center bg-gray-600 text-white">รายการที่</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ปีที่เบิกจ่ายน้ำมัน</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ปริมาณการเบิก [ถัง/ปี]</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">ราคา [บาท/ลิตร]</TableHead>
-                      <TableHead className="text-center bg-gray-600 text-white">แก้ไข</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {yearlyData.map((item, index) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="text-center">{index + 1}</TableCell>
-                        <TableCell className="text-center">{item.year}</TableCell>
-                        <TableCell className="text-center">{item.amount}</TableCell>
-                        <TableCell className="text-center">{item.price}</TableCell>
-                        <TableCell className="text-center">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit2(item)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-          </Tabs>
+              </TabsContent>
+            </Tabs>
+          </div>
 
           {/* Modal 1 - Distribution Details */}
           <Dialog open={isModal1Open} onOpenChange={setIsModal1Open}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md bg-white">
               <DialogHeader>
-                <DialogTitle className="text-lg font-semibold text-center">
+                <DialogTitle className="text-xl font-semibold text-center text-gray-800">
                   {editingItem1 ? 'แก้ไข' : 'เพิ่ม'}ปริมาณน้ำมันในคลังเริ่มต้น
                 </DialogTitle>
               </DialogHeader>
 
-              <div className="space-y-4 p-4">
+              <div className="space-y-6 p-4">
                 <div className="space-y-2">
-                  <Label>วันที่เบิกน้ำมันไปใช้งาน :</Label>
+                  <Label className="text-gray-700 font-medium">วันที่เบิกน้ำมันไปใช้งาน :</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "w-full justify-start text-left font-normal border-gray-300",
                           !formData1.date && "text-muted-foreground"
                         )}
                       >
@@ -313,7 +331,7 @@ const OilDistribution = () => {
                         {formData1.date ? format(formData1.date, "dd/MM/yyyy") : "เลือกวันที่"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-white border shadow-lg" align="start">
                       <Calendar
                         mode="single"
                         selected={formData1.date}
@@ -325,16 +343,20 @@ const OilDistribution = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>ปริมาณการเบิกต่อครั้ง [ถัง] :</Label>
+                  <Label className="text-gray-700 font-medium">ปริมาณการเบิกต่อครั้ง [ถัง] :</Label>
                   <Input
                     value={formData1.amount}
                     onChange={(e) => setFormData1(prev => ({ ...prev, amount: e.target.value }))}
                     placeholder="กรอกปริมาณ"
+                    className="border-gray-300"
                   />
                 </div>
 
                 <div className="flex justify-center pt-4">
-                  <Button onClick={handleSave1} className="px-8 bg-blue-600 hover:bg-blue-700">
+                  <Button 
+                    onClick={handleSave1} 
+                    className="px-10 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+                  >
                     บันทึก
                   </Button>
                 </div>
@@ -344,43 +366,49 @@ const OilDistribution = () => {
 
           {/* Modal 2 - Yearly Summary */}
           <Dialog open={isModal2Open} onOpenChange={setIsModal2Open}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md bg-white">
               <DialogHeader>
-                <DialogTitle className="text-lg font-semibold text-center">
+                <DialogTitle className="text-xl font-semibold text-center text-gray-800">
                   {editingItem2 ? 'แก้ไข' : 'เพิ่ม'}ปริมาณน้ำมันในคลังเริ่มต้น
                 </DialogTitle>
               </DialogHeader>
 
-              <div className="space-y-4 p-4">
+              <div className="space-y-6 p-4">
                 <div className="space-y-2">
-                  <Label>ปีที่เบิกจ่ายน้ำมัน :</Label>
+                  <Label className="text-gray-700 font-medium">ปีที่เบิกจ่ายน้ำมัน :</Label>
                   <Input
                     value={formData2.year}
                     onChange={(e) => setFormData2(prev => ({ ...prev, year: e.target.value }))}
                     placeholder="กรอกปี"
+                    className="border-gray-300"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>ปริมาณการเบิก [ถัง/ปี] :</Label>
+                  <Label className="text-gray-700 font-medium">ปริมาณการเบิก [ถัง/ปี] :</Label>
                   <Input
                     value={formData2.amount}
                     onChange={(e) => setFormData2(prev => ({ ...prev, amount: e.target.value }))}
                     placeholder="กรอกปริมาณ"
+                    className="border-gray-300"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>ราคา [บาท/ลิตร] :</Label>
+                  <Label className="text-gray-700 font-medium">ราคา [บาท/ลิตร] :</Label>
                   <Input
                     value={formData2.price}
                     onChange={(e) => setFormData2(prev => ({ ...prev, price: e.target.value }))}
                     placeholder="กรอกราคา"
+                    className="border-gray-300"
                   />
                 </div>
 
                 <div className="flex justify-center pt-4">
-                  <Button onClick={handleSave2} className="px-8 bg-blue-600 hover:bg-blue-700">
+                  <Button 
+                    onClick={handleSave2} 
+                    className="px-10 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+                  >
                     บันทึก
                   </Button>
                 </div>
