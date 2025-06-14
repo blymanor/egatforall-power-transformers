@@ -88,12 +88,26 @@ const AppRoutes = () => (
     <Route path="/inventory/oil" element={<TransformerOilInventory />} />
     <Route path="/inventory/oil/stock" element={<OilInventoryPage />} />
     <Route path="/inventory/oil/disbursement" element={<DisbursementListPage />} />
+    <Route path="/inventory/oil/disbursement-list" element={<DisbursementListPage />} />
     <Route path="/inventory/oil/orders" element={<OilOrderReceiveListPage />} />
+    <Route path="/inventory/oil/order-receive" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/oil/expense" element={<ExpenseListPage />} />
+    <Route path="/inventory/oil/expense-list" element={<ExpenseListPage />} />
     <Route path="/inventory/oil/calculation" element={<CalculationResultPage />} />
+    <Route path="/inventory/oil/calculation-result" element={<CalculationResultPage />} />
     <Route path="/inventory/oil/duration" element={<OilReceiptDurationPage />} />
+    <Route path="/inventory/oil/receipt-duration" element={<OilReceiptDurationPage />} />
     <Route path="/inventory/oil/weibull" element={<WeibullCalculationPage />} />
+    <Route path="/inventory/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
     <Route path="/inventory/components" element={<NotFound />} />
+    
+    {/* Additional Routes for Disbursement, Duration, and Weibull pages */}
+    <Route path="/disbursement" element={<DisbursementListPage />} />
+    <Route path="/disbursement-list" element={<DisbursementListPage />} />
+    <Route path="/oil-receipt-duration" element={<OilReceiptDurationPage />} />
+    <Route path="/receipt-duration" element={<OilReceiptDurationPage />} />
+    <Route path="/weibull" element={<WeibullCalculationPage />} />
+    <Route path="/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
     
     {/* User Management Routes */}
     <Route path="/management" element={<UserManagement />} />
