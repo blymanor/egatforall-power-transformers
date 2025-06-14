@@ -32,14 +32,6 @@ import ChangePassword from "./pages/ChangePassword";
 import UserManagement from "./pages/UserManagement";
 import TransformerOilInventory from "./pages/TransformerOilInventory";
 import TransformerConditionCheck from "./pages/TransformerConditionCheck";
-import TransformerOilPage from "./pages/TransformerOilPage";
-import OilInventoryPage from "./pages/OilInventoryPage";
-import DisbursementListPage from "./pages/DisbursementListPage";
-import OilOrderReceiveListPage from "./pages/OilOrderReceiveListPage";
-import ExpenseListPage from "./pages/ExpenseListPage";
-import CalculationResultPage from "./pages/CalculationResultPage";
-import OilReceiptDurationPage from "./pages/OilReceiptDurationPage";
-import WeibullCalculationPage from "./pages/WeibullCalculationPage";
 
 const queryClient = new QueryClient();
 
@@ -101,16 +93,6 @@ const AppRoutes = () => (
     <Route path="/test-history" element={<NotFound />} />
     <Route path="/logout" element={<NotFound />} />
     
-    <Route path="/transformer-oil" element={<TransformerOilPage />} />
-    <Route path="/oil-inventory" element={<OilInventoryPage />} />
-    <Route path="/disbursement-list" element={<DisbursementListPage />} />
-    <Route path="/oil-order-receive" element={<OilOrderReceiveListPage />} />
-    <Route path="/expense-list" element={<ExpenseListPage />} />
-    <Route path="/calculation-result" element={<CalculationResultPage />} />
-    <Route path="/oil-receipt-duration" element={<OilReceiptDurationPage />} />
-    <Route path="/weibull-calculation" element={<WeibullCalculationPage />} />
-    
-    <Route path="/inventory/oil/withdrawal" element={<DisbursementListPage />} />
     {/* Catch-all route */}
     <Route path="*" element={<NotFound />} />
   </Routes>
