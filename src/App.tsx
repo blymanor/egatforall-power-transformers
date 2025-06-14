@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -89,6 +90,16 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/stock" element={<TransformerOilInventory />} />
     <Route path="/inventory/components" element={<NotFound />} />
     
+    {/* Oil Inventory Management Routes */}
+    <Route path="/inventory/oil/main" element={<OilInventoryMain />} />
+    <Route path="/inventory/oil/warehouse" element={<OilWarehouse />} />
+    <Route path="/inventory/oil/distribution" element={<OilDistribution />} />
+    <Route path="/inventory/oil/orders" element={<OilOrders />} />
+    <Route path="/inventory/oil/cost-analysis" element={<CostAnalysis />} />
+    <Route path="/inventory/oil/calculation-results" element={<CalculationResults />} />
+    <Route path="/inventory/oil/delivery-time" element={<DeliveryTime />} />
+    <Route path="/inventory/oil/weibull-calculation" element={<WeibullCalculation />} />
+    
     {/* User Management Routes */}
     <Route path="/management" element={<UserManagement />} />
     <Route path="/management/user" element={<UserManagement />} />
@@ -99,16 +110,6 @@ const AppRoutes = () => (
     <Route path="/manual" element={<NotFound />} />
     <Route path="/test-history" element={<NotFound />} />
     <Route path="/logout" element={<NotFound />} />
-    
-    {/* Oil Inventory Routes */}
-    <Route path="/inventory/oil/main" element={<OilInventoryMain />} />
-    <Route path="/inventory/oil/warehouse" element={<OilWarehouse />} />
-    <Route path="/inventory/oil/distribution" element={<OilDistribution />} />
-    <Route path="/inventory/oil/orders" element={<OilOrders />} />
-    <Route path="/inventory/oil/cost-analysis" element={<CostAnalysis />} />
-    <Route path="/inventory/oil/calculation-results" element={<CalculationResults />} />
-    <Route path="/inventory/oil/delivery-time" element={<DeliveryTime />} />
-    <Route path="/inventory/oil/weibull-calculation" element={<WeibullCalculation />} />
     
     {/* Catch-all route */}
     <Route path="*" element={<NotFound />} />
