@@ -101,6 +101,14 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
     <Route path="/inventory/components" element={<NotFound />} />
     
+    {/* Oil-related Routes with different path patterns */}
+    <Route path="/oil/disbursement" element={<DisbursementListPage />} />
+    <Route path="/oil/disbursement-list" element={<DisbursementListPage />} />
+    <Route path="/oil/receipt-duration" element={<OilReceiptDurationPage />} />
+    <Route path="/oil/duration" element={<OilReceiptDurationPage />} />
+    <Route path="/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
+    <Route path="/oil/weibull" element={<WeibullCalculationPage />} />
+    
     {/* Additional Routes for Disbursement, Duration, and Weibull pages */}
     <Route path="/disbursement" element={<DisbursementListPage />} />
     <Route path="/disbursement-list" element={<DisbursementListPage />} />
