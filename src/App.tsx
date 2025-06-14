@@ -39,6 +39,7 @@ import ExpenseListPage from "./pages/ExpenseListPage";
 import CalculationResultPage from "./pages/CalculationResultPage";
 import OilReceiptDurationPage from "./pages/OilReceiptDurationPage";
 import WeibullCalculationPage from "./pages/WeibullCalculationPage";
+import ComponentsInventoryPage from "./pages/ComponentsInventoryPage";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +93,7 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/withdrawal" element={<DisbursementListPage />} />
     <Route path="/inventory/oil/orders" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/oil/order-receive" element={<OilOrderReceiveListPage />} />
+    <Route path="/inventory/oil/purchase" element={<OilOrderReceiveListPage />} />
     <Route path="/inventory/oil/expense" element={<ExpenseListPage />} />
     <Route path="/inventory/oil/expense-list" element={<ExpenseListPage />} />
     <Route path="/inventory/oil/calculation" element={<CalculationResultPage />} />
@@ -101,7 +103,7 @@ const AppRoutes = () => (
     <Route path="/inventory/oil/receipt-time" element={<OilReceiptDurationPage />} />
     <Route path="/inventory/oil/weibull" element={<WeibullCalculationPage />} />
     <Route path="/inventory/oil/bushing-arrester-oltc" element={<WeibullCalculationPage />} />
-    <Route path="/inventory/components" element={<NotFound />} />
+    <Route path="/inventory/components" element={<ComponentsInventoryPage />} />
     
     {/* Oil-related Routes with different path patterns */}
     <Route path="/oil/disbursement" element={<DisbursementListPage />} />
