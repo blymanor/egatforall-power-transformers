@@ -12,6 +12,7 @@ import { CalendarIcon, Edit } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface OilRecord {
   id: number;
@@ -91,109 +92,116 @@ const OilWarehouse = () => {
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-bold text-[#0442AF] mb-6">คลังรายการน้ำมัน</h1>
           
-          <div className="grid grid-cols-2 gap-6">
-            {/* First Column - Warehouse */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-blue-600">คลังน้ำมัน</h2>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {searchDate ? format(searchDate, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={searchDate}
-                      onSelect={setSearchDate}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="text-center bg-gray-600 text-white">วันที่</TableHead>
-                    <TableHead className="text-center bg-gray-600 text-white">เบิกจ่าย [ถัง]</TableHead>
-                    <TableHead className="text-center bg-gray-600 text-white">ซื้อเพิ่ม [ถัง]</TableHead>
-                    <TableHead className="text-center bg-gray-600 text-white">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {warehouseData.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="text-center">{item.date}</TableCell>
-                      <TableCell className="text-center">{item.withdraw}</TableCell>
-                      <TableCell className="text-center">{item.purchase}</TableCell>
-                      <TableCell className="text-center">{item.total}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-
-            {/* Second Column - Initial Amount */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-blue-600">ปริมาณน้ำมันเริ่มต้น</h2>
-                <div className="flex space-x-2">
-                  <Button 
-                    onClick={handleAdd}
-                    className="bg-blue-600 hover:bg-blue-700"
-                  >
-                    เพิ่มรายการใหม่
-                  </Button>
+          <Tabs defaultValue="warehouse" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="warehouse">คลังน้ำมัน</TabsTrigger>
+              <TabsTrigger value="initial">ปริมาณน้ำมันเริ่มต้น</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="warehouse" className="p-4 border rounded-md mt-4">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold text-blue-600">คลังน้ำมัน</h2>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {searchDate2 ? format(searchDate2, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
+                        {searchDate ? format(searchDate, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={searchDate2}
-                        onSelect={setSearchDate2}
+                        selected={searchDate}
+                        onSelect={setSearchDate}
                         initialFocus
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
-              </div>
 
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="text-center bg-gray-600 text-white">วันที่</TableHead>
-                    <TableHead className="text-center bg-gray-600 text-white">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
-                    <TableHead className="text-center bg-gray-600 text-white">แก้ไข</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {initialAmountData.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="text-center">{item.date}</TableCell>
-                      <TableCell className="text-center">{item.amount}</TableCell>
-                      <TableCell className="text-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEdit(item)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-center bg-gray-600 text-white">วันที่</TableHead>
+                      <TableHead className="text-center bg-gray-600 text-white">เบิกจ่าย [ถัง]</TableHead>
+                      <TableHead className="text-center bg-gray-600 text-white">ซื้อเพิ่ม [ถัง]</TableHead>
+                      <TableHead className="text-center bg-gray-600 text-white">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </div>
+                  </TableHeader>
+                  <TableBody>
+                    {warehouseData.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="text-center">{item.date}</TableCell>
+                        <TableCell className="text-center">{item.withdraw}</TableCell>
+                        <TableCell className="text-center">{item.purchase}</TableCell>
+                        <TableCell className="text-center">{item.total}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="initial" className="p-4 border rounded-md mt-4">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold text-blue-600">ปริมาณน้ำมันเริ่มต้น</h2>
+                  <div className="flex space-x-2">
+                    <Button 
+                      onClick={handleAdd}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      เพิ่มรายการใหม่
+                    </Button>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {searchDate2 ? format(searchDate2, "dd/MM/yyyy") : "ค้นหาตามวันที่"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={searchDate2}
+                          onSelect={setSearchDate2}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-center bg-gray-600 text-white">วันที่</TableHead>
+                      <TableHead className="text-center bg-gray-600 text-white">ปริมาณน้ำมันในคลัง [ถัง]</TableHead>
+                      <TableHead className="text-center bg-gray-600 text-white">แก้ไข</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {initialAmountData.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="text-center">{item.date}</TableCell>
+                        <TableCell className="text-center">{item.amount}</TableCell>
+                        <TableCell className="text-center">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEdit(item)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </TabsContent>
+          </Tabs>
 
           {/* Modal */}
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

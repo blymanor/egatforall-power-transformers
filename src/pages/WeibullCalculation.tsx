@@ -44,7 +44,7 @@ const WeibullCalculation = () => {
                   <SelectTrigger>
                     <SelectValue placeholder="Bushing" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="bushing">Bushing</SelectItem>
                     <SelectItem value="arrester">Arrester</SelectItem>
                     <SelectItem value="oltc">OLTC</SelectItem>
@@ -58,7 +58,7 @@ const WeibullCalculation = () => {
                   <SelectTrigger>
                     <SelectValue placeholder="11" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="11">11</SelectItem>
                     <SelectItem value="22">22</SelectItem>
                     <SelectItem value="33">33</SelectItem>
@@ -75,7 +75,7 @@ const WeibullCalculation = () => {
                   <SelectTrigger>
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">All</SelectItem>
                     <SelectItem value="abb">ABB</SelectItem>
                     <SelectItem value="siemens">Siemens</SelectItem>
@@ -90,7 +90,7 @@ const WeibullCalculation = () => {
                   <SelectTrigger>
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">All</SelectItem>
                     <SelectItem value="oil-filled">Oil Filled</SelectItem>
                     <SelectItem value="resin-impregnated">Resin Impregnated</SelectItem>
@@ -104,7 +104,7 @@ const WeibullCalculation = () => {
                   <SelectTrigger>
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">All</SelectItem>
                     <SelectItem value="insulation-failure">Insulation Failure</SelectItem>
                     <SelectItem value="oil-leak">Oil Leak</SelectItem>

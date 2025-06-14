@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const OilInventoryMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,11 +28,6 @@ const OilInventoryMain = () => {
     setFormData({ year: '', amount: '', price: '' });
   };
 
-  const handleOpenModal = () => {
-    console.log("Opening modal...");
-    setIsModalOpen(true);
-  };
-
   return (
     <DashboardLayout>
       <div className="p-6 bg-white">
@@ -40,7 +36,7 @@ const OilInventoryMain = () => {
           
           <div className="flex justify-center">
             <Button 
-              onClick={handleOpenModal}
+              onClick={() => setIsModalOpen(true)}
               className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white"
             >
               คลิกเพื่อกรอกข้อมูล

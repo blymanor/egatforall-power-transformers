@@ -192,7 +192,7 @@ const OilOrders = () => {
             <DialogContent className="max-w-md">
               <DialogHeader>
                 <DialogTitle className="text-lg font-semibold text-center">
-                  {editingItem ? 'แก้ไข' : 'เพิ่ม'}ปริมาณน้ำมันในคลังเริ่มต้น
+                  {editingItem ? 'แก้ไข' : 'เพิ่ม'}รายการสั่งซื้อ/รับน้ำมัน
                 </DialogTitle>
               </DialogHeader>
 
