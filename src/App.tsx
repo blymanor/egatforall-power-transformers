@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -93,6 +92,7 @@ const AppRoutes = () => (
     {/* Oil Inventory Management Routes */}
     <Route path="/inventory/oil/main" element={<OilInventoryMain />} />
     <Route path="/inventory/oil/warehouse" element={<OilWarehouse />} />
+    <Route path="/inventory/oil/withdrawal" element={<OilDistribution />} />
     <Route path="/inventory/oil/distribution" element={<OilDistribution />} />
     <Route path="/inventory/oil/orders" element={<OilOrders />} />
     <Route path="/inventory/oil/cost-analysis" element={<CostAnalysis />} />
