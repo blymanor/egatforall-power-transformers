@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -189,42 +190,72 @@ const criteriaData = [
   }
 ];
 
-// Risk data based on the provided image
+// Risk data based on the provided image - converted to input fields with placeholders
 const riskData = [
   {
     id: 1,
-    dStart: 0,
-    dEnd: 14,
-    risk: "Very Low",
-    action: "Normal maintance"
+    dStart: "",
+    dEnd: "",
+    risk: "",
+    action: "",
+    placeholders: {
+      dStart: "0",
+      dEnd: "14",
+      risk: "Very Low",
+      action: "Normal maintance"
+    }
   },
   {
     id: 2,
-    dStart: 15,
-    dEnd: 28,
-    risk: "Low",
-    action: "Inspection"
+    dStart: "",
+    dEnd: "",
+    risk: "",
+    action: "",
+    placeholders: {
+      dStart: "15",
+      dEnd: "28",
+      risk: "Low",
+      action: "Inspection"
+    }
   },
   {
     id: 3,
-    dStart: 29,
-    dEnd: 56,
-    risk: "Moderate",
-    action: "Investigation"
+    dStart: "",
+    dEnd: "",
+    risk: "",
+    action: "",
+    placeholders: {
+      dStart: "29",
+      dEnd: "56",
+      risk: "Moderate",
+      action: "Investigation"
+    }
   },
   {
     id: 4,
-    dStart: 57,
-    dEnd: 105,
-    risk: "High",
-    action: "Relocate/Repair/Refurbish"
+    dStart: "",
+    dEnd: "",
+    risk: "",
+    action: "",
+    placeholders: {
+      dStart: "57",
+      dEnd: "105",
+      risk: "High",
+      action: "Relocate/Repair/Refurbish"
+    }
   },
   {
     id: 5,
-    dStart: 106,
-    dEnd: 142,
-    risk: "Very High",
-    action: "Replace"
+    dStart: "",
+    dEnd: "",
+    risk: "",
+    action: "",
+    placeholders: {
+      dStart: "106",
+      dEnd: "142",
+      risk: "Very High",
+      action: "Replace"
+    }
   }
 ];
 
@@ -263,6 +294,12 @@ const TransformerImportanceData = () => {
       }
       return item;
     }));
+  };
+
+  const handleRiskDataChange = (id: number, field: string, value: string) => {
+    setRiskTableData(prev => prev.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
   };
 
   const renderCellContent = (item: any, field: string, isSubRow: boolean = false) => {
@@ -336,25 +373,25 @@ const TransformerImportanceData = () => {
               <TabsList className="grid w-full grid-cols-4 mb-6 bg-transparent p-0 gap-0 h-auto">
                 <TabsTrigger 
                   value="criteria" 
-                  className="bg-blue-600 text-white data-[state=active]:bg-blue-700 rounded-t-lg rounded-b-none border-r border-white/20 first:rounded-tl-lg last:rounded-tr-lg"
+                  className="data-[state=active]:bg-blue-700 data-[state=active]:text-white data-[state=inactive]:bg-gray-200 data-[state=inactive]:text-gray-700 bg-gray-200 text-gray-700 rounded-t-lg rounded-b-none border-r border-white/20 first:rounded-tl-lg last:rounded-tr-lg"
                 >
                   Criteria
                 </TabsTrigger>
                 <TabsTrigger 
                   value="risk" 
-                  className="bg-gray-200 text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none border-r border-white/20"
+                  className="data-[state=active]:bg-blue-700 data-[state=active]:text-white data-[state=inactive]:bg-gray-200 data-[state=inactive]:text-gray-700 bg-gray-200 text-gray-700 rounded-t-lg rounded-b-none border-r border-white/20"
                 >
                   Risk
                 </TabsTrigger>
                 <TabsTrigger 
                   value="x-scale" 
-                  className="bg-gray-200 text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none border-r border-white/20"
+                  className="data-[state=active]:bg-blue-700 data-[state=active]:text-white data-[state=inactive]:bg-gray-200 data-[state=inactive]:text-gray-700 bg-gray-200 text-gray-700 rounded-t-lg rounded-b-none border-r border-white/20"
                 >
                   X-Scale
                 </TabsTrigger>
                 <TabsTrigger 
                   value="y-scale" 
-                  className="bg-gray-200 text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none"
+                  className="data-[state=active]:bg-blue-700 data-[state=active]:text-white data-[state=inactive]:bg-gray-200 data-[state=inactive]:text-gray-700 bg-gray-200 text-gray-700 rounded-t-lg rounded-b-none"
                 >
                   Y-Scale
                 </TabsTrigger>
@@ -532,16 +569,40 @@ const TransformerImportanceData = () => {
                           <TableRow key={item.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
                             <TableCell className="text-center border-r border-gray-200 py-4">
                               <div className="flex items-center justify-center gap-2">
-                                <span className="font-medium">{item.dStart}</span>
+                                <Input
+                                  type="text"
+                                  value={item.dStart}
+                                  onChange={(e) => handleRiskDataChange(item.id, 'dStart', e.target.value)}
+                                  className="h-8 w-16 text-center text-sm"
+                                  placeholder={item.placeholders.dStart}
+                                />
                                 <span>-</span>
-                                <span className="font-medium">{item.dEnd}</span>
+                                <Input
+                                  type="text"
+                                  value={item.dEnd}
+                                  onChange={(e) => handleRiskDataChange(item.id, 'dEnd', e.target.value)}
+                                  className="h-8 w-16 text-center text-sm"
+                                  placeholder={item.placeholders.dEnd}
+                                />
                               </div>
                             </TableCell>
                             <TableCell className="text-center border-r border-gray-200 py-4">
-                              <span className="font-medium">{item.risk}</span>
+                              <Input
+                                type="text"
+                                value={item.risk}
+                                onChange={(e) => handleRiskDataChange(item.id, 'risk', e.target.value)}
+                                className="h-8 text-center text-sm"
+                                placeholder={item.placeholders.risk}
+                              />
                             </TableCell>
                             <TableCell className="text-center py-4">
-                              <span>{item.action}</span>
+                              <Input
+                                type="text"
+                                value={item.action}
+                                onChange={(e) => handleRiskDataChange(item.id, 'action', e.target.value)}
+                                className="h-8 text-center text-sm"
+                                placeholder={item.placeholders.action}
+                              />
                             </TableCell>
                           </TableRow>
                         ))}
