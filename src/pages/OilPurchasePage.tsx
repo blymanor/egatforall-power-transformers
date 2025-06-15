@@ -8,7 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Download } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Plus, Search, Download, Edit, Trash2, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const OilPurchasePage = () => {
@@ -16,46 +21,123 @@ const OilPurchasePage = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  
+  // Modal states
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [editingOrder, setEditingOrder] = useState<any | null>(null);
+  const [modalOrderDate, setModalOrderDate] = useState<Date | undefined>(undefined);
+  const [modalOrderAmount, setModalOrderAmount] = useState('');
+  const [modalPricePerLiter, setModalPricePerLiter] = useState('');
+  const [modalReceivedDate, setModalReceivedDate] = useState<Date | undefined>(undefined);
+  const [modalTestedAmount, setModalTestedAmount] = useState('');
 
   // Mock data for oil purchase orders
-  const purchaseOrders = [
+  const [purchaseOrders, setPurchaseOrders] = useState([
     {
       id: "PO-2024-001",
-      date: "2024-01-15",
+      orderDate: "2024-01-15",
       supplier: "Shell Thailand",
       oilType: "Transformer Oil - High Performance",
-      quantity: 5000,
-      unit: "ลิตร",
+      orderAmount: 5,
+      unit: "ถัง",
       unitPrice: 45.50,
       totalAmount: 227500,
       status: "completed",
-      deliveryDate: "2024-01-20"
+      receivedDate: "2024-01-20",
+      testedAmount: 4.8
     },
     {
       id: "PO-2024-002", 
-      date: "2024-02-10",
+      orderDate: "2024-02-10",
       supplier: "PTT Oil and Retail",
       oilType: "Transformer Oil - Standard",
-      quantity: 3000,
-      unit: "ลิตร",
+      orderAmount: 3,
+      unit: "ถัง",
       unitPrice: 42.00,
       totalAmount: 126000,
       status: "pending",
-      deliveryDate: "2024-02-25"
+      receivedDate: "2024-02-25",
+      testedAmount: 3
     },
     {
       id: "PO-2024-003",
-      date: "2024-03-05",
+      orderDate: "2024-03-05",
       supplier: "Bangchak Corporation",
       oilType: "Transformer Oil - Premium",
-      quantity: 2500,
-      unit: "ลิตร",
+      orderAmount: 2.5,
+      unit: "ถัง",
       unitPrice: 48.75,
       totalAmount: 121875,
       status: "in_transit",
-      deliveryDate: "2024-03-15"
+      receivedDate: "2024-03-15",
+      testedAmount: 2.4
     }
-  ];
+  ]);
+
+  const handleCreate = () => {
+    setEditingOrder(null);
+    setModalMode('create');
+    setModalOrderDate(undefined);
+    setModalOrderAmount('');
+    setModalPricePerLiter('');
+    setModalReceivedDate(undefined);
+    setModalTestedAmount('');
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (order: any) => {
+    setEditingOrder(order);
+    setModalMode('edit');
+    setModalOrderDate(new Date(order.orderDate));
+    setModalOrderAmount(order.orderAmount.toString());
+    setModalPricePerLiter(order.unitPrice.toString());
+    setModalReceivedDate(new Date(order.receivedDate));
+    setModalTestedAmount(order.testedAmount.toString());
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    setPurchaseOrders(prev => prev.filter(order => order.id !== id));
+    toast.success("ลบข้อมูลสำเร็จ");
+  };
+
+  const handleSave = () => {
+    if (!modalOrderDate || !modalOrderAmount || !modalPricePerLiter || !modalReceivedDate || !modalTestedAmount) {
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+
+    const newOrder = {
+      id: modalMode === 'edit' ? editingOrder!.id : `PO-${Date.now()}`,
+      orderDate: format(modalOrderDate, 'yyyy-MM-dd'),
+      orderAmount: parseFloat(modalOrderAmount),
+      unitPrice: parseFloat(modalPricePerLiter),
+      receivedDate: format(modalReceivedDate, 'yyyy-MM-dd'),
+      testedAmount: parseFloat(modalTestedAmount),
+      supplier: modalMode === 'edit' ? editingOrder!.supplier : "New Supplier",
+      oilType: modalMode === 'edit' ? editingOrder!.oilType : "Transformer Oil",
+      unit: "ถัง",
+      totalAmount: parseFloat(modalOrderAmount) * parseFloat(modalPricePerLiter) * 200, // assuming 200L per tank
+      status: "pending"
+    };
+
+    if (modalMode === 'edit') {
+      setPurchaseOrders(prev => prev.map(order => order.id === editingOrder!.id ? newOrder : order));
+      toast.success("แก้ไขข้อมูลสำเร็จ");
+    } else {
+      setPurchaseOrders(prev => [...prev, newOrder]);
+      toast.success("เพิ่มข้อมูลสำเร็จ");
+    }
+
+    setIsModalOpen(false);
+    setModalOrderDate(undefined);
+    setModalOrderAmount('');
+    setModalPricePerLiter('');
+    setModalReceivedDate(undefined);
+    setModalTestedAmount('');
+    setEditingOrder(null);
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -79,8 +161,8 @@ const OilPurchasePage = () => {
                          order.supplier.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.oilType.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-    const matchesDateFrom = !dateFrom || order.date >= dateFrom;
-    const matchesDateTo = !dateTo || order.date <= dateTo;
+    const matchesDateFrom = !dateFrom || order.orderDate >= dateFrom;
+    const matchesDateTo = !dateTo || order.orderDate <= dateTo;
     
     return matchesSearch && matchesStatus && matchesDateFrom && matchesDateTo;
   });
@@ -91,9 +173,9 @@ const OilPurchasePage = () => {
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-xl shadow-sm border border-blue-100">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            รายการสั่งซื้อน้ำมัน
+            รายการสั่งซื้อ/รับน้ำมัน
           </h1>
-          <p className="text-gray-500">จัดการข้อมูลการสั่งซื้อน้ำมันหม้อแปลงไฟฟ้า</p>
+          <p className="text-gray-500">จัดการข้อมูลการสั่งซื้อและรับน้ำมันหม้อแปลงไฟฟ้า</p>
         </div>
 
         {/* Search and Filter Card */}
@@ -168,9 +250,9 @@ const OilPurchasePage = () => {
               <CardTitle className="text-lg font-semibold text-blue-700">
                 รายการสั่งซื้อ ({filteredOrders.length} รายการ)
               </CardTitle>
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleCreate} className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
-                สั่งซื้อใหม่
+                เพิ่มรายการใหม่
               </Button>
             </div>
           </CardHeader>
@@ -179,38 +261,52 @@ const OilPurchasePage = () => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">
-                    <TableHead className="font-semibold">เลขที่ PO</TableHead>
-                    <TableHead className="font-semibold">วันที่สั่งซื้อ</TableHead>
-                    <TableHead className="font-semibold">ผู้จำหน่าย</TableHead>
-                    <TableHead className="font-semibold">ประเภทน้ำมัน</TableHead>
-                    <TableHead className="font-semibold">จำนวน</TableHead>
-                    <TableHead className="font-semibold">ราคาต่อหน่วย</TableHead>
-                    <TableHead className="font-semibold">ราคารวม</TableHead>
-                    <TableHead className="font-semibold">วันที่ส่งมอบ</TableHead>
-                    <TableHead className="font-semibold">สถานะ</TableHead>
+                    <TableHead className="font-semibold text-center">ลำดับ</TableHead>
+                    <TableHead className="font-semibold text-center">วันที่สั่งซื้อ</TableHead>
+                    <TableHead className="font-semibold text-center">ปริมาณสั่งซื้อ [ถัง]</TableHead>
+                    <TableHead className="font-semibold text-center">ราคาต่อลิตร [บาท]</TableHead>
+                    <TableHead className="font-semibold text-center">วันที่ได้รับ</TableHead>
+                    <TableHead className="font-semibold text-center">ปริมาณที่ผ่านการทดสอบ [ถัง]</TableHead>
+                    <TableHead className="font-semibold text-center">แก้ไข</TableHead>
+                    <TableHead className="font-semibold text-center">ลบ</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredOrders.map((order) => (
+                  {filteredOrders.map((order, index) => (
                     <TableRow key={order.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium text-blue-600">
-                        {order.id}
+                      <TableCell className="text-center font-medium">
+                        {index + 1}
                       </TableCell>
-                      <TableCell>{order.date}</TableCell>
-                      <TableCell>{order.supplier}</TableCell>
-                      <TableCell>{order.oilType}</TableCell>
-                      <TableCell>
-                        {order.quantity.toLocaleString()} {order.unit}
+                      <TableCell className="text-center">{format(new Date(order.orderDate), 'dd/MM/yyyy')}</TableCell>
+                      <TableCell className="text-center">
+                        {order.orderAmount}
                       </TableCell>
-                      <TableCell>
-                        ฿{order.unitPrice.toFixed(2)}
+                      <TableCell className="text-center">
+                        {order.unitPrice.toFixed(2)}
                       </TableCell>
-                      <TableCell className="font-semibold">
-                        ฿{order.totalAmount.toLocaleString()}
+                      <TableCell className="text-center">{format(new Date(order.receivedDate), 'dd/MM/yyyy')}</TableCell>
+                      <TableCell className="text-center">
+                        {order.testedAmount}
                       </TableCell>
-                      <TableCell>{order.deliveryDate}</TableCell>
-                      <TableCell>
-                        {getStatusBadge(order.status)}
+                      <TableCell className="text-center">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleEdit(order)}
+                          className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleDelete(order.id)}
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -219,6 +315,105 @@ const OilPurchasePage = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Modal */}
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="text-center">
+                แก้ไขปริมาณน้ำมันในคลังเริ่มต้น
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 p-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>วันที่สั่งซื้อ :</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !modalOrderDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {modalOrderDate ? format(modalOrderDate, "dd/MM/yyyy") : "เลือกวันที่"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={modalOrderDate}
+                        onSelect={setModalOrderDate}
+                        initialFocus
+                        className="p-3 pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="space-y-2">
+                  <Label>ปริมาณการสั่งซื้อต่อครั้ง [ถัง] :</Label>
+                  <Input
+                    type="number"
+                    placeholder="เช่น 20"
+                    value={modalOrderAmount}
+                    onChange={(e) => setModalOrderAmount(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>ราคาที่การสั่งซื้อต่อลิตร [บาท] :</Label>
+                  <Input
+                    type="number"
+                    placeholder="เช่น 24.50"
+                    value={modalPricePerLiter}
+                    onChange={(e) => setModalPricePerLiter(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>วันที่ได้รับ :</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !modalReceivedDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {modalReceivedDate ? format(modalReceivedDate, "dd/MM/yyyy") : "เลือกวันที่"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={modalReceivedDate}
+                        onSelect={setModalReceivedDate}
+                        initialFocus
+                        className="p-3 pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>ปริมาณที่ผ่านการทดสอบ [ถัง] :</Label>
+                <Input
+                  type="number"
+                  placeholder="เช่น 19.8"
+                  value={modalTestedAmount}
+                  onChange={(e) => setModalTestedAmount(e.target.value)}
+                />
+              </div>
+              <div className="flex justify-center space-x-4 pt-4">
+                <Button onClick={handleSave} className="px-8 bg-blue-600 hover:bg-blue-700">
+                  บันทึก
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
