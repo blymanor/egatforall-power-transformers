@@ -15,11 +15,11 @@ const criteriaData = [
     no: 1,
     criteria: "Load Pattern(%LPF)",
     busVoltage: "-",
-    veryLow: "≤ 20",
-    low: "21 - 40", 
-    moderate: "41 - 65",
-    high: "66 - 85",
-    veryHigh: "≥ 86",
+    veryLow: { type: "input_with_prefix", prefix: "≤", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
     weight: "2"
@@ -196,6 +196,62 @@ const TransformerImportanceData = () => {
     ));
   };
 
+  const handleCriteriaValueChange = (id: number, field: string, subField: string, value: string) => {
+    setTableData(prev => prev.map(item => {
+      if (item.id === id) {
+        const updatedItem = { ...item };
+        if (typeof updatedItem[field] === 'object' && updatedItem[field] !== null) {
+          updatedItem[field] = { ...updatedItem[field], [subField]: value };
+        }
+        return updatedItem;
+      }
+      return item;
+    }));
+  };
+
+  const renderCellContent = (item: any, field: string) => {
+    const value = item[field];
+    
+    if (typeof value === 'object' && value !== null) {
+      if (value.type === 'input_with_prefix') {
+        return (
+          <div className="flex items-center justify-center gap-1">
+            <span className="text-xs">{value.prefix}</span>
+            <Input
+              type="text"
+              value={value.value}
+              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value', e.target.value)}
+              className="h-6 w-12 text-center text-xs p-1"
+              placeholder=""
+            />
+          </div>
+        );
+      } else if (value.type === 'input_range') {
+        return (
+          <div className="flex items-center justify-center gap-1">
+            <Input
+              type="text"
+              value={value.value1}
+              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value1', e.target.value)}
+              className="h-6 w-8 text-center text-xs p-1"
+              placeholder=""
+            />
+            <span className="text-xs">-</span>
+            <Input
+              type="text"
+              value={value.value2}
+              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value2', e.target.value)}
+              className="h-6 w-8 text-center text-xs p-1"
+              placeholder=""
+            />
+          </div>
+        );
+      }
+    }
+    
+    return <span className="text-xs">{value}</span>;
+  };
+
   const handleSave = () => {
     toast.success("บันทึกข้อมูลสำเร็จ");
   };
@@ -299,19 +355,19 @@ const TransformerImportanceData = () => {
                               {item.busVoltage}
                             </TableCell>
                             <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {item.veryLow}
+                              {renderCellContent(item, 'veryLow')}
                             </TableCell>
                             <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {item.low}
+                              {renderCellContent(item, 'low')}
                             </TableCell>
                             <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {item.moderate}
+                              {renderCellContent(item, 'moderate')}
                             </TableCell>
                             <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {item.high}
+                              {renderCellContent(item, 'high')}
                             </TableCell>
                             <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {item.veryHigh}
+                              {renderCellContent(item, 'veryHigh')}
                             </TableCell>
                             <TableCell className="text-center text-xs px-2 border-r border-gray-200">
                               {item.extremelyHigh}
