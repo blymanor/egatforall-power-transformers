@@ -728,7 +728,7 @@ const TransformerImportanceData = () => {
 
               <TabsContent value="x-scale" className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium mb-4">ปรับค่าในแรวแกน X</h3>
+                  <h3 className="text-lg font-medium mb-4">ปรับค่าในแนวแกน X</h3>
                   
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <Table>
@@ -824,7 +824,7 @@ const TransformerImportanceData = () => {
 
               <TabsContent value="y-scale" className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium mb-4">ปรับค่าในแรวแกน Y</h3>
+                  <h3 className="text-lg font-medium mb-4">ปรับค่าในแนวแกน Y</h3>
                   
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <Table>
