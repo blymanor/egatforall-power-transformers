@@ -40,6 +40,7 @@ import CalculationResultPage from "./pages/CalculationResultPage";
 import OilReceiptDurationPage from "./pages/OilReceiptDurationPage";
 import WeibullCalculationPage from "./pages/WeibullCalculationPage";
 import OilPurchasePage from "./pages/OilPurchasePage";
+import TransformerDetails from "./pages/TransformerDetails";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const AppRoutes = () => (
     
     {/* Transformer Info Routes */}
     <Route path="/transformer-info" element={<TransformerBasicInfo />} />
+    <Route path="/transformer-info/details" element={<TransformerDetails />} />
     <Route path="/transformer-info/relocation" element={<TransformerRelocationInfo />} />
     
     {/* Transformer Importance Route */}
