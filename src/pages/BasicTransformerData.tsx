@@ -35,6 +35,28 @@ const BasicTransformerData = () => {
   const [editingUsageType, setEditingUsageType] = useState<{ id: number; name: string } | null>(null);
   const [editUsageTypeValue, setEditUsageTypeValue] = useState('');
 
+  // Transformer manufacturer states
+  const [newTransformerManufacturer, setNewTransformerManufacturer] = useState('');
+  const [newTransformerScore, setNewTransformerScore] = useState('');
+  const [editingTransformerManufacturer, setEditingTransformerManufacturer] = useState<{ id: number; name: string; score: string } | null>(null);
+  const [editTransformerManufacturerName, setEditTransformerManufacturerName] = useState('');
+  const [editTransformerManufacturerScore, setEditTransformerManufacturerScore] = useState('');
+
+  // Bushing manufacturer states
+  const [newBushingManufacturer, setNewBushingManufacturer] = useState('');
+  const [editingBushingManufacturer, setEditingBushingManufacturer] = useState<{ id: number; name: string } | null>(null);
+  const [editBushingManufacturerValue, setEditBushingManufacturerValue] = useState('');
+
+  // Arrester manufacturer states
+  const [newArresterManufacturer, setNewArresterManufacturer] = useState('');
+  const [editingArresterManufacturer, setEditingArresterManufacturer] = useState<{ id: number; name: string } | null>(null);
+  const [editArresterManufacturerValue, setEditArresterManufacturerValue] = useState('');
+
+  // OLTC manufacturer states
+  const [newOLTCManufacturer, setNewOLTCManufacturer] = useState('');
+  const [editingOLTCManufacturer, setEditingOLTCManufacturer] = useState<{ id: number; name: string } | null>(null);
+  const [editOLTCManufacturerValue, setEditOLTCManufacturerValue] = useState('');
+
   // Mock data for stations
   const [stations, setStations] = useState([
     { id: 1, shortName: "SH1", fullName: "SATTHAHIP 1", zone: "อปก.", kv: "115" },
@@ -57,6 +79,35 @@ const BasicTransformerData = () => {
     { id: 1, name: "หม้อแปลงหลัก" },
     { id: 2, name: "หม้อแปลงสำรอง" },
     { id: 3, name: "หม้อแปลงสำหรับการทดสอบ" }
+  ]);
+
+  // Mock data for transformer manufacturers
+  const [transformerManufacturers, setTransformerManufacturers] = useState([
+    { id: 1, name: "ASEA", score: "1" },
+    { id: 2, name: "National", score: "1" },
+    { id: 3, name: "ABB", score: "2" },
+    { id: 4, name: "Siemens", score: "2" }
+  ]);
+
+  // Mock data for bushing manufacturers
+  const [bushingManufacturers, setBushingManufacturers] = useState([
+    { id: 1, name: "ABB" },
+    { id: 2, name: "ASEA" },
+    { id: 3, name: "Siemens" }
+  ]);
+
+  // Mock data for arrester manufacturers
+  const [arresterManufacturers, setArresterManufacturers] = useState([
+    { id: 1, name: "ABB" },
+    { id: 2, name: "AEG" },
+    { id: 3, name: "Siemens" }
+  ]);
+
+  // Mock data for OLTC manufacturers
+  const [oltcManufacturers, setOltcManufacturers] = useState([
+    { id: 1, name: "ABB" },
+    { id: 2, name: "ALSTHOM" },
+    { id: 3, name: "Maschinenfabrik Reinhausen" }
   ]);
 
   // Station modal handlers
@@ -158,6 +209,182 @@ const BasicTransformerData = () => {
     toast.success("ลบข้อมูลสำเร็จ");
   };
 
+  // Transformer manufacturer handlers
+  const handleSaveTransformerManufacturer = () => {
+    if (!newTransformerManufacturer.trim() || !newTransformerScore.trim()) {
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+
+    const newManufacturer = {
+      id: Date.now(),
+      name: newTransformerManufacturer,
+      score: newTransformerScore
+    };
+
+    setTransformerManufacturers(prev => [...prev, newManufacturer]);
+    setNewTransformerManufacturer('');
+    setNewTransformerScore('');
+    toast.success("เพิ่มข้อมูลสำเร็จ");
+  };
+
+  const handleEditTransformerManufacturer = (manufacturer: { id: number; name: string; score: string }) => {
+    setEditingTransformerManufacturer(manufacturer);
+    setEditTransformerManufacturerName(manufacturer.name);
+    setEditTransformerManufacturerScore(manufacturer.score);
+  };
+
+  const handleSaveEditTransformerManufacturer = () => {
+    if (!editTransformerManufacturerName.trim() || !editTransformerManufacturerScore.trim()) {
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+
+    setTransformerManufacturers(prev => prev.map(manufacturer => 
+      manufacturer.id === editingTransformerManufacturer!.id 
+        ? { ...manufacturer, name: editTransformerManufacturerName, score: editTransformerManufacturerScore }
+        : manufacturer
+    ));
+    setEditingTransformerManufacturer(null);
+    setEditTransformerManufacturerName('');
+    setEditTransformerManufacturerScore('');
+    toast.success("แก้ไขข้อมูลสำเร็จ");
+  };
+
+  const handleDeleteTransformerManufacturer = (id: number) => {
+    setTransformerManufacturers(prev => prev.filter(manufacturer => manufacturer.id !== id));
+    toast.success("ลบข้อมูลสำเร็จ");
+  };
+
+  // Bushing manufacturer handlers
+  const handleSaveBushingManufacturer = () => {
+    if (!newBushingManufacturer.trim()) {
+      toast.error("กรุณากรอกข้อมูลบริษัทผู้ผลิต");
+      return;
+    }
+
+    const newManufacturer = {
+      id: Date.now(),
+      name: newBushingManufacturer
+    };
+
+    setBushingManufacturers(prev => [...prev, newManufacturer]);
+    setNewBushingManufacturer('');
+    toast.success("เพิ่มข้อมูลสำเร็จ");
+  };
+
+  const handleEditBushingManufacturer = (manufacturer: { id: number; name: string }) => {
+    setEditingBushingManufacturer(manufacturer);
+    setEditBushingManufacturerValue(manufacturer.name);
+  };
+
+  const handleSaveEditBushingManufacturer = () => {
+    if (!editBushingManufacturerValue.trim()) {
+      toast.error("กรุณากรอกข้อมูลบริษัทผู้ผลิต");
+      return;
+    }
+
+    setBushingManufacturers(prev => prev.map(manufacturer => 
+      manufacturer.id === editingBushingManufacturer!.id 
+        ? { ...manufacturer, name: editBushingManufacturerValue }
+        : manufacturer
+    ));
+    setEditingBushingManufacturer(null);
+    setEditBushingManufacturerValue('');
+    toast.success("แก้ไขข้อมูลสำเร็จ");
+  };
+
+  const handleDeleteBushingManufacturer = (id: number) => {
+    setBushingManufacturers(prev => prev.filter(manufacturer => manufacturer.id !== id));
+    toast.success("ลบข้อมูลสำเร็จ");
+  };
+
+  // Arrester manufacturer handlers
+  const handleSaveArresterManufacturer = () => {
+    if (!newArresterManufacturer.trim()) {
+      toast.error("กรุณากรอกข้อมูลบริษัทผู้ผลิต");
+      return;
+    }
+
+    const newManufacturer = {
+      id: Date.now(),
+      name: newArresterManufacturer
+    };
+
+    setArresterManufacturers(prev => [...prev, newManufacturer]);
+    setNewArresterManufacturer('');
+    toast.success("เพิ่มข้อมูลสำเร็จ");
+  };
+
+  const handleEditArresterManufacturer = (manufacturer: { id: number; name: string }) => {
+    setEditingArresterManufacturer(manufacturer);
+    setEditArresterManufacturerValue(manufacturer.name);
+  };
+
+  const handleSaveEditArresterManufacturer = () => {
+    if (!editArresterManufacturerValue.trim()) {
+      toast.error("กรุณากรอกข้อมูลบริษัทผู้ผลิต");
+      return;
+    }
+
+    setArresterManufacturers(prev => prev.map(manufacturer => 
+      manufacturer.id === editingArresterManufacturer!.id 
+        ? { ...manufacturer, name: editArresterManufacturerValue }
+        : manufacturer
+    ));
+    setEditingArresterManufacturer(null);
+    setEditArresterManufacturerValue('');
+    toast.success("แก้ไขข้อมูลสำเร็จ");
+  };
+
+  const handleDeleteArresterManufacturer = (id: number) => {
+    setArresterManufacturers(prev => prev.filter(manufacturer => manufacturer.id !== id));
+    toast.success("ลบข้อมูลสำเร็จ");
+  };
+
+  // OLTC manufacturer handlers
+  const handleSaveOLTCManufacturer = () => {
+    if (!newOLTCManufacturer.trim()) {
+      toast.error("กรุณากรอกข้อมูลบริษัทผู้ผลิต");
+      return;
+    }
+
+    const newManufacturer = {
+      id: Date.now(),
+      name: newOLTCManufacturer
+    };
+
+    setOltcManufacturers(prev => [...prev, newManufacturer]);
+    setNewOLTCManufacturer('');
+    toast.success("เพิ่มข้อมูลสำเร็จ");
+  };
+
+  const handleEditOLTCManufacturer = (manufacturer: { id: number; name: string }) => {
+    setEditingOLTCManufacturer(manufacturer);
+    setEditOLTCManufacturerValue(manufacturer.name);
+  };
+
+  const handleSaveEditOLTCManufacturer = () => {
+    if (!editOLTCManufacturerValue.trim()) {
+      toast.error("กรุณากรอกข้อมูลบริษัทผู้ผลิต");
+      return;
+    }
+
+    setOltcManufacturers(prev => prev.map(manufacturer => 
+      manufacturer.id === editingOLTCManufacturer!.id 
+        ? { ...manufacturer, name: editOLTCManufacturerValue }
+        : manufacturer
+    ));
+    setEditingOLTCManufacturer(null);
+    setEditOLTCManufacturerValue('');
+    toast.success("แก้ไขข้อมูลสำเร็จ");
+  };
+
+  const handleDeleteOLTCManufacturer = (id: number) => {
+    setOltcManufacturers(prev => prev.filter(manufacturer => manufacturer.id !== id));
+    toast.success("ลบข้อมูลสำเร็จ");
+  };
+
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6">
@@ -173,23 +400,41 @@ const BasicTransformerData = () => {
         <Card className="shadow-md border-none">
           <CardContent className="p-0">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-6 bg-blue-50 border-b border-blue-100 rounded-none">
-                <TabsTrigger value="stations" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+              <TabsList className="grid w-full grid-cols-6 bg-blue-50 border-b border-blue-100 rounded-t-lg rounded-b-none h-12">
+                <TabsTrigger 
+                  value="stations" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none h-10 font-medium"
+                >
                   สถานีไฟฟ้า
                 </TabsTrigger>
-                <TabsTrigger value="usage" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                <TabsTrigger 
+                  value="usage" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none h-10 font-medium"
+                >
                   ลักษณะการใช้งานหม้อแปลง
                 </TabsTrigger>
-                <TabsTrigger value="manufacturer" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                <TabsTrigger 
+                  value="manufacturer" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none h-10 font-medium"
+                >
                   บริษัทผู้ผลิตหม้อแปลง
                 </TabsTrigger>
-                <TabsTrigger value="bushing" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                <TabsTrigger 
+                  value="bushing" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none h-10 font-medium"
+                >
                   บริษัทผู้ผลิต Bushing
                 </TabsTrigger>
-                <TabsTrigger value="arrester" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                <TabsTrigger 
+                  value="arrester" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none h-10 font-medium"
+                >
                   บริษัทผู้ผลิต Arrester
                 </TabsTrigger>
-                <TabsTrigger value="oltc" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                <TabsTrigger 
+                  value="oltc" 
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-t-lg rounded-b-none h-10 font-medium"
+                >
                   บริษัทผู้ผลิต OLTC
                 </TabsTrigger>
               </TabsList>
@@ -366,25 +611,483 @@ const BasicTransformerData = () => {
                 </div>
               </TabsContent>
 
-              {/* Other tabs - placeholder content */}
+              {/* Transformer Manufacturer Tab */}
               <TabsContent value="manufacturer" className="p-6">
-                <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิตหม้อแปลง</h2>
-                <p className="text-gray-600 mt-4">หน้านี้กำลังอยู่ระหว่างการพัฒนา</p>
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิตหม้อแปลง</h2>
+
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-50">
+                          <TableHead className="font-semibold text-center">ลำดับ</TableHead>
+                          <TableHead className="font-semibold text-center">บริษัทผู้ผลิต</TableHead>
+                          <TableHead className="font-semibold text-center">คะแนน</TableHead>
+                          <TableHead className="font-semibold text-center">แก้ไข</TableHead>
+                          <TableHead className="font-semibold text-center">ลบ</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {transformerManufacturers.map((manufacturer, index) => (
+                          <TableRow key={manufacturer.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center font-medium">{index + 1}</TableCell>
+                            <TableCell className="text-center">
+                              {editingTransformerManufacturer?.id === manufacturer.id ? (
+                                <Input
+                                  value={editTransformerManufacturerName}
+                                  onChange={(e) => setEditTransformerManufacturerName(e.target.value)}
+                                  className="w-full"
+                                />
+                              ) : (
+                                manufacturer.name
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {editingTransformerManufacturer?.id === manufacturer.id ? (
+                                <Input
+                                  value={editTransformerManufacturerScore}
+                                  onChange={(e) => setEditTransformerManufacturerScore(e.target.value)}
+                                  className="w-full"
+                                />
+                              ) : (
+                                manufacturer.score
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {editingTransformerManufacturer?.id === manufacturer.id ? (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleSaveEditTransformerManufacturer}
+                                  className="text-green-600 border-green-200 hover:bg-green-50"
+                                >
+                                  บันทึก
+                                </Button>
+                              ) : (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => handleEditTransformerManufacturer(manufacturer)}
+                                  className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleDeleteTransformerManufacturer(manufacturer.id)}
+                                className="text-red-600 border-red-200 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious href="#" />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#" isActive>1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">3</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <span className="px-4 py-2">...</span>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">13</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationNext href="#" />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+
+                  {/* Add New Transformer Manufacturer */}
+                  <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm font-medium text-gray-700 w-40">เพิ่มบริษัทผู้ผลิตหม้อแปลง:</span>
+                      <Input
+                        placeholder="ระบุบริษัทผู้ผลิต"
+                        value={newTransformerManufacturer}
+                        onChange={(e) => setNewTransformerManufacturer(e.target.value)}
+                        className="flex-1"
+                      />
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm font-medium text-gray-700 w-40">Score:</span>
+                      <Input
+                        placeholder="ระบุคะแนน"
+                        value={newTransformerScore}
+                        onChange={(e) => setNewTransformerScore(e.target.value)}
+                        className="flex-1"
+                      />
+                      <Button 
+                        onClick={handleSaveTransformerManufacturer}
+                        className="bg-blue-600 hover:bg-blue-700 ml-4"
+                      >
+                        SAVE
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </TabsContent>
 
+              {/* Bushing Manufacturer Tab */}
               <TabsContent value="bushing" className="p-6">
-                <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิต Bushing</h2>
-                <p className="text-gray-600 mt-4">หน้านี้กำลังอยู่ระหว่างการพัฒนา</p>
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิต Bushing</h2>
+
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-50">
+                          <TableHead className="font-semibold text-center">ลำดับ</TableHead>
+                          <TableHead className="font-semibold text-center">บริษัทผู้ผลิต</TableHead>
+                          <TableHead className="font-semibold text-center">แก้ไข</TableHead>
+                          <TableHead className="font-semibold text-center">ลบ</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {bushingManufacturers.map((manufacturer, index) => (
+                          <TableRow key={manufacturer.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center font-medium">{index + 1}</TableCell>
+                            <TableCell className="text-center">
+                              {editingBushingManufacturer?.id === manufacturer.id ? (
+                                <Input
+                                  value={editBushingManufacturerValue}
+                                  onChange={(e) => setEditBushingManufacturerValue(e.target.value)}
+                                  className="w-full"
+                                />
+                              ) : (
+                                manufacturer.name
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {editingBushingManufacturer?.id === manufacturer.id ? (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleSaveEditBushingManufacturer}
+                                  className="text-green-600 border-green-200 hover:bg-green-50"
+                                >
+                                  บันทึก
+                                </Button>
+                              ) : (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => handleEditBushingManufacturer(manufacturer)}
+                                  className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleDeleteBushingManufacturer(manufacturer.id)}
+                                className="text-red-600 border-red-200 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious href="#" />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#" isActive>1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">3</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <span className="px-4 py-2">...</span>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">13</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationNext href="#" />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+
+                  {/* Add New Bushing Manufacturer */}
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <span className="text-sm font-medium text-gray-700">เพิ่มบริษัทผู้ผลิต Bushing:</span>
+                    <Input
+                      placeholder="ระบุบริษัทผู้ผลิต"
+                      value={newBushingManufacturer}
+                      onChange={(e) => setNewBushingManufacturer(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button 
+                      onClick={handleSaveBushingManufacturer}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      SAVE
+                    </Button>
+                  </div>
+                </div>
               </TabsContent>
 
+              {/* Arrester Manufacturer Tab */}
               <TabsContent value="arrester" className="p-6">
-                <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิต Arrester</h2>
-                <p className="text-gray-600 mt-4">หน้านี้กำลังอยู่ระหว่างการพัฒนา</p>
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิต Arrester</h2>
+
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-50">
+                          <TableHead className="font-semibold text-center">ลำดับ</TableHead>
+                          <TableHead className="font-semibold text-center">บริษัทผู้ผลิต</TableHead>
+                          <TableHead className="font-semibold text-center">แก้ไข</TableHead>
+                          <TableHead className="font-semibold text-center">ลบ</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {arresterManufacturers.map((manufacturer, index) => (
+                          <TableRow key={manufacturer.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center font-medium">{index + 1}</TableCell>
+                            <TableCell className="text-center">
+                              {editingArresterManufacturer?.id === manufacturer.id ? (
+                                <Input
+                                  value={editArresterManufacturerValue}
+                                  onChange={(e) => setEditArresterManufacturerValue(e.target.value)}
+                                  className="w-full"
+                                />
+                              ) : (
+                                manufacturer.name
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {editingArresterManufacturer?.id === manufacturer.id ? (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleSaveEditArresterManufacturer}
+                                  className="text-green-600 border-green-200 hover:bg-green-50"
+                                >
+                                  บันทึก
+                                </Button>
+                              ) : (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => handleEditArresterManufacturer(manufacturer)}
+                                  className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleDeleteArresterManufacturer(manufacturer.id)}
+                                className="text-red-600 border-red-200 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious href="#" />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#" isActive>1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">3</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <span className="px-4 py-2">...</span>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">13</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationNext href="#" />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+
+                  {/* Add New Arrester Manufacturer */}
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <span className="text-sm font-medium text-gray-700">เพิ่มบริษัทผู้ผลิต Arrester:</span>
+                    <Input
+                      placeholder="ระบุบริษัทผู้ผลิต"
+                      value={newArresterManufacturer}
+                      onChange={(e) => setNewArresterManufacturer(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button 
+                      onClick={handleSaveArresterManufacturer}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      SAVE
+                    </Button>
+                  </div>
+                </div>
               </TabsContent>
 
+              {/* OLTC Manufacturer Tab */}
               <TabsContent value="oltc" className="p-6">
-                <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิต OLTC</h2>
-                <p className="text-gray-600 mt-4">หน้านี้กำลังอยู่ระหว่างการพัฒนา</p>
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-blue-700">บริษัทผู้ผลิต OLTC</h2>
+
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-50">
+                          <TableHead className="font-semibold text-center">ลำดับ</TableHead>
+                          <TableHead className="font-semibold text-center">บริษัทผู้ผลิต</TableHead>
+                          <TableHead className="font-semibold text-center">แก้ไข</TableHead>
+                          <TableHead className="font-semibold text-center">ลบ</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {oltcManufacturers.map((manufacturer, index) => (
+                          <TableRow key={manufacturer.id} className="hover:bg-gray-50">
+                            <TableCell className="text-center font-medium">{index + 1}</TableCell>
+                            <TableCell className="text-center">
+                              {editingOLTCManufacturer?.id === manufacturer.id ? (
+                                <Input
+                                  value={editOLTCManufacturerValue}
+                                  onChange={(e) => setEditOLTCManufacturerValue(e.target.value)}
+                                  className="w-full"
+                                />
+                              ) : (
+                                manufacturer.name
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {editingOLTCManufacturer?.id === manufacturer.id ? (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleSaveEditOLTCManufacturer}
+                                  className="text-green-600 border-green-200 hover:bg-green-50"
+                                >
+                                  บันทึก
+                                </Button>
+                              ) : (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => handleEditOLTCManufacturer(manufacturer)}
+                                  className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleDeleteOLTCManufacturer(manufacturer.id)}
+                                className="text-red-600 border-red-200 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious href="#" />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#" isActive>1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">3</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <span className="px-4 py-2">...</span>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#">13</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationNext href="#" />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+
+                  {/* Add New OLTC Manufacturer */}
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <span className="text-sm font-medium text-gray-700">เพิ่มบริษัทผู้ผลิต OLTC:</span>
+                    <Input
+                      placeholder="ระบุบริษัทผู้ผลิต"
+                      value={newOLTCManufacturer}
+                      onChange={(e) => setNewOLTCManufacturer(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button 
+                      onClick={handleSaveOLTCManufacturer}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      SAVE
+                    </Button>
+                  </div>
+                </div>
               </TabsContent>
             </Tabs>
           </CardContent>
