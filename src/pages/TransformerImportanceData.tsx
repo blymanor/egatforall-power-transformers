@@ -22,91 +22,101 @@ const criteriaData = [
     veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "2"
+    weight: ""
   },
   {
     id: 2,
     no: 2,
     criteria: "Load Shedding",
     busVoltage: "-",
-    veryLow: "Step 1",
-    low: "Step 1",
-    moderate: "Step 1",
-    high: "Step 1",
-    veryHigh: "Step 1",
-    extremelyHigh: "No shed or",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
+    extremelyHigh: { type: "input", value: "" },
     score: "",
-    weight: "3"
+    weight: ""
   },
   {
     id: 3,
     no: 3,
     criteria: "N-1 Criteria",
     busVoltage: "-",
-    veryLow: "Yes",
-    low: "-",
-    moderate: "-",
-    high: "-",
-    veryHigh: "No",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "7"
+    weight: ""
   },
   {
     id: 4,
     no: 4,
     criteria: "System Stability",
     busVoltage: "-",
-    veryLow: "Loading 115",
-    low: "Loading 115",
-    moderate: "Loading 115",
-    high: "Tie 230/115",
-    veryHigh: "Tie 230/115",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "3"
+    weight: ""
   },
   {
     id: 5,
     no: 5,
     criteria: "Application/Use",
     busVoltage: "-",
-    veryLow: "Mobile",
-    low: "Cold Standby",
-    moderate: "Hot Standby",
-    high: "In-Service",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
     veryHigh: "-",
     extremelyHigh: "-",
     score: "",
-    weight: "2"
+    weight: ""
   },
   {
     id: 6,
     no: 6,
     criteria: "System Fault Level(MVA)",
-    busVoltage: "> 115",
-    veryLow: "≤ 10000",
-    low: "10000",
-    moderate: "10000",
-    high: "10000",
-    veryHigh: "≤ 10000",
+    busVoltage: { type: "input_with_prefix", prefix: ">", value: "" },
+    veryLow: { type: "input_with_prefix", prefix: "≤", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "7"
+    weight: "",
+    isSystemFault: true,
+    subRow: {
+      busVoltage: { type: "input_with_prefix", prefix: "≤", value: "" },
+      veryLow: { type: "input_with_prefix", prefix: "≤", value: "" },
+      low: { type: "input_range", value1: "", value2: "" },
+      moderate: { type: "input_range", value1: "", value2: "" },
+      high: { type: "input_range", value1: "", value2: "" },
+      veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
+      extremelyHigh: "-"
+    }
   },
   {
     id: 7,
     no: 7,
     criteria: "Probability of Force Outage per 5 years",
     busVoltage: "-",
-    veryLow: "≤ 0",
-    low: "-",
-    moderate: "1 - 2",
-    high: "-",
-    veryHigh: "≥ 3",
+    veryLow: { type: "input_with_prefix", prefix: "≤", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "2"
+    weight: ""
   },
   {
     id: 8,
@@ -120,49 +130,49 @@ const criteriaData = [
     veryHigh: "-",
     extremelyHigh: "-",
     score: "",
-    weight: "0"
+    weight: ""
   },
   {
     id: 9,
     no: 9,
     criteria: "Social aspects",
     busVoltage: "-",
-    veryLow: "อยุธยา",
-    low: "-",
-    moderate: "-",
-    high: "-",
-    veryHigh: "-",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "0"
+    weight: ""
   },
   {
     id: 10,
     no: 10,
     criteria: "Public Image",
     busVoltage: "-",
-    veryLow: "No",
-    low: "-",
-    moderate: "-",
-    high: "-",
-    veryHigh: "-",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
+    veryHigh: { type: "input_with_prefix", prefix: "≥", value: "" },
     extremelyHigh: "-",
     score: "",
-    weight: "0"
+    weight: ""
   },
   {
     id: 11,
     no: 11,
     criteria: "Pollution",
     busVoltage: "-",
-    veryLow: "Light",
-    low: "Medium",
-    moderate: "High",
-    high: "Very High",
+    veryLow: { type: "input", value: "" },
+    low: { type: "input_range", value1: "", value2: "" },
+    moderate: { type: "input_range", value1: "", value2: "" },
+    high: { type: "input_range", value1: "", value2: "" },
     veryHigh: "-",
     extremelyHigh: "-",
     score: "",
-    weight: "0"
+    weight: ""
   },
   {
     id: 12,
@@ -176,7 +186,7 @@ const criteriaData = [
     veryHigh: "-",
     extremelyHigh: "-",
     score: "",
-    weight: "0"
+    weight: ""
   }
 ];
 
@@ -196,12 +206,19 @@ const TransformerImportanceData = () => {
     ));
   };
 
-  const handleCriteriaValueChange = (id: number, field: string, subField: string, value: string) => {
+  const handleCriteriaValueChange = (id: number, field: string, subField: string, value: string, isSubRow: boolean = false) => {
     setTableData(prev => prev.map(item => {
       if (item.id === id) {
         const updatedItem = { ...item };
-        if (typeof updatedItem[field] === 'object' && updatedItem[field] !== null) {
-          updatedItem[field] = { ...updatedItem[field], [subField]: value };
+        
+        if (isSubRow && updatedItem.subRow) {
+          if (typeof updatedItem.subRow[field] === 'object' && updatedItem.subRow[field] !== null) {
+            updatedItem.subRow[field] = { ...updatedItem.subRow[field], [subField]: value };
+          }
+        } else {
+          if (typeof updatedItem[field] === 'object' && updatedItem[field] !== null) {
+            updatedItem[field] = { ...updatedItem[field], [subField]: value };
+          }
         }
         return updatedItem;
       }
@@ -209,8 +226,8 @@ const TransformerImportanceData = () => {
     }));
   };
 
-  const renderCellContent = (item: any, field: string) => {
-    const value = item[field];
+  const renderCellContent = (item: any, field: string, isSubRow: boolean = false) => {
+    const value = isSubRow ? item.subRow?.[field] : item[field];
     
     if (typeof value === 'object' && value !== null) {
       if (value.type === 'input_with_prefix') {
@@ -220,7 +237,7 @@ const TransformerImportanceData = () => {
             <Input
               type="text"
               value={value.value}
-              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value', e.target.value)}
+              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value', e.target.value, isSubRow)}
               className="h-6 w-12 text-center text-xs p-1"
               placeholder=""
             />
@@ -228,23 +245,33 @@ const TransformerImportanceData = () => {
         );
       } else if (value.type === 'input_range') {
         return (
-          <div className="flex items-center justify-center gap-1">
+          <div className="flex flex-col items-center justify-center gap-1">
             <Input
               type="text"
               value={value.value1}
-              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value1', e.target.value)}
-              className="h-6 w-8 text-center text-xs p-1"
+              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value1', e.target.value, isSubRow)}
+              className="h-6 w-16 text-center text-xs p-1"
               placeholder=""
             />
             <span className="text-xs">-</span>
             <Input
               type="text"
               value={value.value2}
-              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value2', e.target.value)}
-              className="h-6 w-8 text-center text-xs p-1"
+              onChange={(e) => handleCriteriaValueChange(item.id, field, 'value2', e.target.value, isSubRow)}
+              className="h-6 w-16 text-center text-xs p-1"
               placeholder=""
             />
           </div>
+        );
+      } else if (value.type === 'input') {
+        return (
+          <Input
+            type="text"
+            value={value.value}
+            onChange={(e) => handleCriteriaValueChange(item.id, field, 'value', e.target.value, isSubRow)}
+            className="h-6 w-16 text-center text-xs p-1"
+            placeholder=""
+          />
         );
       }
     }
@@ -344,56 +371,88 @@ const TransformerImportanceData = () => {
                       </TableHeader>
                       <TableBody className="bg-white">
                         {tableData.map((item) => (
-                          <TableRow key={item.id} className="hover:bg-gray-50">
-                            <TableCell className="text-center font-medium border-r border-gray-200">
-                              {item.no}
-                            </TableCell>
-                            <TableCell className="text-left px-3 border-r border-gray-200">
-                              {item.criteria}
-                            </TableCell>
-                            <TableCell className="text-center border-r border-gray-200">
-                              {item.busVoltage}
-                            </TableCell>
-                            <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {renderCellContent(item, 'veryLow')}
-                            </TableCell>
-                            <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {renderCellContent(item, 'low')}
-                            </TableCell>
-                            <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {renderCellContent(item, 'moderate')}
-                            </TableCell>
-                            <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {renderCellContent(item, 'high')}
-                            </TableCell>
-                            <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {renderCellContent(item, 'veryHigh')}
-                            </TableCell>
-                            <TableCell className="text-center text-xs px-2 border-r border-gray-200">
-                              {item.extremelyHigh}
-                            </TableCell>
-                            <TableCell className="border-r border-gray-200">
-                              <Input
-                                type="number"
-                                min="1"
-                                max="6"
-                                value={item.score}
-                                onChange={(e) => handleScoreChange(item.id, e.target.value)}
-                                className="h-8 text-center text-sm"
-                                placeholder=""
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Input
-                                type="number"
-                                min="0"
-                                max="10"
-                                value={item.weight}
-                                onChange={(e) => handleWeightChange(item.id, e.target.value)}
-                                className="h-8 text-center text-sm"
-                              />
-                            </TableCell>
-                          </TableRow>
+                          <React.Fragment key={item.id}>
+                            <TableRow className="hover:bg-gray-50" style={{ height: item.isSystemFault ? '60px' : 'auto' }}>
+                              <TableCell 
+                                className="text-center font-medium border-r border-gray-200" 
+                                rowSpan={item.isSystemFault ? 2 : 1}
+                              >
+                                {item.no}
+                              </TableCell>
+                              <TableCell 
+                                className="text-left px-3 border-r border-gray-200" 
+                                rowSpan={item.isSystemFault ? 2 : 1}
+                              >
+                                {item.criteria}
+                              </TableCell>
+                              <TableCell className="text-center border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'busVoltage')}
+                              </TableCell>
+                              <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'veryLow')}
+                              </TableCell>
+                              <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'low')}
+                              </TableCell>
+                              <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'moderate')}
+                              </TableCell>
+                              <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'high')}
+                              </TableCell>
+                              <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'veryHigh')}
+                              </TableCell>
+                              <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                {renderCellContent(item, 'extremelyHigh')}
+                              </TableCell>
+                              <TableCell 
+                                className="border-r border-gray-200" 
+                                rowSpan={item.isSystemFault ? 2 : 1}
+                              >
+                                <Input
+                                  type="text"
+                                  value={item.score}
+                                  onChange={(e) => handleScoreChange(item.id, e.target.value)}
+                                  className="h-8 text-center text-sm"
+                                  placeholder=""
+                                />
+                              </TableCell>
+                              <TableCell rowSpan={item.isSystemFault ? 2 : 1}>
+                                <Input
+                                  type="text"
+                                  value={item.weight}
+                                  onChange={(e) => handleWeightChange(item.id, e.target.value)}
+                                  className="h-8 text-center text-sm"
+                                />
+                              </TableCell>
+                            </TableRow>
+                            {item.isSystemFault && item.subRow && (
+                              <TableRow className="hover:bg-gray-50" style={{ height: '60px' }}>
+                                <TableCell className="text-center border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'busVoltage', true)}
+                                </TableCell>
+                                <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'veryLow', true)}
+                                </TableCell>
+                                <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'low', true)}
+                                </TableCell>
+                                <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'moderate', true)}
+                                </TableCell>
+                                <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'high', true)}
+                                </TableCell>
+                                <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'veryHigh', true)}
+                                </TableCell>
+                                <TableCell className="text-center text-xs px-2 border-r border-gray-200 py-2">
+                                  {renderCellContent(item, 'extremelyHigh', true)}
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </React.Fragment>
                         ))}
                       </TableBody>
                     </Table>
