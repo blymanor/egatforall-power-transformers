@@ -244,44 +244,44 @@ const TransformerImportanceData = () => {
                   
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <Table>
-                      <TableHeader className="bg-gray-600">
-                        <TableRow>
-                          <TableHead rowSpan={2} className="text-center text-white w-16 border-r border-gray-500">
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead rowSpan={2} className="text-center text-white bg-gray-700 w-16 border-r border-gray-500 hover:bg-gray-700">
                             No.
                           </TableHead>
-                          <TableHead rowSpan={2} className="text-center text-white w-40 border-r border-gray-500">
+                          <TableHead rowSpan={2} className="text-center text-white bg-gray-700 w-40 border-r border-gray-500 hover:bg-gray-700">
                             Criteria
                           </TableHead>
-                          <TableHead rowSpan={2} className="text-center text-white w-20 border-r border-gray-500">
+                          <TableHead rowSpan={2} className="text-center text-white bg-gray-700 w-20 border-r border-gray-500 hover:bg-gray-700">
                             BUS Voltage [kV]
                           </TableHead>
-                          <TableHead colSpan={6} className="text-center text-white border-r border-gray-500">
+                          <TableHead colSpan={6} className="text-center text-white bg-gray-700 border-r border-gray-500 hover:bg-gray-700">
                             Score
                           </TableHead>
-                          <TableHead rowSpan={2} className="text-center text-white w-20 border-r border-gray-500">
+                          <TableHead rowSpan={2} className="text-center text-white bg-gray-700 w-20 border-r border-gray-500 hover:bg-gray-700">
                             Score
                           </TableHead>
-                          <TableHead rowSpan={2} className="text-center text-white w-20">
+                          <TableHead rowSpan={2} className="text-center text-white bg-gray-700 w-20 hover:bg-gray-700">
                             Weight (1-5)
                           </TableHead>
                         </TableRow>
-                        <TableRow>
-                          <TableHead className="text-center text-white text-xs border-r border-gray-500 px-2">
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead className="text-center text-black bg-white text-xs border-r border-gray-500 px-2 hover:bg-white">
                             Very Low = 1
                           </TableHead>
-                          <TableHead className="text-center text-white text-xs border-r border-gray-500 px-2">
+                          <TableHead className="text-center text-black bg-white text-xs border-r border-gray-500 px-2 hover:bg-white">
                             Low = 2
                           </TableHead>
-                          <TableHead className="text-center text-white text-xs border-r border-gray-500 px-2">
+                          <TableHead className="text-center text-black bg-white text-xs border-r border-gray-500 px-2 hover:bg-white">
                             Moderate = 3
                           </TableHead>
-                          <TableHead className="text-center text-white text-xs border-r border-gray-500 px-2">
+                          <TableHead className="text-center text-black bg-white text-xs border-r border-gray-500 px-2 hover:bg-white">
                             High = 4
                           </TableHead>
-                          <TableHead className="text-center text-white text-xs border-r border-gray-500 px-2">
+                          <TableHead className="text-center text-black bg-white text-xs border-r border-gray-500 px-2 hover:bg-white">
                             Very High = 5
                           </TableHead>
-                          <TableHead className="text-center text-white text-xs border-r border-gray-500 px-2">
+                          <TableHead className="text-center text-black bg-white text-xs border-r border-gray-500 px-2 hover:bg-white">
                             Extremely High = 6
                           </TableHead>
                         </TableRow>
