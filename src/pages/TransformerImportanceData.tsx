@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -259,10 +258,104 @@ const riskData = [
   }
 ];
 
+// X-Scale data
+const xScaleData = [
+  {
+    id: 1,
+    iiStart: "",
+    iiEnd: "",
+    importance: "",
+    action: "",
+    color: "",
+    placeholders: {
+      iiStart: "0",
+      iiEnd: "40",
+      importance: "Low",
+      action: "Normal maintenance",
+      color: "00FF00"
+    }
+  },
+  {
+    id: 2,
+    iiStart: "",
+    iiEnd: "",
+    importance: "",
+    action: "",
+    color: "",
+    placeholders: {
+      iiStart: "41",
+      iiEnd: "60",
+      importance: "Moderate",
+      action: "Need Careful Attention",
+      color: "FFFF00"
+    }
+  },
+  {
+    id: 3,
+    iiStart: "",
+    iiEnd: "",
+    importance: "",
+    action: "",
+    color: "",
+    placeholders: {
+      iiStart: "61",
+      iiEnd: "100",
+      importance: "High",
+      action: "Reduce Importance Index",
+      color: "FF0000"
+    }
+  }
+];
+
+// Y-Scale data
+const yScaleData = [
+  {
+    id: 1,
+    iiStart: "",
+    iiEnd: "",
+    importance: "",
+    action: "",
+    placeholders: {
+      iiStart: "0",
+      iiEnd: "15",
+      importance: "Low",
+      action: "Normal maintenance"
+    }
+  },
+  {
+    id: 2,
+    iiStart: "",
+    iiEnd: "",
+    importance: "",
+    action: "",
+    placeholders: {
+      iiStart: "16",
+      iiEnd: "30",
+      importance: "Moderate",
+      action: "Need Careful Attention"
+    }
+  },
+  {
+    id: 3,
+    iiStart: "",
+    iiEnd: "",
+    importance: "",
+    action: "",
+    placeholders: {
+      iiStart: "31",
+      iiEnd: "100",
+      importance: "High",
+      action: "Immediately Assess Risk"
+    }
+  }
+];
+
 const TransformerImportanceData = () => {
   const [activeTab, setActiveTab] = useState("criteria");
   const [tableData, setTableData] = useState(criteriaData);
   const [riskTableData, setRiskTableData] = useState(riskData);
+  const [xScaleTableData, setXScaleTableData] = useState(xScaleData);
+  const [yScaleTableData, setYScaleTableData] = useState(yScaleData);
 
   const handleScoreChange = (id: number, value: string) => {
     setTableData(prev => prev.map(item => 
@@ -298,6 +391,18 @@ const TransformerImportanceData = () => {
 
   const handleRiskDataChange = (id: number, field: string, value: string) => {
     setRiskTableData(prev => prev.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
+
+  const handleXScaleDataChange = (id: number, field: string, value: string) => {
+    setXScaleTableData(prev => prev.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
+
+  const handleYScaleDataChange = (id: number, field: string, value: string) => {
+    setYScaleTableData(prev => prev.map(item => 
       item.id === id ? { ...item, [field]: value } : item
     ));
   };
@@ -622,14 +727,174 @@ const TransformerImportanceData = () => {
               </TabsContent>
 
               <TabsContent value="x-scale" className="space-y-6">
-                <div className="text-center py-20 text-gray-500">
-                  X-Scale tab content will be implemented here
+                <div>
+                  <h3 className="text-lg font-medium mb-4">ปรับค่าในแรวแกน X</h3>
+                  
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead className="text-center text-white bg-gray-700 w-32 border-r border-gray-500 hover:bg-gray-700">
+                            %II
+                          </TableHead>
+                          <TableHead className="text-center text-white bg-gray-700 w-40 border-r border-gray-500 hover:bg-gray-700">
+                            Importance
+                          </TableHead>
+                          <TableHead className="text-center text-white bg-gray-700 w-40 border-r border-gray-500 hover:bg-gray-700">
+                            Action
+                          </TableHead>
+                          <TableHead className="text-center text-white bg-gray-700 hover:bg-gray-700">
+                            Color
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody className="bg-white">
+                        {xScaleTableData.map((item, index) => (
+                          <TableRow key={item.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
+                            <TableCell className="text-center border-r border-gray-200 py-4">
+                              <div className="flex items-center justify-center gap-2">
+                                <Input
+                                  type="text"
+                                  value={item.iiStart}
+                                  onChange={(e) => handleXScaleDataChange(item.id, 'iiStart', e.target.value)}
+                                  className="h-8 w-16 text-center text-sm"
+                                  placeholder={item.placeholders.iiStart}
+                                />
+                                <span>-</span>
+                                <Input
+                                  type="text"
+                                  value={item.iiEnd}
+                                  onChange={(e) => handleXScaleDataChange(item.id, 'iiEnd', e.target.value)}
+                                  className="h-8 w-16 text-center text-sm"
+                                  placeholder={item.placeholders.iiEnd}
+                                />
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center border-r border-gray-200 py-4">
+                              <Input
+                                type="text"
+                                value={item.importance}
+                                onChange={(e) => handleXScaleDataChange(item.id, 'importance', e.target.value)}
+                                className="h-8 text-center text-sm"
+                                placeholder={item.placeholders.importance}
+                              />
+                            </TableCell>
+                            <TableCell className="text-center border-r border-gray-200 py-4">
+                              <Input
+                                type="text"
+                                value={item.action}
+                                onChange={(e) => handleXScaleDataChange(item.id, 'action', e.target.value)}
+                                className="h-8 text-center text-sm"
+                                placeholder={item.placeholders.action}
+                              />
+                            </TableCell>
+                            <TableCell className="text-center py-4">
+                              <div className="flex items-center justify-center gap-2">
+                                <Input
+                                  type="text"
+                                  value={item.color}
+                                  onChange={(e) => handleXScaleDataChange(item.id, 'color', e.target.value)}
+                                  className="h-8 w-20 text-center text-sm"
+                                  placeholder={item.placeholders.color}
+                                />
+                                <div 
+                                  className="w-6 h-6 border border-gray-300 rounded"
+                                  style={{ 
+                                    backgroundColor: item.color.startsWith('#') ? item.color : (item.color ? `#${item.color}` : item.placeholders.color ? `#${item.placeholders.color}` : '#ffffff')
+                                  }}
+                                ></div>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="flex justify-center mt-6">
+                    <Button 
+                      onClick={handleSave} 
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg"
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </div>
               </TabsContent>
 
               <TabsContent value="y-scale" className="space-y-6">
-                <div className="text-center py-20 text-gray-500">
-                  Y-Scale tab content will be implemented here
+                <div>
+                  <h3 className="text-lg font-medium mb-4">ปรับค่าในแรวแกน Y</h3>
+                  
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead className="text-center text-white bg-gray-700 w-32 border-r border-gray-500 hover:bg-gray-700">
+                            %II
+                          </TableHead>
+                          <TableHead className="text-center text-white bg-gray-700 w-40 border-r border-gray-500 hover:bg-gray-700">
+                            Importance
+                          </TableHead>
+                          <TableHead className="text-center text-white bg-gray-700 hover:bg-gray-700">
+                            Action
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody className="bg-white">
+                        {yScaleTableData.map((item, index) => (
+                          <TableRow key={item.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
+                            <TableCell className="text-center border-r border-gray-200 py-4">
+                              <div className="flex items-center justify-center gap-2">
+                                <Input
+                                  type="text"
+                                  value={item.iiStart}
+                                  onChange={(e) => handleYScaleDataChange(item.id, 'iiStart', e.target.value)}
+                                  className="h-8 w-16 text-center text-sm"
+                                  placeholder={item.placeholders.iiStart}
+                                />
+                                <span>-</span>
+                                <Input
+                                  type="text"
+                                  value={item.iiEnd}
+                                  onChange={(e) => handleYScaleDataChange(item.id, 'iiEnd', e.target.value)}
+                                  className="h-8 w-16 text-center text-sm"
+                                  placeholder={item.placeholders.iiEnd}
+                                />
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center border-r border-gray-200 py-4">
+                              <Input
+                                type="text"
+                                value={item.importance}
+                                onChange={(e) => handleYScaleDataChange(item.id, 'importance', e.target.value)}
+                                className="h-8 text-center text-sm"
+                                placeholder={item.placeholders.importance}
+                              />
+                            </TableCell>
+                            <TableCell className="text-center py-4">
+                              <Input
+                                type="text"
+                                value={item.action}
+                                onChange={(e) => handleYScaleDataChange(item.id, 'action', e.target.value)}
+                                className="h-8 text-center text-sm"
+                                placeholder={item.placeholders.action}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="flex justify-center mt-6">
+                    <Button 
+                      onClick={handleSave} 
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg"
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </div>
               </TabsContent>
             </Tabs>
