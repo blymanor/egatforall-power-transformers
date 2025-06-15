@@ -41,6 +41,7 @@ import WeibullCalculationPage from "./pages/WeibullCalculationPage";
 import OilPurchasePage from "./pages/OilPurchasePage";
 import TransformerDetails from "./pages/TransformerDetails";
 import BasicTransformerData from "./pages/BasicTransformerData";
+import TransformerImportanceData from "./pages/TransformerImportanceData";
 
 const queryClient = new QueryClient();
 
@@ -101,6 +102,7 @@ const AppRoutes = () => (
     <Route path="/management/users" element={<UserManagement />} />
     <Route path="/management/change-password" element={<ChangePassword />} />
     <Route path="/management/basic-transformer-data" element={<BasicTransformerData />} />
+    <Route path="/management/transformer-importance-data" element={<TransformerImportanceData />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />
