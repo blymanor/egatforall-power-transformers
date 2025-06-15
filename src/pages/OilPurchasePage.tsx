@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +13,7 @@ import { toast } from "sonner";
 
 const OilPurchasePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
 
@@ -77,7 +78,7 @@ const OilPurchasePage = () => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.supplier.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.oilType.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = !statusFilter || order.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     const matchesDateFrom = !dateFrom || order.date >= dateFrom;
     const matchesDateTo = !dateTo || order.date <= dateTo;
     
@@ -121,7 +122,7 @@ const OilPurchasePage = () => {
                     <SelectValue placeholder="เลือกสถานะ" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">ทั้งหมด</SelectItem>
+                    <SelectItem value="all">ทั้งหมด</SelectItem>
                     <SelectItem value="completed">สำเร็จ</SelectItem>
                     <SelectItem value="pending">รอดำเนินการ</SelectItem>
                     <SelectItem value="in_transit">กำลังจัดส่ง</SelectItem>
