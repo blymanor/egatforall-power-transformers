@@ -33,6 +33,13 @@ const TestDataManagement = () => {
     },
     {
       id: 4,
+      title: "Weight อุปกรณ์ย่อย",
+      description: "จัดการน้ำหนักอุปกรณ์ย่อย",
+      route: "/management/test-data/sub-component-weight",
+      icon: Settings
+    },
+    {
+      id: 5,
       title: "ข้อมูลการทดสอบอื่นๆ",
       description: "จัดการข้อมูลการทดสอบเพิ่มเติม",
       route: "/management/test-data/other-tests",

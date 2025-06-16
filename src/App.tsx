@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -49,6 +48,7 @@ import VisualInspectionTopics from "./pages/VisualInspectionTopics";
 import VisualInspectionCriteria from "./pages/VisualInspectionCriteria";
 import HIScoreManagement from "./pages/HIScoreManagement";
 import FactorScoreManagement from "./pages/FactorScoreManagement";
+import SubComponentWeight from "./pages/SubComponentWeight";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +116,7 @@ const AppRoutes = () => (
     <Route path="/management/test-data/vi-criteria" element={<VisualInspectionCriteria />} />
     <Route path="/management/test-data/hi-score" element={<HIScoreManagement />} />
     <Route path="/management/test-data/factor-score" element={<FactorScoreManagement />} />
+    <Route path="/management/test-data/sub-component-weight" element={<SubComponentWeight />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />
