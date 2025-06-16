@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -44,6 +43,8 @@ import TransformerDetails from "./pages/TransformerDetails";
 import BasicTransformerData from "./pages/BasicTransformerData";
 import TransformerImportanceData from "./pages/TransformerImportanceData";
 import VisualInspectionManagement from "./pages/VisualInspectionManagement";
+import TestDataManagement from "./pages/TestDataManagement";
+import VisualInspectionTopics from "./pages/VisualInspectionTopics";
 
 const queryClient = new QueryClient();
 
@@ -106,6 +107,8 @@ const AppRoutes = () => (
     <Route path="/management/basic-transformer-data" element={<BasicTransformerData />} />
     <Route path="/management/transformer-importance-data" element={<TransformerImportanceData />} />
     <Route path="/management/transformer-importance-data/visual-inspection" element={<VisualInspectionManagement />} />
+    <Route path="/management/test-data" element={<TestDataManagement />} />
+    <Route path="/management/test-data/vi-topics" element={<VisualInspectionTopics />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />
