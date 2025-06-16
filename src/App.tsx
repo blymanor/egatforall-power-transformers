@@ -49,6 +49,7 @@ import VisualInspectionCriteria from "./pages/VisualInspectionCriteria";
 import HIScoreManagement from "./pages/HIScoreManagement";
 import FactorScoreManagement from "./pages/FactorScoreManagement";
 import SubComponentWeight from "./pages/SubComponentWeight";
+import TestScoreWeight from "./pages/TestScoreWeight";
 
 const queryClient = new QueryClient();
 
@@ -117,6 +118,7 @@ const AppRoutes = () => (
     <Route path="/management/test-data/hi-score" element={<HIScoreManagement />} />
     <Route path="/management/test-data/factor-score" element={<FactorScoreManagement />} />
     <Route path="/management/test-data/sub-component-weight" element={<SubComponentWeight />} />
+    <Route path="/management/test-data/test-score-weight" element={<TestScoreWeight />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />
