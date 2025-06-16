@@ -43,7 +43,8 @@ const HIScoreModal = ({
   const colorOptions = [
     { value: "00FF00", label: "00FF00" },
     { value: "FFFF00", label: "FFFF00" },
-    { value: "FF0000", label: "FF0000" }
+    { value: "FF0000", label: "FF0000" },
+    { value: "1E5CFF", label: "1E5CFF" }
   ];
 
   useEffect(() => {
