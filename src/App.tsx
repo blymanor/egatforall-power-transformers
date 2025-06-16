@@ -48,6 +48,7 @@ import TestDataManagement from "./pages/TestDataManagement";
 import VisualInspectionTopics from "./pages/VisualInspectionTopics";
 import VisualInspectionCriteria from "./pages/VisualInspectionCriteria";
 import HIScoreManagement from "./pages/HIScoreManagement";
+import FactorScoreManagement from "./pages/FactorScoreManagement";
 
 const queryClient = new QueryClient();
 
@@ -114,6 +115,7 @@ const AppRoutes = () => (
     <Route path="/management/test-data/vi-topics" element={<VisualInspectionTopics />} />
     <Route path="/management/test-data/vi-criteria" element={<VisualInspectionCriteria />} />
     <Route path="/management/test-data/hi-score" element={<HIScoreManagement />} />
+    <Route path="/management/test-data/factor-score" element={<FactorScoreManagement />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />

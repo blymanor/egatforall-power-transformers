@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useNavigate } from "react-router-dom";
-import { Eye, Settings } from "lucide-react";
+import { Eye, Settings, BarChart3 } from "lucide-react";
 
 const TestDataManagement = () => {
   const navigate = useNavigate();
@@ -19,6 +19,20 @@ const TestDataManagement = () => {
     },
     {
       id: 2,
+      title: "คะแนน %HI",
+      description: "จัดการคะแนน %HI",
+      route: "/management/test-data/hi-score",
+      icon: BarChart3
+    },
+    {
+      id: 3,
+      title: "คะแนน %Factor",
+      description: "จัดการคะแนน %Factor",
+      route: "/management/test-data/factor-score",
+      icon: BarChart3
+    },
+    {
+      id: 4,
       title: "ข้อมูลการทดสอบอื่นๆ",
       description: "จัดการข้อมูลการทดสอบเพิ่มเติม",
       route: "/management/test-data/other-tests",
