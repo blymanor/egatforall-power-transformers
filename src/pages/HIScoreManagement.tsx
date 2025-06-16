@@ -1,0 +1,209 @@
+
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { ArrowLeft, Eye, Plus, Pencil } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import CustomPagination from "@/components/ui/custom-pagination";
+import HIScoreModal from "@/components/modals/HIScoreModal";
+
+interface HIScoreData {
+  id: number;
+  no: number;
+  testGroup: string;
+  minScore: number;
+  maxScore: number;
+  description: string;
+  details: string;
+  color: string;
+}
+
+const HIScoreManagement = () => {
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    mode: "create" as "create" | "view" | "edit",
+    data: null as HIScoreData | null
+  });
+
+  // Mock data based on the image and specifications
+  const hiScoreData: HIScoreData[] = [
+    { id: 1, no: 1, testGroup: "Active Part", minScore: 0.0, maxScore: 30.0, description: "Very Poor", details: "Immediately Assess Risk", color: "00FF00" },
+    { id: 2, no: 2, testGroup: "Active Part", minScore: 31.0, maxScore: 50.0, description: "Poor", details: "Start Planning Process to Replace/Rebuild the Risk", color: "FFFF00" },
+    { id: 3, no: 3, testGroup: "Active Part", minScore: 51.0, maxScore: 70.0, description: "Fair", details: "Increase Diagnostic Testing", color: "1E5CFF" },
+    { id: 4, no: 4, testGroup: "Active Part", minScore: 71.0, maxScore: 85.0, description: "Good", details: "Normal Maintenance", color: "00FF00" },
+    { id: 5, no: 5, testGroup: "Active Part", minScore: 86.0, maxScore: 100.0, description: "Very Good", details: "Normal Maintenance", color: "FFFF00" },
+    { id: 6, no: 6, testGroup: "Arrester", minScore: 0.0, maxScore: 30.0, description: "Very Poor", details: "Immediately Assess Risk", color: "FF0000" },
+    { id: 7, no: 7, testGroup: "Arrester", minScore: 31.0, maxScore: 50.0, description: "Poor", details: "Start Planning Process to Replace/Rebuild the Risk", color: "00FF00" },
+    { id: 8, no: 8, testGroup: "Arrester", minScore: 51.0, maxScore: 70.0, description: "Fair", details: "Increase Diagnostic Testing", color: "FFFF00" },
+    { id: 9, no: 9, testGroup: "Arrester", minScore: 71.0, maxScore: 85.0, description: "Good", details: "Normal Maintenance", color: "FF0000" },
+    { id: 10, no: 10, testGroup: "Arrester", minScore: 86.0, maxScore: 100.0, description: "Very Good", details: "Normal Maintenance", color: "00FF00" },
+    { id: 11, no: 11, testGroup: "Bushing", minScore: 0.0, maxScore: 30.0, description: "Very Poor", details: "Immediately Assess Risk", color: "FFFF00" },
+    { id: 12, no: 12, testGroup: "Bushing", minScore: 31.0, maxScore: 50.0, description: "Poor", details: "Start Planning Process to Replace/Rebuild the Risk", color: "FF0000" },
+    { id: 13, no: 13, testGroup: "Bushing", minScore: 51.0, maxScore: 70.0, description: "Fair", details: "Increase Diagnostic Testing", color: "FFFF00" },
+    { id: 14, no: 14, testGroup: "Bushing", minScore: 71.0, maxScore: 85.0, description: "Good", details: "Normal Maintenance", color: "1E5CFF" },
+    { id: 15, no: 15, testGroup: "Bushing", minScore: 86.0, maxScore: 100.0, description: "Very Good", details: "Normal Maintenance", color: "00FF00" },
+    { id: 16, no: 16, testGroup: "Insulation Oil", minScore: 0.0, maxScore: 30.0, description: "Very Poor", details: "Immediately Assess Risk", color: "FFFF00" },
+    { id: 17, no: 17, testGroup: "Insulation Oil", minScore: 31.0, maxScore: 49.0, description: "Poor", details: "Start Planning Process to Replace/Rebuild the Risk", color: "FF0000" }
+  ];
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(hiScoreData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = hiScoreData.slice(startIndex, endIndex);
+
+  const openModal = (mode: "create" | "view" | "edit", data?: HIScoreData) => {
+    setModalState({
+      isOpen: true,
+      mode,
+      data: data || null
+    });
+  };
+
+  const closeModal = () => {
+    setModalState({
+      isOpen: false,
+      mode: "create",
+      data: null
+    });
+  };
+
+  const handleView = (item: HIScoreData) => {
+    openModal("view", item);
+  };
+
+  const handleEdit = (item: HIScoreData) => {
+    openModal("edit", item);
+  };
+
+  const handleAddNew = () => {
+    openModal("create");
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleGoBack = () => {
+    navigate("/management/test-data");
+  };
+
+  const getColorDisplay = (colorCode: string) => {
+    return (
+      <span
+        className="px-2 py-1 rounded text-black text-sm font-medium"
+        style={{ backgroundColor: `#${colorCode}` }}
+      >
+        {colorCode}
+      </span>
+    );
+  };
+
+  return (
+    <DashboardLayout>
+      <div className="p-6">
+        <div className="mb-4">
+          <Button
+            onClick={handleGoBack}
+            variant="ghost"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 p-0 h-auto"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            กลับไปหน้าจัดการข้อมูลการทดสอบ
+          </Button>
+        </div>
+
+        <Card className="max-w-full overflow-hidden">
+          <CardHeader className="bg-gray-50 flex flex-row items-center justify-between p-4">
+            <CardTitle className="text-lg font-medium text-gray-800">
+              คะแนน %HI
+            </CardTitle>
+            <Button
+              onClick={handleAddNew}
+              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              เพิ่มรายการ
+            </Button>
+          </CardHeader>
+          
+          <CardContent className="p-0">
+            <div className="overflow-auto">
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="text-center w-20">ลำดับ</TableHead>
+                    <TableHead className="text-center">ชื่อกลุ่มการทดสอบ</TableHead>
+                    <TableHead className="text-center w-32">คะแนนตํ่าสุด</TableHead>
+                    <TableHead className="text-center w-32">คะแนนสูงสุด</TableHead>
+                    <TableHead className="text-center">คำอธิบาย</TableHead>
+                    <TableHead className="text-center">รายละเอียด</TableHead>
+                    <TableHead className="text-center w-32">สี</TableHead>
+                    <TableHead className="text-center w-20">แก้ไข</TableHead>
+                    <TableHead className="text-center w-20">แสดง</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentItems.map(item => (
+                    <TableRow key={item.id} className="even:bg-gray-50">
+                      <TableCell className="text-center font-medium">{item.no}</TableCell>
+                      <TableCell className="text-center">{item.testGroup}</TableCell>
+                      <TableCell className="text-center">{item.minScore}</TableCell>
+                      <TableCell className="text-center">{item.maxScore}</TableCell>
+                      <TableCell className="text-center">{item.description}</TableCell>
+                      <TableCell className="text-center">{item.details}</TableCell>
+                      <TableCell className="text-center">
+                        {getColorDisplay(item.color)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Button
+                          onClick={() => handleEdit(item)}
+                          variant="ghost"
+                          size="icon"
+                          className="hover:bg-blue-100"
+                        >
+                          <Pencil className="h-4 w-4 text-blue-600" />
+                        </Button>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Button
+                          onClick={() => handleView(item)}
+                          variant="ghost"
+                          size="icon"
+                          className="hover:bg-blue-100"
+                        >
+                          <Eye className="h-4 w-4 text-blue-600" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            
+            <div className="p-4 flex justify-center">
+              <CustomPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </CardContent>
+        </Card>
+        
+        <HIScoreModal
+          isOpen={modalState.isOpen}
+          onClose={closeModal}
+          mode={modalState.mode}
+          data={modalState.data}
+        />
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export default HIScoreManagement;
