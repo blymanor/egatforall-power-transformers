@@ -45,6 +45,7 @@ import TransformerImportanceData from "./pages/TransformerImportanceData";
 import VisualInspectionManagement from "./pages/VisualInspectionManagement";
 import TestDataManagement from "./pages/TestDataManagement";
 import VisualInspectionTopics from "./pages/VisualInspectionTopics";
+import VisualInspectionCriteria from "./pages/VisualInspectionCriteria";
 
 const queryClient = new QueryClient();
 
@@ -109,6 +110,7 @@ const AppRoutes = () => (
     <Route path="/management/transformer-importance-data/visual-inspection" element={<VisualInspectionManagement />} />
     <Route path="/management/test-data" element={<TestDataManagement />} />
     <Route path="/management/test-data/vi-topics" element={<VisualInspectionTopics />} />
+    <Route path="/management/test-data/vi-criteria" element={<VisualInspectionCriteria />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />
