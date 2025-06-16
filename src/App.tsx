@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -50,6 +51,7 @@ import HIScoreManagement from "./pages/HIScoreManagement";
 import FactorScoreManagement from "./pages/FactorScoreManagement";
 import SubComponentWeight from "./pages/SubComponentWeight";
 import TestScoreWeight from "./pages/TestScoreWeight";
+import MainComponentWeight from "./pages/MainComponentWeight";
 
 const queryClient = new QueryClient();
 
@@ -119,6 +121,7 @@ const AppRoutes = () => (
     <Route path="/management/test-data/factor-score" element={<FactorScoreManagement />} />
     <Route path="/management/test-data/sub-component-weight" element={<SubComponentWeight />} />
     <Route path="/management/test-data/test-score-weight" element={<TestScoreWeight />} />
+    <Route path="/management/test-data/main-component-weight" element={<MainComponentWeight />} />
     
     {/* Utility Routes */}
     <Route path="/manual" element={<NotFound />} />

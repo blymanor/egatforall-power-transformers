@@ -40,9 +40,16 @@ const TestDataManagement = () => {
     },
     {
       id: 5,
-      title: "ข้อมูลการทดสอบอื่นๆ",
-      description: "จัดการข้อมูลการทดสอบเพิ่มเติม",
-      route: "/management/test-data/other-tests",
+      title: "Score และ Weight การทดสอบ",
+      description: "จัดการ Score และ Weight การทดสอบ",
+      route: "/management/test-data/test-score-weight",
+      icon: Settings
+    },
+    {
+      id: 6,
+      title: "Weight อุปกรณ์หลัก",
+      description: "จัดการน้ำหนักอุปกรณ์หลัก",
+      route: "/management/test-data/main-component-weight",
       icon: Settings
     }
   ];
